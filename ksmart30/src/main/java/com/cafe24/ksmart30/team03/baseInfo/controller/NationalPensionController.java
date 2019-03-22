@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class NationalPensionController {
 
 	@GetMapping("/baseInfo/nationalPension")
-	public String index() {
+	public String nationalPensionSearch() {
 		return "baseInfo/national_pension";
 	}
 }

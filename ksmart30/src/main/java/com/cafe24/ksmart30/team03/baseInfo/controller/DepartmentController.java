@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class DepartmentController {
 	
 	@GetMapping("/baseInfo/departmentCode")
-	public String index() {
+	public String departmentSearch() {
 		return "baseInfo/department";
 	}
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class GapguenseController {
 	
 	@GetMapping("/baseInfo/gapguense")
-	public String index() {
+	public String gapguenseSearch() {
 		return "baseInfo/gapguense";
 	}
 }
