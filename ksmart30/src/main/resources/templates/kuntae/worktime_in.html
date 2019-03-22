@@ -1,10 +1,393 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-</body>
+    <title>Gentelella Alela! | </title>
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	
+    <!-- bootstrap-progressbar -->
+    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+  </head>	
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>test</title>
+	</th:block>
+	<th:block layout:fragment="customBody">
+	<div class="col-md-3 col-sm-12 col-xs-12">
+					<div>
+<!-- 1 근태정정신청 -->
+                        <div class="x_title">
+                          <h2>1.근태정정신청</h2>
+                          <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Settings 1</a>
+                                </li>
+                                <li><a href="#">Settings 2</a>
+                                </li>
+                              </ul>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                          </ul>
+                          <div class="clearfix"></div>
+                        </div>
+                        <ul class="list-unstyled top_profiles scroll-view">
+                          <li class="media event">
+                            <a class="pull-left border-aero profile_thumb">
+                              <i class="fa fa-user aero"></i>
+                            </a>
+                            <div class="media-body">
+                              <a class="title" href="#">2019/03/19</a>
+                              <p><strong>백승한 </strong></p>
+                              <p> <small>어제</small>
+                              </p>
+                            </div>
+                          </li>
+                          <li class="media event">
+                            <a class="pull-left border-green profile_thumb">
+                              <i class="fa fa-user green"></i>
+                            </a>
+                            <div class="media-body">
+                              <a class="title" href="#">2019/03/18</a>
+                              <p><strong>백승한</strong></p>
+                              <p> <small>2일 전</small>
+                              </p>
+                            </div>
+                          </li>
+                          <li class="media event">
+                            <a class="pull-left border-blue profile_thumb">
+                              <i class="fa fa-user blue"></i>
+                            </a>
+                            <div class="media-body">
+                              <a class="title" href="#">2019/03/17</a>
+                              <p><strong>백승한</strong></p>
+                              <p> <small>3일 전</small>
+                              </p>
+                            </div>
+                          </li>
+                          <li class="media event">
+                            <a class="pull-left border-aero profile_thumb">
+                              <i class="fa fa-user aero"></i>
+                            </a>
+                            <div class="media-body">
+                              <a class="title" href="#">2019/03/16</a>
+                              <p><strong>백승한 </strong></p>
+                              <p> <small>4일 전</small>
+                              </p>
+                            </div>
+                          </li>
+                            <li class="media event">
+                            <a class="pull-left border-green profile_thumb">
+                              <i class="fa fa-user green"></i>
+                            </a>
+                            <div class="media-body">
+                              <a class="title" href="#">2019/03/15</a>
+                              <p><strong>백승한</strong></p>
+                              <p> <small>5일 전</small>
+                              </p>
+                            </div>
+                          </li>
+                          <li class="media event">
+                            <a class="pull-left border-aero profile_thumb">
+                              <i class="fa fa-user aero"></i>
+                            </a>
+                            <div class="media-body">
+                              <a class="title" href="#">2019/03/14</a>
+                              <p><strong>백승한 </strong></p>
+                              <p> <small>6일 전</small>
+                              </p>
+                            </div>
+                          </li>
+                          <li class="media event">
+                            <a class="pull-left border-blue profile_thumb">
+                              <i class="fa fa-user blue"></i>
+                            </a>
+                            <div class="media-body">
+                              <a class="title" href="#">2019/03/13</a>
+                              <p><strong>백승한</strong></p>
+                              <p> <small>7일 전</small>
+                              </p>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+<!-- 2 근태정정신청 -->                    
+              <div class="col-md-4">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>2.근태 정정신청 <small>Sessions</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <article class="media event">
+                      <a class="pull-left date">
+                        <p class="month">3월</p>
+                        <p class="day">20</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">2019/03/20</a>
+                        <p>백승한</p>
+                        <p> <small>어제</small></p>
+                      </div>
+                    </article>
+                    <article class="media event">
+                      <a class="pull-left date">
+                        <p class="month">3월</p>
+                        <p class="day">19</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">2019/03/19</a>
+                        <p>백승한</p>
+                        <p> <small>2일 전</small></p>
+                      </div>
+                    </article>
+                    <article class="media event">
+                      <a class="pull-left date">
+                        <p class="month">3월</p>
+                        <p class="day">18</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">2019/03/18</a>
+                        <p>백승한</p>
+                        <p> <small>3일 전</small></p>
+                      </div>
+                    </article>
+                    <article class="media event">
+                      <a class="pull-left date">
+                        <p class="month">3월</p>
+                        <p class="day">17</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">2019/03/17</a>
+                        <p>백승한</p>
+                        <p> <small>4일 전</small></p>
+                      </div>
+                    </article>
+                    <article class="media event">
+                      <a class="pull-left date">
+                        <p class="month">3월</p>
+                        <p class="day">16</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">2019/03/16</a>
+                        <p>백승한</p>
+                        <p> <small>5일 전</small></p>
+                      </div>
+                    </article>
+                    <article class="media event">
+                      <a class="pull-left date">
+                        <p class="month">3월</p>
+                        <p class="day">15</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">2019/03/15</a>
+                        <p>백승한</p>
+                        <p> <small>6일 전</small></p>
+                      </div>
+                    </article>
+                    <article class="media event">
+                      <a class="pull-left date">
+                        <p class="month">3월</p>
+                        <p class="day">14</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">2019/03/14</a>
+                        <p>백승한</p>
+                        <p> <small>7일 전</small></p>
+                      </div>
+                    </article>
+                <!-- 원본 -->
+                   <!--  <article class="media event">
+                      <a class="pull-left date">
+                        <p class="month">April</p>
+                        <p class="day">23</p>
+                      </a>
+                      <div class="media-body">
+                        <a class="title" href="#">Item Three Title</a>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      </div>
+                    </article> -->
+                  </div>
+                </div>
+              </div>
+
+                
+	</th:block>
+	                    <div id="credits">
+                        <h2 class="credits">Credits and Thanks</h2>
+
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>URL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>jQuery</td>
+                                    <td><a href="http://jquery.com/">http://jquery.com/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>jQuery Sparkline</td>
+                                    <td><a href="http://omnipotent.net/jquery.sparkline/">http://omnipotent.net/jquery.sparkline/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Auto resize textarea</td>
+                                    <td><a href="http://www.jacklmoore.com/autosize/">http://www.jacklmoore.com/autosize/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>C3 charts</td>
+                                    <td><a href="http://c3js.org/">http://c3js.org/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Full screen editor</td>
+                                    <td><a href="http://burakson.github.io/fseditor/">http://burakson.github.io/fseditor/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>jQuery Tags Input</td>
+                                    <td><a href="https://github.com/xoxco/jQuery-Tags-Input">https://github.com/xoxco/jQuery-Tags-Input</a></td>
+                                </tr>
+                                <tr>
+                                    <td>jQuery Validation Plugin</td>
+                                    <td><a href="http://parsleyjs.org/">http://parsleyjs.org/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Colorpicker for Bootstrap</td>
+                                    <td><a href="https://github.com/xaguilars/bootstrap-colorpicker">https://github.com/xaguilars/bootstrap-colorpicker</a></td>
+                                </tr>
+                                <tr>
+                                    <td>bootstrap-daterangepicker</td>
+                                    <td><a href="https://github.com/dangrossman/bootstrap-daterangepicker">https://github.com/dangrossman/bootstrap-daterangepicker</a></td>
+                                </tr>
+                                <tr>
+                                    <td>bootstrap-fileupload</td>
+                                    <td><a href="http://blueimp.github.io/jQuery-File-Upload/">http://blueimp.github.io/jQuery-File-Upload/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>bootstrap-multiselect</td>
+                                    <td><a href="https://github.com/davidstutz/bootstrap-multiselect">https://github.com/davidstutz/bootstrap-multiselect</a></td>
+                                </tr>
+                                <tr>
+                                    <td>bootstrap-wysihtml5</td>
+                                    <td><a href="http://jhollingworth.github.io/bootstrap-wysihtml5/">http://jhollingworth.github.io/bootstrap-wysihtml5/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Dropzone</td>
+                                    <td><a href="http://www.dropzonejs.com/">http://www.dropzonejs.com/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Bootstrap switch</td>
+                                    <td><a href="https://github.com/nostalgiaz/bootstrap-switch">https://github.com/nostalgiaz/bootstrap-switch</a></td>
+                                </tr>
+                                <tr>
+                                    <td>SwitcheryJs</td>
+                                    <td><a href="http://abpetkov.github.io/switchery/">http://abpetkov.github.io/switchery/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>DataTables</td>
+                                    <td><a href="https://github.com/DataTables/DataTables">https://github.com/DataTables/DataTables</a></td>
+                                </tr>
+                                <tr>
+                                    <td>DataTables tools</td>
+                                    <td><a href="https://github.com/DataTables/TableTools">https://github.com/DataTables/TableTools</a></td>
+                                </tr>
+                                <tr>
+                                    <td>easy pie chart</td>
+                                    <td><a href="https://github.com/rendro/easy-pie-chart">https://github.com/rendro/easy-pie-chart</a></td>
+                                </tr>
+                                <tr>
+                                    <td>FullCalendar</td>
+                                    <td><a href="https://github.com/arshaw/fullcalendar">https://github.com/arshaw/fullcalendar</a></td>
+                                </tr>
+                                <!--<tr>
+                                    <td>GMaps [coming soon]</td>
+                                    <td><a href="https://github.com/HPNeo/gmaps">https://github.com/HPNeo/gmaps</a></td>
+                                </tr>-->
+                                <tr>
+                                    <td>jQuery Knob</td>
+                                    <td><a href="https://github.com/aterrien/jQuery-Knob">https://github.com/aterrien/jQuery-Knob</a></td>
+                                </tr>
+                                <tr>
+                                    <td>select2</td>
+                                    <td><a href="https://github.com/ivaynberg/select2/">https://github.com/ivaynberg/select2/</a></td>
+                                </tr>
+                                <tr>
+                                    <td>jQuery-Autocomplete</td>
+                                    <td><a href="https://github.com/devbridge/jQuery-Autocomplete">https://github.com/devbridge/jQuery-Autocomplete</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Twitter Bootstrap Wizard</td>
+                                    <td><a href="https://github.com/VinceG/twitter-bootstrap-wizard">https://github.com/VinceG/twitter-bootstrap-wizard</a></td>
+                                </tr>
+                                <tr>
+                                    <td>E-Charts</td>
+                                    <td><a href="http://echarts.baidu.com/doc/example-en.html">http://echarts.baidu.com/doc/example-en.html</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Font Awesome</td>
+                                    <td><a href="http://fortawesome.github.io/Font-Awesome/">http://fortawesome.github.io/Font-Awesome/</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        
+
+        <!-- Footer
+        ================================================== -->
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="js/jquery.min.js"></script>
+
+
+        <script src="js/bootstrap.min.js"></script>
 </html>
