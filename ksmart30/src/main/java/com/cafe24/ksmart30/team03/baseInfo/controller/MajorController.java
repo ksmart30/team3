@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MajorController {
 	
 	@GetMapping("/baseInfo/majorCode")
-	public String index() {
+	public String majorSearch() {
 		return "baseInfo/major";
 	}
 }

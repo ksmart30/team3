@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserAccessController {
 	
 	@GetMapping("/system/user/access")
-	public String index() {
+	public String userAccessSearch() {
 		return "system/user/user_access_search";
 	}
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CompanyController {
 
 	@GetMapping("/baseInfo/company")
-	public String index() {
+	public String companySearch() {
 		return "baseInfo/company";
 	}
 }
