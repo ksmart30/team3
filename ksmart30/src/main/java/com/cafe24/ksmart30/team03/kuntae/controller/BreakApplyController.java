@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class BreakApplyController {
 
-	// 휴가 신청 입력
-	@GetMapping("/kuntae/breakApply/in")
-	public String breakApplyInsertForm() {
-		return "kuntae/breakapply_in";
+	// 휴가 신청 (list)
+	@GetMapping("/kuntae/breakApply")
+	public String breakApplyList() {
+		return "kuntae/breakapply_list";
 	}
 	
 	// 휴가 신청 입력 처리
@@ -19,9 +19,9 @@ public class BreakApplyController {
 		return "";
 	}
 	
-	// 휴가 신청 (조회)
-	@GetMapping("/kuntae/breakApply")
-	public String breakApplyList() {
-		return "kuntae/breakapply_list";
+	// 휴가 신청 버튼 누를 시 Form
+	@GetMapping("/kuntae/breakApply/in")
+	public String breakApplyInsertForm() {
+		return "kuntae/breakapply_in";
 	}
 }
