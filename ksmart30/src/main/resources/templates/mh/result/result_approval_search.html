@@ -1,10 +1,225 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
-	<th:block layout:fragment="customHead">
-		<meta charset="UTF-8">
-		<title>M/H 실적 승인 화면</title>
-	</th:block>
-	<th:block layout:fragment="customBody">
-		<h1>M/H 실적 승인 화면TEST완료</h1>
-	</th:block>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/main">
+<th:block layout:fragment="customHead">
+	<meta charset="UTF-8">
+	<title>M/H 실적 승인 화면</title>
+</th:block>
+<th:block layout:fragment="customBody">
+	<h1>M/H 실적 승인 화면TEST완료</h1>
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>
+					<font style="vertical-align: inherit;"><font
+						style="vertical-align: inherit;"></font></font><small><font
+						style="vertical-align: inherit;"><font
+							style="vertical-align: inherit;"></font></font></small>
+				</h3>
+			</div>
+
+			<div class="title_right">
+				<div
+					class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+					<div class="input-group">
+						<input type="text" class="form-control"
+							placeholder="Search for..."> <span
+							class="input-group-btn">
+							<button class="btn btn-default" type="button">
+								<font style="vertical-align: inherit;"><font
+									style="vertical-align: inherit;">검색</font></font>
+							</button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>
+							<font style="vertical-align: inherit;"><font
+								style="vertical-align: inherit;">M/H실적승인 </font></font>
+						</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown" role="button" aria-expanded="false"><i
+									class="fa fa-wrench"></i></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Settings 1</a></li>
+									<li><a href="#">Settings 2</a></li>
+								</ul></li>
+							<li><a class="close-link"><i class="fa fa-close"></i></a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<p class="text-muted font-13 m-b-30">
+							<font style="vertical-align: inherit;"></font>
+						</p>
+						<div id="datatable_wrapper"
+							class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="dataTables_length" id="datatable_length">
+										<label><font style="vertical-align: inherit;"><font
+												style="vertical-align: inherit;"> </font></font><select
+											name="datatable_length" aria-controls="datatable"
+											class="form-control input-sm"><option value="10"><font
+														style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">10</font></font></option>
+												<option value="25"><font
+														style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">25 명</font></font></option>
+												<option value="50"><font
+														style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">50</font></font></option>
+												<option value="100"><font
+														style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">100</font></font></option></select><font
+											style="vertical-align: inherit;"><font
+												style="vertical-align: inherit;"></font></font></label>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div id="datatable_filter" class="dataTables_filter">
+										<label><font style="vertical-align: inherit;"><font
+												style="vertical-align: inherit;">검색:</font></font><input
+											type="search" class="form-control input-sm" placeholder=""
+											aria-controls="datatable"></label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<table id="datatable"
+										class="table table-striped table-bordered dataTable no-footer"
+										role="grid" aria-describedby="datatable_info">
+										<thead>
+											<tr role="row">
+												<th class="sorting_asc" tabindex="0"
+													aria-controls="datatable" rowspan="1" colspan="1"
+													aria-sort="ascending"
+													aria-label="Name: activate to sort column descending"
+													style="width: 86px;"><font
+													style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">이름</font></font></th>
+												<th class="sorting" tabindex="0" aria-controls="datatable"
+													rowspan="1" colspan="1"
+													aria-label="Position: activate to sort column ascending"
+													style="width: 152px;"><font
+													style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">위치</font></font></th>
+												<th class="sorting" tabindex="0" aria-controls="datatable"
+													rowspan="1" colspan="1"
+													aria-label="Office: activate to sort column ascending"
+													style="width: 61px;"><font
+													style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">사무실</font></font></th>
+												<th class="sorting" tabindex="0" aria-controls="datatable"
+													rowspan="1" colspan="1"
+													aria-label="Age: activate to sort column ascending"
+													style="width: 25px;"><font
+													style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">나이</font></font></th>
+												<th class="sorting" tabindex="0" aria-controls="datatable"
+													rowspan="1" colspan="1"
+													aria-label="Start date: activate to sort column ascending"
+													style="width: 58px;"><font
+													style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">시작일</font></font></th>
+												<th class="sorting" tabindex="0" aria-controls="datatable"
+													rowspan="1" colspan="1"
+													aria-label="Salary: activate to sort column ascending"
+													style="width: 44px;"><font
+													style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">봉급</font></font></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr role="row" class="odd">
+												<td class=""><font style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">임홍근</font></font></td>
+												<td class=""><font style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">ksmart</font></font></td>
+												<td class=""><font style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">전주</font></font></td>
+												<td class=""><font style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">26</font></font></td>
+												<td class="sorting_1"><font
+													style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">2018/11/05</font></font></td>
+												<td class=""><font style="vertical-align: inherit;"><font
+														style="vertical-align: inherit;">$ 410</font></font></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- 페이징 글자설명 -->
+							<!-- <div class="row">
+					<div class="col-sm-5">
+						<div class="dataTables_info" id="datatable_info" role="status"
+							aria-live="polite">
+							<font style="vertical-align: inherit;"><font
+								style="vertical-align: inherit;">1 ~ 10 항목 중 57 항목 표시</font></font>
+						</div>
+					</div> -->
+							<!-- 페이징 -->
+							<!-- <div class="col-sm-7">
+								<div class="dataTables_paginate paging_simple_numbers"
+									id="datatable_paginate">
+									<ul class="pagination">
+										<li class="paginate_button previous disabled"
+											id="datatable_previous"><a href="#"
+											aria-controls="datatable" data-dt-idx="0" tabindex="0"><font
+												style="vertical-align: inherit;"><font
+													style="vertical-align: inherit;">이전</font></font></a></li>
+										<li class="paginate_button active"><a href="#"
+											aria-controls="datatable" data-dt-idx="1" tabindex="0"><font
+												style="vertical-align: inherit;"><font
+													style="vertical-align: inherit;">1</font></font></a></li>
+										<li class="paginate_button "><a href="#"
+											aria-controls="datatable" data-dt-idx="2" tabindex="0"><font
+												style="vertical-align: inherit;"><font
+													style="vertical-align: inherit;">2</font></font></a></li>
+										<li class="paginate_button "><a href="#"
+											aria-controls="datatable" data-dt-idx="3" tabindex="0"><font
+												style="vertical-align: inherit;"><font
+													style="vertical-align: inherit;">3</font></font></a></li>
+										<li class="paginate_button "><a href="#"
+											aria-controls="datatable" data-dt-idx="4" tabindex="0"><font
+												style="vertical-align: inherit;"><font
+													style="vertical-align: inherit;">4</font></font></a></li>
+										<li class="paginate_button "><a href="#"
+											aria-controls="datatable" data-dt-idx="5" tabindex="0"><font
+												style="vertical-align: inherit;"><font
+													style="vertical-align: inherit;">5</font></font></a></li>
+										<li class="paginate_button "><a href="#"
+											aria-controls="datatable" data-dt-idx="6" tabindex="0"><font
+												style="vertical-align: inherit;"><font
+													style="vertical-align: inherit;">6</font></font></a></li>
+										<li class="paginate_button next" id="datatable_next"><a
+											href="#" aria-controls="datatable" data-dt-idx="7"
+											tabindex="0"><font style="vertical-align: inherit;"><font
+													style="vertical-align: inherit;">다음</font></font></a></li>
+									</ul>
+								</div>
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</th:block>
 </html>

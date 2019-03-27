@@ -8,6 +8,6 @@ public class PayController {
 	//급여 대장 폼
 	@GetMapping("/person/pay/register")
 	public String pay() {
-		return "person/pay/pay_in";
+		return "person/pay/pay_month_list";
 	}
 }
