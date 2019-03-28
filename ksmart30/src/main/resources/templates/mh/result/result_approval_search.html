@@ -97,72 +97,95 @@
 									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-sm-12">
-									<table id="datatable"
-										class="table table-striped table-bordered dataTable no-footer"
-										role="grid" aria-describedby="datatable_info">
-										<thead>
-											<tr role="row">
-												<th class="sorting_asc" tabindex="0"
-													aria-controls="datatable" rowspan="1" colspan="1"
-													aria-sort="ascending"
-													aria-label="Name: activate to sort column descending"
-													style="width: 86px;"><font
-													style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">이름</font></font></th>
-												<th class="sorting" tabindex="0" aria-controls="datatable"
-													rowspan="1" colspan="1"
-													aria-label="Position: activate to sort column ascending"
-													style="width: 152px;"><font
-													style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">위치</font></font></th>
-												<th class="sorting" tabindex="0" aria-controls="datatable"
-													rowspan="1" colspan="1"
-													aria-label="Office: activate to sort column ascending"
-													style="width: 61px;"><font
-													style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">사무실</font></font></th>
-												<th class="sorting" tabindex="0" aria-controls="datatable"
-													rowspan="1" colspan="1"
-													aria-label="Age: activate to sort column ascending"
-													style="width: 25px;"><font
-													style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">나이</font></font></th>
-												<th class="sorting" tabindex="0" aria-controls="datatable"
-													rowspan="1" colspan="1"
-													aria-label="Start date: activate to sort column ascending"
-													style="width: 58px;"><font
-													style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">시작일</font></font></th>
-												<th class="sorting" tabindex="0" aria-controls="datatable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 44px;"><font
-													style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">봉급</font></font></th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr role="row" class="odd">
-												<td class=""><font style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">임홍근</font></font></td>
-												<td class=""><font style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">ksmart</font></font></td>
-												<td class=""><font style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">전주</font></font></td>
-												<td class=""><font style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">26</font></font></td>
-												<td class="sorting_1"><font
-													style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">2018/11/05</font></font></td>
-												<td class=""><font style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">$ 410</font></font></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
+							<table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                          <tr class="headings">
+                            <th>
+                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                            </th>
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이름 </font></font></th>
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">사무실</font></font></th>
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">위치 </font></font></th>
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">나이</font></font></th>
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">시작일 </font></font></th>
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">봉급 </font></font></th>
+                            <th class="column-title no-link last"><span class="nobr"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></span>
+                            </th>
+                            <th class="bulk-actions" colspan="7">
+                              <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr class="even pointer">
+                            <td class="a-center ">
+                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                            </td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">임홍근</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
+                            <td class="a-right a-right "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
+                            <td><button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></button></td>                         
+                          </tr>  
+                          
+                           <tr class="even pointer">
+                            <td class="a-center ">
+                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                            </td>
+                            
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">백승한</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
+                            <td class="a-right a-right "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
+                            <td><button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></button></td>                         
+                          </tr>   
+                          
+                           <tr class="even pointer">
+                            <td class="a-center ">
+                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                            </td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">정다금</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
+                            <td class="a-right a-right "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
+                            <td><button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></button></td>                         
+                          </tr>   
+                          
+                           <tr class="even pointer">
+                            <td class="a-center ">
+                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                            </td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">박기훈</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
+                            <td class="a-right a-right "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
+                            <td><button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></button></td>                         
+                          </tr>                                            
+                        </tbody>
+                        
+                         <tr class="even pointer">
+                            <td class="a-center ">
+                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                            </td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">유지수</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
+                            <td class="a-right a-right "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
+                            <td><button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></button></td>                         
+                          </tr>
+                          
+                      </table>
 							<!-- 페이징 글자설명 -->
 							<!-- <div class="row">
 					<div class="col-sm-5">
@@ -213,13 +236,12 @@
 									</ul>
 								</div>
 							</div> -->
+							
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-
 	</div>
 </th:block>
 </html>

@@ -5,9 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class PayController {
-	//급여 대장 폼
+	//급여 리스트 
 	@GetMapping("/person/pay/register")
 	public String pay() {
 		return "person/pay/pay_month_list";
+	}
+	//급여 계산(입력)
+	@GetMapping("/person/pay/cal")
+	public String payInsertForm() {
+		return "person/pay/pay_in";
 	}
 }
