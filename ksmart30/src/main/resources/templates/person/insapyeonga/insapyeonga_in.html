@@ -1,10 +1,255 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
-	<th:block layout:fragment="customHead">
-		<meta charset="UTF-8">
-		<title>test</title>
-	</th:block>
-	<th:block layout:fragment="customBody">
-		인사평가 입력
-	</th:block>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/main">
+<th:block layout:fragment="customHead">
+	<meta charset="UTF-8">
+	<title>test</title>
+</th:block>
+<th:block layout:fragment="customBody">
+
+	<!-- 
+		인사평가 list
+		 -->
+	<div class="col-md-6 col-sm-6 col-xs-12">
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>
+					인사평가 list <small>basic table subtitle</small>
+				</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+					</li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-expanded="false"><i
+							class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul></li>
+					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>사번</th>
+							<th>이름</th>
+							<th>직무</th>
+							<th>유형</th>
+							
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">1</th>
+							<td>190001</td>
+							<td>유지수</td>
+							<td>경영</td>
+							<td>A형</td>
+							
+							
+							<td><button>평가</button></td>
+							
+						</tr>
+						<tr>
+							<th scope="row">2</th>
+							<td>190002</td>
+							<td>정다금</td>
+							<td>경영</td>
+							<td>B형</td>
+							
+							<td><button>평가</button></td>
+						</tr>
+						<tr>
+							<th scope="row">3</th>
+							<td>190003</td>
+							<td>박기훈</td>
+							<td>경영</td>
+							<td>C형</td>
+							
+							<td><button>평가</button></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 col-sm-6 col-xs-12">
+		<div class="x_panel">
+		
+		<div class="x_title">
+                    <h2>인사평가입력</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br>
+                    <form class="form-horizontal form-label-left">
+						
+					</form>
+						
+						
+						
+						<!--
+						인사평가 insertForm 
+						 -->
+
+                      <div class="col-xl-3">
+                      <!-- required for floating -->
+                      <!-- Nav tabs -->
+                      <ul class="nav nav-tabs tabs-left">
+                        <li class="home"><a href="#home" data-toggle="tab" aria-expanded="false">기본역량</a>
+                        </li>
+                        <li><a href="#profile" data-toggle="tab" aria-expanded="true">직무역량Ⅰ</a>
+                        </li>
+                        <li><a href="#messages" data-toggle="tab">인사점수</a>
+                        </li>
+                        <li><a href="#settings" data-toggle="tab">Settings</a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="col-xl-9">
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                        <div class="tab-pane" id="home">
+                           
+                          
+		                          <p>
+				                          <div class="form-group">
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">준 법 성 (Ⅰ)
+				                        
+				                        
+				                        </label>
+				                        <div class="col-md-9 col-sm-9 col-xs-12">
+				                          <select class="form-control">
+				                            <option>5</option>
+				                            <option>6</option>
+				                            <option>7</option>
+				                            <option>8</option>
+				                            <option>9</option>
+				                            <option>10</option>
+				                          </select>
+				                        </div>
+				                      </div>
+				                          <div class="form-group">
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">준 법 성 (Ⅱ)</label>
+				                        <div class="col-md-9 col-sm-9 col-xs-12">
+				                          <select class="form-control">
+				                            <option>5</option>
+				                            <option>6</option>
+				                            <option>7</option>
+				                            <option>8</option>
+				                            <option>9</option>
+				                            <option>10</option>
+				                          </select>
+				                        </div>
+				                      </div>
+                         		 </p>
+                        </div>
+                        <div class="tab-pane" id="profile">
+                                <p>
+				                          <div class="form-group">
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">업무지원 협조성</label>
+				                        <div class="col-md-9 col-sm-9 col-xs-12">
+				                          <select class="form-control">
+				                            <option>5</option>
+				                            <option>6</option>
+				                            <option>7</option>
+				                            <option>8</option>
+				                            <option>9</option>
+				                            <option>10</option>
+				                          </select>
+				                        </div>
+				                      </div>
+				                          <div class="form-group">
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">직무지식</label>
+				                        <div class="col-md-9 col-sm-9 col-xs-12">
+				                          <select class="form-control">
+				                            <option>5</option>
+				                            <option>6</option>
+				                            <option>7</option>
+				                            <option>8</option>
+				                            <option>9</option>
+				                            <option>10</option>
+				                          </select>
+				                        </div>
+				                      </div>
+                         		 </p>
+                        
+                    
+                        </div>
+                        <div class="tab-pane" id="messages">
+                        		<p>
+				                          <div class="form-group">
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">근무태도</label>
+				                        <div class="col-md-9 col-sm-9 col-xs-12">
+				                          <select class="form-control">
+				                            <option>5</option>
+				                            <option>6</option>
+				                            <option>7</option>
+				                            <option>8</option>
+				                            <option>9</option>
+				                            <option>10</option>
+				                          </select>
+				                        </div>
+				                      </div>
+				                          <div class="form-group">
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">자격증</label>
+				                        <div class="col-md-9 col-sm-9 col-xs-12">
+				                          <select class="form-control">
+				                            <option>5</option>
+				                            <option>6</option>
+				                            <option>7</option>
+				                            <option>8</option>
+				                            <option>9</option>
+				                            <option>10</option>
+				                          </select>
+				                        </div>
+				                      </div>
+                         		 </p>
+                        
+                        </div>
+                        <div class="tab-pane" id="settings">Settings Tab.</div>
+                      </div>
+                    </div>
+                        
+           </div>
+                     
+   
+	</div>
+
+
+
+                    
+</div>
+		
+		
+	
+	<div class="col-md-8 col-sm-6 col-xs-12">
+		<div class="x_panel"></div>
+	</div>
+
+</th:block>
 </html>
