@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Ksmart303Application {
+public class Ksmart30projectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Ksmart303Application.class, args);
+		SpringApplication.run(Ksmart30projectApplication.class, args);
 	}
 
 }

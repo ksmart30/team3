@@ -7,7 +7,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(Ksmart303Application.class);
+		return application.sources(Ksmart30projectApplication.class);
 	}
 
 }
