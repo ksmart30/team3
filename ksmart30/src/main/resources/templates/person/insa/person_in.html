@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<title>test</title>
+		<title>인사기록카드 등록</title>
 	</th:block>
 	<th:block layout:fragment="customBody">
 			<form>		
@@ -441,15 +441,17 @@
                         <tr>
                           <td>입사일자</td>
                           <td>
-                          
+							 <input type="date">   
                           </td>
-                          <td>퇴직기준</td>
-                          <td>                              
+                          <td>퇴직기준</td>                         
+                          <td> 
+                    		 <input type="date">                        
                           </td>
                         </tr>
                         <tr>
                           <td>퇴사일자</td>
                           <td>
+                       		 <input type="date">   
 		                   </td>
                           <td></td>
                           <td></td>
