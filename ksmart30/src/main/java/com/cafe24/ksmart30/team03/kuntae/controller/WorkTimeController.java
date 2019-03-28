@@ -14,6 +14,13 @@ public class WorkTimeController {
 	 * workTimeRecordSearch 출, 퇴근 기록부 (검색 처리)
 	 */
 	
+	// 일일 근무 현황
+	@GetMapping("/kuntae/daySearch")
+	public String daySearch() {
+		return "kuntae/day_search";
+	}
+	
+	
 	// 출, 퇴근 정정 신청
 	@GetMapping("/kuntae/workTimeIn")
 	public String breakApplyInsertForm() {
@@ -26,10 +33,16 @@ public class WorkTimeController {
 		return "";
 	}
 	
-	// 출, 퇴근 기록부 (조회) 
-	@GetMapping("/kuntae/workTimeRecord")
+	// 출, 퇴근 기록부 
+	@GetMapping("/kuntae/recordTotal")
 	public String workTimeRecordList() {
 		return "kuntae/worktime_record_list";
+	}
+	
+	// 출, 퇴근 기록부 (개인별)
+	@GetMapping("/kuntae/recordSingle")
+	public String workTimeRecordSingle() {
+		return "kuntae/worktime_record_single";
 	}
 	
 	// 출, 퇴근 기록부 (검색 처리)

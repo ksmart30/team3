@@ -15,7 +15,9 @@
     <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
        
   	</head>
-  			
+  	
+  	
+  	
 		<div class="">
             <div class="page-title">
               <div class="title_left">
@@ -33,68 +35,110 @@
                 </div>
               </div>
             </div>
-            <div class="x_panel" style="">
+<!--  -->
+
+
+
+
+<!-- 2 -->
+
+<div class="x_panel" style="">
+   	
     <div class="x_title">
-        <h2>검색조건 <small> 정정구분 및 신청일자</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                </ul>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-        </ul>
-        
-   <div class="clearfix"></div>
+        <h2>기본내역 </h2>
+	   <!-- 박스내의 상단 -->
+	   <div class="clearfix"></div>
     </div>
+    
+    
+    
     <div class="x_content">
-        <div class="container">
-            <div class="row">
-            	<div class="col-sm-4">
-            		<div class="form-group">
-	          			<div class="radio">
-                            <label>
-                              <input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">승인
-                            </label>
-                            <label>
-                              <input type="radio" value="option2" id="optionsRadios2" name="optionsRadios"> 미승인
-                            </label>
-                            <label>
-                              <input type="radio" value="option2" id="optionsRadios2" name="optionsRadios"> All
-                            </label>
-	                     </div>   
-                     </div>
-                 </div>
-              </div>
-		</div>
-					
-				<div class="well" style="overflow: auto">
-                      <div class="col-md-4">
-                        	신청일자
-                        <form class="form-horizontal">
-                          <fieldset>
-                            <div class="control-group">
-                              <div class="controls">
-                                <div class="input-prepend input-group">
-                                  <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                  <input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="01/01/2016 - 01/25/2016">
-                                </div>
-                              </div>
-                            </div>
-                          </fieldset>
-                        </form>
-                      </div>             
-            </div>
-        </div>
-    </div>
+	
+       <div class="row">
+       
+       <div class="col-sm-4">
+               
+				<div class="form-group">
+					<div class="radio">
+					<label>
+					  <input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">승인
+					</label>
+					<label>
+					  <input type="radio" value="option2" id="optionsRadios2" name="optionsRadios"> 미승인
+					</label>
+					<label>
+					  <input type="radio" value="option2" id="optionsRadios2" name="optionsRadios"> All
+					</label>
+					</div>   
+				</div>
+			</div>
+       <div class="col-md-4">
+		신청일자
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<div class="input-prepend input-group">
+						<span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+						<input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="01/01/2016 - 01/25/2016">
+						</div>
+					</div>
+				</div>
+			</fieldset>	
+		</div>    
+	</div> 
+	
+	
+	
+	      
+
+	<div class="col-sm-4">
+	    <label>근태구분
+				<select name="datatable-keytable_length" aria-controls="datatable-keytable" class="form-control input-sm">
+					<option>근태구분</option>
+					<option>출퇴근 정정신청</option>
+					<option>출장</option>
+					<option>외부교육</option>
+					<option>예비군훈련</option>
+					<option>연(월)차 휴가</option>
+					<option>경조휴가</option>
+					<option>PJ휴가</option>
+					<option>공가</option>
+					<option>포상휴가</option>
+				</select>
+		</label>
+	</div>
+	
+	<div class="col-sm-4">
+	    <label>부서
+				<select name="datatable-keytable_length" aria-controls="datatable-keytable" class="form-control input-sm">
+					<option>부서</option>
+					<option>전사</option>
+					<option>경영부문</option>
+					<option>경영지원실</option>
+					<option>인사총무실</option>
+					<option>품질관리실</option>
+					<option>재무관리실</option>
+					<option>수주부문</option>
+					<option>수주전략본부</option>
+					<option>수주부문_부</option>
+				</select>
+		</label>
+	</div>
+	
+	<div class="col-sm-4">
+		<label class="control-label">사원번호</label><br>
+		<input type="text"><button><i class="fa fa-search"></i></button>
+   	</div>
+	
+	
+	
 </div>
+
+	
+    
+        </div>
+    
+
             
 
             <div class="clearfix"></div>
@@ -184,7 +228,7 @@
 	                          <td>00</td>
 	                          <td>00</td>
 	                          <td>00</td>
-	                    	  <td><button type="submit" class="btn btn-success btn-sm" href="/kuntae/breakapply_in">승인</button></td>
+	                          <td><button type="submit" class="btn btn-success btn-sm" href="/kuntae/breakapply_in">승인</button></td>
 						  </form>
                         </tr>
                       </tbody>
@@ -192,9 +236,105 @@
                   </div>
                 </div>
               </div>
-             </div>
+             </div>          
+</div>
+
+
+ <!-- modals -->
+<div class="x_content">
+<button type="button" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-sm">승인</button>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+         </button>
+         <h4 class="modal-title" id="myModalLabel2">승인하시겠습니까?</h4>
+       </div>
+       <div class="modal-body">
+       
+       
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <button type="button" class="btn btn-success">Save changes</button>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>			                 
+<!-- /modals -->
+
+
+
+
+			<!-- calendar modal -->
+    		<div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title" id="myModalLabel">New Calendar Entry</h4>
+					</div>
+				<div class="modal-body">
+				  <div id="testmodal" style="padding: 5px 20px;">
+					<form id="antoform" class="form-horizontal calender" role="form">
+					  <div class="form-group">
+						<label class="col-sm-3 control-label">Title</label>
+						<div class="col-sm-9">
+						  <input type="text" class="form-control" id="title" name="title">
+						</div>
+					  </div>
+
+					</form>
+				  </div>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary antosubmit">Save changes</button>
+				</div>
+			  </div>
 			</div>
+		</div>
+		
+		<div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				  <h4 class="modal-title" id="myModalLabel2">일일 출,퇴근</h4>
+				</div>
+				<div class="modal-body">
+				  <div id="testmodal2" style="padding: 5px 20px;">
+					<form id="antoform2" class="form-horizontal calender" role="form">
+					  <div class="form-group">
+						<label class="col-sm-3 control-label">출근</label>
+						<div class="col-sm-9">
+						  <input type="text" class="form-control" id="title2" name="title2">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-sm-3 control-label">퇴근</label>
+						<div class="col-sm-9">
+						  <textarea class="form-control" style="height:55px;" id="descr2" name="descr"></textarea>
+						</div>
+					  </div>
+					</form>
+				  </div>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary antosubmit2">Save changes</button>
+				</div>
+			  </div>
+			</div>
+		</div>
+
+		 	<div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
+			<div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>	
 			
+			
+<!--  -->			
 	    <!-- jQuery -->
 	    <script src="/vendors/jquery/dist/jquery.min.js"></script>
 	    <!-- bootstrap-daterangepicker -->

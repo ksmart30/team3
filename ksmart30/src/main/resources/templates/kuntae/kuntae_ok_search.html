@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>kuntae_approval_search.html</title>
+	</th:block>
+	<th:block layout:fragment="customBody">
+					<!-- calendar modal -->
+    		<div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title" id="myModalLabel">New Calendar Entry</h4>
+					</div>
+				<div class="modal-body">
+				  <div id="testmodal" style="padding: 5px 20px;">
+					<form id="antoform" class="form-horizontal calender" role="form">
+					  <div class="form-group">
+						<label class="col-sm-3 control-label">Title</label>
+						<div class="col-sm-9">
+						  <input type="text" class="form-control" id="title" name="title">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-sm-3 control-label">Description</label>
+						<div class="col-sm-9">
+						  <textarea class="form-control" style="height:55px;" id="descr" name="descr"></textarea>
+						</div>
+					  </div>
+					</form>
+				  </div>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary antosubmit">Save changes</button>
+				</div>
+			  </div>
+			</div>
+		</div>
+		
+		<div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				  <h4 class="modal-title" id="myModalLabel2">일일 출,퇴근</h4>
+				</div>
+				<div class="modal-body">
+				  <div id="testmodal2" style="padding: 5px 20px;">
+					<form id="antoform2" class="form-horizontal calender" role="form">
+					  <div class="form-group">
+						<label class="col-sm-3 control-label">출근</label>
+						<div class="col-sm-9">
+						  <input type="text" class="form-control" id="title2" name="title2">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="col-sm-3 control-label">퇴근</label>
+						<div class="col-sm-9">
+						  <textarea class="form-control" style="height:55px;" id="descr2" name="descr"></textarea>
+						</div>
+					  </div>
+					</form>
+				  </div>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary antosubmit2">Save changes</button>
+				</div>
+			  </div>
+			</div>
+		</div>
+	</div>
+		 	<div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
+			<div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>	
+			
+			
+			
+				                    	  <!-- modals -->
+							<td><div class="x_content">
+			                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">승인</button>
+			                  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+			                    <div class="modal-dialog modal-sm">
+			                      <div class="modal-content">
+			                        <div class="modal-header">
+			                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+			                          </button>
+			                          <h4 class="modal-title" id="myModalLabel2">승인하시겠습니까?</h4>
+			                        </div>
+			                        <div class="modal-body">
+			                        
+			                          <h4>Text in a modal</h4>
+			                          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+			                        </div>
+			                        <div class="modal-footer">
+			                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			                          <button type="button" class="btn btn-primary">Save changes</button>
+			                        </div>
+			                      </div>
+			                    </div>
+			                  </div>
+			                 </div>
+			                 </td>
+                  <!-- /modals -->
+						  </form>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+             </div>
+			</div>
+	</th:block>
+</html>

@@ -14,9 +14,9 @@ public class KuntaeController {
 	 */
 	
 	// 근태승인처리 (조회)
-	@GetMapping("/kuntae/approval")
+	@GetMapping("/kuntae/ok")
 	public String kuntaeApprovalList() {
-		return "kuntae/kuntae_approval_list";
+		return "kuntae/kuntae_ok_list";
 	}
 	
 	// 근태승인처리 (검색 처리)
@@ -28,7 +28,7 @@ public class KuntaeController {
 	// 근태승인처리 (승인 처리)
 	@GetMapping("/kuntae/approval/action")
 	public String kuntaeApprovalSearchAction() {
-		return "kuntae/kuntae_approval_search";
+		return "kuntae/kuntae_ok_search";
 	}
 	
 	// 근태현황(일, 월)
