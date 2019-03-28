@@ -15,7 +15,7 @@
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>
-					인사평가 list <small>basic table subtitle</small>
+					인사평가 list
 				</h2>
 				<ul class="nav navbar-right panel_toolbox">
 					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -123,7 +123,7 @@
                         </li>
                         <li><a href="#profile" data-toggle="tab" aria-expanded="true">직무역량Ⅰ</a>
                         </li>
-                        <li><a href="#messages" data-toggle="tab">인사점수</a>
+                        <li><a href="#messages" data-toggle="tab">직무역량Ⅱ</a>
                         </li>
                         <li><a href="#settings" data-toggle="tab">Settings</a>
                         </li>
@@ -138,9 +138,9 @@
                           
 		                          <p>
 				                          <div class="form-group">
-				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">준 법 성 (Ⅰ)
-				                        
-				                        
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12"
+				                        data-toggle="tooltip"
+				                        data-original-title="근태(지각, 조회, 결근)">준 법 성 (Ⅰ)
 				                        </label>
 				                        <div class="col-md-9 col-sm-9 col-xs-12">
 				                          <select class="form-control">
@@ -154,7 +154,11 @@
 				                        </div>
 				                      </div>
 				                          <div class="form-group">
-				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">준 법 성 (Ⅱ)</label>
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12"
+				                        
+				                        data-toggle="tooltip"
+				                        data-original-title="사규 및 제반규정 준수, 태도, 복장, 언행평가" >준 법 성 (Ⅱ)
+				                        </label>
 				                        <div class="col-md-9 col-sm-9 col-xs-12">
 				                          <select class="form-control">
 				                            <option>5</option>
@@ -171,7 +175,10 @@
                         <div class="tab-pane" id="profile">
                                 <p>
 				                          <div class="form-group">
-				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">업무지원 협조성</label>
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12"
+				                         data-toggle="tooltip"
+				                        data-original-title="공정하고 합리적이며 신속한 업무지원/ 자발적이고 의욕적인 지원협조">업무지원 협조성
+				                        </label>
 				                        <div class="col-md-9 col-sm-9 col-xs-12">
 				                          <select class="form-control">
 				                            <option>5</option>
@@ -184,7 +191,10 @@
 				                        </div>
 				                      </div>
 				                          <div class="form-group">
-				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">직무지식</label>
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12"
+				                        data-toggle="tooltip"
+				                        data-original-title="담당업무에 대한 이해력 및 기본자질과 응용력">직무지식
+				                        </label>
 				                        <div class="col-md-9 col-sm-9 col-xs-12">
 				                          <select class="form-control">
 				                            <option>5</option>
@@ -203,7 +213,10 @@
                         <div class="tab-pane" id="messages">
                         		<p>
 				                          <div class="form-group">
-				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">근무태도</label>
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12" 
+				                        data-toggle="tooltip"
+				                        data-original-title="직원관리가 능동적,적극적,체계적으로 이루어 지는가?">조직관리
+				                        					 </label>
 				                        <div class="col-md-9 col-sm-9 col-xs-12">
 				                          <select class="form-control">
 				                            <option>5</option>
@@ -216,7 +229,10 @@
 				                        </div>
 				                      </div>
 				                          <div class="form-group">
-				                        <label class="control-label col-md-3 col-sm-3 col-xs-12">자격증</label>
+				                        <label class="control-label col-md-3 col-sm-3 col-xs-12" 
+				                        data-toggle="tooltip"
+				                        data-original-title="수주PJT의 계약,진행 관리가 원활히 이루어지는가?">계약관리
+				                        					 </label>
 				                        <div class="col-md-9 col-sm-9 col-xs-12">
 				                          <select class="form-control">
 				                            <option>5</option>
@@ -247,9 +263,7 @@
 		
 		
 	
-	<div class="col-md-8 col-sm-6 col-xs-12">
-		<div class="x_panel"></div>
-	</div>
+	
 
 </th:block>
 </html>
