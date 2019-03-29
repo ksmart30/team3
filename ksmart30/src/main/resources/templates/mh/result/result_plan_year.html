@@ -1,3 +1,4 @@
+<!-- M/H 계획/실적(당해) -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -7,6 +8,106 @@
 	<title>M/H 계획/실적(당해)</title>
 </th:block>
 <th:block layout:fragment="customBody">
-<h1>M/H 계획/실적(당해)</h1>
+	<head>
+	
+	<!-- 달력사용위해 추가 -->
+    <!-- bootstrap-daterangepicker  -->
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- bootstrap-datetimepicker -->
+    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+       
+  	</head>
+  	
+  	<div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>M/H 관리<a href="/manHour/plan/year"><small>M/H실적(당해)</small></a></h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+<div class="x_panel" style="">
+   	
+    <div class="x_title">
+        <h2>검색조건</h2>
+	   <!-- 박스내의 상단 -->
+	   <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+	<div class="row">
+		<div class="col-md-4">
+			신청일자
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<div class="input-prepend input-group">
+						<span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+						<input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="01/01/2016 - 01/25/2016">
+						</div>
+					</div>
+				</div>
+			</fieldset>	
+		</div>    
+	</div> 
+	
+	<div class="col-sm-4">
+	    <label>부서
+				<select name="datatable-keytable_length" aria-controls="datatable-keytable" class="form-control input-sm">
+					<option>부서</option>
+					<option>전사</option>
+					<option>경영부문</option>
+					<option>경영지원실</option>
+					<option>인사총무실</option>
+					<option>품질관리실</option>
+					<option>재무관리실</option>
+					<option>수주부문</option>
+					<option>수주전략본부</option>
+					<option>수주부문_부</option>
+				</select>
+		</label>
+	</div>
+	
+	<div class="col-sm-4">
+		<label class="control-label">코드명</label><br>
+		<input type="text"><button data-toggle="modal" data-target="#code"><i class="fa fa-search"></i></button>
+   	</div>
+	</div>
+	</div>
+    
+	</div>
+
+<!-- 코드명 modal -->
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="code">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+         </button>
+         <h4 class="modal-title" id="myModalLabel2">코드명 검색</h4>
+       </div>
+       <form action="/#" method="get">
+			        <div class="modal-body">검색 : <input type="text" name="profit" value=""></div>
+			        
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <button type="submit" class="btn btn-success" >검색</button>
+       </div>
+       </form>
+     </div>
+   </div>
+ </div>		                 
+<!-- / 사원번호 modals -->
+
 </th:block>
 </html>
