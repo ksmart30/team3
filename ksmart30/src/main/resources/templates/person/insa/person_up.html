@@ -1,46 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
-	<th:block layout:fragment="customHead">
-		<meta charset="UTF-8">
-		<title>인사기록카드 등록</title>
-	</th:block>
-	<th:block layout:fragment="customBody">
-			<form>		
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">             
-					<h3>인사기록카드 등록 </h3>
-				 		
-				 <table class="table">         
-                      <tbody>
-                      
-                        <tr>
-                          <th>사원번호(자동)</th>
-                          <td>
-                          <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-                          <input type="text" class="form-control">
-                          </td>
-                          <th>성명</th>
-                          <td>
-                          <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-                          <input type="text" class="form-control">
-                          </td>
-                        </tr>
-                        
-                        <tr>
-                          <th>주민등록번호</th>
-                          <td>
-                          <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-                          <input type="text" class="form-control">
-                          </td>
-                        
-                       	<th>성별</th>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/main">
+<th:block layout:fragment="customHead">
+	<meta charset="UTF-8">
+	<title>인사기록카드 등록</title>
+</th:block>
+<th:block layout:fragment="customBody">
+	<form>
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<h3>인사기록카드 등록</h3>
+
+				<table class="table">
+					<tbody>
+
+						<tr>
+							<th>사원번호(자동)</th>
+							<td>
+								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control">
+								</div>
+							</td>
+							<th>성명</th>
+							<td>
+								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control">
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th>주민등록번호</th>
+							<td>
+								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+									<input type="text" class="form-control">
+								</div>
+							</td>
+
+							<th>성별</th>
 							<td>
 								<p>
-									Male <input type="radio" class="flat" name="gender" id="genderM" value="M" checked="" required /> 
-									Female <input type="radio" class="flat" name="gender" id="genderF" value="F" />
+									Male <input type="radio" class="flat" name="gender"
+										id="genderM" value="M" checked="" required /> Female <input
+										type="radio" class="flat" name="gender" id="genderF" value="F" />
 								</p>
 							</td>
-                        </tr>
+						</tr>
 
 						<tr>
 							<th>직급</th>
@@ -116,580 +122,577 @@
 										</select>
 									</div>
 								</div>
-								
 							<th></th>
-                          	<td></td>
-	
+							<td></td>
+
 						</tr>
 					</tbody>
-                    </table>
-	
-					</div>				
+				</table>
+
+			</div>
+		</div>
+
+		<!-- 다음 테이블 시작 -->
+		<div class="col-md-12 col-sm-13 col-xs-12">
+			<div class="x_panel">
+				<div class="x_content">
+					<!-- <table class="table table-striped"> -->
+
+					<!-- 인적사항테이블 -->
+					<table class="table table-striped jambo_table bulk_action">
+						<thead>
+							<tr>
+								<th>▽ 인적사항</th>
+								<th></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+
+							<tr>
+								<td>현거주지</td>
+								<td>
+									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+										<input type="text" class="form-control">
+								</td>
+
+								<td></td>
+								<td><div class="col-md-13 col-sm-14 col-xs-12 form-group">
+										<input type="text" class="form-control"></td>
+							</tr>
+							<tr>
+								<td>자택전화</td>
+								<td>
+									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+										<input type="text" class="form-control">
+								</td>
+								<td>전화번호</td>
+								<td>
+									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+										<input type="text" class="form-control">
+								</td>
+							</tr>
+
+
+							<tr>
+								<td>휴대전화</td>
+								<td>
+									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+										<input type="text" class="form-control">
+								</td>
+								<td>이메일</td>
+								<td>
+									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+										<input type="text" class="form-control">
+								</td>
+							</tr>
+
+							<tr>
+								<td>출신지역</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-7 col-sm-9 col-xs-12">
+											<select class="form-control">
+												<option></option>
+												<option value="AK">서울특별시</option>
+												<option value="HI">경기도</option>
+												<option value="CA">인천광역시</option>
+												<option value="NV">강원도</option>
+												<option value="OR">충청남도</option>
+												<option value="WA">대전광역시</option>
+												<option value="AZ">충청북도</option>
+												<option value="CO">부산광역시</option>
+												<option value="ID">울산광역시</option>
+												<option value="MT">대구광역시</option>
+											</select>
+										</div>
+									</div>
+								</td>
+								<td>본적주소</td>
+								<td>
+									<div class="col-md-13 col-sm-12 col-xs-12 form-group">
+										<input type="text" class="form-control">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+
+					<!-- 신체사항테이블 -->
+					<table class="table table-striped jambo_table bulk_action">
+						<thead>
+							<tr>
+								<th>▽ 신체사항</th>
+								<th></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>신장(cm)</td>
+								<td>
+									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+										<input type="text" placeholder="cm" class="form-control">
+								</td>
+								<td>체중(kg)</td>
+								<td>
+									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+										<input type="text" placeholder="kg" class="form-control">
+								</td>
+							</tr>
+							<tr>
+								<td>혈액형</td>
+								<td>
+									<div class="col-md-7 col-sm-12 col-xs-12">
+										<select class="form-control">
+											<option></option>
+											<option>A형</option>
+											<option>B형</option>
+											<option>O형</option>
+											<option>AB형</option>
+										</select>
+									</div>
+									</div>
+								<td></td>
+								<td></td>
+
+
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<!-- 병무사항테이블 -->
+					<table class="table table-striped jambo_table bulk_action">
+						<thead>
+							<tr>
+								<th>▽ 병무사항</th>
+								<th></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>역종구분</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-8 col-sm-9 col-xs-12">
+											<select class="form-control">
+												<option></option>
+												<option>예 비 역</option>
+												<option>보 충 역</option>
+												<option>미 필</option>
+												<option>면 제</option>
+											</select>
+										</div>
+									</div>
+								</td>
+								<td>군별구분</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-8 col-sm-9 col-xs-12">
+											<select class="form-control">
+												<option></option>
+												<option>육군</option>
+												<option>해군</option>
+												<option>공군</option>
+												<option>해병대</option>
+												<option>카투사</option>
+												<option>의경</option>
+											</select>
+										</div>
+									</div>
+								</td>
+
+							</tr>
+							<tr>
+								<td>계급구분</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-8 col-sm-12 col-xs-12">
+											<select class="form-control">
+												<option></option>
+												<option>장성</option>
+												<option>영관급</option>
+												<option>위관급</option>
+												<option>부사관</option>
+												<option>사병</option>
+											</select>
+										</div>
+									</div>
+
+								</td>
+								<td>병과구분</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-8 col-sm-12 col-xs-12">
+											<select class="form-control">
+												<option></option>
+												<option>공병</option>
+												<option>통신</option>
+												<option>전산</option>
+												<option>보병</option>
+												<option>수송</option>
+												<option>부관</option>
+												<option>항공통제</option>
+												<option>포병</option>
+												<option>행정</option>
+												<option>작전제도</option>
+												<option>관측</option>
+												<option>시설</option>
+												<option>제도병</option>
+											</select>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+
+					<!-- 기술분야 테이블 -->
+					<table class="table table-striped jambo_table bulk_action">
+						<thead>
+							<tr>
+								<th>▽ 기술분야</th>
+								<th></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>전문분야</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-7 col-sm-5 col-xs-5">
+											<select class="form-control">
+												<option></option>
+												<option>건축</option>
+												<option>기계</option>
+												<option>토목</option>
+												<option>전기</option>
+												<option>통신</option>
+												<option>조경</option>
+												<option>소방</option>
+												<option>도시계획</option>
+												<option>전산</option>
+
+											</select>
+										</div>
+									</div>
+								</td>
+								<td>등급구분</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-7 col-sm-12 col-xs-12">
+											<select class="form-control">
+												<option></option>
+												<option>특 급</option>
+												<option>고 급</option>
+												<option>중 급</option>
+												<option>초 급</option>
+											</select>
+										</div>
+									</div>
+
+								</td>
+							</tr>
+							<tr>
+								<td>직무</td>
+								<td>
+									<div class="form-group">
+										<div class="col-md-7 col-sm-12 col-xs-12">
+											<select class="form-control">
+												<option></option>
+												<option>경영</option>
+												<option>수주</option>
+												<option>QC</option>
+												<option>본부장</option>
+												<option>소장</option>
+												<option>실시설계</option>
+												<option>디자인</option>
+											</select>
+										</div>
+									</div>
+
+								</td>
+								<td></td>
+								<td></td>
+							</tr>
+
+						</tbody>
+					</table>
+
+					<!-- 입/퇴사일자 테이블 -->
+					<table class="table table-striped jambo_table bulk_action">
+						<thead>
+							<tr>
+								<th>▽ 입/퇴사일자</th>
+								<th></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>입사일자</td>
+								<td><input type="date"></td>
+								<td>퇴직기준</td>
+								<td><input type="date"></td>
+							</tr>
+							<tr>
+								<td>퇴사일자</td>
+								<td><input type="date"></td>
+								<td></td>
+								<td></td>
+							</tr>
+
+						</tbody>
+					</table>
+					<center>
+						<button type="button" class="btn btn-primary">인사카드 수정</button>
+					</center>
 				</div>
-				
-					<!-- 다음 테이블 시작 -->
-					<div class="col-md-12 col-sm-13 col-xs-12">
-					<div class="x_panel">
-						<div class="x_content">
-						<!-- <table class="table table-striped"> -->
- 					
- 					<!-- 인적사항테이블 -->		
- 					<table class="table table-striped jambo_table bulk_action">
-                      <thead>
-                        <tr>
-                          <th>▽ 인적사항</th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
+			</div>
+		</div>
+	</form>
 
-                      <tbody>
-                      
-                        <tr>
-                          <td>현거주지</td>
-                          <td>
-	                          <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-	                          <input type="text" class="form-control">	                          
-                          </td>
-                          
-                          <td></td>
-                          <td><div class="col-md-13 col-sm-14 col-xs-12 form-group">
-	                          <input type="text" class="form-control">	 </td>
-                        </tr>
-                        <tr>
-                          <td>자택전화</td>
-                          <td>
-	                          <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-	                          <input type="text" class="form-control">
-                          </td>
-                          <td>전화번호</td>
-                          <td>
-                          	  <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-	                          <input type="text" class="form-control">
-                          </td>
-                        </tr>
-                        
-                        
-                        <tr>
-                          <td>휴대전화</td>
-                          <td>
-                          	  <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-	                          <input type="text" class="form-control">
-                          </td>
-                          <td>이메일</td>                        
-                          <td>
-                          	 <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-	                         <input type="text" class="form-control">
-                          </td>
-                        </tr>
-                        
-                       <tr>
-                          <td>출신지역</td>
-                          <td>
-                          	  	<div class="form-group">
-									<div class="col-md-7 col-sm-9 col-xs-12">
-										<select class="form-control">
-											<option></option>
-											<option value="AK">서울특별시</option>
-											<option value="HI">경기도</option>
-											<option value="CA">인천광역시</option>
-											<option value="NV">강원도</option>
-											<option value="OR">충청남도</option>
-											<option value="WA">대전광역시</option>
-											<option value="AZ">충청북도</option>
-											<option value="CO">부산광역시</option>
-											<option value="ID">울산광역시</option>
-											<option value="MT">대구광역시</option>
-										</select>
-									</div>
-								</div>
-                          </td>
-                          <td>본적주소</td>                        
-                          <td>
-                          	 <div class="col-md-13 col-sm-12 col-xs-12 form-group">
-	                         <input type="text" class="form-control">
-                          </td>
-                        </tr>                                             
-                      </tbody>
-                    </table>
-					
-					
-					<!-- 신체사항테이블 -->		
-					<table class="table table-striped jambo_table bulk_action">
-                      <thead>
-                        <tr>
-                          <th>▽ 신체사항</th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
 
-                      <tbody>
-                        <tr>
-                          <td>신장(cm)</td>
-                          <td>
-                          	 <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-	                         <input type="text" placeholder="cm" class="form-control">
-                          </td>
-                          <td>체중(kg)</td>          
-                          <td>
-                          	 <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-	                         <input type="text" placeholder="kg" class="form-control">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>혈액형</td>
-                          <td>
-                          	<div class="col-md-7 col-sm-12 col-xs-12">
-								<select class="form-control">
-										<option></option>
-										<option>A형</option>
-										<option>B형</option>
-										<option>O형</option>
-										<option>AB형</option>				
-									</select>
-									</div>
-								</div>  
-                          <td></td>
-                          <td></td>
-                          
-                          
-                          </td>               
-                        </tr>                      
-                      </tbody>
-                    </table>		
-					
-				<!-- 병무사항테이블 -->		
-					<table class="table table-striped jambo_table bulk_action">
-                      <thead>
-                        <tr>
-                          <th>▽ 병무사항</th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
+	<!-- 추가 입력할 정보 창 -->
+	<form>
+		<div class="col-md-12 col-sm-13 col-xs-12">
+			<div class="x_panel">
+				<div class="x_content">
+					<div class="clearfix">
+						<h4>추가 인사기록 입력</h4>
+					</div>
+				</div>
 
-                      <tbody>
-                        <tr>
-                          <td>역종구분</td>
-                          <td>
-                       	  	<div class="form-group">
-								<div class="col-md-8 col-sm-9 col-xs-12">
-										<select class="form-control">
-											<option></option>
-											<option>예 비 역</option>
-											<option>보 충 역</option>
-											<option>미     필</option>
-											<option>면     제</option>
-										</select>
-									</div>
-								</div>
-                          </td>
-                          <td>군별구분</td>
-                          <td>
-                          <div class="form-group">
-								<div class="col-md-8 col-sm-9 col-xs-12">
-										<select class="form-control">
-											<option></option>
-											<option>육군</option>
-											<option>해군</option>
-											<option>공군</option>
-											<option>해병대</option>
-											<option>카투사</option>
-											<option>의경</option>
-										</select>
-									</div>
-								</div>  
-                          </td>
-                          
-                        </tr>
-                        <tr>
-                          <td>계급구분</td>
-                          <td>
-                          <div class="form-group">
-                          	  <div class="col-md-8 col-sm-12 col-xs-12">
-										<select class="form-control">
-											<option></option>
-											<option>장성</option>
-											<option>영관급</option>
-											<option>위관급</option>
-											<option>부사관</option>
-											<option>사병</option>
-										</select>
-									</div>
-								</div>  
-                          
-                          </td>
-                          <td>병과구분</td>
-                          <td>                         
-                          <div class="form-group">
-                          	  <div class="col-md-8 col-sm-12 col-xs-12">
-										<select class="form-control">
-											<option></option>
-											<option>공병</option>
-											<option>통신</option>
-											<option>전산</option>
-											<option>보병</option>
-											<option>수송</option>
-											<option>부관</option>
-											<option>항공통제</option>
-											<option>포병</option>
-											<option>행정</option>
-											<option>작전제도</option>
-											<option>관측</option>
-											<option>시설</option>
-											<option>제도병</option>
-										</select>
-									</div>
-								</div>  
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>	
-						
-		      
-                    <!-- 기술분야 테이블 -->
-					<table class="table table-striped jambo_table bulk_action">
-                      <thead>
-                        <tr>
-                          <th>▽ 기술분야</th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
+				<!-- start of user-activity-graph -->
+				<div id="graph_bar" style="width: 100%; height: 60px;"></div>
+				<!-- end of user-activity-graph -->
 
-                      <tbody>
-                        <tr>
-                          <td>전문분야</td>
-                          <td>
-                          <div class="form-group">
-                       	 	 <div class="col-md-7 col-sm-5 col-xs-5">
-								<select class="form-control">
-									<option></option>
-									<option>건축</option>
-									<option>기계</option>
-									<option>토목</option>
-									<option>전기</option>
-									<option>통신</option>
-									<option>조경</option>
-									<option>소방</option>
-									<option>도시계획</option>
-									<option>전산</option>
-					
-								</select>
-							</div>
-						</div>  
-                          </td>
-                          <td>등급구분</td>
-                          <td>   
-                           <div class="form-group">
-                       	 	 <div class="col-md-7 col-sm-12 col-xs-12">
-								<select class="form-control">
-									<option></option>
-									<option>특   급</option>
-									<option>고   급</option>
-									<option>중   급</option>
-									<option>초   급</option>		
-								</select>
-							</div>
-						</div> 
-                          
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>직무</td>
-                          <td>
-                            <div class="form-group">
-                       	 	 <div class="col-md-7 col-sm-12 col-xs-12">    
-								<select class="form-control">
-									<option></option>
-									<option>경영</option>
-									<option>수주</option>
-									<option>QC</option>
-									<option>본부장</option>	
-									<option>소장</option>
-									<option>실시설계</option>
-									<option>디자인</option>	
-								</select>
-							</div>
-						</div> 
-                          
-                          </td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        
-                      </tbody>
-                    </table>	
-						
-				<!-- 입/퇴사일자 테이블 -->
-					<table class="table table-striped jambo_table bulk_action">
-                      <thead>
-                        <tr>
-                          <th>▽ 입/퇴사일자</th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
+				<div class="" role="tabpanel" data-example-id="togglable-tabs">
+					<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+						<li role="presentation" class="active"><a
+							href="#tab_content1" id="home-tab" role="tab" data-toggle="tab"
+							aria-expanded="true">학력사항</a></li>
+						<li role="presentation" class=""><a href="#tab_content2"
+							role="tab" id="profile-tab" data-toggle="tab"
+							aria-expanded="false">가족사항</a></li>
+						<li role="presentation" class=""><a href="#tab_content3"
+							role="tab" id="profile-tab2" data-toggle="tab"
+							aria-expanded="false">자격,면허</a></li>
+						<li role="presentation" class=""><a href="#tab_content4"
+							role="tab" id="profile-tab4" data-toggle="tab"
+							aria-expanded="false">외국어</a></li>
+					</ul>
 
-                      <tbody>
-                        <tr>
-                          <td>입사일자</td>
-                          <td>
-							<input type="date">    
-                          </td>
-                          <td>퇴직기준</td>                         
-                          <td> 
-                         	<input type="date">                      	
-                                                   
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>퇴사일자</td>
-                          <td>
-                       		 <input type="date">    
-                          
-		                   </td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        
-                      </tbody>
-                    </table>	
- 						<center><button type="button" class="btn btn-primary">인사카드 수정</button>						
-						</center>
-						</div>
-					</div>	
-				</div>							
-			</form>	
-			
-						
-			<!-- 추가 입력할 정보 창 -->
-			<form>
-				<div class="col-md-12 col-sm-13 col-xs-12">
-					<div class="x_panel">
-						<div class="x_content">
-						  <div class="clearfix">
-						  <h4>추가 인사기록 입력</h4>
-						  </div>
-                   	</div>
-                  
-                      <!-- start of user-activity-graph -->
-                      <div id="graph_bar" style="width:100%; height:60px;"></div>
-                      <!-- end of user-activity-graph -->
 
-                      <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                          <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">학력사항</a>
-                          </li>
-                          <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">가족사항</a>
-                          </li>
-                          <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">자격,면허</a>
-                          </li>
-                          <li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab4" data-toggle="tab" aria-expanded="false">외국어</a>
-                          </li>
-                        </ul>
-                        
-                    
-                        <div id="myTabContent" class="tab-content">
-                         <!-- 학력사항 -->
+					<div id="myTabContent" class="tab-content">
+						<!-- 학력사항 -->
 						<div role="tabpanel" class="tab-pane fade active in"
 							id="tab_content1" aria-labelledby="home-tab">
 							<div class="col-md-12 col-sm-6 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<h4>학력사항</h4>
-									</div>	
-										<div class="clearfix"></div>
-										<div class="x_content" style="text-align: right" >
-											<button type="button" class="btn btn-round btn-primary">입력</button>
-											<button type="button" class="btn btn-round btn-primary">저장</button>
-										</div>
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th>NO</th>
-													<th>구분</th>
-													<th>입학일자</th>
-													<th>졸업일자</th>
-													<th>학교명</th>
-													<th>전공</th>
-													<th>학위</th>
-													<th>이수</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<th>1</th>
-													<td>고등학교</td>
-													<td>1994/03</td>
-													<td>1997/02</td>
-													<td>장훈고등학교</td>
-													<td>건축공학</td>
-													<td>건축디자인</td>
-													<td>졸업</td>																									
-												</tr>
-												<tr>
-													<th>2</th>
-													<td>대학교</td>
-													<td>1994/03</td>
-													<td>1997/02</td>
-													<td>장훈고등학교</td>
-													<td>건축공학</td>
-													<td>건축디자인</td>
-													<td>졸업</td>																									
-												</tr>
-											</tbody>
-										</table>
+									</div>
+									<div class="clearfix"></div>
+									<div class="x_content" style="text-align: right">
+										<button type="button" class="btn btn-round btn-primary">입력</button>
+										<button type="button" class="btn btn-round btn-primary">저장</button>
+									</div>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>NO</th>
+												<th>구분</th>
+												<th>입학일자</th>
+												<th>졸업일자</th>
+												<th>학교명</th>
+												<th>전공</th>
+												<th>학위</th>
+												<th>이수</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>1</th>
+												<td>고등학교</td>
+												<td>1994/03</td>
+												<td>1997/02</td>
+												<td>장훈고등학교</td>
+												<td>건축공학</td>
+												<td>건축디자인</td>
+												<td>졸업</td>
+											</tr>
+											<tr>
+												<th>2</th>
+												<td>대학교</td>
+												<td>1994/03</td>
+												<td>1997/02</td>
+												<td>장훈고등학교</td>
+												<td>건축공학</td>
+												<td>건축디자인</td>
+												<td>졸업</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
-                    		 </div>
-                     	</div>
-                     	
-                     	
-                     	<!-- 가족사항 -->
-						<div role="tabpanel" class="tab-pane fade in"
-							id="tab_content2" aria-labelledby="tab">
+							</div>
+						</div>
+
+
+						<!-- 가족사항 -->
+						<div role="tabpanel" class="tab-pane fade in" id="tab_content2"
+							aria-labelledby="tab">
 							<div class="col-md-12 col-sm-6 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<h4>가족사항</h4>
-									 </div>	
-										<div class="clearfix"></div>
-										<div class="x_content" style="text-align: right" >
-											<button type="button" class="btn btn-round btn-primary">입력</button>
-											<button type="button" class="btn btn-round btn-primary">저장</button>
-										</div>
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th>NO</th>
-													<th>관계</th>
-													<th>성명</th>
-													<th>직업</th>
-													<th>소재지(시/도)</th>		
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<th>1</th>
-													<td>배우자</td>
-													<td>김**</td>
-													<td>전업주부</td>
-												</tr>
-												<tr>
-													<th>2</th>
-													<td>자녀</td>
-													<td>김**</td>
-													<td>자영업</td>
-												</tr>
-											</tbody>
-										</table>
-										
-										
-                    				
-                    			 </div>
-                    		 </div>
-                     	</div>
-                     	
-                     	   	<!-- 자격,면허사항 -->
-						<div role="tabpanel" class="tab-pane fade in"
-							id="tab_content3" aria-labelledby="tab">
+									</div>
+									<div class="clearfix"></div>
+									<div class="x_content" style="text-align: right">
+										<button type="button" class="btn btn-round btn-primary">입력</button>
+										<button type="button" class="btn btn-round btn-primary">저장</button>
+									</div>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>NO</th>
+												<th>관계</th>
+												<th>성명</th>
+												<th>직업</th>
+												<th>소재지(시/도)</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>1</th>
+												<td>배우자</td>
+												<td>김**</td>
+												<td>전업주부</td>
+											</tr>
+											<tr>
+												<th>2</th>
+												<td>자녀</td>
+												<td>김**</td>
+												<td>자영업</td>
+											</tr>
+										</tbody>
+									</table>
+
+
+
+								</div>
+							</div>
+						</div>
+
+						<!-- 자격,면허사항 -->
+						<div role="tabpanel" class="tab-pane fade in" id="tab_content3"
+							aria-labelledby="tab">
 							<div class="col-md-12 col-sm-6 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<h4>자격,면허</h4>
 									</div>
-										<div class="clearfix"></div>
-										<div class="x_content" style="text-align: right" >
-											<button type="button" class="btn btn-round btn-primary">입력</button>
-											<button type="button" class="btn btn-round btn-primary">저장</button>
-										</div>
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th>NO</th>
-													<th>자격증</th>
-													<th>Last Name</th>
-													<th>Username</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<th scope="row">1</th>
-													<td>Mark</td>
-													<td>Otto</td>
-													<td>@mdo</td>
-												</tr>
-												<tr>
-													<th scope="row">2</th>
-													<td>Jacob</td>
-													<td>Thornton</td>
-													<td>@fat</td>
-												</tr>
-											</tbody>
-										</table>
-										
-										
-                    				
-                    			 </div>
-                    		 </div>
-                     	</div>
-                     	
-                     	
-                    	<!-- 외국어사항 -->
-						<div role="tabpanel" class="tab-pane fade in"
-							id="tab_content4" aria-labelledby="tab">
+									<div class="clearfix"></div>
+									<div class="x_content" style="text-align: right">
+										<button type="button" class="btn btn-round btn-primary">입력</button>
+										<button type="button" class="btn btn-round btn-primary">저장</button>
+									</div>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>NO</th>
+												<th>자격증</th>
+												<th>Last Name</th>
+												<th>Username</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th scope="row">1</th>
+												<td>Mark</td>
+												<td>Otto</td>
+												<td>@mdo</td>
+											</tr>
+											<tr>
+												<th scope="row">2</th>
+												<td>Jacob</td>
+												<td>Thornton</td>
+												<td>@fat</td>
+											</tr>
+										</tbody>
+									</table>
+
+
+
+								</div>
+							</div>
+						</div>
+
+
+						<!-- 외국어사항 -->
+						<div role="tabpanel" class="tab-pane fade in" id="tab_content4"
+							aria-labelledby="tab">
 							<div class="col-md-12 col-sm-6 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<h4>외국어</h4>
-									 </div>	
-										<div class="clearfix"></div>
-										<div class="x_content" style="text-align: right" >
-											<button type="button" class="btn btn-round btn-primary">입력</button>
-											<button type="button" class="btn btn-round btn-primary">저장</button>
-										</div>
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th>NO</th>
-													<th>외국어</th>
-													<th>Last Name</th>
-													<th>Username</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<th scope="row">1</th>
-													<td>Mark</td>
-													<td>Otto</td>
-													<td>@mdo</td>
-												</tr>
-												<tr>
-													<th scope="row">2</th>
-													<td>Jacob</td>
-													<td>Thornton</td>
-													<td>@fat</td>
-												</tr>
-											</tbody>
-										</table>
-                    				
-                    			 </div>
-                    		 </div>
-                     	</div>
-                     	
-                 	
-                     <!-- 맨위에 div -->	
-					</div>
-			</form>
-				
+									</div>
+									<div class="clearfix"></div>
+									<div class="x_content" style="text-align: right">
+										<button type="button" class="btn btn-round btn-primary">입력</button>
+										<button type="button" class="btn btn-round btn-primary">저장</button>
+									</div>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>NO</th>
+												<th>외국어</th>
+												<th>Last Name</th>
+												<th>Username</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th scope="row">1</th>
+												<td>Mark</td>
+												<td>Otto</td>
+												<td>@mdo</td>
+											</tr>
+											<tr>
+												<th scope="row">2</th>
+												<td>Jacob</td>
+												<td>Thornton</td>
+												<td>@fat</td>
+											</tr>
+										</tbody>
+									</table>
 
-			</th:block>
-	<th:block layout:fragment="customJquery">
-    </th:block>
+								</div>
+							</div>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+
+
+</th:block>
+<th:block layout:fragment="customJquery">
+</th:block>
 </html>

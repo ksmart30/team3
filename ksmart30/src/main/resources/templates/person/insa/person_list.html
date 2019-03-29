@@ -1,96 +1,152 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
-	<th:block layout:fragment="customHead">
-		<meta charset="UTF-8">
-		<title>인사기록카드 리스트</title>
-	</th:block>
-	<th:block layout:fragment="customBody">
-		
-	
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>인사기록 LIST</small></h2>
-                    
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <p class="text-muted font-13 m-b-30">
-                    </p>
-                    <div class="col-md-12 col-xs-12">
-                    
-			
-		
-					
-				</div>
-				<div class="x_content"><br>
-					<form class="form-horizontal form-label-left input_mask">
-	                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-responsive_info" style="width: 100%;">
-								<tr role="row">
-									<th class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 65%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-										<label class="control-label">검색조건</label>
-									</th>
-									
-								</tr>
-								<tr role="row">	
-									<th class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 100%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-										<label class="control-label" style="padding-left: 35px; padding-right: 40px;">사번</label>
-										<input type="text" style="width:20%;">									
-										<label class="control-label" style="padding-left: 35px; padding-right: 40px;">이름</label>
-										<input type="text" style="width:20%;">	
-										<label class="control-label" style="padding-left: 35px; padding-right: 40px;">부서</label>
-										<input type="text" style="width:20%;">
-									</th>
-									
-								</tr>
-								
-							
-								
-								
-								  <div class="x_content" style="text-align: right" >
-			                       	<button type="button" class="btn btn-primary">검색</button></a>
-			                      </div>																		
-							</table>
-					</form>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/main">
+<th:block layout:fragment="customHead">
+	<meta charset="UTF-8">
+	<title>인사기록카드 리스트</title>
+</th:block>
+<th:block layout:fragment="customBody">
+
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				인사기록 LIST</small>
+			</h2>
+
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<p class="text-muted font-13 m-b-30"></p>
+			<div class="col-md-12 col-xs-12">
+
+
+				<!-- 검색 -->
+				<div class="col-md-13 col-xs-14">
+					<div class="x_panel">
+						<div class="center_col" role="main">
+							<div class="">
+								<div class="page-title">
+									<div class="title_left">
+										<h3>검색</h3>
+									</div>
+								</div>
+							</div>
+
+							<form class="form-horizontal form-label-left">
+
+								<div class="form-group">
+									<label class="control-label col-md-3 col-sm-6 col-xs-9">직급</label>
+									<div class="col-md-3 col-sm-9 col-xs-12">
+										<select class="form-control">
+											<option></option>
+											<option>회장</option>
+											<option>부회장</option>
+											<option>대표이사</option>
+											<option>사장</option>
+											<option>부사장</option>
+											<option>전무</option>
+											<option>상무</option>
+											<option>이사</option>
+											<option>실장</option>
+											<option>팀장</option>
+											<option>대리</option>
+											<option>사원</option>
+											<option>인턴사원</option>
+											<option>촉탁사원</option>
+											<option>계약직</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-3 col-sm-6 col-xs-9">직책</label>
+									<div class="col-md-3 col-sm-9 col-xs-12">
+										<select class="form-control">
+											<option></option>
+											<option>회장</option>
+											<option>부회장</option>
+											<option>대표이사</option>
+											<option>사장</option>
+											<option>부사장</option>
+											<option>전무</option>
+											<option>상무</option>
+											<option>이사</option>
+											<option>실장</option>
+											<option>팀장</option>
+											<option>대리</option>
+											<option>사원</option>
+											<option>인턴사원</option>
+											<option>촉탁사원</option>
+											<option>계약직</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-3 col-sm-3 col-xs-12">사원번호</label>
+									<div class="col-md-3 col-sm-9 col-xs-12">
+										<input type="text" class="form-control">
+									</div>
+								</div>
+								<label class="control-label col-md-3 col-sm-6 col-xs-9">이름</label>
+								<div class="col-md-3 col-sm-9 col-xs-12">
+
+									<input type="text" class="form-control"
+										placeholder="Search for..."><br>
+									<button type="button" class="btn btn-primary">검색</button>
+
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<!-- 검색 끝 -->
+
 				</div>
 			</div>
+
+
+		<!-- 직원목록 -->
+			<div class="x_panel">
+				<div class="title_left">
+					<h3>직원 목록</h3>
+				</div>
+				<form>
+					<table id="datatable-checkbox"
+						class="table table-striped table-bordered bulk_action">
+						<thead>
+							<tr>
+								<th>사번</th>
+								<th>성명</th>
+								<th>부서</th>
+								<th>직급</th>
+								<th>이메일</th>
+								<th>전화번호</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>20190008</td>
+								<td><a href="/person/insa/personnelRecord/up">유지수</td>
+								</a>
+								<td>인사부</td>
+								<td>신입사원</td>
+								<td>jisu103@naver.com</td>
+								<td>010-8788-9999</td>
+							</tr>
+						</tbody>
+						<div class="x_content" style="text-align: right">
+							<a href="/person/insa/personnelRecord/in"><button
+									type="button" class="btn btn btn-success">인사기록카드
+									등록(신규)</button></a>
+						</div>
+					</table>
+				</form>
 			</div>
-                    
-                    
-                    
-                    
-                    
-                   <div class="x_panel">
-                    <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
-                      <thead>
-                        <tr>
-                          <th>사번</th>
-                          <th>성명</th>
-                          <th>부서</th>
-                          <th>직급</th>
-                          <th>이메일</th>
-                          <th>전화번호</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>                 
-                          <td>20190008</td>
-                          <td><a href="/person/insa/personnelRecord/up">유지수</td></a>
-                          <td>인사부</td>
-                          <td>신입사원</td>
-                          <td>jisu103@naver.com</td>
-                          <td>010-8788-9999</td>
-                        </tr>                     
-                      </tbody>
-                      <div class="x_content" style="text-align: right" >
-                      <a href="/person/insa/personnelRecord/in"><button type="button" class="btn btn-primary">인사기록카드 등록(신규)</button></a>
-                      </div>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              
-              
-     
-		
-	</th:block>
+		</div>
+	</div>
+
+
+
+
+</th:block>
 </html>
