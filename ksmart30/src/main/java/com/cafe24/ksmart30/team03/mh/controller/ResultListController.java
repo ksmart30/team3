@@ -10,49 +10,49 @@ public class ResultListController {
 	public String resultList() {
 		return "mh/result/result_search";
 	}
-	// M/H실적(프로젝트별 누계)
+	// M/H실적(프로젝트별 누계) a
 	@GetMapping("/manHour/result/nugae")
-	public String a() {
-		return "mh/result/a";
+	public String resultNugae() {
+		return "mh/result/result_nugae";
 	}
-	// M/H실적(수행유형별 - 전사그래프)
+	// M/H실적(수행유형별 - 전사그래프) b
 	@GetMapping("/manHour/result/total")
-	public String b() {
-		return "mh/result/b";
+	public String resultTotal() {
+		return "mh/result/result_total";
 	}
-	// M/H실적(수행유형별 - 본부그래프)
+	// M/H실적(수행유형별 - 본부그래프) c
 	@GetMapping("/manHour/result/hq")
-	public String c() {
-		return "mh/result/c";
+	public String resultHq() {
+		return "mh/result/result_hq";
 	}
-	// M/H실적(프로젝트 인건비 누계)
+	// M/H실적(프로젝트 인건비 누계) d
 	@GetMapping("/manHour/result/cost")
-	public String d() {
-		return "mh/result/d";
+	public String resultCost() {
+		return "mh/result/result_cost";
 	}
-	// M/H 계획/실적(그래프)
+	// M/H 계획/실적(그래프) e
 	@GetMapping("/manHour/plan/graph")
-	public String e() {
-		return "mh/result/e";
+	public String resultPlanGraph() {
+		return "mh/result/result_plan_graph";
 	}
-	// M/H 계획/실적(프로젝트 누계)
+	// M/H 계획/실적(프로젝트 누계) f
 	@GetMapping("/manHour/plan/nugae")
-	public String f() {
-		return "mh/result/f";
+	public String resultPlanNugae() {
+		return "mh/result/result_plan_nugae";
 	}
-	// M/H 계획/실적(당해)
+	// M/H 계획/실적(당해) g
 	@GetMapping("/manHour/plan/year")
-	public String g() {
-		return "mh/result/g";
+	public String resultPlanYear() {
+		return "mh/result/result_plan_year";
 	}
-	// 프로젝트 단계완료 미입력 List
+	// 프로젝트 단계완료 미입력 List h
 	@GetMapping("/manHour/project/notYet")
-	public String h() {
-		return "mh/result/h";
+	public String resultProjectNotyet() {
+		return "mh/result/result_project_notyet";
 	}
-	// 프로젝트 일정관리
+	// 프로젝트 일정관리 i
 	@GetMapping("/manHour/project/plan")
-	public String i() {
-		return "mh/result/i";
+	public String resultProjectPlan() {
+		return "mh/result/result_project_plan";
 	}
 }

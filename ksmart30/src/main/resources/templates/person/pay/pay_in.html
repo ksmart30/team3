@@ -8,6 +8,107 @@
 </th:block>
 <th:block layout:fragment="customBody">
 	<h1>급여 계산(입력)</h1>
-		
+	<div class="x_panel" style="">
+    <div class="x_title">
+        <h2><font style="vertical-align: inherit;"><small><font style="vertical-align: inherit;"></font></small><font style="vertical-align: inherit;"> 작업조건</font></font><small><font style="vertical-align: inherit;"></font></small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="form-inline">
+    	<P>필수입력사항</P>
+    </div>
+    <div class="form-inline">
+	                  <div class="form-group">
+	                    <label for="ex3">지급일자 : </label>
+	                    <input type="date">
+	                  </div>
+	                  <div class="form-group">
+	                  <label for="ex3">급여 구분 </label>
+	                  <select>
+	                    	<option>급여</option>
+	                    	<option>상여</option>
+	                  </select>	              
+	                  </div>	                 
+	                  <div class="ln_solid"></div>	
+	                  <P>선택사항</P>
+	                  <div class="form-group">
+	                    <label>처리부서:</label>	                   	                   
+	                    <select>
+	                    	<option>경영부문</option>
+	                    	<option>경영지원본부</option>
+	                    	<option>경영지원실</option>
+	                    	<option>인사총무실</option>
+	                    	<option>품질관리실</option>
+	                    	<option>재무관리실</option>
+	                    	<option>수주부문</option>
+	                    	<option>수주전략본부</option>
+	                    	<option>수주부문_부</option>
+	                    	<option>수주부문Ⅱ</option>	                    	
+	                    </select>
+	                    ~
+	                     <select>
+	                    	<option>경영부문</option>
+	                    	<option>경영지원본부</option>
+	                    	<option>경영지원실</option>
+	                    	<option>인사총무실</option>
+	                    	<option>품질관리실</option>
+	                    	<option>재무관리실</option>
+	                    	<option>수주부문</option>
+	                    	<option>수주전략본부</option>
+	                    	<option>수주부문_부</option>
+	                    	<option>수주부문Ⅱ</option>	                    	
+	                    </select>
+	                  </div>
+	                  <br>
+	                  <div class="form-group">
+	                  <label for="ex3">사원번호 : </label>	                 
+	                  <select>
+	                    	<option>7500</option>
+	                    	<option>7530</option>
+	                    	<option>7540</option>
+	                    	<option>7600</option>
+	                    	<option>7630</option>
+	                    	<option>7640</option>
+	                    	<option>7670</option>
+	                  </select>
+	                  <p>[!]사원번호를 입려갛면 사원 1명의 급여를 계산한다.</p>
+	                  <div class="x_content" style="text-align: right" >			                       				                      	
+	                  <button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">급여 계산</font></font></button>
+	                  </div>	                  	            
+	                  </div>	                  
+	             </div>	
+	             <br>           	        
+	             <div class="ln_solid"></div>	           
+	             <h5>처리결과</h5>
+	          	<label>인원 :</label>
+	          	<input type="text" name="">
+	          	<label>급여총액 :</label>
+	          	<input type="text" name="">
+</div>
+		<!-- <div class="selectbox"> 
+		<label for="ex_select">국적선택</label> 
+		<select id="ex_select"> 
+		<option selected>국적선택</option> 
+		<option>한국</option>
+		<option>일본</option>
+		<option>중국</option>
+		</select> 
+		</div>  -->
+
+
 </th:block>
 </html>
