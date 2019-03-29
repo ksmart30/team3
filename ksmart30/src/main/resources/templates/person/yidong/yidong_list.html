@@ -75,6 +75,7 @@
 	<!-- 
               이동자료 insertForm 시작
                -->
+    <div class="col-md-6 col-sm-6 col-xs-12">           
 	<div class="x_panel">
 		<div class="x_title">
 			<h2>
@@ -94,35 +95,38 @@
 			</ul>
 			<div class="clearfix"></div>
 		</div>
-		<div class="x_content">
+		<div class="x_content" >
 			<br>
 			<form class="form-horizontal form-label-left input_mask">
-
-				<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+			<div class="x_content" >
+				<div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
 					<input type="text" class="form-control has-feedback-left"
 						id="inputSuccess2" placeholder="사원번호"> <span
 						class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
 				</div>
-
-				<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control" id="inputSuccess3"
+			</div>
+			<div class="x_content">
+				<div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+					<input type="text" class="form-control has-feedback-left" id="inputSuccess3"
 						placeholder="이름"> <span
-						class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
+						class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
 				</div>
-
-				<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+			</div>
+			<div class="x_content">
+				<div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
 					<input type="text" class="form-control has-feedback-left"
 						id="inputSuccess4" placeholder="소속부서"> <span
 						class="fa fa-envelope form-control-feedback left"
 						aria-hidden="true"></span>
 				</div>
-
-				<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control" id="inputSuccess5"
+			</div>
+			<div class="x_content">
+				<div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+					<input type="text" class="form-control has-feedback-left" id="inputSuccess5"
 						placeholder="직급"> <span
-						class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
+						class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
 				</div>
-
+			</div>
 				<div class="form-group">
 					<label class="control-label col-md-3 col-sm-3 col-xs-12">사원번호
 					</label>
@@ -159,14 +163,15 @@
 				<div class="ln_solid"></div>
 				<div class="form-group">
 					<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-						<button type="button" class="btn btn-primary">Cancel</button>
-						<button class="btn btn-primary" type="reset">Reset</button>
-						<button type="submit" class="btn btn-success">Submit</button>
+						<button type="button" class="btn btn-success">수정</button>
+						<button class="btn btn-success" type="reset">Reset</button>
+						<button type="submit" class="btn btn-primary">등록</button>
 					</div>
 				</div>
 
 			</form>
 		</div>
+	</div>
 	</div>
 	<!--
 	 이동자료 list
@@ -283,9 +288,25 @@
                         </tr>
                       </tbody>
                     </table>
-                    <a href="">
-                    <button type="button" class="btn btn-success btn-sm" href="#">승인</button>
-					</a>
+                    <div class="x_content" style="text-align: left" >
+	                    <a href="">
+	                    <button type="button" class="btn btn-success btn-sm" >수정</button>
+						</a>
+					
+					
+	                    <a href="">
+	                    <button type="button" class="btn btn-danger btn-sm" >삭제</button>
+						</a>
+						&emsp;
+						<a href="">
+	                    <button type="button" class="btn btn-primary btn-sm" >승인</button>
+						</a>
+					</div>
+                    
+                    
+                    <div class="x_content" style="text-align: right" >
+	                    
+					</div>
                   </div>
                 </div>
               </div>
