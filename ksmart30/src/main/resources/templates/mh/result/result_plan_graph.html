@@ -5,12 +5,27 @@
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
 	<title>M/H 계획/실적(그래프)</title>
+	<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+
+	</head>	
 </th:block>
 <th:block layout:fragment="customBody">
+
+
+
+
 <h1>M/H 계획/실적(그래프)</h1>
 
 	<!-- <font color="black"> -->
-	
+	<div class="x_panel">
+	 <div class="x_content">
 		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
                 <div class="x_panel">
 					<br>
@@ -105,16 +120,56 @@
 						<div role="tabpanel" class="tab-pane fade active in"
 							id="tab_content1" aria-labelledby="home-tab">
 							<div class="col-md-12 col-sm-6 col-xs-12">
-								<div class="x_panel">
-									<div class="x_title">
-										<h4>설계1</h4>
-									</div>
-									<div class="clearfix"></div>
-									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary">입력</button>
-										<button type="button" class="btn btn-round btn-primary">저장</button>
-									</div>
-									<table class="table table-bordered">
+										<div class="x_panel">
+											<div class="x_title">
+												<h4>설계1</h4>
+											</div>
+											<div class="clearfix"></div>
+											<div class="x_content" style="text-align: right">
+												<button type="button" class="btn btn-round btn-primary">입력</button>
+												<button type="button" class="btn btn-round btn-primary">저장</button>
+											</div>
+											
+											<!-- 차트 연습 시작 -->
+
+										<table>
+											<div class="col-md-12 col-sm-12 col-xs-20">
+												<div class="x_panel">
+													<div class="x_title">
+														<h2>
+															Bar graph <small>Sessions</small>
+														</h2>
+														<ul class="nav navbar-right panel_toolbox">
+															<li><a class="collapse-link"><i
+																	class="fa fa-chevron-up"></i></a></li>
+															<li class="dropdown"><a href="#"
+																class="dropdown-toggle" data-toggle="dropdown"
+																role="button" aria-expanded="false"><i
+																	class="fa fa-wrench"></i></a>
+															
+															<li><a class="close-link"><i class="fa fa-close"></i></a>
+															</li>
+														</ul>
+														<div class="clearfix"></div>
+													</div>
+													<div class="x_content">
+														<canvas id="mybarChart" width="20" height="10"></canvas>
+													</div>
+													
+												</div>
+											</div>
+																							
+							</table>
+
+
+
+
+
+
+
+
+										<!-- 차트 연습 끝 -->
+									<table class="table table-bordered">									
 										<thead>
 											<tr>
 												<th>NO</th>
@@ -291,14 +346,69 @@
 			</div>
 		</div>
 	</form>
+	
 
 			<div class="clearfix"></div>
 		</div>
-		
 	</div>
-
+</div>
 	<!--   </font>   -->
 
+</th:block>
+<th:block layout:fragment="customJquery">
+<script>
 
+function init_charts() {
+	
+	console.log('run_charts  typeof [' + typeof (Chart) + ']');
+	
+	if( typeof (Chart) === 'undefined'){ return; }
+	
+	console.log('init_charts');
+
+	
+	Chart.defaults.global.legend = {
+		enabled: false
+	};
+	
+if ($('#mybarChart').length ){ 
+	  
+	  var ctx = document.getElementById("mybarChart");
+	  var mybarChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+		  labels: ["기획", "심의", "허가", "착공", "실시", "A/S", "준공"],
+		  datasets: [{
+			label: '# of Votes',
+			backgroundColor: "#3366FF",
+			data: [20, 30, 40, 28, 92, 50, 45]
+		  }, {
+			label: '# of Votes',
+			backgroundColor: "#FF0000",
+			data: [41, 56, 25, 48, 72, 34, 12]
+		  }]
+		},
+
+		options: {
+		  scales: {
+			yAxes: [{
+			  ticks: {
+				beginAtZero: true
+			  }
+			}]
+		  }
+		}
+	  });
+	  
+	} 
+}
+
+$(document).ready(function() {
+	
+	
+	init_charts();
+			
+});	
+</script>
 </th:block>
 </html>
