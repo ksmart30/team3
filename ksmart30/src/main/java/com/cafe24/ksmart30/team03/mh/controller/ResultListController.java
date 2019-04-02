@@ -55,4 +55,11 @@ public class ResultListController {
 	public String resultProjectPlan() {
 		return "mh/result/result_project_plan";
 	}
+	
+	//제가 풀해볼게욥?!(지수)
+	@GetMapping("/manHour/project/plan")
+	public String resultProjectPlan(int a) {
+		return "mh/result/result_project_plan";
+	}
+		
 }
