@@ -31,20 +31,11 @@ public class ResultListController {
 		return "mh/result/result_cost";
 	}
 	// M/H 계획/실적(그래프) e
-	@GetMapping("/manHour/plan/graph")
-	public String resultPlanGraph() {
-		return "mh/result/result_plan_graph";
-	}
+
 	// M/H 계획/실적(프로젝트 누계) f
-	@GetMapping("/manHour/plan/nugae")
-	public String resultPlanNugae() {
-		return "mh/result/result_plan_nugae";
-	}
+
 	// M/H 계획/실적(당해) g
-	@GetMapping("/manHour/plan/year")
-	public String resultPlanYear() {
-		return "mh/result/result_plan_year";
-	}
+
 	// 프로젝트 단계완료 미입력 List h
 	@GetMapping("/manHour/project/notYet")
 	public String resultProjectNotyet() {
