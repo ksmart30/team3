@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ResultListController {
 	//M/H 실적 조회
-	@GetMapping("/manHour/result/list")
-	public String resultList() {
-		return "mh/result/result_search";
+	@GetMapping("/manHour/resultListView")
+	public String resultListView() {
+		return "mh/result/resultListView";
 	}
 	// M/H실적(프로젝트별 누계) a
 	@GetMapping("/manHour/result/nugae")
