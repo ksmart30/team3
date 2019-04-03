@@ -1,1 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.cafe24.ksmart30.team03.mh.mapper.ResultNugaeMapper">
+
+<!-- 리스트에 pjt_cd 뿌려주는 쿼리 test 	
+  -->
+ 
+ 	<select id="getPjtcd" resultType="com.cafe24.ksmart30.team03.mh.vo.ResultPlan">
+	SELECT 
+		pjt_cd
+	FROM T_PS1000
+	</select>
+
+</mapper>
+

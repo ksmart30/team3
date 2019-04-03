@@ -2,8 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-		<link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<th:block th:include="layout/customHead"></th:block>
+		
+<script>
+		$(document).ready(function(){
+		    // 목록
+		    $('#btn_list').on('click',function(){
+		        $.ajax({
+		            url:'/resultplanlist',
+		            type:'GET',
+		            success:(data)=>{
+		                $('#list').empty();
+		                $(data).each(function(index,item){ //each = foreach (반복문)
+		                    $('#list').append('<tr>');
+		                    $('#list').append('<td>');
+		                    $('#list').append('<td>');
+		                    $('#list').append('<td>'+item.pjt_cd+'</td>');
+		                    $('#list').append('</tr>');
+		                });
+		            }
+		        });
+		    });
+		});
+</script>		
+		
+
 		<title>M/H 계획/실적(프로젝트 누계)</title>
 	</th:block>
 	<th:block layout:fragment="customBody">
@@ -78,16 +103,25 @@
                             <th>
                               <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
                             </th>
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;M/H 투입 누계
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;M/H 투입 계획
                             <th class="column-title">부서 </th>
                             <th class="column-title">프로젝트 코드명 </th>
-                            <th class="column-title">M/H 투입 누계 
-                            	
-                            	
-                            </th>
+                            <th class="column-title">단계</th>
+                            <th class="column-title">기획</th>
+                            <th class="column-title">실적</th>
+                            <th class="column-title">차이</th>
                             
-                            <th class="column-title">M/H 투입 계획 </th>
+                            <th class="column-title">기획</th>
+                            <th class="column-title">심의</th>
+                            <th class="column-title">허가</th>
+                            <th class="column-title">착공</th>
+                            <th class="column-title">실시</th>
+                            <th class="column-title">A/S</th>
+                            <th class="column-title">준공</th>
+                            <th class="column-title">합계</th>
                             
-                            <th class="column-title no-link last"><span class="nobr">Action</span>
+                            
                             </th>
                             <th class="bulk-actions" colspan="7">
                               <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
@@ -95,44 +129,40 @@
                           </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="list" border="1">
                           <tr class="even pointer">
                             <td class="a-center ">
                               <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
                             </td>
-                            <td class=" ">121000040</td>
-                            <td class=" ">May 23, 2014 11:47:56 PM </td>
-                            <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>   
-                            </td>
-                          </tr>
-                          
-                          <tr class="odd pointer">
-                            <td class="a-center ">
-                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                            </td>
-                            <td class=" ">121000039</td>
-                            <td class=" ">May 23, 2014 11:30:12 PM</td>
-                            <td class=" ">121000208 <i class="success fa fa-long-arrow-up"></i>
-                            </td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>              
-                            </td>
-                          </tr>
-                          
-                          <tr class="odd pointer">
-                            <td class="a-center ">
-                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                            </td>
-                            <td class=" ">121000039</td>
-                            <td class=" ">May 28, 2014 11:30:12 PM</td>
-                            <td class=" ">121000208</td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
+                            <td class=" ">설계1본부 2소</td>
+                            <td class=" ">[16259]**</td>
+                            <td class=" ">실시 <i class="success fa fa-long-arrow-up"></i></td>
+                            <!-- 
+                             M/H 투입 누계
+                             -->
+                            <td class=" ">2,560</td>
+                            <td class=" ">1,463</td>   
+                            <td class=" ">1,097</td>  
                             
-                            </td>
+                            
+                            <!-- 
+                             M/H 투입 계획
+                             -->
+                            <td class=" ">320</td> 
+                            <td class=" ">480</td> 
+                            <td class=" ">320</td> 
+                            <td class=" "></td> 
+                            <td class=" ">1,440</td> 
+                            <td class=" ">160</td> 
+                            <td class=" ">160</td> 
+                            <!-- 
+                             합계
+                             -->
+                            <td class=" ">2,880</td>  
+                            
                           </tr>
+                          
+                          
                         </tbody>
                       </table>
                     </div>
@@ -141,13 +171,14 @@
                   </div>
                 </div>
               </div>
-		
-		
-		
-		
+	<button id="btn_list">회원리스트</button>
+
+
+
+
 	
-	<script src="/vendors/iCheck/icheck.min.js"></script>
-	<script src="/vendors/fastclick/lib/fastclick.js"></script>
-	<script src="/vendors/nprogress/nprogress.js"></script>
 	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
 </html>

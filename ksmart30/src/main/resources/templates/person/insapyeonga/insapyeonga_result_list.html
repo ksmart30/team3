@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-		<link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+		<th:block th:include="layout/customHead"></th:block>
+		
 		<title>인사평가 결과</title>
 	</th:block>
 	<th:block layout:fragment="customBody">
@@ -135,8 +135,9 @@
 		
 		
 	
-	<script src="/vendors/iCheck/icheck.min.js"></script>
-	<script src="/vendors/fastclick/lib/fastclick.js"></script>
-	<script src="/vendors/nprogress/nprogress.js"></script>
+
 	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
 </html>
