@@ -3,6 +3,7 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>10.기준정보관리 - 회사정보등록</title>
+		<th:block th:include="layout/customHead"></th:block>
 
 		<!-- 우편 번호 시스템 -->
 		<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -184,4 +185,7 @@
 			</div>
 		</div>
 	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+  </th:block>
 </html>

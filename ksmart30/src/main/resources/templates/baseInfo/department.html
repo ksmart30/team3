@@ -3,6 +3,7 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>10.기준정보관리 - 부서코드등록</title>
+		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
 		<div class="col-md-12 col-xs-12" style="color:black;">
@@ -186,4 +187,7 @@
 			</div>
 		  </div>
 	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
 </html>

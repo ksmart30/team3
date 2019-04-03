@@ -3,6 +3,7 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>10.기준정보관리 - 근태월력표</title>
+		<th:block th:include="layout/customHead"></th:block>
 
 		<!-- FullCalendar -->
 		<link href="/vendors/fullcalendar/dist/fullcalendar2.css" rel="stylesheet">
@@ -108,8 +109,10 @@
 			<div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>	
 	</th:block>
 	<th:block layout:fragment="customJquery">
-	<!-- FullCalendar -->
-  	<script src="/vendors/moment/moment2.js"></script>
-    <script src="/vendors/fullcalendar/dist/fullcalendar2.js"></script>
+		<th:block th:include="layout/customJquery"></th:block>
+		<!-- FullCalendar -->
+		<script src="/vendors/moment/moment2.js"></script>
+		<script src="/vendors/fullcalendar/dist/fullcalendar2.js"></script>
+
   	</th:block>
 </html>
