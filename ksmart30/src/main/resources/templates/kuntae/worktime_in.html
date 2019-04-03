@@ -4,6 +4,7 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>worktime_in.html</title>
+		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
 	
@@ -19,7 +20,7 @@
   			<div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>근태관리</h3>
+                <h2>근태관리<small><a href="/kuntae/workTimeIn">출퇴근정정신청</a></small></h2>
               </div>	
             </div>
             </div>
@@ -498,5 +499,9 @@
 		        $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
 		    });
 		</script>
+		
 	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
 </html>

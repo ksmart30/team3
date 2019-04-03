@@ -33,9 +33,15 @@ public class WorkTimeController {
 		return "";
 	}
 	
-	// 출, 퇴근 기록부 
+	// 출, 퇴근 기록부 (검색 처리)
+	@PostMapping("/kuntae/workTimeRecord")
+	public String workTimeRecordSearch() {
+		return "kuntae/worktime_record_search";
+	}
+	
+	// 출, 퇴근 기록부 (List->Total로 변경)
 	@GetMapping("/kuntae/recordTotal")
-	public String workTimeRecordList() {
+	public String workTimeRecordTotal() {
 		return "kuntae/worktime_record_list";
 	}
 	
@@ -45,9 +51,5 @@ public class WorkTimeController {
 		return "kuntae/worktime_record_single";
 	}
 	
-	// 출, 퇴근 기록부 (검색 처리)
-	@PostMapping("/kuntae/workTimeRecord")
-	public String workTimeRecordSearch() {
-		return "kuntae/worktime_record_search";
-	}
+	
 }

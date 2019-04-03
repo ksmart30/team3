@@ -4,6 +4,7 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>kuntae_approval_list.html</title>
+		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
 	<head>
@@ -15,9 +16,6 @@
     <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
        
   	</head>
-  	
-  	
-  	
 		<div class="">
             <div class="page-title">
               <div class="title_left">
@@ -324,4 +322,7 @@
 		</script>
 			
 	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>	
 </html>

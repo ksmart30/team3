@@ -15,25 +15,25 @@ public class KuntaeController {
 	
 	// 근태승인처리 (조회)
 	@GetMapping("/kuntae/ok")
-	public String kuntaeApprovalList() {
+	public String kuntaeOkList() {
 		return "kuntae/kuntae_ok_list";
 	}
 	
 	// 근태승인처리 (검색 처리)
-	@PostMapping("/kuntae/approval")
-	public String kuntaeApprovalSearch() {
+	@PostMapping("/kuntae/ok")
+	public String kuntaeOkSearch() {
 		return "";
 	}
 	
 	// 근태승인처리 (승인 처리)
-	@GetMapping("/kuntae/approval/action")
-	public String kuntaeApprovalSearchAction() {
+	@GetMapping("/kuntae/ok/action")
+	public String kuntaeOkSearchAction() {
 		return "kuntae/kuntae_ok_search";
 	}
 	
 	// 근태현황(일, 월)
 	@GetMapping("/kuntae/search")
-	public String kuntaeStateSearch() {
+	public String kuntaeSearch() {
 		return "kuntae/kuntae_search";
 	}
 }

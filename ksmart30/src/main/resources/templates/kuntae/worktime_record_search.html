@@ -3,8 +3,12 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>worktime_record_search.html</title>
+		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
 		출, 퇴근 기록부 (검색 처리)
 	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>	
 </html>

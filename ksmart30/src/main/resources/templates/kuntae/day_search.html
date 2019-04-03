@@ -1,8 +1,10 @@
+<!-- 일일근무현황 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>kuntae</title>
+		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
 	
@@ -39,7 +41,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
 <div class="x_panel" style="">
     <div class="x_title">
-        <h3>검색조건</h3>
+       
        
         <div class="clearfix"></div>
     </div>
@@ -328,4 +330,7 @@
 		</script>
 
 	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>	
 </html>
