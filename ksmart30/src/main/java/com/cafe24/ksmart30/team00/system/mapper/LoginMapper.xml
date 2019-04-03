@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafe24.ksmart30.team00.system.mapper.LoginMapper">
+	<!-- 로그인 처리 -->
+	<select id="login"
+			parameterType="com.cafe24.ksmart30.team00.system.vo.Login"
+            resultType="com.cafe24.ksmart30.team00.system.vo.Login">
+			SELECT
+				EMP_NO,
+				PASS_WD
+			FROM T_SM1100
+			WHERE EMP_NO = #{EMP_NO} AND PASS_WD = #{PASS_WD}
+	</select>
+    <!-- 접속 정보 추가 -->
+    <insert id="connect"
+            parameterType="com.cafe24.ksmart30.team00.system.vo.Ip">
+            INSERT INTO T_SM4000 (
+                CONN_DT,
+                USER_ID,
+                CONN_IP
+            ) VALUES (
+            (Select Convert(varchar(10),Getdate(),112) + Replace(Convert(varchar(8),Getdate(),108),':','')),
+                #{USER_ID},
+                #{IP}
+            )
+    </insert>
+</mapper>
