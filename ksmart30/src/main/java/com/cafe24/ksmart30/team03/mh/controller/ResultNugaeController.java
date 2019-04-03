@@ -14,19 +14,20 @@ import com.cafe24.ksmart30.team03.mh.vo.ResultList;
 
 public class ResultNugaeController {
 	@Autowired private ResultNugaeService resultNugaeService;
-	// M/H 계획/실적(프로젝트 누계) list가져오기
 	
-	@GetMapping("/resultplanlist")
-	public @ResponseBody List<ResultList> resultPlanNugae2() {
-		System.out.println("getPjtcd 메서드 호출");
-		List<ResultList> result = resultNugaeService.getPjtcd();
+	
+	// M/H 계획/실적(프로젝트 누계) list가져오기
+	@GetMapping("/manHour/manHourResultNugaeList")
+	public @ResponseBody List<ResultList> manHourResultNugaeList() {
+		System.out.println("manHourResultNugaeList 메서드 호출");
+		List<ResultList> result = resultNugaeService.getResultNugaeList();
 		return result;
 	}
 	
 	// 화면 먼저 출력
-	@GetMapping("/manHour/plan/nugae")
-	public String resultPlanNugae() {
-		System.out.println("resultPlanNugae 메서드 호출");
-		return "mh/result/result_plan_nugae";
+	@GetMapping("/manHour/manHourResultNugaeView")
+	public String manHourResultNugaeView() {
+		System.out.println("manHourResultNugaeView 메서드 호출");
+		return "mh/result/resultPlanNugaeView";
 	}
 }

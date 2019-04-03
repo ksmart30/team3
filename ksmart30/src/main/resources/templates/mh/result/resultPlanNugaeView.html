@@ -11,7 +11,7 @@
 		    // 목록
 		    $('#btn_list').on('click',function(){
 		        $.ajax({
-		            url:'/resultplanlist',
+		            url:'/manHour/manHourResultNugaeList',
 		            type:'GET',
 		            success:(data)=>{
 		                $('#list').empty();
@@ -19,7 +19,7 @@
 		                    $('#list').append('<tr>');
 		                    $('#list').append('<td>');
 		                    $('#list').append('<td>');
-		                    $('#list').append('<td>'+item.pjt_cd+'</td>');
+		                    $('#list').append('<td>'+item.pjt_CD+'</td>');
 		                    $('#list').append('</tr>');
 		                });
 		            }

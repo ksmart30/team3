@@ -15,6 +15,7 @@ public class ResultList {
 	private int PLAN_E;
 	private int PLAN_F;
 	private int PLAN_G;
+	private int TOT_MD;
 	private String KOR_NM;
 	private String END_DATE;
 	private String SVC;

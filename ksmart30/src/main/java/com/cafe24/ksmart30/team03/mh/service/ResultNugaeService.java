@@ -12,8 +12,8 @@ import com.cafe24.ksmart30.team03.mh.vo.ResultList;
 public class ResultNugaeService {
 @Autowired ResultNugaeMapper resultNugeMapper;
 	//list에 프로젝트코드pjt_cd 뿌려주기
-	public List<ResultList> getPjtcd(){
+	public List<ResultList> getResultNugaeList(){
 		System.out.print("getPjtcd 메서드 호출(service)");
-		return resultNugeMapper.getPjtcd();
+		return resultNugeMapper.getResultNugaeList();
 	}
 }
