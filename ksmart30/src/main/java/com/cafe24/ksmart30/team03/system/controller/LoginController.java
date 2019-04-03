@@ -1,5 +1,7 @@
 package com.cafe24.ksmart30.team03.system.controller;
 
+import java.net.UnknownHostException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,7 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class LoginController {
-	@Autowired LoginService loginService;
+	@Autowired
+	LoginService loginService;
 
 	// 로그인 화면
 	@GetMapping("/login")
@@ -24,7 +27,7 @@ public class LoginController {
 
 	// 로그인처리
 	@PostMapping("/login")
-	public String login(HttpSession session, HttpServletRequest request, Login login) {
+	public String login(HttpSession session, HttpServletRequest request, Login login) throws UnknownHostException {
 		System.out.println("(C)(Post) login() : 로그인 처리");
 		// 로그인 처리 실행
 		System.out.println("입력 받은 ID :" + login.getEMP_NO());

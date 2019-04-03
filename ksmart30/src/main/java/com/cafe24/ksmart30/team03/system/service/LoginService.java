@@ -2,6 +2,8 @@ package com.cafe24.ksmart30.team03.system.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import com.cafe24.ksmart30.team03.system.mapper.LoginMapper;
 import com.cafe24.ksmart30.team03.system.vo.Ip;
@@ -12,12 +14,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
-    @Autowired private LoginMapper loginMapper;
-    @Autowired private Login loginResult;
-    @Autowired private Ip ip;
+    @Autowired
+    private LoginMapper loginMapper;
+    @Autowired
+    private Login loginResult;
+    @Autowired
+    private Ip ip;
 
     // 로그인 처리
-    public int login(HttpSession session, HttpServletRequest request, Login login) {
+    public int login(HttpSession session, HttpServletRequest request, Login login) throws UnknownHostException {
         System.out.println("(S) login() : 로그인 처리");
         // 리턴값 초기화
         int result = 0;
@@ -32,7 +37,8 @@ public class LoginService {
         if (loginResult != null) {
             System.out.println("로그인 성공 !");
             // 접속 IP정보 가져오기
-            String connentIp = getRemoteIP(request);
+            InetAddress catchIp = InetAddress.getLocalHost();
+            String connentIp = catchIp.getHostAddress();
             System.out.println("가져온 IP정보 : " + connentIp);
             // id, ip정보를 loginIP객체에 Set (접속 기록을 남기기 위해서)
             ip.setUSER_ID(loginResult.getEMP_NO());
@@ -58,32 +64,5 @@ public class LoginService {
         System.out.println("로그아웃 처리 완료");
     }
 
-    // IP
-    public static String getRemoteIP(HttpServletRequest request){
-        String ip = request.getHeader("X-FORWARDED-FOR"); 
-        
-        //proxy 환경일 경우
-        if (ip == null || ip.length() == 0) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-
-        //웹로직 서버일 경우
-        if (ip == null || ip.length() == 0) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-
-        if (ip == null || ip.length() == 0) {
-            ip = request.getHeader("HTTP_CLIENT_IP");     
-        }
-            
-        if (ip == null || ip.length() == 0) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR"); 
-        }
-            
-        if (ip == null || ip.length() == 0) {
-            ip = request.getRemoteAddr() ;
-        }
-           
-        return ip;
-   }
 }
+
