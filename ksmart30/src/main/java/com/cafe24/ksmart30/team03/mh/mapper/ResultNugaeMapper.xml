@@ -9,9 +9,9 @@
 <!-- 리스트에 pjt_cd 뿌려주는 쿼리 test 	
   -->
  
- 	<select id="getPjtcd" resultType="com.cafe24.ksmart30.team03.mh.vo.ResultPlan">
+	<select id="getPjtcd" resultType="com.cafe24.ksmart30.team03.mh.vo.ResultList">
 	SELECT 
-		pjt_cd
+		PJT_CD
 	FROM T_PS1000
 	</select>
 
