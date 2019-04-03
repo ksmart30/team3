@@ -26,7 +26,7 @@
 		console.log('프로젝트 리스트 출력')
 	    $('#btn_list').on('click',function(){
 	        $.ajax({
-	            url:'/list',
+	            url:'/manHour/manHourResultGraphList',
 	            type:'GET',
 	            dataType:'json',
 	            contentType:'application/json',
@@ -37,21 +37,83 @@
 	                    $('#list').append('<tr>');
 	                    $('#list').append('<td>'+item.kor_NM+'</td>');
 	                    $('#list').append('<td>'+item.pjt_CD+'</td>');
+	                    $('#list').append('<td>'+item.svc+'</td>');
+	                    $('#list').append('<td>'+item.crt_DATE+'</td>'); 
 	                    $('#list').append('<td>'+item.end_DATE+'</td>');
-	                    $('#list').append('<td>'+item.svc+'</td>'); 
-	                    $('#list').append('<td>'+item.pjt_CD+'</td>');
 	                    $('#list').append('</tr>');
+	                    
 	                }); 
 	                
-	                $('#list').on('click',function(){
-	                	condole.log('나와..');
-	                	
-	                })
-	                
-	                
+             
 	            }
 	        });
 	    });
+		
+		$("#list").bind("click", function(){
+            var list2 = $('#list').val();
+			console.log(list2);
+            alert("클릭 이벤트 발생");
+                     
+            
+        });
+		
+		
+		
+
+		function init_charts() {
+			
+			console.log('run_charts  typeof [' + typeof (Chart) + ']');
+			
+			if( typeof (Chart) === 'undefined'){ return; }
+			
+			console.log('init_charts');
+
+			
+			Chart.defaults.global.legend = {
+				enabled: false
+			};
+			
+		if ($('#mybarChart').length ){ 
+			  
+			  var ctx = document.getElementById("mybarChart");
+			  var mybarChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+				  labels: ["기획", "심의", "허가", "착공", "실시", "A/S", "준공"],
+				  datasets: [{
+					label: '# of Votes',
+					backgroundColor: "#3366FF",
+					data: [20, 30, 40, 28, 92, 50, 45]
+				  }, {
+					label: '# of Votes',
+					backgroundColor: "#FF0000",
+					data: [41, 56, 25, 48, 72, 34, 12]
+				  }]
+				},
+
+				options: {
+				  scales: {
+					yAxes: [{
+					  ticks: {
+						beginAtZero: true
+					  }
+					}]
+				  }
+				}
+			  });
+			  
+			} 
+		}
+
+		$(document).ready(function() {
+			
+			
+			init_charts();
+					
+		});	
+		
+		
+		
 	});
 	
 
@@ -59,8 +121,7 @@
 	</head>
 </th:block>
 <th:block layout:fragment="customBody">
-
-
+ 
 
 	<h1>M/H 계획/실적(그래프)</h1>
 
@@ -423,60 +484,6 @@
 		<!--   </font>   -->
 </th:block>
 <th:block layout:fragment="customJquery">
-	<script>
-
-function init_charts() {
-	
-	console.log('run_charts  typeof [' + typeof (Chart) + ']');
-	
-	if( typeof (Chart) === 'undefined'){ return; }
-	
-	console.log('init_charts');
-
-	
-	Chart.defaults.global.legend = {
-		enabled: false
-	};
-	
-if ($('#mybarChart').length ){ 
-	  
-	  var ctx = document.getElementById("mybarChart");
-	  var mybarChart = new Chart(ctx, {
-		type: 'bar',
-		data: {
-		  labels: ["기획", "심의", "허가", "착공", "실시", "A/S", "준공"],
-		  datasets: [{
-			label: '# of Votes',
-			backgroundColor: "#3366FF",
-			data: [20, 30, 40, 28, 92, 50, 45]
-		  }, {
-			label: '# of Votes',
-			backgroundColor: "#FF0000",
-			data: [41, 56, 25, 48, 72, 34, 12]
-		  }]
-		},
-
-		options: {
-		  scales: {
-			yAxes: [{
-			  ticks: {
-				beginAtZero: true
-			  }
-			}]
-		  }
-		}
-	  });
-	  
-	} 
-}
-
-$(document).ready(function() {
-	
-	
-	init_charts();
-			
-});	
-</script>
 
 
 

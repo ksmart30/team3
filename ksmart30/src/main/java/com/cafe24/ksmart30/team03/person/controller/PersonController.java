@@ -7,24 +7,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PersonController {
 	
 	//5.1.1인사기록카드 리스트 출력 컨트롤러
-	@GetMapping("/person/insa/personnelRecord")
-	public String personList() {
-		return "person/insa/person_list";
+	@GetMapping("/person/personInsaPersonnelRecordView")
+	public String personInsaView() {
+		return "person/insa/personListView";
 	}	
 	//5.1.2직원검색폼 이동 컨트롤러
-	@GetMapping("/person/insa/employeeSearch")
+	@GetMapping("/person/personInsaEmployeeSearchView")
 	public String personSearchForm() {
-		return "person/insa/person_search";
+		return "person/insa/personSearchView";
 	}
 	//5.1.1인사기록카드 입력(리스트) 컨트롤러
-	@GetMapping("/person/insa/personnelRecord/in")
-	public String personInsertForm() {
-		return "person/insa/person_in";
+	@GetMapping("/person/personInsaWriteView")
+	public String personInsaWriteView() {
+		return "person/insa/personInView";
 	}	
 	
 	//5.1.1 인사기록카드 수정 컨트롤러
-	@GetMapping("/person/insa/personnelRecord/up")
-	public String personUpdateForm() {
-		return "person/insa/person_up";
+	@GetMapping("/person/personInsaModifyView")
+	public String personInsaModifyView() {
+		return "person/insa/personUpView";
 	}	
 }
