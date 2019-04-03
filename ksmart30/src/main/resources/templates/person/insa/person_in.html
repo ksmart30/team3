@@ -5,6 +5,7 @@
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
 	<title>인사기록카드 등록</title>
+	<th:block th:include="layout/customHead"></th:block>
 </th:block>
 <th:block layout:fragment="customBody">
 	<form>
@@ -468,7 +469,8 @@
 					</table>
 
 					<div class="x_content" style="text-align: center">
-						<a href="/person/insa/personnelRecord"><button type="button" class="btn btn-primary">취소</button></a>
+						<a href="/person/insa/personnelRecord"><button type="button"
+								class="btn btn-primary">취소</button></a>
 						<button type="button" class="btn btn btn-success">인사카드 등록</button>
 
 					</div>
@@ -479,5 +481,6 @@
 	</form>
 </th:block>
 <th:block layout:fragment="customJquery">
+	<th:block th:include="layout/customJquery"></th:block>
 </th:block>
 </html>

@@ -3,360 +3,427 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="layout/main">
 <th:block layout:fragment="customHead">
-	<meta charset="UTF-8">
+	<th:block th:include="layout/customHead"></th:block>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>M/H 계획/실적(그래프)</title>
+
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+	<!-- 리스트뿌려주기 -->
 	<head>
+<script>
+	$(document).ready(function(){
+		console.log('프로젝트 리스트 출력')
+	    $('#btn_list').on('click',function(){
+	        $.ajax({
+	            url:'/list',
+	            type:'GET',
+	            dataType:'json',
+	            contentType:'application/json',
+	            success:(data)=>{
+	            	console.log(data);
+	                $('#list').empty();
+	                $(data).each(function(index,item){ //each = foreach (반복문)
+	                    $('#list').append('<tr>');
+	                    $('#list').append('<td>'+item.kor_NM+'</td>');
+	                    $('#list').append('<td>'+item.pjt_CD+'</td>');
+	                    $('#list').append('<td>'+item.end_DATE+'</td>');
+	                    $('#list').append('<td>'+item.svc+'</td>'); 
+	                    $('#list').append('<td>'+item.pjt_CD+'</td>');
+	                    $('#list').append('</tr>');
+	                }); 
+	                
+	                $('#list').on('click',function(){
+	                	condole.log('나와..');
+	                	
+	                })
+	                
+	                
+	            }
+	        });
+	    });
+	});
+	
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
-<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
-<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
-<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-
-
-	</head>	
+</script>
+	</head>
 </th:block>
 <th:block layout:fragment="customBody">
 
 
 
-
-<h1>M/H 계획/실적(그래프)</h1>
+	<h1>M/H 계획/실적(그래프)</h1>
 
 	<!-- <font color="black"> -->
 	<div class="x_panel">
-	 <div class="x_content">
-		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
-                <div class="x_panel">
+		<div class="x_content">
+			<div class="col-md-12 col-sm-6 col-xs-12" style="width: 100%">
+				<div class="x_panel">
 					<br>
-                  <div class="x_content">
-                  <form>
-                    <table class="table table-bordered">
-                      <thead>
-						<tr style="font-size:15px">							
-							<th>◎검색조건 &emsp;</th> 						
-							<th>
-								마감년월 &emsp;&emsp;&emsp; 
-								<input type="date" name=amount value=2019>	 &emsp;&emsp;
-								<select>					
-									<option>&emsp;&emsp;&emsp; </option>
-									<option>전 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;사</option>
-								</select>							
-							</th>
-						</tr>																			
-					</thead>                     
-                    </table>	
-                    </form>				
-                  </div>
-                </div>
-              </div>
-             
-              <div class="col-md-3 col-sm-6 col-xs-12" style="width:50%">
-                <div class="x_panel">
-                  <div class="x_title">
-                 
-                 
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
-                    <table class="table table-bordered">
-                      <thead>
-                       <tr>
-							<th bgcolor=#EAEAEA>구분</th>
-							<th bgcolor=#EAEAEA>PM</th>
-                       		<th bgcolor=#EAEAEA>프로젝트</th>
-                       		<th bgcolor=#EAEAEA>시작일</th>
-                       		<th bgcolor=#EAEAEA>종료일</th>
-                       </tr>
-                      </thead>
-                      <tbody>
-
-                      </tbody>
-                    </table>
-					<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-					</div>
-                  </div>
-                </div>
-              </div>
-
-	<div class="col-md-9 col-sm-6 col-xs-12" style="width: 50%">
-		<div class="x_panel">
-			<!-- 안에 넣어라 -->
-				<!-- 추가 입력할 정보 창 -->
-	<form>
-		<div class="col-md-12 col-sm-13 col-xs-12">
-			<div class="x_panel">
-				<div class="x_content">
-					<div class="clearfix">
-						<h4>그래프</h4>
-					</div>
-				</div>
-
-				<!-- start of user-activity-graph -->
-				<div id="graph_bar" style="width: 100%; height: 60px;"></div>
-				<!-- end of user-activity-graph -->
-
-				<div class="" role="tabpanel" data-example-id="togglable-tabs">
-					<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-						<li role="presentation" class="active"><a
-							href="#tab_content1" id="home-tab" role="tab" data-toggle="tab"
-							aria-expanded="true">설계1</a></li>
-						<li role="presentation" class=""><a href="#tab_content2"
-							role="tab" id="profile-tab" data-toggle="tab"
-							aria-expanded="false">설계2</a></li>
-						<li role="presentation" class=""><a href="#tab_content3"
-							role="tab" id="profile-tab2" data-toggle="tab"
-							aria-expanded="false">PD전략부</a></li>
-						<li role="presentation" class=""><a href="#tab_content4"
-							role="tab" id="profile-tab4" data-toggle="tab"
-							aria-expanded="false">설계지원</a></li>
-					</ul>
-
-
-					<div id="myTabContent" class="tab-content">
-						<!-- 학력사항 -->
-						<div role="tabpanel" class="tab-pane fade active in"
-							id="tab_content1" aria-labelledby="home-tab">
-							<div class="col-md-12 col-sm-6 col-xs-12">
-										<div class="x_panel">
-											<div class="x_title">
-												<h4>설계1</h4>
-											</div>
-											<div class="clearfix"></div>
-											<div class="x_content" style="text-align: right">
-												<button type="button" class="btn btn-round btn-primary">입력</button>
-												<button type="button" class="btn btn-round btn-primary">저장</button>
-											</div>
-											
-											<!-- 차트 연습 시작 -->
-
-										<table>
-											<div class="col-md-12 col-sm-12 col-xs-20">
-												<div class="x_panel">
-													<div class="x_title">
-														<h2>
-															Bar graph <small>Sessions</small>
-														</h2>
-														<ul class="nav navbar-right panel_toolbox">
-															<li><a class="collapse-link"><i
-																	class="fa fa-chevron-up"></i></a></li>
-															<li class="dropdown"><a href="#"
-																class="dropdown-toggle" data-toggle="dropdown"
-																role="button" aria-expanded="false"><i
-																	class="fa fa-wrench"></i></a>
-															
-															<li><a class="close-link"><i class="fa fa-close"></i></a>
-															</li>
-														</ul>
-														<div class="clearfix"></div>
-													</div>
-													<div class="x_content">
-														<canvas id="mybarChart" width="20" height="10"></canvas>
-													</div>
-													
-												</div>
-											</div>
-																							
+					<div class="x_content">
+						<form>
+							<table class="table table-bordered">
+								<thead>
+									<tr style="font-size: 15px">
+										<th>◎검색조건 &emsp;</th>
+										<th>마감년월 &emsp;&emsp;&emsp; <input type="date"
+											name=amount value=2019> &emsp;&emsp; <select>
+												<option>&emsp;&emsp;&emsp;</option>
+												<option>전
+													&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;사</option>
+										</select>
+										</th>
+									</tr>
+								</thead>
 							</table>
-
-
-
-
-
-
-
-
-										<!-- 차트 연습 끝 -->
-									<table class="table table-bordered">									
-										<thead>
-											<tr>
-												<th>NO</th>
-												<th>구분</th>
-												<th>입학일자</th>
-												<th>졸업일자</th>
-												<th>학교명</th>
-												<th>전공</th>
-												<th>학위</th>
-												<th>이수</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>1</th>
-												<td>고등학교</td>
-												<td>1994/03</td>
-												<td>1997/02</td>
-												<td>장훈고등학교</td>
-												<td>건축공학</td>
-												<td>건축디자인</td>
-												<td>졸업</td>
-											</tr>
-											<tr>
-												<th>2</th>
-												<td>대학교</td>
-												<td>1994/03</td>
-												<td>1997/02</td>
-												<td>장훈고등학교</td>
-												<td>건축공학</td>
-												<td>건축디자인</td>
-												<td>졸업</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-
-
-						<!-- 가족사항 -->
-						<div role="tabpanel" class="tab-pane fade in" id="tab_content2"
-							aria-labelledby="tab">
-							<div class="col-md-12 col-sm-6 col-xs-12">
-								<div class="x_panel">
-									<div class="x_title">
-										<h4>설계2</h4>
-									</div>
-									<div class="clearfix"></div>
-									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary">입력</button>
-										<button type="button" class="btn btn-round btn-primary">저장</button>
-									</div>
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th>NO</th>
-												<th>관계</th>
-												<th>성명</th>
-												<th>직업</th>
-												<th>소재지(시/도)</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>1</th>
-												<td>배우자</td>
-												<td>김**</td>
-												<td>전업주부</td>
-											</tr>
-											<tr>
-												<th>2</th>
-												<td>자녀</td>
-												<td>김**</td>
-												<td>자영업</td>
-											</tr>
-										</tbody>
-									</table>
-
-
-
-								</div>
-							</div>
-						</div>
-
-						<!-- 자격,면허사항 -->
-						<div role="tabpanel" class="tab-pane fade in" id="tab_content3"
-							aria-labelledby="tab">
-							<div class="col-md-12 col-sm-6 col-xs-12">
-								<div class="x_panel">
-									<div class="x_title">
-										<h4>PD전략부</h4>
-									</div>
-									<div class="clearfix"></div>
-									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary">입력</button>
-										<button type="button" class="btn btn-round btn-primary">저장</button>
-									</div>
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th>NO</th>
-												<th>자격증</th>
-												<th>Last Name</th>
-												<th>Username</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th scope="row">1</th>
-												<td>Mark</td>
-												<td>Otto</td>
-												<td>@mdo</td>
-											</tr>
-											<tr>
-												<th scope="row">2</th>
-												<td>Jacob</td>
-												<td>Thornton</td>
-												<td>@fat</td>
-											</tr>
-										</tbody>
-									</table>
-
-
-
-								</div>
-							</div>
-						</div>
-
-
-						<!-- 외국어사항 -->
-						<div role="tabpanel" class="tab-pane fade in" id="tab_content4"
-							aria-labelledby="tab">
-							<div class="col-md-12 col-sm-6 col-xs-12">
-								<div class="x_panel">
-									<div class="x_title">
-										<h4>외국어</h4>
-									</div>
-									<div class="clearfix"></div>
-									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary">입력</button>
-										<button type="button" class="btn btn-round btn-primary">저장</button>
-									</div>
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th>NO</th>
-												<th>외국어</th>
-												<th>Last Name</th>
-												<th>Username</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th scope="row">1</th>
-												<td>Mark</td>
-												<td>Otto</td>
-												<td>@mdo</td>
-											</tr>
-											<tr>
-												<th scope="row">2</th>
-												<td>Jacob</td>
-												<td>Thornton</td>
-												<td>@fat</td>
-											</tr>
-										</tbody>
-									</table>
-
-								</div>
-							</div>
-						</div>	
+						</form>
 					</div>
 				</div>
 			</div>
-		</div>
-	</form>
-	
 
-			<div class="clearfix"></div>
-		</div>
-	</div>
-</div>
-	<!--   </font>   -->
+			<div class="col-md-3 col-sm-6 col-xs-12" style="width: 50%">
+				<div class="x_panel">
+					<div class="x_title">
 
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+
+						<div class="table-responsive">
+							<div
+								style="overflow: scroll; width: 100%; height: 650px; padding: 10px; background-color:;">
+
+								<button id="btn_list">실적,계획 리스트</button>
+								<table class="table table-striped jambo_table bulk_action">
+									<thead>
+										<tr class="headings">
+											<th class="column-title">PM</th>
+											<th class="column-title">프로젝트코드</th>
+											<th class="column-title">프로젝트</th>
+											<th class="column-title">시작일</th>
+											<th class="column-title">종료일</th>
+										</tr>
+									</thead>
+									<tbody id="list" style="font-size: 15px; line-height: 25px">
+										<!-- 화면에 뿌려줄 것! -->
+
+
+									</tbody>
+								</table>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-9 col-sm-6 col-xs-12" style="width: 50%">
+				<div class="x_panel">
+					<!-- 안에 넣어라 -->
+					<!-- 추가 입력할 정보 창 -->
+					<form>
+						<div class="col-md-12 col-sm-13 col-xs-12">
+							<div class="x_panel">
+								<div class="x_content">
+									<div class="clearfix">
+										<h4>그래프</h4>
+									</div>
+								</div>
+
+								<!-- start of user-activity-graph -->
+								<div id="graph_bar" style="width: 100%; height: 60px;"></div>
+								<!-- end of user-activity-graph -->
+
+								<div class="" role="tabpanel" data-example-id="togglable-tabs">
+									<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+										<li role="presentation" class="active"><a
+											href="#tab_content1" id="home-tab" role="tab"
+											data-toggle="tab" aria-expanded="true">설계1</a></li>
+										<li role="presentation" class=""><a href="#tab_content2"
+											role="tab" id="profile-tab" data-toggle="tab"
+											aria-expanded="false">설계2</a></li>
+										<li role="presentation" class=""><a href="#tab_content3"
+											role="tab" id="profile-tab2" data-toggle="tab"
+											aria-expanded="false">PD전략부</a></li>
+										<li role="presentation" class=""><a href="#tab_content4"
+											role="tab" id="profile-tab4" data-toggle="tab"
+											aria-expanded="false">설계지원</a></li>
+									</ul>
+
+
+									<div id="myTabContent" class="tab-content">
+										<!-- 학력사항 -->
+										<div role="tabpanel" class="tab-pane fade active in"
+											id="tab_content1" aria-labelledby="home-tab">
+											<div class="col-md-12 col-sm-6 col-xs-12">
+												<div class="x_panel">
+													<div class="x_title">
+														<h4>설계1</h4>
+													</div>
+													<div class="clearfix"></div>
+													<div class="x_content" style="text-align: right">
+														<button type="button" class="btn btn-round btn-primary">입력</button>
+														<button type="button" class="btn btn-round btn-primary">저장</button>
+													</div>
+
+													<!-- 차트 연습 시작 -->
+
+													<table>
+														<div class="col-md-12 col-sm-12 col-xs-20">
+															<div class="x_panel">
+																<div class="x_title">
+																	<h2>
+																		Bar graph <small>Sessions</small>
+																	</h2>
+																	<ul class="nav navbar-right panel_toolbox">
+																		<li><a class="collapse-link"><i
+																				class="fa fa-chevron-up"></i></a></li>
+																		<li class="dropdown"><a href="#"
+																			class="dropdown-toggle" data-toggle="dropdown"
+																			role="button" aria-expanded="false"><i
+																				class="fa fa-wrench"></i></a>
+																		<li><a class="close-link"><i
+																				class="fa fa-close"></i></a></li>
+																	</ul>
+																	<div class="clearfix"></div>
+																</div>
+																<div class="x_content">
+																	<canvas id="mybarChart" width="20" height="10"></canvas>
+																</div>
+
+															</div>
+														</div>
+
+													</table>
+
+
+
+
+
+
+
+
+													<!-- 차트 연습 끝 -->
+													<table class="table table-bordered">
+														<thead>
+															<tr>
+																<th>NO</th>
+																<th>구분</th>
+																<th>입학일자</th>
+																<th>졸업일자</th>
+																<th>학교명</th>
+																<th>전공</th>
+																<th>학위</th>
+																<th>이수</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<th>1</th>
+																<td>고등학교</td>
+																<td>1994/03</td>
+																<td>1997/02</td>
+																<td>장훈고등학교</td>
+																<td>건축공학</td>
+																<td>건축디자인</td>
+																<td>졸업</td>
+															</tr>
+															<tr>
+																<th>2</th>
+																<td>대학교</td>
+																<td>1994/03</td>
+																<td>1997/02</td>
+																<td>장훈고등학교</td>
+																<td>건축공학</td>
+																<td>건축디자인</td>
+																<td>졸업</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+
+
+										<!-- 가족사항 -->
+										<div role="tabpanel" class="tab-pane fade in"
+											id="tab_content2" aria-labelledby="tab">
+											<div class="col-md-12 col-sm-6 col-xs-12">
+												<div class="x_panel">
+													<div class="x_title">
+														<h4>설계2</h4>
+													</div>
+													<div class="clearfix"></div>
+													<div class="x_content" style="text-align: right">
+														<button type="button" class="btn btn-round btn-primary">입력</button>
+														<button type="button" class="btn btn-round btn-primary">저장</button>
+													</div>
+													<table class="table table-bordered">
+														<thead>
+															<tr>
+																<th>NO</th>
+																<th>관계</th>
+																<th>성명</th>
+																<th>직업</th>
+																<th>소재지(시/도)</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<th>1</th>
+																<td>배우자</td>
+																<td>김**</td>
+																<td>전업주부</td>
+															</tr>
+															<tr>
+																<th>2</th>
+																<td>자녀</td>
+																<td>김**</td>
+																<td>자영업</td>
+															</tr>
+														</tbody>
+													</table>
+
+
+
+												</div>
+											</div>
+										</div>
+
+										<!-- 자격,면허사항 -->
+										<div role="tabpanel" class="tab-pane fade in"
+											id="tab_content3" aria-labelledby="tab">
+											<div class="col-md-12 col-sm-6 col-xs-12">
+												<div class="x_panel">
+													<div class="x_title">
+														<h4>PD전략부</h4>
+													</div>
+													<div class="clearfix"></div>
+													<div class="x_content" style="text-align: right">
+														<button type="button" class="btn btn-round btn-primary">입력</button>
+														<button type="button" class="btn btn-round btn-primary">저장</button>
+													</div>
+													<table class="table table-bordered">
+														<thead>
+															<tr>
+																<th>NO</th>
+																<th>자격증</th>
+																<th>Last Name</th>
+																<th>Username</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<th scope="row">1</th>
+																<td>Mark</td>
+																<td>Otto</td>
+																<td>@mdo</td>
+															</tr>
+															<tr>
+																<th scope="row">2</th>
+																<td>Jacob</td>
+																<td>Thornton</td>
+																<td>@fat</td>
+															</tr>
+														</tbody>
+													</table>
+
+
+
+												</div>
+											</div>
+										</div>
+
+
+										<!-- 외국어사항 -->
+										<div role="tabpanel" class="tab-pane fade in"
+											id="tab_content4" aria-labelledby="tab">
+											<div class="col-md-12 col-sm-6 col-xs-12">
+												<div class="x_panel">
+													<div class="x_title">
+														<h4>외국어</h4>
+													</div>
+													<div class="clearfix"></div>
+													<div class="x_content" style="text-align: right">
+														<button type="button" class="btn btn-round btn-primary">입력</button>
+														<button type="button" class="btn btn-round btn-primary">저장</button>
+													</div>
+													<table class="table table-bordered">
+														<thead>
+															<tr>
+																<th>NO</th>
+																<th>외국어</th>
+																<th>Last Name</th>
+																<th>Username</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<th scope="row">1</th>
+																<td>Mark</td>
+																<td>Otto</td>
+																<td>@mdo</td>
+															</tr>
+															<tr>
+																<th scope="row">2</th>
+																<td>Jacob</td>
+																<td>Thornton</td>
+																<td>@fat</td>
+															</tr>
+														</tbody>
+													</table>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+
+
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<!--   </font>   -->
 </th:block>
 <th:block layout:fragment="customJquery">
-<script>
+	<script>
 
 function init_charts() {
 	
@@ -410,5 +477,12 @@ $(document).ready(function() {
 			
 });	
 </script>
+
+
+
+</th:block>
+
+<th:block layout:fragment="customJquery">
+	<th:block th:include="layout/customJquery"></th:block>
 </th:block>
 </html>

@@ -1,5 +1,21 @@
 package com.cafe24.ksmart30.team03.mh.service;
 
-public class ResultGraphService {
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.cafe24.ksmart30.team03.mh.mapper.ResultGraphMapper;
+import com.cafe24.ksmart30.team03.mh.vo.ResultList;
+
+@Service
+public class ResultGraphService {
+		@Autowired private ResultGraphMapper resultGraphMapper;
+	
+		
+	//M/H계획 실적 그래프 리스트 출력
+	public List<ResultList> resultSearch() {
+		System.out.println("SERVICE : M/H계획 실적 그래프 리스트 출력");
+		return resultGraphMapper.resultSelect();
+	}
+	
 }

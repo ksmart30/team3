@@ -8,6 +8,7 @@
 	<link
 		href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css"
 		rel="stylesheet">
+	<th:block th:include="layout/customHead"></th:block>
 </th:block>
 <th:block layout:fragment="customBody">
 
@@ -61,19 +62,19 @@
 								<label class="control-label"
 								style="padding-left: 35px; padding-right: 40px;">직책</label> <input
 								type="text" style="width: 15%">
-							<button>
+								<button>
 									<i class="fa fa-search"></i>
 								</button> - <input type="text" style="width: 15%">
-							<button>
+								<button>
 									<i class="fa fa-search"></i>
 								</button> <label class="control-label"
 								style="padding-left: 20px; padding-right: 14px;">프로젝트</label> <input
 								type="text" style="width: 15%">
-							<button>
+								<button>
 									<i class="fa fa-search"></i>
 								</button> <label class="control-label">-</label> <input type="text"
 								style="width: 15%">
-							<button>
+								<button>
 									<i class="fa fa-search"></i>
 								</button>
 							</th>
@@ -109,7 +110,7 @@
 						</tr>
 						<div class="x_content" style="text-align: right">
 							<button type="button" class="btn btn-primary">검색</button>
-							
+
 						</div>
 					</table>
 				</form>
@@ -232,11 +233,12 @@
 			</div>
 		</div>
 	</div>
-	
+
 
 
 	<!-- /page content -->
 </th:block>
 <th:block layout:fragment="customJquery">
+	<th:block th:include="layout/customJquery"></th:block>
 </th:block>
 </html>
