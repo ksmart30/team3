@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PayController {
 	//급여 리스트 
 	@GetMapping("/person/pay/register")
-	public String pay() {
+	public String payMonthList() {
 		return "person/pay/pay_month_list";
 	}
 	//급여 계산(입력)

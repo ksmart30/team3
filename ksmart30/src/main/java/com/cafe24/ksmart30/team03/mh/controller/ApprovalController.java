@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ApprovalController {
 	//M/H 실적 승인
 	@GetMapping("/manHour/approval")
-	public String resultApproval() {
+	public String mhResultApproval() {
 		return "mh/result/result_approval_search";
 	}
 

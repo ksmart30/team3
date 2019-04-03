@@ -5,9 +5,10 @@
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
 	<title>급여대장 폼</title>
+	<th:block th:include="layout/customHead"></th:block>
 </th:block>
 <th:block layout:fragment="customBody">
-	<h1>급여 계산(입력)</h1>
+	<h1>급여등록</h1>
 	<div class="x_panel" style="">
     <div class="x_title">
         <h2><font style="vertical-align: inherit;"><small><font style="vertical-align: inherit;"></font></small><font style="vertical-align: inherit;"> 작업조건</font></font><small><font style="vertical-align: inherit;"></font></small></h2>
@@ -98,6 +99,7 @@
 	          	<input type="text" name="">
 	          	<label>급여총액 :</label>
 	          	<input type="text" name="">
+	          	<button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">급여 등록</font></font></button>
 </div>
 		<!-- <div class="selectbox"> 
 		<label for="ex_select">국적선택</label> 
@@ -111,4 +113,7 @@
 
 
 </th:block>
+<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
 </html>

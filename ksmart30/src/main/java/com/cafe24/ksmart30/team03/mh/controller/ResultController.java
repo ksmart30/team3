@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ResultController {
 	//M/H 실적 입력 폼
 	@GetMapping("/manHour/result")
-	public String resultIn() {
+	public String mhresultIn() {
 		return "mh/result/result_in";
 	}
 
