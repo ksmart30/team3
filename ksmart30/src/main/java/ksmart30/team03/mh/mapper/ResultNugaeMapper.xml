@@ -4,15 +4,23 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.cafe24.ksmart30.team03.mh.mapper.ResultNugaeMapper">
+<mapper namespace="ksmart30.team03.mh.mapper.ResultNugaeMapper">
 
 <!-- 리스트에 pjt_cd 뿌려주는 쿼리 test 	
   -->
  
-	<select id="getResultNugaeList" resultType="com.cafe24.ksmart30.team03.mh.vo.ResultList">
-	SELECT 
-		PJT_CD
-	FROM T_PS1000
+	<select id="getResultNugaeList" resultType="ksmart30.team03.mh.domain.ResultList">
+	SELECT  c.DEPT_CD,b.pjt_cd,b.PLAN_A,b.PLAN_B,b.PLAN_C,b.PLAN_D,
+			b.PLAN_E,b.PLAN_F,b.PLAN_G,TOT_MD FROM (SELECT pjt_cd, 
+			SUM(PLAN_A)AS PLAN_A,SUM(PLAN_B)AS PLAN_B,SUM(PLAN_C)AS PLAN_C,
+			SUM(PLAN_D)AS PLAN_D,SUM(PLAN_E)AS PLAN_E,SUM(PLAN_F)AS PLAN_F,
+			SUM(PLAN_G)AS PLAN_G, SUM(TOT_MD)AS TOT_MD 
+		FROM T_P11050 
+		GROUP BY pjt_cd) b  
+		JOIN T_P11000 a 
+		ON a.pjt_cd=b.pjt_cd 
+		JOIN T_HM1000 AS c 
+		ON c.EMP_NO=a.EMP_NO
 	</select>
 
 </mapper>

@@ -9,7 +9,9 @@
 <script>
 		$(document).ready(function(){
 		    // 목록
+		    console.log('데이터 출력해보자')
 		    $('#btn_list').on('click',function(){
+		    	alert("리스트 출력");
 		        $.ajax({
 		            url:'/manHour/manHourResultNugaeList',
 		            type:'GET',
@@ -18,14 +20,27 @@
 		                $(data).each(function(index,item){ //each = foreach (반복문)
 		                    $('#list').append('<tr>');
 		                    $('#list').append('<td>');
-		                    $('#list').append('<td>');
+		                    $('#list').append('<td>'+item.dept_CD+'</td>');
 		                    $('#list').append('<td>'+item.pjt_CD+'</td>');
+		                    $('#list').append('<td>');
+		                    $('#list').append('<td>'+item.plan_A+'</td>');
+		                    $('#list').append('<td>');
+		                    $('#list').append('<td>');
+		                    $('#list').append('<td>'+item.plan_A+'</td>');
+		                    $('#list').append('<td>'+item.plan_B+'</td>');
+		                    $('#list').append('<td>'+item.plan_C+'</td>');
+		                    $('#list').append('<td>'+item.plan_D+'</td>');
+		                    $('#list').append('<td>'+item.plan_E+'</td>');
+		                    $('#list').append('<td>'+item.plan_F+'</td>');
+		                    $('#list').append('<td>'+item.plan_G+'</td>');
+		                    $('#list').append('<td>'+item.tot_MD+'</td>');
 		                    $('#list').append('</tr>');
 		                });
 		            }
 		        });
 		    });
 		});
+
 </script>		
 		
 

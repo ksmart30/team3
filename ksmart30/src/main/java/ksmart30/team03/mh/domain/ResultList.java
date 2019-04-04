@@ -16,6 +16,7 @@ public class ResultList {
 	private int PLAN_F;
 	private int PLAN_G;
 	private int TOT_MD;
+	private String DEPT_CD;
 	public int getTOT_MD() {
 		return TOT_MD;
 	}
@@ -24,6 +25,21 @@ public class ResultList {
 		TOT_MD = tOT_MD;
 	}
 
+	public String getDEPT_CD() {
+		return DEPT_CD;
+	}
+
+	public void setDEPT_CD(String dEPT_CD) {
+		DEPT_CD = dEPT_CD;
+	}
+	private int WORK_TIME;
+	public int getWORK_TIME() {
+		return WORK_TIME;
+	}
+
+	public void setWORK_TIME(int wORK_TIME) {
+		WORK_TIME = wORK_TIME;
+	}
 	private String KOR_NM;
 	private String END_DATE;
 	private String SVC;
@@ -155,8 +171,9 @@ public class ResultList {
 	public String toString() {
 		return "ResultList [PJT_CD=" + PJT_CD + ", JIKGUB=" + JIKGUB + ", DANGA=" + DANGA + ", PLAN_A=" + PLAN_A
 				+ ", PLAN_B=" + PLAN_B + ", PLAN_C=" + PLAN_C + ", PLAN_D=" + PLAN_D + ", PLAN_E=" + PLAN_E
-				+ ", PLAN_F=" + PLAN_F + ", PLAN_G=" + PLAN_G + ", TOT_MD=" + TOT_MD + ", KOR_NM=" + KOR_NM
-				+ ", END_DATE=" + END_DATE + ", SVC=" + SVC + ", DEPT_NM=" + DEPT_NM + ", CRT_DATE=" + CRT_DATE + "]";
+				+ ", PLAN_F=" + PLAN_F + ", PLAN_G=" + PLAN_G + ", TOT_MD=" + TOT_MD + ", DEPT_CD=" + DEPT_CD
+				+ ", WORK_TIME=" + WORK_TIME + ", KOR_NM=" + KOR_NM + ", END_DATE=" + END_DATE + ", SVC=" + SVC
+				+ ", DEPT_NM=" + DEPT_NM + ", CRT_DATE=" + CRT_DATE + "]";
 	}
 
 }
