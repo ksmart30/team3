@@ -1,16 +1,16 @@
 package com.cafe24.ksmart30.team03.mh.vo;
 
 public class Result {
-	private String empNo;
-	private String workDt;
-	private String pjtCd;
-	private String workStep;
-	private String workSpec;
-	private String deptCd;
-	private String workTime;
-	private String etcSpec;
-	private String jikgupCd;
-	private String aDeptCd;
+	private String empNo;    //사원번호
+	private String workDt;   //작업일자
+	private String pjtCd;    //프로젝트코드
+	private String workStep; //작업단계
+	private String workSpec; //작업내용
+	private String deptCd;   //부서코드
+	private String workTime; //작업시간
+	private String etcSpec;  //상세내용
+	private String jikgupCd; //직급코드
+	private String aDeptCd;  //
 	public String getEmpNo() {
 		return empNo;
 	}

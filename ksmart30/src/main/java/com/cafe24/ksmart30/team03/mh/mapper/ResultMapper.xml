@@ -3,10 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.cafe24.ksmart30.team03.mh.mapper.Result">
-	<select id="resultSelect" resultType="com.cafe24.ksmart30.team03.mh.vo.Result">	
-	</select>
-	
-
-	
+<mapper namespace="com.cafe24.ksmart30.team03.mh.mapper.ResultMapper">
+	<insert id="resultWriteView"
+			parameterType="com.cafe24.ksmart30.team03.mh.vo.Result">
+		INSERT INTO T_PM1020(
+			WORK_DT,
+			PJT_CD,
+			WORK_STEP,
+			WORK_SPEC,
+			WORK_TIME,
+			ETC_SPEC
+		)VALUES(
+			#{workDt},
+			#{pjtCd},
+			#{workStep},
+			#{workSpec},
+			#{workTime},
+			#{etcSpec}	
+		)
+		
+	</insert>
 </mapper>
