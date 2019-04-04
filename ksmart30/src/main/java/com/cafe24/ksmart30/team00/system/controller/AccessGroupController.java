@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AccessGroupController {
 	
-	@GetMapping("/system/menuView")
-	public String menuSearch() {
+	@GetMapping("/system/accessGroupMenuListView")
+	public String accessGroupMenuListView() {
 		return "system/menu";
 	}
 
