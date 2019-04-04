@@ -11,7 +11,7 @@ public class PayController {
 		return "person/pay/personPayRegisterView";
 	}
 	//급여 계산(입력)
-	@GetMapping("/person/personPayCalView")
+	@GetMapping("/person/personPayCalWriteView")
 	public String personPayCalWriteView() {
 		return "person/pay/personPayCalWriteView";
 	}
