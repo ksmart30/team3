@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CompanyController {
 
 	// 본사정보 조회(입력폼 형태)
-	@GetMapping("/baseInfo/company")
-	public String companyList() {
-		return "baseInfo/company";
+	@GetMapping("/baseInfo/companyView")
+	public String companyView() {
+		return "baseInfo/companyView";
 	}
 
 	// 본사정보 수정 처리
-	@PostMapping("/baseInfo/company/up")
-	public String companyModify() {
-		return "baseInfo/company";
+	@PostMapping("/baseInfo/companyModifyProcess")
+	public String companyModifyProcess() {
+		return "baseInfo/companyView";
 	}
 }

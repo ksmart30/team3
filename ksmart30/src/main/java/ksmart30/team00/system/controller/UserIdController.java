@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserIdController {
 	
-	@GetMapping("/system/userIdView")
-	public String userIdSearch() {
-		return "system/userId";
+	@GetMapping("/system/userIdSearchView")
+	public String userIdSearchView() {
+		return "system/userIdView";
 	}
 }

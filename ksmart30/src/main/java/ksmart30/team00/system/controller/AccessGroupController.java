@@ -8,16 +8,16 @@ public class AccessGroupController {
 	
 	@GetMapping("/system/accessGroupMenuListView")
 	public String accessGroupMenuListView() {
-		return "system/menu";
+		return "system/accessGroupMenuView";
 	}
 
-	@GetMapping("/system/accessDepView")
-	public String accessDepSearch() {
-		return "system/accessDep";
+	@GetMapping("/system/accessGroupDepListView")
+	public String accessGroupDepListView() {
+		return "system/accessGroupDepView";
 	}
 	
-	@GetMapping("/system/accessWorkView")
-	public String accessWorkSearch() {
-		return "system/accessWork";
+	@GetMapping("/system/accessGroupWorkListView")
+	public String accessGroupWorkListView() {
+		return "system/accessGroupWorkView";
 	}
 }

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class KuntaeScheduleController {
 	
-	@GetMapping("/baseInfo/kuntae")
-	public String KuntaeScheduleList() {
-		return "baseInfo/kuntae";
+	@GetMapping("/baseInfo/kuntaeScheduleListView")
+	public String kuntaeScheduleListView() {
+		return "baseInfo/kuntaeScheduleView";
 	}
 }

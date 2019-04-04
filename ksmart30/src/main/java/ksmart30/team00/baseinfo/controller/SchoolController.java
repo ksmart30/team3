@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class SchoolController {
 	
-	@GetMapping("/baseInfo/schoolCode")
-	public String schoolSearch() {
-		return "baseInfo/school";
+	@GetMapping("/baseInfo/schoolListView")
+	public String schoolListView() {
+		return "baseInfo/schoolView";
 	}
 }

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MajorController {
 	
-	@GetMapping("/baseInfo/majorCode")
-	public String majorSearch() {
-		return "baseInfo/major";
+	@GetMapping("/baseInfo/majorListView")
+	public String majorListView() {
+		return "baseInfo/majorView";
 	}
 }

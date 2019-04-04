@@ -19,14 +19,14 @@ public class LoginController {
 	LoginService loginService;
 
 	// 로그인 화면
-	@GetMapping("/login")
+	@GetMapping("/loginView")
 	public String login() {
 		System.out.println("(C)(Get) login() : 로그인 화면");
-		return "system/login";
+		return "system/loginView";
 	}
 
 	// 로그인처리
-	@PostMapping("/login")
+	@PostMapping("/loginView")
 	public String login(HttpSession session, HttpServletRequest request, Login login) throws UnknownHostException {
 		System.out.println("(C)(Post) login() : 로그인 처리");
 		// 로그인 처리 실행
@@ -44,10 +44,10 @@ public class LoginController {
 	}
 
 	// 로그아웃 처리
-	@GetMapping("/logout")
+	@GetMapping("/logoutProcess")
 	public String logout(HttpSession session) {
 		System.out.println("(C)(Get) logout() : 로그아웃 처리");
 		loginService.logout(session);
-		return "redirect:/login";
+		return "redirect:/loginView";
 	}
 }
