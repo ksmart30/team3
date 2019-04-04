@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PersonController {
 	
 	//5.1.1인사기록카드 리스트 출력 컨트롤러
-	@GetMapping("/person/personInsaPersonnelRecordView")
+	@GetMapping("person/personInsaView")
 	public String personInsaView() {
 		return "person/insa/personListView";
 	}	
@@ -19,12 +19,12 @@ public class PersonController {
 	//5.1.1인사기록카드 입력(리스트) 컨트롤러
 	@GetMapping("/person/personInsaWriteView")
 	public String personInsaWriteView() {
-		return "person/insa/personInView";
+		return "person/insa/personWriteView";
 	}	
 	
 	//5.1.1 인사기록카드 수정 컨트롤러
 	@GetMapping("/person/personInsaModifyView")
 	public String personInsaModifyView() {
-		return "person/insa/personUpView";
+		return "person/insa/personModifyView";
 	}	
 }

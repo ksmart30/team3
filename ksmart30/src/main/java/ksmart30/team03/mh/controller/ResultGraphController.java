@@ -45,7 +45,7 @@ public class ResultGraphController {
 	@GetMapping("/chart")
 	public String chartlist(@RequestParam(value = "pjt_cd") String pjt_cd) {
 		System.out.println("cd : " + pjt_cd);
-
+		
 		return null;
 	}
 

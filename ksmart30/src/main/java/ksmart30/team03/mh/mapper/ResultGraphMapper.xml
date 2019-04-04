@@ -17,10 +17,21 @@
 		on b.EMP_NO=a.PM_EMP_NO join T_PS1000 AS c 
 		on c.PJT_CD=a.PJT_CD join T_SC1010 AS d on b.DEPT_CD=d.DEPT_CD
 	</select>
-	<!--MH 계획,실적 차트 출력 select문  -->
-	<select id="">
 	
-	
+	<!--5.2.1 MH 계획,실적 차트 출력 select문  -->
+	<select id="getResultGraph" 
+	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
+		SELECT 
+			PJT_CD, 
+			SUM(PLAN_A) as PLAN_A, 
+			SUM(PLAN_B) as PLAN_B, 
+			SUM(PLAN_C) as PLAN_C, 
+			SUM(PLAN_D) as PLAN_D,
+			SUM(PLAN_E) as PLAN_E, 
+			SUM(PLAN_F) as PLAN_F,
+			SUM(PLAN_G) as PLAN_G 
+		FROM T_P11050 
+		WHERE PJT_CD=#{PJT_CD} GROUP BY PJT_CD;	
 	</select>
 	
 	
