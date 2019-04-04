@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 /*import org.springframework.web.bind.annotation.PostMapping;*/
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /*import org.springframework.web.bind.annotation.RestController;*/
 
@@ -39,18 +40,16 @@ public class ResultGraphController {
 		System.out.println("CONTROLLER : M/H계획 실적 화면으로 이동");
 		List<ResultList> data = resultGraphService.getResultGraphList();
 		model.addAttribute("graphList", data);
-		return "/mh/result/resultPlanGraphView";
+		return "mh/result/resultPlanGraphView";
 	}
 
-	@GetMapping("/chart")
-	public String chartlist(@RequestParam(value = "pjt_cd") String pjt_cd) {
+	@GetMapping("/manHour/manHourResultGraph")
+	public @ResponseBody List<ResultList> chartlist(@RequestParam(value = "pjt_cd") String pjt_cd) {
 		System.out.println("cd : " + pjt_cd);
-		
-		return null;
+		List<ResultList> data = resultGraphService.getResultGraph(pjt_cd);
+		System.out.println("CONTROLLER 그래프 list : "+data);
+		return data;
 	}
-
-
-		
-		
+	
 	
 }
