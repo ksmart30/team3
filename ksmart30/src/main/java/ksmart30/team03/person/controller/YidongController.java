@@ -5,16 +5,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class YidongController {
-	@GetMapping("/person/yidong/list")
+	@GetMapping("/person/personYidongListView")
 	public String yidongList() {
-		return "person/yidong/yidong_list";
+		return "person/yidong/yidongListView";
 	}
 	@GetMapping("/person/yidong/insertForm")
 	public String yidongInsertForm() {
-		return "person/yidong/yidong_in";
+		return "person/yidong/yidongWriteView";
 	}
 	@GetMapping("/person/yidong/updateForm")
 	public String yidongUpdateForm() {
-		return "person/yidong/yidong_up";
+		return "person/yidong/yidongModifyView";
 	}
 }

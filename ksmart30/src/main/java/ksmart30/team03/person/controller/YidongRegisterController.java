@@ -4,12 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class YidongRegisterController {
-	@GetMapping("/person/yidong/register")
+	@GetMapping("/person/personYidongRegisterView")
 	public String registerList() {
-		return "person/yidong/register_list";
+		return "person/yidong/registerListView";
 	}
-	@GetMapping("/person/yidong/registerSearch")
+	@GetMapping("/person/personYidongRegisterSearch")
 	public String registerSearch() {
-		return "person/yidong/register_search";
+		return "person/yidong/registerSearchView";
 	}
 }
