@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 /*import org.springframework.web.bind.annotation.PostMapping;*/
-import org.springframework.web.bind.annotation.ResponseBody;
+
 /*import org.springframework.web.bind.annotation.RestController;*/
 
 import ksmart30.team03.mh.domain.ResultList;
@@ -39,7 +39,7 @@ public class ResultGraphController {
 		System.out.println("CONTROLLER : M/H계획 실적 화면으로 이동");
 		List<ResultList> data = resultGraphService.getResultGraphList();
 		model.addAttribute("graphList", data);
-		return "mh/result/resultPlanGraphView";
+		return "/mh/result/resultPlanGraphView";
 	}
 
 	@GetMapping("/chart")

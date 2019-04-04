@@ -3,9 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.cafe24.ksmart30.team03.mh.mapper.ResultGraphMapper">
+<mapper namespace="ksmart30.team03.mh.mapper.ResultGraphMapper">
 	<!--MH 계획,실적 리스트 출력 select문  -->
-	<select id="getResultGraphList" resultType="com.cafe24.ksmart30.team03.mh.vo.ResultList">
+	<select id="getResultGraphList" resultType="ksmart30.team03.mh.domain.ResultList">
 		SELECT 
 			b.KOR_NM,
 			c.PJT_CD, 
