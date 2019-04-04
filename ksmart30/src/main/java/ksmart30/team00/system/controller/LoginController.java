@@ -18,24 +18,24 @@ public class LoginController {
 	@Autowired
 	LoginService loginService;
 
-	// 로그인 화면
+	// 0.1 로그인 화면
 	@GetMapping("/loginView")
 	public String login() {
 		System.out.println("(C)(Get) login() : 로그인 화면");
 		return "system/loginView";
 	}
 
-	// 로그인처리
+	// 0.2 로그인처리
 	@PostMapping("/loginView")
 	public String login(HttpSession session, HttpServletRequest request, Login login) throws UnknownHostException {
 		System.out.println("(C)(Post) login() : 로그인 처리");
-		// 로그인 처리 실행
+		// 1. 로그인 처리 실행
 		System.out.println("입력 받은 ID :" + login.getEMP_NO());
 		System.out.println("입력 받은 PW :" + login.getPASS_WD());
 
 		int result = loginService.login(session, request, login);
 
-		// 로그인 처리 결과에 따른 경로이동 (1:성공 0:실패)
+		// 2. 로그인 처리 결과에 따른 경로이동 (1:성공 0:실패)
 		if(result == 1) {
 			return "redirect:/";
 		}else {
@@ -43,7 +43,7 @@ public class LoginController {
 		}
 	}
 
-	// 로그아웃 처리
+	// 0.3 로그아웃 처리
 	@GetMapping("/logoutProcess")
 	public String logout(HttpSession session) {
 		System.out.println("(C)(Get) logout() : 로그아웃 처리");

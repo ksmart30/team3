@@ -58,132 +58,129 @@
 		</script>
 	</th:block>
 	<th:block layout:fragment="customBody">
-		<div class="col-md-12 col-xs-12" style="color:black;">
-			<div class="page-title">
-				<div class="title_left">
-					<h3><b>회사정보등록</b></h3>
-				</div>
-				<div class="col-md-9 col-xs-12 form-group"></div>
-				<div class="col-md-2 col-xs-12">
-					<button type="button" class="btn btn-primary">수정</button>
-					<button type="submit" class="btn btn-success">저장</button>
+			<div class="col-md-12 col-xs-12" style="color:black;">
+				<div class="page-title">
+					<div class="title_left">
+						<h3><b>회사정보등록</b></h3>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-2 col-xs-12"></div>
-		<div class="col-md-8 col-xs-12">
-			<div class="x_panel">
-				<div class="x_title">
-					<div class="clearfix"></div>
+			<div class="col-md-2 col-xs-12"></div>
+			<div class="col-md-8 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<div class="clearfix"></div>
+					</div>
+				<div class="x_content">
+					<br />
+					<form action="/baseInfo/companyModifyProcess" class="form-horizontal form-label-left" method="POST">
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">회사명</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:70%;" name= "COMP_NM" th:value="${companyInfo.COMP_NM}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">사업자번호</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:45%;" name= "COMP_NO" th:value="${companyInfo.COMP_NO.substring(0,3)}+'-'+${companyInfo.COMP_NO.substring(3,6)}+'-'+${companyInfo.COMP_NO.substring(6,10)}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">법인등록번호</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:45%;" name= "CORPORATION_NO" th:value="${companyInfo.CORPORATION_NO.substring(0,6)}+'-'+${companyInfo.CORPORATION_NO.substring(6,13)}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">관할세무서명</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:45%;" name= "TAX_OFFICE_NM" th:value="${companyInfo.TAX_OFFICE_NM}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">대표자명</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:40%;" name= "PRESIDENT_NM" th:value="${companyInfo.PRESIDENT_NM}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">업태</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:45%;" name= "UPTAE" th:value="${companyInfo.UPTAE}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">업종</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:45%;" name= "UPJONG" th:value="${companyInfo.UPJONG}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">우편번호</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group" style="width:25%;">
+								<input type="text" class="form-control" id="postcode" name= "ZIP_NO" th:value="${companyInfo.ZIP_NO}">
+								<span class="input-group-btn">
+									<button type="button" onclick="DaumPostcode()" class="btn btn-primary">　</button> 
+								</span>
+						</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">주소</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" id="address" name= "ADDRESS" th:value="${companyInfo.ADDRESS}">
+								<input type="hidden" class="form-control" id="detailAddress">
+								<input type="hidden" class="form-control" id="extraAddress">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">전화번호</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:35%;" name= "PHONE_NO" th:value="${companyInfo.PHONE_NO.substring(0,3)}+'-'+${companyInfo.PHONE_NO.substring(3,6)}+'-'+${companyInfo.PHONE_NO.substring(6,10)}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">팩스번호</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:35%;" name= "FAX_NO" th:value="${companyInfo.FAX_NO.substring(0,3)}+'-'+${companyInfo.FAX_NO.substring(3,6)}+'-'+${companyInfo.FAX_NO.substring(6,10)}">
+							</div>
+						</div>
+						<!-- 관리번호 -->
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" style="color:black;">
+								⊙ 관리번호
+							</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">국민연금</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:35%;" name= "PENSION" th:value="${companyInfo.PENSION.substring(0,3)}+'-'+${companyInfo.PENSION.substring(3,5)}+'-'+${companyInfo.PENSION.substring(5,11)}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">건강보험</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:35%;" name= "H_INSURE" th:value="${companyInfo.H_INSURE.substring(0,3)}+'-'+${companyInfo.H_INSURE.substring(3,5)}+'-'+${companyInfo.H_INSURE.substring(5,11)}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">고용보험</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 input-group">
+								<input type="text" class="form-control" style="width:35%;" name= "E_INSURE" th:value="${companyInfo.E_INSURE.substring(0,3)}+'-'+${companyInfo.E_INSURE.substring(3,5)}+'-'+${companyInfo.E_INSURE.substring(5,11)}">
+							</div>
+						</div>
+					<div class="ln_solid"></div>
+						<div class="form-group">
+							<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+								<div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3">
+									<button type="submit" class="btn btn-success">저장</button>
+								</div>
+							</div>
+						</div>
+					</form>
 				</div>
-			<div class="x_content">
-				<br />
-				<form class="form-horizontal form-label-left">
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">회사명</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:70%;" placeholder="(주)이에이치네트웍스">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">사업자번호</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:45%;" placeholder="114-86-68661">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">법인등록번호</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:45%;" placeholder="110111-3944778">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">관할세무서명</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:45%;" placeholder="역삼세무서">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">대표자명</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:40%;" placeholder="심병선">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">업태</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:45%;" placeholder="서비스 외">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">업종</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:45%;" placeholder="프로그램개발 외">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">우편번호</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group" style="width:25%;">
-							<input type="text" class="form-control" id="postcode" placeholder="06132">
-							<span class="input-group-btn">
-								<button type="button" onclick="DaumPostcode()" class="btn btn-primary">　</button> 
-							</span>
-					</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">주소</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" id="address" placeholder="서울 강남구 논현로 507 (역삼동, 성지하이츠3차빌딩)">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">상세 주소</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" id="detailAddress" placeholder="304호 사무실">
-							<input type="hidden" class="form-control" id="extraAddress">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">전화번호</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:35%;" placeholder="02-5156-860_">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">팩스번호</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:35%;" placeholder="02-5576-860_">
-						</div>
-					</div>
-					<!-- 관리번호 -->
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12" style="color:black;">
-							⊙ 관리번호
-						</label>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">국민연금</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:35%;" placeholder="114-86-686610">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">건강보험</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:35%;" placeholder="114-86-686610">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">고용보험</label>
-						<div class="col-md-9 col-sm-9 col-xs-12 input-group">
-							<input type="text" class="form-control" style="width:35%;" placeholder="114-86-686610">
-						</div>
-					</div>
-				  <div class="ln_solid"></div>
-				</form>
+				</div>
 			</div>
-			</div>
-		</div>
 	</th:block>
 	<th:block layout:fragment="customJquery">
 		<th:block th:include="layout/customJquery"></th:block>

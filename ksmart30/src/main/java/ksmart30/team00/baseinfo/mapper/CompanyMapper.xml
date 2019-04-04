@@ -1,1 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team00.baseinfo.mapper.CompanyMapper">
+	<!-- 10.3.1.1 본사정보 조회 -->
+	<select id="getCompanyList"			
+            resultType="ksmart30.team00.baseinfo.domain.Company">
+			SELECT
+				COMP_NM,
+                COMP_NO,
+                CORPORATION_NO,
+                TAX_OFFICE_NM,
+                PRESIDENT_NM,
+                ZIP_NO,
+                ADDRESS,
+                PHONE_NO,
+                FAX_NO,
+                UPTAE,
+                UPJONG,
+                AUDIT_ID,
+                AUDIT_TM,
+                PENSION,
+                H_INSURE,
+                E_INSURE,
+                IMG_LOC
+			FROM T_SC1000
+	</select>
+    <!-- 10.3.1.2 본사정보 수정 처리 -->
+    <update id="modifyCompany"
+            parameterType="ksmart30.team00.baseinfo.domain.Company">
+            UPDATE
+				T_SC1000
+			SET
+				COMP_NM = #{COMP_NM},
+				COMP_NO = REPLACE(#{COMP_NO},'-',''),
+				CORPORATION_NO = REPLACE(#{CORPORATION_NO},'-',''),
+                TAX_OFFICE_NM = #{TAX_OFFICE_NM},
+				PRESIDENT_NM = #{PRESIDENT_NM},
+				ZIP_NO = #{ZIP_NO},
+                ADDRESS = #{ADDRESS},
+				PHONE_NO = REPLACE(#{PHONE_NO},'-',''),
+				FAX_NO = REPLACE(#{FAX_NO},'-',''),
+                UPTAE = #{UPTAE},
+				UPJONG = #{UPJONG},
+				AUDIT_ID = #{AUDIT_ID},
+				AUDIT_TM = GETDATE(),
+                PENSION = REPLACE(#{PENSION},'-',''),
+				H_INSURE = REPLACE(#{H_INSURE},'-',''),
+				E_INSURE = REPLACE(#{E_INSURE},'-','')
+    </update>
+</mapper>
