@@ -43,23 +43,48 @@
 	                    $('#list').append('</tr>');
 	                    
 	                }); 
-	                
-             
+	                            
 	            }
 	        });
 	    });
 		
-		$("#list").bind("click", function(){
+	/* 	$("#list").bind("click", function(){
             var list2 = $('#list').val();
 			console.log(list2);
             alert("클릭 이벤트 발생");
-                     
-            
-        });
+                             
+        }); */
 		
-		
-		
-
+		$("#example-table-1 tr").click(function(){
+			//문자열 저장할 변수 선언
+			var str=""
+			//배열선언
+			var tdArr = new Array();
+			
+			//현재 클릭된 행<tr>
+			var tr = $(this);
+			var td = tr.children();
+			console.log("row : "+tr.text());
+			
+			var pjt_cd = td.eq(2).text();
+			
+			console.log("pjt_cd : "+pjt_cd);			
+			/* 
+			td.each(function(i){
+				tdArr.push(td.eq(i).test());
+				
+			}) */
+			//console.log("tdArr : "+tdArr.text());					
+			$.ajax({
+				url:'/chart',
+				type:'GET',
+				data: {pjt_cd:pjt_cd},
+				success:function(row){
+					alter('차트야나와라');
+					console.log("???");
+				}							
+			}) 		
+		})
 		function init_charts() {
 			
 			console.log('run_charts  typeof [' + typeof (Chart) + ']');
@@ -105,19 +130,13 @@
 			} 
 		}
 
-		$(document).ready(function() {
-			
-			
-			init_charts();
-					
-		});	
-		
-		
-		
-	});
-	
-
+		$(document).ready(function() {						
+			init_charts();					
+		});							
+	});	
 </script>
+
+
 	</head>
 </th:block>
 <th:block layout:fragment="customBody">
@@ -152,7 +171,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-3 col-sm-6 col-xs-12" style="width: 50%">
+			<div class="col-md-3 col-sm-6 col-xs-12" style="width: 55%">
 				<div class="x_panel">
 					<div class="x_title">
 
@@ -164,23 +183,33 @@
 							<div
 								style="overflow: scroll; width: 100%; height: 650px; padding: 10px; background-color:;">
 
-								<button id="btn_list">실적,계획 리스트</button>
-								<table class="table table-striped jambo_table bulk_action">
+								
+										<table id="example-table-1" class="table table-striped jambo_table bulk_action">
 									<thead>
 										<tr class="headings">
 											<th class="column-title">PM</th>
+											<th class="column-title">담당부서</th>
 											<th class="column-title">프로젝트코드</th>
 											<th class="column-title">프로젝트</th>
 											<th class="column-title">시작일</th>
 											<th class="column-title">종료일</th>
 										</tr>
 									</thead>
-									<tbody id="list" style="font-size: 15px; line-height: 25px">
+									
+									<tbody style="font-size: 14px; line-height: 25px">
 										<!-- 화면에 뿌려줄 것! -->
-
+											<tr th:each="g : ${graphList}" >
+												<td th:text="${g.KOR_NM}"></td>
+												<td th:text="${g.DEPT_NM}"></td>
+												<td th:text="${g.PJT_CD}"></td>
+												<td th:text="${g.SVC}"></td>
+												<td th:text="${g.CRT_DATE}"></td>
+												<td th:text="${g.END_DATE}"></td>												
+											</tr>
 
 									</tbody>
 								</table>
+
 								<br>
 								<br>
 								<br>
@@ -211,7 +240,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-9 col-sm-6 col-xs-12" style="width: 50%">
+			<div class="col-md-9 col-sm-6 col-xs-12" style="width: 45%">
 				<div class="x_panel">
 					<!-- 안에 넣어라 -->
 					<!-- 추가 입력할 정보 창 -->

@@ -13,9 +13,9 @@ public class ResultGraphService {
 	
 		
 	//M/H계획 실적 그래프 리스트 출력
-	public List<ResultList> resultSearch() {
+	public List<ResultList> getResultGraphList() {
 		System.out.println("SERVICE : M/H계획 실적 그래프 리스트 출력");
-		return resultGraphMapper.resultSelect();
+		return resultGraphMapper.getResultGraphList();
 	}
 	
 }
