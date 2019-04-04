@@ -10,17 +10,24 @@
   -->
  
 	<select id="getResultNugaeList" resultType="ksmart30.team03.mh.domain.ResultList">
-	SELECT  c.DEPT_CD,b.pjt_cd,b.PLAN_A,b.PLAN_B,b.PLAN_C,b.PLAN_D,
+	SELECT  f.WORK_TIME,d.DEPT_NM,(b.pjt_cd + e.SVC) PJT_NM ,b.PLAN_A,b.PLAN_B,b.PLAN_C,b.PLAN_D,
 			b.PLAN_E,b.PLAN_F,b.PLAN_G,TOT_MD FROM (SELECT pjt_cd, 
 			SUM(PLAN_A)AS PLAN_A,SUM(PLAN_B)AS PLAN_B,SUM(PLAN_C)AS PLAN_C,
 			SUM(PLAN_D)AS PLAN_D,SUM(PLAN_E)AS PLAN_E,SUM(PLAN_F)AS PLAN_F,
 			SUM(PLAN_G)AS PLAN_G, SUM(TOT_MD)AS TOT_MD 
 		FROM T_P11050 
-		GROUP BY pjt_cd) b  
+		GROUP BY pjt_cd) b 
 		JOIN T_P11000 a 
 		ON a.pjt_cd=b.pjt_cd 
 		JOIN T_HM1000 AS c 
-		ON c.EMP_NO=a.EMP_NO
+		ON c.EMP_NO=a.EMP_NO 
+		JOIN T_SC1010 AS d
+		ON c.DEPT_CD=d.DEPT_CD
+		JOIN T_PS1000 AS e
+		ON a.PJT_CD=e.PJT_CD
+		JOIN (SELECT PJT_CD, SUM(FLOOR(WORK_TIME)) WORK_TIME FROM T_PM1020 GROUP BY PJT_CD) AS f
+		ON a.PJT_CD=f.PJT_CD
+		ORDER BY DEPT_NM
 	</select>
 
 </mapper>
