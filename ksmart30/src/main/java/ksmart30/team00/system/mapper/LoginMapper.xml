@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team00.system.mapper.LoginMapper">
 	<!-- 로그인 처리 -->
-	<select id="login"
+	<select id="addLogin"
 			parameterType="ksmart30.team00.system.domain.Login"
             resultType="ksmart30.team00.system.domain.Login">
 			SELECT
@@ -14,7 +14,7 @@
 			WHERE EMP_NO = #{EMP_NO} AND PASS_WD = #{PASS_WD}
 	</select>
     <!-- 접속 정보 추가 -->
-    <insert id="connect"
+    <insert id="addConnect"
             parameterType="ksmart30.team00.system.domain.Ip">
             INSERT INTO T_SM4000 (
                 CONN_DT,

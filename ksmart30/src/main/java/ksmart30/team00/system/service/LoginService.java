@@ -30,7 +30,7 @@ public class LoginService {
         System.out.println("(S)입력 받은 ID :" + login.getEMP_NO());
 		System.out.println("(S)입력 받은 PW :" + login.getPASS_WD());
         // Mapper를 이용한 로그인 처리
-        loginResult = loginMapper.login(login);
+        loginResult = loginMapper.addLogin(login);
         System.out.println("값 : " + loginResult);
         System.out.println("(M) 로그인처리 쿼리 실행완료");
         // 로그인 성공여부에 따른 처리 (1:성공 0:실패)
@@ -44,7 +44,7 @@ public class LoginService {
             ip.setUSER_ID(loginResult.getEMP_NO());
             ip.setIP(connentIp);
             // 접속 기록 남기기
-            int connect = loginMapper.connect(ip);
+            int connect = loginMapper.addConnect(ip);
             System.out.println("접속 기록 성공여부 (1:성공, 0:실패) : " + connect);
             // 로그인 정보 세션 처리
             session.setAttribute("id", login.getEMP_NO());

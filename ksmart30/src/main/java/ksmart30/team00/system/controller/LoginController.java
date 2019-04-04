@@ -39,7 +39,7 @@ public class LoginController {
 		if(result == 1) {
 			return "redirect:/";
 		}else {
-			return "system/login";
+			return "system/loginView";
 		}
 	}
 

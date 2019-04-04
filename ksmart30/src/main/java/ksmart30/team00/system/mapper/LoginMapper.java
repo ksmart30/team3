@@ -9,8 +9,8 @@ import ksmart30.team00.system.domain.Login;
 public interface LoginMapper {
 
     // 로그인 처리
-    Login login(Login login);
+    Login addLogin(Login login);
 
     // 접속 기록 등록
-    int connect(Ip ip);
+    int addConnect(Ip ip);
 }
