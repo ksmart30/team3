@@ -26,19 +26,13 @@ public class LoginService {
         System.out.println("(S) login() : 로그인 처리");
         // 1. 리턴값 초기화
         int result = 0;
-        // 2. 출력확인
-        System.out.println("(S)입력 받은 ID :" + login.getEMP_NO());
-		System.out.println("(S)입력 받은 PW :" + login.getPASS_WD());
         // 3. Mapper를 이용한 사용자 등록정보 (SELECT)
         loginResult = loginMapper.getLogin(login);
+        System.out.println("Login객체 주소값 : " + loginResult);
         System.out.println("(M) 등록정보 조회 쿼리 실행완료");
         // 4.1 로그인 성공여부에 따른 처리
         if (loginResult != null) {
             System.out.println("로그인 성공 !");
-            // 4.1.1 Mapper를 이용한 인사기록카드 (SELECT)후 Login객체에 Setting
-            loginResult.setKOR_NM((loginMapper.getPR(login)).getKOR_NM());
-            System.out.println("(M) 인사기록카드 조회 쿼리 실행완료");
-            System.out.println("Login객체 주소값 : " + loginResult);
             // 4.1.2 접속 IP정보 가져오기
             InetAddress catchIp = InetAddress.getLocalHost();
             String connentIp = catchIp.getHostAddress();

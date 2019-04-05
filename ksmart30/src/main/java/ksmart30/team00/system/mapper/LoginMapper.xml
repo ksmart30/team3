@@ -8,19 +8,15 @@
 			parameterType="ksmart30.team00.system.domain.Login"
             resultType="ksmart30.team00.system.domain.Login">
 			SELECT
-				EMP_NO,
-				PASS_WD
-			FROM T_SM1100
-			WHERE EMP_NO = #{EMP_NO} AND PASS_WD = #{PASS_WD}
-	</select>
-    <!-- 인사기록카드 조회 (사원번호, 이름) -->
-    <select id="getPR"
-			parameterType="ksmart30.team00.system.domain.Login"
-            resultType="ksmart30.team00.system.domain.Login">
-			SELECT
-				KOR_NM
-			FROM T_HM1000
-			WHERE EMP_NO = #{EMP_NO}
+                A.EMP_NO,
+                A.PASS_WD,
+                B.KOR_NM
+            FROM
+                T_SM1100 A,
+                T_HM1000 B
+            WHERE A.EMP_NO *= B.EMP_NO
+            AND A.EMP_NO = #{EMP_NO}
+            AND A.PASS_WD = #{PASS_WD}
 	</select>
     <!-- 접속 정보 추가 -->
     <insert id="addConnect"

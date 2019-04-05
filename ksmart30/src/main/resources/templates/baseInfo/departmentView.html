@@ -4,6 +4,9 @@
 		<meta charset="UTF-8">
 		<title>10.기준정보관리 - 부서코드등록</title>
 		<th:block th:include="layout/customHead"></th:block>
+
+
+		
 	</th:block>
 	<th:block layout:fragment="customBody">
 		<div class="col-md-12 col-xs-12" style="color:black;">
@@ -132,7 +135,7 @@
 					<div class="x_title"></div><br>
 					<!-- 회사 리스트 -->
 					<div class="table-responsive">
-							<table class="table table-striped jambo_table bulk_action">
+							<table class="table table-striped jambo_table bulk_action table-responsive">
 							   <thead>
 								 <tr class="headings">
 									<th>
@@ -146,39 +149,32 @@
 									<th class="column-title">조직구분</th>
 									<th class="column-title">배부부문</th>
 									<th class="column-title">회계단위</th>
-									<th class="column-title">회계부서</th>
+									<th class="column-title">회계부서</th><!-- 체크박스 -->
 									<th class="column-title">M/D부서</th>
-									<th class="column-title">미사용유무</th>                    
-									<th class="column-title no-link last"><span class="nobr">미사용일자</span>
-									</th>
-									<th class="bulk-actions" colspan="7">
-										<a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-									</th>
+									<th class="column-title">미사용유무</th><!-- 체크박스 -->                  
+									<th class="column-title">미사용일자</th>
 									</tr>
 							 </thead>		
 							   <tbody>
-								  <tr class="even pointer">
-									<td class="a-center "></td>
-									<td class=" ">0010</td>
-									<td class=" ">00010</td>
-									<td class=" ">00010</td>
-									<td class=" ">대표이사</td>
-									<td class=" ">대표이사</td>
-									<td class=" ">대표이사</td>
-									<td class=" ">대표이사</td>
-									<td class=" ">간접비-빌딩</td>
-									<td class=" ">이에이치네트워크</td>
+								  <tr class="even pointer" th:each="departmentList : ${departmentList}">
+									<td></td>
+									<td class=" " th:text="${departmentList.DEPT_CD}"></td>
+									<td class=" " th:text="${departmentList.SYS_COD}"></td>
+									<td class=" " th:text="${departmentList.SYS_COD2}"></td>
+									<td class=" " th:text="${departmentList.DEPT_NM}"></td>
+									<td class=" " th:text="${departmentList.SHORT_NM}"></td>
+									<td class=" " th:text="${departmentList.SHORT_NM1}"></td>
+									<td class=" " th:text="${departmentList.LEVEL_GB}"></td>
+									<td class=" " th:text="${departmentList.DIV_TYPE}"></td>
+									<td class=" " th:text="${departmentList.ACC_UNIT}"></td>
 									<td class=" ">
-										<input type="checkbox" name="accountDepartment">
+										<input type="checkbox" name="accountDepartment" th:checked="${departmentList.ACC_DEPT}">
 									</td>
-									<td class=" ">미입력부서</td>
+									<td class=" " th:text="${departmentList.DIV_ID}"></td>
 									<td class=" ">
-										<input type="checkbox" name="noUseYN">
+										<input type="checkbox" name="noUseYN" th:checked="${departmentList.NOT_USE}">
 									</td>
-									<td class="a-right a-right ">
-										<input type="date" name="noUseDateCheck" value="____/__/__">
-									</td>
-									</td>
+									<td class=" " th:text="${departmentList.NOTUSE_DATE}"></td>
 								</tr>
 							 </tbody>
 						 </table>

@@ -1,1 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team00.baseinfo.mapper.DepartmentMapper">
+    <select id="getDepartmentList"
+            resultType="ksmart30.team00.baseinfo.domain.Department">
+            SELECT
+                DEPT_CD,
+                SYS_COD,
+                DEPT_NM,
+                SHORT_NM,
+                SHORT_NM1,
+                LEVEL_GB,
+                PRT_SEQ,
+                DIV_TYPE,
+                DIV_ID,
+                ACC_UNIT,
+                ACC_DEPT,
+                NOT_USE,
+                NOTUSE_DATE,
+                ETC_CD1,
+                ETC_CD2,
+                ETC_CD3,
+                AUDIT_ID,
+                AUDIT_TM,
+                GROUP_CD,
+                FOREIGN_WORK,
+                SYS_COD2
+            FROM T_SC1010
+    </select>
+</mapper>
