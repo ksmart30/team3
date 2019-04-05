@@ -3,13 +3,37 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="layout/main">
 
-
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 
 	<title>이동자료 조회 및 승인</title>
 	<th:block th:include="layout/customHead"></th:block>
 	
+	<script>
+		$(document).ready(function(){
+		    // 목록
+		    console.log('직원list 출력해보자')
+		    $('#btn_list').on('click',window.onload=function(){
+		        $.ajax({
+		            url:'/person/personYidongList',
+		            type:'GET',
+		            success:(data)=>{
+		                $('#list').empty();
+		                $(data).each(function(index,item){ //each = foreach (반복문)
+		                    $('#list').append('<tr>');
+		                    $('#list').append('<td>'+item.emp_NO+'</td>');
+		                    $('#list').append('<td>'+item.kor_NM+'</td>');
+		                    $('#list').append('</tr>');
+		                });
+		            }
+		        });
+		    });
+			
+		});
+
+</script>
 </th:block>
 
 <th:block layout:fragment="customBody">
@@ -36,37 +60,23 @@
 						</ul></li>
 					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
 				</ul>
-				<div class="clearfix"></div>
+		<div class="clearfix"></div>
 			</div>
-			<div class="x_content">
+			<div class="x_content" style="overflow:scroll; width:100%; height:450px; background-color:;">
 
-				<table class="table">
+				<table class="table table-striped jambo_table bulk_action" >
 					<thead>
 						<tr>
-							<th>#</th>
+							
 							<th>사번</th>
 							<th>이름</th>
-							<th>입사일</th>
+							
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>190001</td>
-							<td>유지수</td>
-							<td>190102</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>190002</td>
-							<td>정다금</td>
-							<td>190109</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>190003</td>
-							<td>박기훈</td>
-							<td>190209</td>
+					<tbody  >
+						<tr th:each="y : ${yidongList}">
+							<td th:text="${y.EMP_NO}"></td>
+							<td th:text="${y.KOR_NM}"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -98,80 +108,11 @@
 			<div class="clearfix"></div>
 		</div>
 		<div class="x_content" >
-			<br>
-			<form class="form-horizontal form-label-left input_mask">
-			<div class="x_content" >
-				<div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control has-feedback-left"
-						id="inputSuccess2" placeholder="사원번호"> <span
-						class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-				</div>
-			</div>
-			<div class="x_content">
-				<div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control has-feedback-left" id="inputSuccess3"
-						placeholder="이름"> <span
-						class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-				</div>
-			</div>
-			<div class="x_content">
-				<div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control has-feedback-left"
-						id="inputSuccess4" placeholder="소속부서"> <span
-						class="fa fa-envelope form-control-feedback left"
-						aria-hidden="true"></span>
-				</div>
-			</div>
-			<div class="x_content">
-				<div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control has-feedback-left" id="inputSuccess5"
-						placeholder="직급"> <span
-						class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
-				</div>
-			</div>
-				<div class="form-group">
-					<label class="control-label col-md-3 col-sm-3 col-xs-12">사원번호
-					</label>
-					<div class="col-md-9 col-sm-9 col-xs-12">
-						<input type="text" class="form-control"
-							placeholder="Default Input">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-3 col-sm-3 col-xs-12">이름
-					</label>
-					<div class="col-md-9 col-sm-9 col-xs-12">
-						<input type="text" class="form-control" disabled="disabled"
-							placeholder="Disabled Input">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-3 col-sm-3 col-xs-12">소속부서
-					</label>
-					<div class="col-md-9 col-sm-9 col-xs-12">
-						<input type="text" class="form-control" readonly="readonly"
-							placeholder="Read-Only Input">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-md-3 col-sm-3 col-xs-12">직급
-							<span class="required">*</span>
-					</label>
-					<div class="col-md-9 col-sm-9 col-xs-12">
-						<input class="date-picker form-control col-md-7 col-xs-12"
-							required="required" type="text">
-					</div>
-				</div>
-				<div class="ln_solid"></div>
-				<div class="form-group">
-					<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-						<button type="button" class="btn btn-success">수정</button>
-						<button class="btn btn-success" type="reset">Reset</button>
-						<button type="submit" class="btn btn-primary">등록</button>
-					</div>
-				</div>
-
-			</form>
+			<tr th:each="y : ${yidongList}">
+				<td th:text="${y.EMP_NO}"></td>
+				<td th:text="${y.KOR_NM}"></td>
+			</tr>
+				<button type="submit" class="btn btn-primary">등록</button>
 		</div>
 	</div>
 	</div>

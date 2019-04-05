@@ -11,7 +11,8 @@
  
 	<select id="getResultNugaeList" resultType="ksmart30.team03.mh.domain.ResultList">
 SELECT
-
+			
+			
 			g.WORK_STEP,f.WORK_TIME,d.DEPT_NM,(b.pjt_cd + e.SVC) PJT_NM ,b.PLAN_A,b.PLAN_B,b.PLAN_C,b.PLAN_D,
 			b.PLAN_E,b.PLAN_F,b.PLAN_G,b.TOT_MD,
 			(CASE g.WORK_STEP WHEN 'A' THEN b.PLAN_A WHEN 'B' THEN b.PLAN_A+b.PLAN_B 

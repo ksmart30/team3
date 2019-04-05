@@ -1,1 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="ksmart30.team03.person.mapper.YidongMapper">
+
+<!-- 리스트에 직원 정보 뿌려주는 쿼리 test 	
+  -->
+ 
+	<select id="getYidongList" resultType="ksmart30.team03.person.domain.Yidong">
+		SELECT a.EMP_NO, a.KOR_NM 
+		FROM T_HM1000 a
+		
+	</select>
+
+
+	<select id="getYidong" resultType="ksmart30.team03.person.domain.Yidong">
+		SELECT EMP_NO,DEPT_NM,JIKGUP_NM 
+		FROM T_HM5000 a, 
+		(SELECT MAX(PAY_YYMM) PAY_YYMM FROM T_HM5000 
+		GROUP BY PAY_YYMM) b  
+		WHERE a.PAY_YYMM=b.PAY_YYMM
+	</select>
+
+</mapper>
+
