@@ -12,10 +12,20 @@
 		<div class="col-md-12 col-xs-12" style="color:black;">
 			<div class="page-title">
 				<div class="title_left">
-					<h3><b>부서코드 등록</b></h3>
+					<h2><b>부서코드 등록</b></h2>
+					<h5><fontcolor="gray"><b>10.기준정보 관리&nbsp;>&nbsp;&nbsp;10.2인력관리</b></font></h5>
 				</div>
 			</div>
 		</div>
+		<div class="x_content" style="text-align: right">
+				<div class="btn-group" >
+						<button class="btn btn-default" type="reset">입력</button>
+						<button class="btn btn-default" type="button">수정</button>
+						<button class="btn btn-default" type="button">삭제</button>
+						<button class="btn btn-default" type="button">저장</button>
+						<button class="btn btn-default" type="button">출력</button>
+				</div>
+		</div>				
 		<div class="col-md-12 col-sm-6 col-xs-12 table-responsive" style="width:100%">
 			<div class="x_panel">
 				<div class="x_title">
@@ -28,7 +38,7 @@
 							<br>
 							부서명 : 
 								<input type="text" name="company">
-								<button type="submit"name="companyButton">검색</button>
+								<button type="submit" class="btn" style="color:black" name="companyButton">검색</button>
 							
 							</div>
 					</form>
@@ -127,10 +137,6 @@
 								</th>
 							</tr>
 						</table>
-						<div class="col-md-12" style="width:96%;"></div>
-						<div>
-							<button type="submit"name="departmentButton">추가</button>
-						</div>
 					</form>
 					<div class="x_title"></div><br>
 					<!-- 회사 리스트 -->
@@ -158,23 +164,34 @@
 							   <tbody>
 								  <tr class="even pointer" th:each="departmentList : ${departmentList}">
 									<td></td>
-									<td class=" " th:text="${departmentList.DEPT_CD}"></td>
-									<td class=" " th:text="${departmentList.SYS_COD}"></td>
-									<td class=" " th:text="${departmentList.SYS_COD2}"></td>
-									<td class=" " th:text="${departmentList.DEPT_NM}"></td>
-									<td class=" " th:text="${departmentList.SHORT_NM}"></td>
-									<td class=" " th:text="${departmentList.SHORT_NM1}"></td>
-									<td class=" " th:text="${departmentList.LEVEL_GB}"></td>
-									<td class=" " th:text="${departmentList.DIV_TYPE}"></td>
-									<td class=" " th:text="${departmentList.ACC_UNIT}"></td>
-									<td class=" ">
+									<td th:text="${departmentList.DEPT_CD}"></td><!-- 부서코드 -->
+									<td th:text="${departmentList.SYS_COD}"></td><!-- 내부코드 -->
+									<td th:text="${departmentList.SYS_COD2}"></td><!-- 내부순서코드 -->
+									<td th:text="${departmentList.DEPT_NM}"></td><!-- 부서명 -->
+									<td th:text="${departmentList.SHORT_NM}"></td><!-- 약어명 -->
+									<td th:text="${departmentList.SHORT_NM1}"></td><!-- 약어명(2) -->
+									<td th:text="${departmentList.LEVEL_GB}"></td><!-- 조직구분 (SELECT)--> 
+									<td th:text="${departmentList.DIV_TYPE}"></td><!-- 배부부문 (SELECT)-->
+									<td th:if="${departmentList.ACC_UNIT == '(주)이에이치네트웍스'}">(주)이에이치네트웍스</td><!-- 회계단위 (01)-->
+									<td th:unless="${departmentList.ACC_UNIT == '(주)이에이치네트웍스'}"></td><!-- 회계단위 (else)-->
+									<!-- 회계부서 / 체크박스 -->
+									<td th:if="${departmentList.ACC_DEPT == '1'}" style="text-align: center">
 										<input type="checkbox" name="accountDepartment" th:checked="${departmentList.ACC_DEPT}">
 									</td>
-									<td class=" " th:text="${departmentList.DIV_ID}"></td>
-									<td class=" ">
+									<td th:if="${departmentList.ACC_DEPT == '2'}" style="text-align: center">
+											<input type="checkbox" name="accountDepartment">
+									</td>
+									<td th:if="${departmentList.DIV_ID == '입력부서'}">입력부서</td><!-- M/D부서 (10)-->
+									<td th:if="${departmentList.DIV_ID == '미입력부서'}">미입력부서</td><!-- M/D부서 (20)-->
+									<td th:if="${departmentList.DIV_ID == '1'}"></td><!-- M/D부서 (****)-->
+									<!-- 미사용유무 / 체크박스 -->
+									<td th:if="${departmentList.NOT_USE == '1'}" style="text-align: center">
 										<input type="checkbox" name="noUseYN" th:checked="${departmentList.NOT_USE}">
 									</td>
-									<td class=" " th:text="${departmentList.NOTUSE_DATE}"></td>
+									<td th:if="${departmentList.NOT_USE == '2'}" style="text-align: center">
+											<input type="checkbox" name="noUseYN">
+									</td>
+									<td th:text="${departmentList.NOTUSE_DATE}"></td><!-- 미사용일자 -->
 								</tr>
 							 </tbody>
 						 </table>
