@@ -25,9 +25,18 @@ public class ResultList {
 	private int WORK_TIME;
 	private String WORK_STEP;
 	private String WORK_NM;
+	private int TOT_PLAN;
 	
 	public String getPJT_NM() {
 		return PJT_NM;
+	}
+
+	public int getTOT_PLAN() {
+		return TOT_PLAN;
+	}
+
+	public void setTOT_PLAN(int tOT_PLAN) {
+		TOT_PLAN = tOT_PLAN;
 	}
 
 	public void setPJT_NM(String pJT_NM) {
@@ -206,7 +215,7 @@ public class ResultList {
 				+ ", PLAN_F=" + PLAN_F + ", PLAN_G=" + PLAN_G + ", TOT_MD=" + TOT_MD + ", DEPT_NAME=" + DEPT_NAME
 				+ ", KOR_NM=" + KOR_NM + ", END_DATE=" + END_DATE + ", SVC=" + SVC + ", DEPT_NM=" + DEPT_NM
 				+ ", PJT_NM=" + PJT_NM + ", WORK_TIME=" + WORK_TIME + ", WORK_STEP=" + WORK_STEP + ", WORK_NM="
-				+ WORK_NM + ", CRT_DATE=" + CRT_DATE + "]";
+				+ WORK_NM + ", TOT_PLAN=" + TOT_PLAN + ", CRT_DATE=" + CRT_DATE + "]";
 	}
 
 }

@@ -11,7 +11,6 @@
 		    // 목록
 		    console.log('데이터 출력해보자')
 		    $('#btn_list').on('click',function(){
-		    	alert("리스트 출력");
 		        $.ajax({
 		            url:'/manHour/manHourResultNugaeList',
 		            type:'GET',
@@ -19,13 +18,14 @@
 		                $('#list').empty();
 		                $(data).each(function(index,item){ //each = foreach (반복문)
 		                    $('#list').append('<tr>');
-		                    $('#list').append('<td>');
+		                    
 		                    $('#list').append('<td>'+item.dept_NM+'</td>');
 		                    $('#list').append('<td>'+item.pjt_NM+'</td>');
 		                    $('#list').append('<td>'+item.work_NM+'</td>');
-		                    $('#list').append('<td>'+item.plan_A+'</td>');
+		                    $('#list').append('<td>'+item.tot_PLAN+'</td>');
 		                    $('#list').append('<td>'+item.work_TIME+'</td>');
-		                    $('#list').append('<td>');
+		                    $('#list').append('<td>'+(item.tot_PLAN-item.work_TIME)+'</td>');
+		                    $('#list').append('<td>'+'</td>');
 		                    $('#list').append('<td>'+item.plan_A+'</td>');
 		                    $('#list').append('<td>'+item.plan_B+'</td>');
 		                    $('#list').append('<td>'+item.plan_C+'</td>');
@@ -90,6 +90,7 @@
                         
                   <div class="x_title">
                     <h2>M/H 계획/실적(프로젝트 누계) </h2>
+                    
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -109,25 +110,23 @@
                   </div>
 
                   <div class="x_content">
-
+					<button id="btn_list">회원리스트</button>
                     
 
                     <div class="table-responsive">
-                      <table class="table table-striped jambo_table bulk_action">
+                      <table class="table table-striped jambo_table bulk_action" >
                         <thead>
                           <tr class="headings">
-                            <th>
-                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                            </th>
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;M/H 투입 누계
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;M/H 투입 계획
+                            
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;M/H 투입 누계
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;M/H 투입 계획
                             <th class="column-title">부서 </th>
                             <th class="column-title">프로젝트 코드명 </th>
                             <th class="column-title">단계</th>
                             <th class="column-title">계획</th>
                             <th class="column-title">실적</th>
                             <th class="column-title">차이</th>
-                            
+                            <th></th>
                             <th class="column-title">기획</th>
                             <th class="column-title">심의</th>
                             <th class="column-title">허가</th>
@@ -147,34 +146,8 @@
 
                         <tbody id="list">
                           <tr class="even pointer">
-                            <td class="a-center ">
-                              <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                            </td>
-                            <td class=" ">설계1본부 2소</td>
-                            <td class=" ">[16259]**</td>
-                            <td class=" ">실시 <i class="success fa fa-long-arrow-up"></i></td>
-                            <!-- 
-                             M/H 투입 누계
-                             -->
-                            <td class=" ">2,560</td>
-                            <td class=" ">1,463</td>   
-                            <td class=" ">1,097</td>  
                             
                             
-                            <!-- 
-                             M/H 투입 계획
-                             -->
-                            <td class=" ">320</td> 
-                            <td class=" ">480</td> 
-                            <td class=" ">320</td> 
-                            <td class=" "></td> 
-                            <td class=" ">1,440</td> 
-                            <td class=" ">160</td> 
-                            <td class=" ">160</td> 
-                            <!-- 
-                             합계
-                             -->
-                            <td class=" ">2,880</td>  
                             
                           </tr>
                           
@@ -188,7 +161,7 @@
                 </div>
               </div>
               
-	<button id="btn_list">회원리스트</button>
+	
 
 
 
