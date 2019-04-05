@@ -15,10 +15,12 @@ public class ResultController {
 	//M/H 실적 입력 폼
 	@GetMapping("/manHour/resultWriteView")
 	public String resultWriteView() {
+		System.out.println("resultWriteView 폼 실행");
 		return "mh/result/resultWriteView";
 	}
 	@PostMapping("/manHour/resultWriteView")
 	public String resultWriteView(Result result) {
+		System.out.println("resultWriteView 액션");
 		resultService.addResult(result);
 		return "redirect:/resultWriteView";
 		

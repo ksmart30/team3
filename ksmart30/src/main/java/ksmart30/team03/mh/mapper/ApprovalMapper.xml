@@ -1,1 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ksmart30.team03.mh.mapper.ApprovalMapper">
+	<!-- 5.2  실적 승인(List)쿼리  -->
+	<select id="getapprovalSearchView"
+			 resultType="ksmart30.team03.mh.domain.Result">
+			SELECT
+				A.EMP_NO,
+				A.WORK_DT,	
+				A.PJT_CD,
+				A.WORK_SPEC,	
+				ISNULL(D.LEVEL2_NM,'****') AS DEPT_CD,
+				A.WORK_TIME,
+				A.ETC_SPEC,		
+				ISNULL(C.LEVEL2_NM,'****') AS WORK_STEP,
+				ISNULL(B.LEVEL2_NM,'****') AS JIKGUP_CD
+				
+			FROM T_PM1020_BNT A, 
+				T_SC9100 B,
+				T_SC9100 C,
+				T_SC9100 D
+			WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+			AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+			AND((A.DEPT_CD *= D.LEVEL2_CD) AND (D.LEVEL1_CD='390' AND D.BUSI_GB='H'))
+	</select>
+</mapper>

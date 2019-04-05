@@ -7,21 +7,7 @@
 	<!-- 5.1 M/H 입력 -->
 	<insert id="resultWriteView"
 			parameterType="ksmart30.team03.mh.domain.Result">
-		INSERT INTO T_PM1020(
-			WORK_DT,
-			PJT_CD,
-			WORK_STEP,
-			WORK_SPEC,
-			WORK_TIME,
-			ETC_SPEC
-		)VALUES(
-			#{workDt},
-			#{pjtCd},
-			#{workStep},
-			#{workSpec},
-			#{workTime},
-			#{etcSpec}	
-		)
+		INSERT INTO T_PM1020
 		
 	</insert>
 </mapper>
