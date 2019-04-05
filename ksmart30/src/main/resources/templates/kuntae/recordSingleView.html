@@ -12,7 +12,34 @@
 	
 	</th:block>
 	<th:block layout:fragment="customBody">
-	
+<!-- 	<script>
+	$(document).ready(function(){
+		console.log('출,퇴근(개인별) 리스트 출력')
+	    $('#btn_list').on('click',function(){
+	        $.ajax({
+	            url:'/kuntae/recordSingleView',
+	            type:'GET',
+	            dataType:'json',
+	            contentType:'application/json',
+	            success:(data)=>{
+	            	console.log(data);
+	                $('#list').empty();
+	                $(data).each(function(index,item){ //each = foreach (반복문)
+	                    $('#list').append('<tr>');
+	                    $('#list').append('<td>'+item.kor_NM+'</td>');
+	                    $('#list').append('<td>'+item.emp_CD+'</td>');
+	                    $('#list').append('<td>'+item.work_DT+'</td>');
+	                    $('#list').append('<td>'+item.start_TIME+'</td>'); 
+	                    $('#list').append('<td>'+item.end_TIME+'</td>');
+	                    $('#list').append('</tr>');
+	                    
+	                }); 
+	                            
+	            }
+	        });
+	    });
+		
+</script> -->
 	          <div class="">
             <div class="page-title">
               <div class="title_left">
@@ -34,7 +61,7 @@
 	
 <div class="clearfix"></div>
 		<div class="col-md-12 col-sm-12 col-xs-12">
-			
+			<form>
 				<table class="table">
 					<tbody>
 
@@ -60,9 +87,12 @@
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control">
+									
+                   						<button id="btn_list" type="button"><i class="fa fa-search"></i></button>
+									
 								</div>
 							</td>
-
+                   						
 							<th>이름</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
@@ -70,9 +100,11 @@
 								</div>
 							</td>
 						</tr>
-
+					
 					</tbody>
 				</table>
+				
+				</form>
 				</div>
 				</div>
 				
@@ -99,87 +131,168 @@
                   </div>
                   <div class="x_content">
 					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th bgcolor="#EAEAEA">부서</th>
-                          <th bgcolor="#EAEAEA">직급</th>
-                          <th bgcolor="#EAEAEA">성명</th>
-                          <th bgcolor="#EAEAEA">구분</th>
-                          <th bgcolor="#EAEAEA">출근</th>
-                          <th bgcolor="#EAEAEA">지각</th>                                                  
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA">土</th>
-                          <th bgcolor="#EAEAEA">日</th>
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA">土</th>
-                          <th bgcolor="#EAEAEA">日</th>
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA">土</th>
-                          <th bgcolor="#EAEAEA">日</th>
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA">土</th>
-                          <th bgcolor="#EAEAEA">日</th>
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th bgcolor="#EAEAEA"></th>
-                          <th bgcolor="#EAEAEA"></th>
-                          <th bgcolor="#EAEAEA"></th>
-                          <th bgcolor="#EAEAEA"></th>    
-                          <th bgcolor="#EAEAEA">1</th>
-                          <th bgcolor="#EAEAEA">2</th>
-                          <th bgcolor="#EAEAEA">3</th>
-                          <th bgcolor="#EAEAEA">4</th>
-                          <th bgcolor="#EAEAEA">5</th>
-                          <th bgcolor="#EAEAEA">6</th>
-                          <th bgcolor="#EAEAEA">7</th>
-                          <th bgcolor="#EAEAEA">8</th>
-                          <th bgcolor="#EAEAEA">9</th>
-                          <th bgcolor="#EAEAEA">10</th>
-                          <th bgcolor="#EAEAEA">11</th>
-                          <th bgcolor="#EAEAEA">12</th>
-                          <th bgcolor="#EAEAEA">13</th>
-                          <th bgcolor="#EAEAEA">14</th>
-                          <th bgcolor="#EAEAEA">15</th>
-                          <th bgcolor="#EAEAEA">16</th>
-                          <th bgcolor="#EAEAEA">17</th>
-                          <th bgcolor="#EAEAEA">18</th>
-                          <th bgcolor="#EAEAEA">19</th>
-                          <th bgcolor="#EAEAEA">20</th>
-                          <th bgcolor="#EAEAEA">21</th>
-                          <th bgcolor="#EAEAEA">22</th>
-                          <th bgcolor="#EAEAEA">23</th>
-                          <th bgcolor="#EAEAEA">24</th>
-                          <th bgcolor="#EAEAEA">25</th>
-                          <th bgcolor="#EAEAEA">26</th>
-                          <th bgcolor="#EAEAEA">27</th>
-                          <th bgcolor="#EAEAEA">28</th>
-                          <th bgcolor="#EAEAEA">29</th>
-                          <th bgcolor="#EAEAEA">30</th>
-                        </tr>                        
-                      </tbody>
-                    </table>
+						<table class="table">
+									<thead>
+					
+										<tr>
+											<th rowspan="2">직급</th>
+											<th rowspan="2">성명</th>
+											<th rowspan="2">년월</th>
+											<th rowspan="2">구분</th>
+											<th colspan="1">연차</th>
+											<th colspan="1">PJT</th>
+											<th colspan="2">1</th>
+											<th colspan="2">2</th>
+											<th colspan="2">3</th>
+											<th colspan="2">4</th>
+											<th colspan="2">5</th>
+											<th colspan="2">6</th>
+											<th colspan="2">7</th>
+											<th colspan="2">8</th>
+											<th colspan="2">9</th>
+											<th colspan="2">10</th>
+											<th colspan="2">11</th>
+											<th rowspan="2">12</th>
+											<th rowspan="2">13</th>
+											<th rowspan="2">14</th>
+											<th rowspan="2">15</th>
+											<th rowspan="2">16</th>
+											<th rowspan="2">17</th>
+											<th rowspan="2">18</th>
+											<th rowspan="2">19</th>
+											<th rowspan="2">20</th>
+											<th rowspan="2">21</th>
+											<th rowspan="2">22</th>
+											<th rowspan="2">23</th>
+											<th rowspan="2">24</th>
+											<th rowspan="2">25</th>
+											<th rowspan="2">26</th>
+											<th rowspan="2">27</th>
+											<th rowspan="2">28</th>
+											<th rowspan="2">29</th>
+											<th rowspan="2">30</th>
+											<th rowspan="2">31</th>																
+										</tr>
+										<tr>
+											<th>휴가</th>
+											<th>지각</th>	
+											<!-- 1 -->
+											<th>출근</th>
+											<th>퇴근</th>
+											<!-- 2 -->
+											<th>출근</th>
+											<th>퇴근</th>
+											<!-- 3 -->
+											<th>출근</th>
+											<th>퇴근</th>	
+											<!-- 4 -->
+											<th>출근</th>
+											<th>퇴근</th>	
+											<!-- 5 -->
+											<th>출근</th>
+											<th>퇴근</th>	
+											<!-- 6 -->
+											<th>출근</th>
+											<th>퇴근</th>	
+											<!-- 7 -->
+											<th>출근</th>
+											<th>퇴근</th>
+											<!-- 8 -->
+											<th>출근</th>
+											<th>퇴근</th>	
+											<!-- 9 -->
+											<th>출근</th>
+											<th>퇴근</th>	
+											<!-- 10 -->
+											<th>출근</th>
+											<th>퇴근</th>	
+											<!-- 11 -->
+											<th>출근</th>
+											<th>퇴근</th>	
+											
+												
+										</tr>
+									</thead>
+						
+									<tbody>
+										<tr th:each="s : ${singleList}">
+											<td></td>
+											<td th:text="${s.KOR_NM}"></td>
+											<td th:text="${s.WORK_DT}"></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td th:text="${s.START_TIME}"></td>
+											<td th:text="${s.END_TIME}"></td>
+											
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>									
+										</tr>										
+									</tbody>
+						</table>
 					</div>
+					
+<!-- 					<div class="x_content" style="overflow-x:auto">
+                    <table class="table table-bordered">
+                    	<thead>
+                    	<tr>
+                    		<th rowspan="2">성명</th>
+                    		<th rowspan="2">년월</th>
+                    		<th colspan="2">구분</th>
+                    		<th colspan="2">변경(후)</th>
+                    	</tr>
+                    	<tr>
+                    		<th>구분</th>
+                    		<th>계약금액</th>
+                    		<th>지분(%)</th>
+                    		<th>계약금액</th>
+                    	</tr>
+                    	</thead>
+                    	<tbody>
+                    		<tr >
+                    			<td rowspan="2">1</td>
+                    			<td rowspan="2">현대건설(주)</td>
+                    			<td colspan="1" >출근</td>
+                    			<td colspan="1">1,000,000,000</td>
+                    			<td>0.00</td>
+                    			<td>1,000,000,000</td>
+                    		</tr>
+                    		<tr>
+                    			<td>퇴근</td>
+                    			<td>02</td>
+                    			<td>03</td>
+                    			<td>04</td>
+                    		
+                    		</tr>
+                    	</tbody>
+                    	<tbody>
+                    	<tr >
+	                    	<th colspan="2">합계</th>
+	                    	<th scope="row">0.00</th>
+	                    	<th scope="row">1,000,000,000</th>
+	                    	<th scope="row">0.00</th>
+	                    	<th scope="row">1,000,000,000</th>
+                    	</tr>
+                    </tbody></table>
+                  </div> -->
+
                   </div>
                 </div>
               </div>
