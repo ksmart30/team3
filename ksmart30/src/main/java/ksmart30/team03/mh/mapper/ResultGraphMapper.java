@@ -9,8 +9,10 @@ import ksmart30.team03.mh.domain.ResultList;
 public interface ResultGraphMapper {
 	//5.2.1 M/H 계획/실적 그래프 화면에 프로젝트 리스트(왼쪽) 뿌려주기
 	List<ResultList> getResultGraphList();
-	//5.2.1 M/H 계획/실적 그래프 뿌려주기
+	//5.2.1 M/H 계획 그래프 뿌려주기
 	List<ResultList> getResultGraph(String pjt_cd);
+	//5.2.1 M/H 실적 그래프 뿌려주기
+	List<ResultList> getResultGraph2(String pjt_cd);
 	
 }
 

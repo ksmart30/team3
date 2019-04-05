@@ -24,272 +24,216 @@
 	<!-- 리스트뿌려주기 -->
 	<head>
 <script>
-	$(document)
-			.ready(
-					function() {
-						init_charts();
-						console.log('프로젝트 리스트 출력');
+$(document).ready(function() {
+	
+		init_charts();
+		console.log('프로젝트 리스트 출력');
 
-						
-
-						function init_charts() {
-
-							console.log('run_charts  typeof [' + typeof (Chart)
-									+ ']');
-
-							if (typeof (Chart) === 'undefined') {
-								return;
-							}
-
-							console.log('init_charts');
-
-							Chart.defaults.global.legend = {
-								enabled : false
-							};
-
-							/* 	$("#list").bind("click", function(){
-							        var list2 = $('#list').val();
-									console.log(list2);
-							        alert("클릭 이벤트 발생");
-							                         
-							    }); */
-
-							//차트호출 함수
-							function barchart() {
-								/* var data;
-								console.log("리턴값을 전역변수로 사용하자 : "+data);
-								 */
-
-								$("#example-table-1 tr")
-										.click(
-												function() {
-													//문자열 저장할 변수 선언
-													var str = ""
-													//배열선언
-													var tdArr = new Array();
-
-													//현재 클릭된 행<tr>
-													var tr = $(this);
-													var td = tr.children();
-													console.log("row : "
-															+ tr.text());
-
-													var pjt_cd = td.eq(2)
-															.text();
-
-													console.log("pjt_cd : "
-															+ pjt_cd);
-
-													/* 
-													td.each(function(i){
-														tdArr.push(td.eq(i).test());
-														
-													}) */
-													//console.log("tdArr : "+tdArr.text());					
-													$
-															.ajax({
-																url : '/manHour/manHourResultGraph',
-																type : 'GET',
-																dataType : "json",
-																data : {
-																	pjt_cd : pjt_cd
-																},
-																//ajax 배열 값을 전역변수로 선언
-																success : function(
-																		data) {
-
-																	//테이블의 행 클릭시 해당하는 값 출력
-																	$('#chart')
-																			.empty();
-																	$(data)
-																			.each(
-																					function(
-																							index,
-																							item) { //each = foreach (반복문)
-																						var a = item.plan_A;
-																						var b = item.plan_B;
-																						var c = item.plan_C;
-																						var d = item.plan_D;
-																						var e = item.plan_E;
-																						var f = item.plan_F;
-																						var g = item.plan_G;
-																						$(
-																								'#chart')
-																								.append(
-																										'<tr>');
-																						$(
-																								'#chart')
-																								.append(
-																										'<td>'
-																												+ a
-																												+ '</td>');
-																						$(
-																								'#chart')
-																								.append(
-																										'<td>'
-																												+ b
-																												+ '</td>');
-																						$(
-																								'#chart')
-																								.append(
-																										'<td>'
-																												+ c
-																												+ '</td>');
-																						$(
-																								'#chart')
-																								.append(
-																										'<td>'
-																												+ d
-																												+ '</td>');
-																						$(
-																								'#chart')
-																								.append(
-																										'<td>'
-																												+ e
-																												+ '</td>');
-																						$(
-																								'#chart')
-																								.append(
-																										'<td>'
-																												+ f
-																												+ '</td>');
-																						$(
-																								'#chart')
-																								.append(
-																										'<td>'
-																												+ g
-																												+ '</td>');
-																						$(
-																								'#chart')
-																								.append(
-																										'</tr>');
-
-																						console
-																								.log("A : "
-																										+ a
-																										+ " B : "
-																										+ b
-																										+ " C : "
-																										+ c
-																										+ " D : "
-																										+ d
-																										+ " E: "
-																										+ e
-																										+ " F : "
-																										+ f
-																										+ " G : "
-																										+ g);
-
-																						/*chart 연습 시작*/
-																						$(
-																								'#chart')
-																								.on(
-																										'click',
-																										function() {
-																											console
-																													.log(a
-																															+ "나왓?");
-
-																											var ctx = document
-																													.getElementByid("mybarChart3");
-																											var mybarChart3 = new Chart(
-																													ctx,
-																													{
-																														type : 'bar',
-																														data : {
-																															labels : [
-																																	"기획",
-																																	"심의",
-																																	"허가",
-																																	"착공",
-																																	"실시",
-																																	"A/S",
-																																	"준공" ],
-																															datasets : [ {
-																																label : '# of Votes',
-																																backgroundColor : "#3366FF",
-																																data : [
-																																		a,
-																																		b,
-																																		c,
-																																		d,
-																																		e,
-																																		f,
-																																		g ]
-																															} ]
-																														}
-
-																													});
-																										})
-																						/*chart 연습 끝 */
-																					});
-																	/* console.log(data);
-																	return data; */
-																}
-															})
-												})
-								//function 선언 끝부분
-							}
-
-							var result = barchart();
-							if ($('#mybarChart2').length) {
-
-								var ctx = document
-										.getElementById("mybarChart2");
-								var mybarChart = new Chart(
-										ctx,
-										{
-											type : 'bar',
-											data : {
-												labels : [ "기획", "심의", "허가",
-														"착공", "실시", "A/S", "준공" ],
-												datasets : [
-														{
-															label : '# of Votes',
-															backgroundColor : "#3366FF",
-															data : [ 20, 30,
-																	40, 28, 92,
-																	50, 45 ]
-														},
-														{
-															label : '# of Votes',
-															backgroundColor : "#FF0000",
-															data : [ 20, 56,
-																	25, 48, 72,
-																	34, 12 ]
-														} ]
-											},
-
-											options : {
-												scales : {
-													yAxes : [ {
-														ticks : {
-															beginAtZero : true
-														}
-													} ]
-												}
-											}
-										});
-
-							}
+		function init_charts() {
+			console.log('run_charts  typeof [' + typeof (Chart)
+					+ ']');
+			if (typeof (Chart) === 'undefined') {
+				return;
+			}
+			console.log('init_charts');
+			Chart.defaults.global.legend = {
+				enabled : false
+			};
+			
+		//차트호출 함수시작
+		function barchart() {
+			//리턴하기 위한 변수 선언
+			var result;
+			
+			$("#example-table-1 tr").click(function() {//문자열 저장할 변수 선언		
+				var str = ""
+				//배열선언
+				var tdArr = new Array();
+				//현재 클릭된 행<tr>
+				var tr = $(this);
+				var td = tr.children();
+				console.log("row : "+ tr.text());
+				var pjt_cd = td.eq(2).text();
+				console.log("pjt_cd : "+ pjt_cd);	
+				
+				$.ajax({
+						url : '/manHour/manHourResultGraph',
+						type : 'GET',
+						dataType : "json",
+						async:false,
+						data : {pjt_cd : pjt_cd},
+						//ajax 배열 값을 전역변수로 선언
+						success : function(data) {
+							//테이블의 행 클릭시 해당하는 값 출력
+							$('#chart').empty();
+							$(data).each(function(index,item) { //each = foreach (반복문)
+									a = item.plan_A;
+									b = item.plan_B;
+									c = item.plan_C;
+									d = item.plan_D;
+									e = item.plan_E;
+									f = item.plan_F;
+									g = item.plan_G;
+									$('#chart').append('<tr>');
+									$('#chart').append('<td>'+ a+ '</td>');
+									$('#chart').append('<td>'+ b+ '</td>');
+									$('#chart').append('<td>'+ c+ '</td>');
+									$('#chart').append('<td>'+ d+ '</td>');
+									$('#chart').append('<td>'+ e+ '</td>');
+									$('#chart').append('<td>'+ f+ '</td>');
+									$('#chart').append('<td>'+ g+ '</td>');
+									$('#chart').append('</tr>');
+									console.log("A : "+ a+ " B : "+ b+ " C : "+ c+" D : "+ d+ " E: "+ e+ " F : "+ f+ " G : "+ g);
+			
+						});
+							
+					}
+									
+				});								
+				//실적 그래프 값 가져오기 시작!
+				$.ajax({
+					url:'/manHour/manHourResultGraph2',
+					type:'GET',
+					dataType : "json",
+					data : {pjt_cd : pjt_cd},
+					success : function(data) {
+						console.log("실적그래프 값들 출력");
+						console.log(data);						
+						$(data).each(function(index,item){
+							$('#chart2').empty();
+							$('#chart2').append('<tr>');
+							$('#chart2').append('<td>'+ item.work_TIME+ '</td>');
+							$('#chart2').append('<td>'+ item.work_STEP+ '</td>');				
+							$('#chart2').append('</tr>');							
+							console.log("work_time : "+item.work_TIME +"    work_STEP :  "+item.work_STEP);							
+							work_time = item.work_TIME;
+							work_step = item.work_STEP;
+								
+						});
+						console.log("work_time? : "+work_time +"    work_STEP :  "+work_step);
+						if(work_step =='A'){
+							time_a = work_time;
+							//console.log(time_a+" 기획A");		
+						}else{
+							time_a = 0;
 						}
+						if(work_step =='B'){
+							time_b = work_time;
+							//console.log(time_b+" 심의B");
+						}else{
+							time_b = 0;
+							break;
+						}	
+						if(work_step =='C'){
+							time_c = work_time;
+							//console.log(time_c+" 허가C");
+						}else{
+							time_c = 0;
+							break;
+						}
+						if(work_step =='D'){
+							time_d = work_time;
+							//console.log(time_d+" 착공D");
+						}else{
+							time_d = 0;
+						}
+						if(work_step =='E'){
+							time_e = work_time;
+							//console.log(time_e+" 실시E");
+						}else{
+							time_e = 0;
+						}
+						if(work_step =='F'){
+							time_f = work_time;
+							//console.log(time_f+" A/S F");
+						}else{
+							time_f = 0;
+						}
+						if(work_step =='G'){
+							time_g = work_time;
+							//console.log(time_g+" 준공G");
+						}else{
+							time_g = 0;
+						}											
+						console.log("이게나와야 차트에서 사용가능     기획 : "+time_a +"심의 : "+time_b+"허가 : "+time_c+"착공 : "+time_d+ "실시 : "+time_e+"A/S : "+time_f+"준공 " +time_g);
+	
+					}
+					
+				});
+				/* console.log("기획 : "+time_a +"심의 : "+time_b+"평가 : "+time_c+time_d); */
+				
+				//실적 그래프 값 가져오기 끝!			
+				
 
-					});
+				//차트를 넣어보자 시작
+				
+				var ctx = document.getElementById("mybarChart3");
+				var mybarChart = new Chart(ctx,{
+						
+						type : 'bar',
+						data : {
+						labels : [ "기획", "심의", "허가","착공", "실시", "A/S", "준공" ], //X축의 제목
+						datasets : [{			
+								backgroundColor : "#3366FF",
+								data : [ a, b, c, d, e, f, g ]},{ // 변수들->AJAX 실행 후 호출된 값
+								//label : '# of Votes',
+								backgroundColor : "#FF0000",
+								data : [time_a,time_b,time_c,time_d,time_e,time_f,time_g ]}
+								]},
+									options : {
+										scales : {
+											yAxes : [ {
+												ticks : {
+													beginAtZero : true //Y축의 값이 0부터 시작
+												}
+											} ]
+										}
+									}
+								});
+				
+			
+				//차트를 넣어보자 끝
+			});
+			//여기?		
+		}
+		//차트호출 함수끝!
+				
+		var ccc = barchart();
+		
+	}
+
+});
 </script>
 
 
 	</head>
 </th:block>
 <th:block layout:fragment="customBody">
+	<font color="black">
 
-
-	<h1>M/H 계획/실적(그래프)</h1>
-
-	<div></div>
-
-	<!-- <font color="black"> -->
+	<div class="page-title">
+				<div class="title_left">
+					
+					<h2><b>M/H 계획,실적(그래프)</b></h2>
+					<h5><font color="gray"><b>5.M/H 실적관리&nbsp;>&nbsp;&nbsp;5.2프로젝트진행관리</b></font></h5>
+					
+				</div>
+			</div>
+		<div class="x_content" style="text-align: right">
+				<div class="btn-group" >
+					<button class="btn btn-default" type="reset">입력</button>
+					<button class="btn btn-default" type="button">수정</button>
+					<button class="btn btn-default" type="button">삭제</button>
+					<button class="btn btn-default" type="button">저장</button>
+					<button class="btn btn-default" type="button">출력</button>
+						</div>
+			
+				</div>
+	
 	<div class="x_panel">
+				
 		<div class="x_content">
+
 			<div class="col-md-12 col-sm-6 col-xs-12" style="width: 100%">
 				<div class="x_panel">
 					<br>
@@ -300,7 +244,7 @@
 									<tr style="font-size: 15px">
 										<th>◎검색조건 &emsp;</th>
 										<th>마감년월 &emsp;&emsp;&emsp; <input type="date"
-											name=amount value=2019> &emsp;&emsp; <select>
+											name=amount value="0000-00-00"> &emsp;&emsp; <select>
 												<option>&emsp;&emsp;&emsp;</option>
 												<option>전
 													&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;사</option>
@@ -375,10 +319,11 @@
 					<!-- 추가 입력할 정보 창 -->
 					<form>
 						<div class="col-md-12 col-sm-13 col-xs-12">
-							<div class="x_panel">
+							
 								<div class="x_content">
 									<div class="clearfix">
 										<h4>그래프</h4>
+									
 									</div>
 								</div>
 
@@ -386,7 +331,7 @@
 								<div id="graph_bar" style="width: 100%; height: 60px;"></div>
 								<!-- end of user-activity-graph -->
 
-								<div class="" role="tabpanel" data-example-id="togglable-tabs">
+								<div class="" data-example-id="togglable-tabs">
 									<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
 										<li role="presentation" class="active"><a
 											href="#tab_content1" id="home-tab" role="tab"
@@ -409,14 +354,9 @@
 											id="tab_content1" aria-labelledby="home-tab">
 											<div class="col-md-12 col-sm-6 col-xs-12">
 												<div class="x_panel">
-													<div class="x_title">
-														<h4>설계1</h4>
-													</div>
-													<div class="clearfix"></div>
-													<div class="x_content" style="text-align: right">
-														<button type="button" class="btn btn-round btn-primary">입력</button>
-														<button type="button" class="btn btn-round btn-primary">저장</button>
-													</div>
+												
+													
+												
 
 													<!-- 차트 연습 시작 -->
 
@@ -425,21 +365,14 @@
 															<div class="x_panel">
 																<div class="x_title">
 																	<h2>
-																		Bar graph <small>Sessions</small>
+																		Bar graph <small>MH 계획/실적 그래프 (계획:파 실적:빨)</small>
+																		
+																		
 																	</h2>
-																	<ul class="nav navbar-right panel_toolbox">
-																		<li><a class="collapse-link"><i
-																				class="fa fa-chevron-up"></i></a></li>
-																		<li class="dropdown"><a href="#"
-																			class="dropdown-toggle" data-toggle="dropdown"
-																			role="button" aria-expanded="false"><i
-																				class="fa fa-wrench"></i></a>
-																		<li><a class="close-link"><i
-																				class="fa fa-close"></i></a></li>
-																	</ul>
+																	
 																	<div class="clearfix"></div>
 																</div>
-																<div class="x_content">
+																<div class="x_content" >
 																	<canvas id="mybarChart3" width="20" height="10"></canvas>
 																</div>
 
@@ -450,22 +383,17 @@
 
 
 
-
-
-
-
-
 													<!-- 차트 연습 끝 -->
 													<table class="table table-striped jambo_table bulk_action">
 														<thead>
 															<tr class="headings">
-																<th class="column-title">PLAN_A</th>
-																<th class="column-title">PLAN_B</th>
-																<th class="column-title">PLAN_C</th>
-																<th class="column-title">PLAN_D</th>
-																<th class="column-title">PLAN_E</th>
-																<th class="column-title">PLAN_F</th>
-																<th class="column-title">PLAN_G</th>
+																<th class="column-title">기획</th>
+																<th class="column-title">심의</th>
+																<th class="column-title">허가</th>
+																<th class="column-title">착공</th>
+																<th class="column-title">실시</th>
+																<th class="column-title">A/S</th>
+																<th class="column-title">준공</th>
 															</tr>
 														</thead>
 
@@ -475,6 +403,27 @@
 
 														</tbody>
 													</table>
+													
+													
+														<table class="table table-striped jambo_table bulk_action">
+														<thead>
+															<tr class="headings">
+																<th class="column-title">시간</th>
+																<th class="column-title">단계</th>
+															
+															</tr>
+														</thead>
+
+														<tbody id="chart2"
+															style="font-size: 14px; line-height: 25px">
+
+
+														</tbody>
+													</table>
+													
+													
+													
+													
 												</div>
 											</div>
 										</div>
@@ -613,7 +562,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							
 						</div>
 					</form>
 
@@ -622,7 +571,8 @@
 				</div>
 			</div>
 		</div>
-		<!--   </font>   -->
+		</font>
+		
 </th:block>
 <th:block layout:fragment="customJquery">
 

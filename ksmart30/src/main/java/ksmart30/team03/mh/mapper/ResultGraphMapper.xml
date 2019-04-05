@@ -35,4 +35,18 @@
 	</select>
 	
 	
+	<select id="getResultGraph2"
+	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
+	SELECT 
+		sum(WORK_TIME) as WORK_TIME, 
+		PJT_CD, 
+		WORK_STEP
+	FROM t_pm1020  
+	WHERE PJT_CD=#{PJT_CD} 
+	GROUP BY PJT_CD, WORK_STEP;
+	
+	
+	</select>
+	
+	
 </mapper>

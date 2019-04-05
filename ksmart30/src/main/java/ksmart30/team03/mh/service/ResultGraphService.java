@@ -13,15 +13,21 @@ public class ResultGraphService {
 		@Autowired private ResultGraphMapper resultGraphMapper;
 	
 		
-	//M/H계획 실적 그래프 리스트 출력
+	//5.2.1 M/H계획 실적 그래프 리스트 출력
 	public List<ResultList> getResultGraphList() {
 		System.out.println("SERVICE : M/H계획 실적 그래프 리스트 출력");
 		return resultGraphMapper.getResultGraphList();
 	}
-	
+	//5.2.1M/H 계획 그래프 차트에 입력될 값 출력
 	public List<ResultList> getResultGraph(String pjt_cd) {
-		System.out.println("SERVICE : M/H계획 실적 그래프 리스트 출력");
+		System.out.println("SERVICE : M/H계획 실적 그래프 값 출력");
 		return resultGraphMapper.getResultGraph(pjt_cd);
 	}
+	//5.2.1 M/H 계획 그래프 차트에 입력될 값 출력
+		public List<ResultList> getResultGraph2(String pjt_cd) {
+			System.out.println("SERVICE : M/H계획 실적 그래프 값 출력");
+			return resultGraphMapper.getResultGraph2(pjt_cd);
+		}
+	
 	
 }
