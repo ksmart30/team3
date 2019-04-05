@@ -8,9 +8,12 @@ import ksmart30.team00.system.domain.Login;
 @Mapper
 public interface LoginMapper {
 
-    // 0.2.1 로그인 처리
-    Login addLogin(Login login);
+    // 0.2.1 사용자 등록정보 조회 (사원번호(ID), PW)
+    Login getLogin(Login login);
 
-    // 0.2.2 접속 기록 등록
+    // 0.2.2 인사기록카드 조회 (사원번호, 이름)
+    Login getPR(Login login);
+    
+    // 0.2.3 접속 기록 등록
     int addConnect(Ip ip);
 }

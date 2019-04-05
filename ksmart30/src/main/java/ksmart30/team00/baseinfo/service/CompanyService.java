@@ -30,7 +30,7 @@ public class CompanyService {
         System.out.println("(S) 10.3.1.2 본사정보 수정처리 modifyCompany()");
         // 1. 로그인된 아이디 정보 VO에 등록
         
-        company.setAUDIT_ID((String)session.getAttribute("id"));
+        company.setAUDIT_ID((String)session.getAttribute("EMP_NO"));
         System.out.println(company.getAUDIT_ID());
 
         // 1. Mapper 호출을 통해 쿼리 처리

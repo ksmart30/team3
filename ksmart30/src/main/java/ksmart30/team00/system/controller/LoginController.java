@@ -27,13 +27,13 @@ public class LoginController {
 
 	// 0.2 로그인처리
 	@PostMapping("/loginView")
-	public String login(HttpSession session, HttpServletRequest request, Login login) throws UnknownHostException {
+	public String loginView(HttpSession session, HttpServletRequest request, Login login) throws UnknownHostException {
 		System.out.println("(C)(Post) login() : 로그인 처리");
 		// 1. 로그인 처리 실행
 		System.out.println("입력 받은 ID :" + login.getEMP_NO());
 		System.out.println("입력 받은 PW :" + login.getPASS_WD());
 
-		int result = loginService.login(session, request, login);
+		int result = loginService.getLogin(session, request, login);
 
 		// 2. 로그인 처리 결과에 따른 경로이동 (1:성공 0:실패)
 		if(result == 1) {
@@ -45,7 +45,7 @@ public class LoginController {
 
 	// 0.3 로그아웃 처리
 	@GetMapping("/logoutProcess")
-	public String logout(HttpSession session) {
+	public String logoutProcess(HttpSession session) {
 		System.out.println("(C)(Get) logout() : 로그아웃 처리");
 		loginService.logout(session);
 		return "redirect:/loginView";

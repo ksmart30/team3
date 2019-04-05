@@ -7,6 +7,7 @@ public class Login {
 
     private String EMP_NO;
     private String PASS_WD;
+    private String KOR_NM;
 
     public String getEMP_NO() {
         return EMP_NO;
@@ -19,5 +20,11 @@ public class Login {
     }
     public void setPASS_WD(String pASS_WD) {
         PASS_WD = pASS_WD;
+    }
+    public String getKOR_NM() {
+        return KOR_NM;
+    }
+    public void setKOR_NM(String kOR_NM) {
+        KOR_NM = kOR_NM;
     }
 }
