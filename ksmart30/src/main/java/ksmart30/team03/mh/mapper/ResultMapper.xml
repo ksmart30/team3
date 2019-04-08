@@ -10,4 +10,57 @@
 		INSERT INTO T_PM1020
 		
 	</insert>
+	
+	<!--  -->
+	<select id="getListView"
+			resultType="ksmart30.team03.mh.domain.Result">
+		SELECT
+	A.EMP_NO,
+	A.WORK_DT,	
+	ISNULL(E.PJT_NM,'****') AS PJT_CD,
+	A.WORK_SPEC,	
+	ISNULL(D.LEVEL2_NM,'****') AS DEPT_CD,
+	A.WORK_TIME,
+	A.ETC_SPEC,		
+	ISNULL(C.LEVEL2_NM,'****') AS WORK_STEP,
+	ISNULL(B.LEVEL2_NM,'****') AS JIKGUP_CD
+	
+FROM T_PM1020_BNT A, 
+	T_SC9100 B,
+	T_SC9100 C,
+	T_SC9100 D,
+	T_SM3000_2016 E
+	WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+	AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+	AND((A.DEPT_CD *= D.LEVEL2_CD) AND (D.LEVEL1_CD='390' AND D.BUSI_GB='H'))
+	AND(A.PJT_CD *= E.PJT_CD)
+	</select>
+	
+	<!--  -->
+	<select id="getListSearch"
+			parameterType="ksmart30.team03.mh.domain.Result"
+			resultType="ksmart30.team03.mh.domain.Result">
+		SELECT
+	A.EMP_NO,
+	A.WORK_DT,	
+	ISNULL(E.PJT_NM,'****') AS PJT_CD,
+	A.WORK_SPEC,	
+	ISNULL(D.LEVEL2_NM,'****') AS DEPT_CD,
+	A.WORK_TIME,
+	A.ETC_SPEC,		
+	ISNULL(C.LEVEL2_NM,'****') AS WORK_STEP,
+	ISNULL(B.LEVEL2_NM,'****') AS JIKGUP_CD
+	
+FROM T_PM1020_BNT A, 
+	T_SC9100 B,
+	T_SC9100 C,
+	T_SC9100 D,
+	T_SM3000_2016 E
+	WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+	AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+	AND((A.DEPT_CD *= D.LEVEL2_CD) AND (D.LEVEL1_CD='390' AND D.BUSI_GB='H'))
+	AND(A.PJT_CD *= E.PJT_CD)
+	AND A.EMP_NO = '%' + #{EMP_NO} + '%'
+	</select>
+	
 </mapper>

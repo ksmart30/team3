@@ -14,8 +14,14 @@ public class ApprovalService {
 	private ApprovalMapper approvalMapper;
 	//5.2  실적 승인(List)
 	public List<Result> approvalSearchView(){
-		System.out.println("approvalSearchView 요청");
-		return approvalMapper.getapprovalSearchView();	
+		System.out.println("실적승인 approvalSearchView 요청");
+		return approvalMapper.getApprovalSearchView();	
+	}
+	public List<Result> getApprovalSearchDate(String WORK_DT) {
+		System.out.println("실적승인 getApprovalSearchDate 날짜검색요청");
+		String Search_WORK_DT = WORK_DT.substring(0,4)+WORK_DT.substring(5, 7)+WORK_DT.substring(8, 10);
+		System.out.println(Search_WORK_DT);
+		return approvalMapper.getApprovalSearchDate(Search_WORK_DT);
 	}
 	
 }

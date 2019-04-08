@@ -361,31 +361,16 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="dataTables_length" id="datatable_length">
-										<label><font style="vertical-align: inherit;"><font
-												style="vertical-align: inherit;"> </font></font><select
-											name="datatable_length" aria-controls="datatable"
-											class="form-control input-sm"><option value="10"><font
-														style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">10</font></font></option>
-												<option value="25"><font
-														style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">25</font></font></option>
-												<option value="50"><font
-														style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">50</font></font></option>
-												<option value="100"><font
-														style="vertical-align: inherit;"><font
-														style="vertical-align: inherit;">100</font></font></option></select><font
-											style="vertical-align: inherit;"><font
-												style="vertical-align: inherit;"></font></font></label>
+										<label></label>
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div id="datatable_filter" class="dataTables_filter">
-										<label><font style="vertical-align: inherit;"><font
-												style="vertical-align: inherit;">검색:</font></font><input
-											type="search" class="form-control input-sm" placeholder=""
-											aria-controls="datatable"></label>
+										<label>
+										<button id="btn-search" class="btn">검색
+										</button>
+										<input type="search" class="form-control input-sm" placeholder=""
+												aria-controls="datatable"></label>
 									</div>
 								</div>
 							</div>
@@ -400,8 +385,7 @@
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">부서코드 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작업시간 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">상세내용</font></font></th>
-                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">직급코드 </font></font></th>
-                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전문가 </font></font></th>                                                       
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">직급코드 </font></font></th>                                                                              
                             <th class="bulk-actions" colspan="7">
                               <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                             </th>
@@ -409,6 +393,19 @@
                         </thead>
 
                         <tbody>
+                        	 <tr th:each="l : ${list}" style="color:black;">		                       
+		                        <td th:text="${l.EMP_NO}"></td>
+		                        <td th:text="${l.WORK_DT}"></td>
+		                        <td th:text="${l.PJT_CD}"></td>
+		                        <td th:text="${l.WORK_STEP}"></td>
+		                        <td th:text="${l.WORK_SPEC}"></td>
+		                        <td th:text="${l.DEPT_CD}"></td>
+		                        <td th:text="${l.WORK_TIME}"></td>
+		                        <td th:text="${l.ETC_SPEC}"></td>
+		                        <td th:text="${l.JIKGUP_CD}"></td>
+		                        <td></td>
+		                       <!--  <td th:text="${l.A_DEPT_CD}"></td> -->                                       
+		                       </tr>
                           <tr class="even pointer">                            
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">임홍근</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
@@ -418,8 +415,7 @@
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                         
                                                      
                           </tr>  
                           
@@ -432,8 +428,7 @@
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                         
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                  
                           </tr>   
                           
                            <tr class="even pointer">                            
@@ -445,8 +440,7 @@
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                         
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                  
                           </tr>   
                           
                            <tr class="even pointer">                           
@@ -458,8 +452,7 @@
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                 
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                                            
                           </tr>                                            
                         </tbody>
                         
@@ -472,8 +465,7 @@
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
                             <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                    
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                            
                           </tr>
                           
                       </table>							
