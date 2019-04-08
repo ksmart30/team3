@@ -1,1 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team00.baseinfo.mapper.KuntaeScheduleMapper">
+    <!-- 10.3.5.1 근태월력표 조회(왼쪽) -->
+    <select id="getKuntaeScheduleLeftList"
+            parameterType="ksmart30.team00.baseinfo.domain.KuntaeSchedule"
+            resultType="ksmart30.team00.baseinfo.domain.KuntaeSchedule">
+            DECLARE @Calendar DATETIME = #{TODAY}
+            SELECT 
+            NUMBER M_NUM,
+            DATEPART(DW, CONVERT(DATETIME, @Calendar)+ NUMBER-1) M_PART,
+            DATENAME(DW, CONVERT(DATETIME, @Calendar)+ NUMBER-1) M_NAME,
+            DATEDIFF(WK, @Calendar, DATEADD(D, NUMBER-1, @Calendar)) WK,
+            (CASE CONVERT(VARCHAR(8), CONVERT(DATETIME, @Calendar) + NUMBER - 1, 112) 
+            WHEN CONVERT(VARCHAR(8), GETDATE(), 112) THEN '(오늘)' ELSE '' END) TODAY
+            FROM MASTER..SPT_VALUES
+            WHERE TYPE = 'P'
+            AND NUMBER BETWEEN 1 AND DATEDIFF(D, @Calendar, DATEADD(MM, 1, @Calendar))
+    </select>
+</mapper>
