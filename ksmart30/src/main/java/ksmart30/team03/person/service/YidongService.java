@@ -15,4 +15,9 @@ public class YidongService {
 		System.out.println("getYidongList 메서드 호출 서비스");
 		return yidongMapper.getYidongList();
 	};
+	
+	public List<Yidong> getYidongList2(String emp_no) {
+		System.out.println("getYidongList2 메서드 입력폼에 발령전 정보 출력 서비스");
+		return yidongMapper.getYidongList2(emp_no);
+	}
 }

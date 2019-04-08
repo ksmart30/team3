@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team03.person.domain.Yidong;
 import ksmart30.team03.person.service.YidongService;
@@ -15,15 +17,17 @@ public class YidongController {
 	@Autowired YidongService yidongService;
 
 	@GetMapping("/person/personYidongListView")
-	public String yidongList(Model model) {
+	public String personYidongListView(Model model) {
 		System.out.println("yidongList 메서드 호출 컨트롤러 ");
 		List<Yidong> result = yidongService.getYidongList();
 		model.addAttribute("yidongList", result);
 		return "person/yidong/yidongListView";
 	}
-	@GetMapping("/person/yidong/insertForm")
-	public String yidongInsertForm() {
-		return "person/yidong/yidongWriteView";
+	@GetMapping("/person/personYidongListWriteView")
+	public @ResponseBody List<Yidong> personYidongListWriteView(@RequestParam(value = "emp_no") String emp_no) {
+		List<Yidong> result = yidongService.getYidongList2(emp_no);
+		System.out.println("발령 전 정보 리스트 : "+result);
+		return result;
 	}
 	@GetMapping("/person/yidong/updateForm")
 	public String yidongUpdateForm() {

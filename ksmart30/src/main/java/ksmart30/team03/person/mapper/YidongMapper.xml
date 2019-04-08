@@ -16,12 +16,12 @@
 	</select>
 
 
-	<select id="getYidong" resultType="ksmart30.team03.person.domain.Yidong">
-		SELECT EMP_NO,DEPT_NM,JIKGUP_NM 
-		FROM T_HM5000 a, 
-		(SELECT MAX(PAY_YYMM) PAY_YYMM FROM T_HM5000 
-		GROUP BY PAY_YYMM) b  
-		WHERE a.PAY_YYMM=b.PAY_YYMM
+	<select id="getYidongList2" resultType="ksmart30.team03.person.domain.Yidong" parameterType="String">
+		SELECT a.EMP_NO,a.KOR_NM,a.JIKGUP_CD,b.LEVEL2_NM AS JIKGUP_NM,a.JIKCHK_CD, c.LEVEL2_NM AS JIKCHK_NM,DEPT_NM 
+		FROM T_HM1000 a 
+		JOIN T_SC9100 b ON a.JIKGUP_CD=b.LEVEL2_CD
+		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
+		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO=#{EMP_NO}
 	</select>
 
 </mapper>

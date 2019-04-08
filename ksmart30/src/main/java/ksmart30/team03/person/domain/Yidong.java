@@ -1,7 +1,10 @@
 package ksmart30.team03.person.domain;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Yidong {
-	private int EMP_NO;
+	private String EMP_NO;
 	private String KOR_NM;
 	private int DEPT_CD;
 	private int JIKGUP_CD;
@@ -9,7 +12,7 @@ public class Yidong {
 	private String DEPT_NM;
 	private String JIKGUP_NM;
 	private String JIKCHK_NM;
-	public int getEMP_NO() {
+	public String getEMP_NO() {
 		return EMP_NO;
 	}
 	public int getDEPT_CD() {
@@ -48,7 +51,7 @@ public class Yidong {
 	public void setJIKCHK_NM(String jIKCHK_NM) {
 		JIKCHK_NM = jIKCHK_NM;
 	}
-	public void setEMP_NO(int eMP_NO) {
+	public void setEMP_NO(String eMP_NO) {
 		EMP_NO = eMP_NO;
 	}
 	public String getKOR_NM() {

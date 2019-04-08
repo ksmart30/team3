@@ -7,7 +7,10 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<title>이동자료 조회 및 승인</title>
 	<th:block th:include="layout/customHead"></th:block>
 	
@@ -30,8 +33,50 @@
 		            }
 		        });
 		    });
+		    
+		    $("#yidongTable tr").click(function() {//문자열 저장할 변수 선언		
+
+				//현재 클릭된 행<tr>
+				var tr = $(this);
+				var td = tr.children();
+				console.log("row : "+ tr.text());
+				//선택 행의 색 바꾸기
+				$("#yidongTable tr").css("background-color", "#ffffff");
+				$(this).css( "background-color", "#f4f4f4" );
+				//선택 행 중에서 인덱스 번호 0인 값 가져옴(emp_no)
+				var emp_no = td.eq(0).text();
+				console.log("emp_no : "+ emp_no);
+				
+				$.ajax({
+					url:'/person/personYidongListWriteView',
+					type:'GET',
+					dataType : "json",
+					data : {emp_no : emp_no},
+					success : function(data) {
+						console.log("발령 전 정보 출력");
+						console.log(data);
+						$(data).each(function(index,item){
+							$('#yidongInsert').empty();
+							$('#yidongInsert').append('<tr>');
+							$('#yidongInsert').append('<td>'+ item.emp_NO+ '</td><td>'
+							
+							+ item.kor_NM + '</td><td>'
+							+ item.dept_NM+ '</td>');
+							$('#yidongInsert').append('<td>'+ item.jikgup_NM+ '</td>');
+							$('#yidongInsert').append('<td>'+ item.jikchk_NM+ '</td>');
+							$('#yidongInsert').append('</tr>');							
+
+						});
+						
+						console.log("정보 잘 나왔는지 확인");
+	
+					}
+					
+				});
 			
+			});
 		});
+		
 
 </script>
 </th:block>
@@ -68,12 +113,12 @@
 					<thead>
 						<tr>
 							
-							<th>사번</th>
-							<th>이름</th>
+							<th>사원번호</th>
+							<th>성명</th>
 							
 						</tr>
 					</thead>
-					<tbody  >
+					<tbody  id = "yidongTable">
 						<tr th:each="y : ${yidongList}">
 							<td th:text="${y.EMP_NO}"></td>
 							<td th:text="${y.KOR_NM}"></td>
@@ -89,29 +134,35 @@
                -->
     <div class="col-md-6 col-sm-6 col-xs-12">           
 	<div class="x_panel">
-		<div class="x_title">
-			<h2>
-				이동자료 insert form <small>수정중</small>
-			</h2>
-			<ul class="nav navbar-right panel_toolbox">
-				<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-				</li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" role="button" aria-expanded="false"><i
-						class="fa fa-wrench"></i></a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Settings 1</a></li>
-						<li><a href="#">Settings 2</a></li>
-					</ul></li>
-				<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-			</ul>
-			<div class="clearfix"></div>
-		</div>
+
+			<div class="title_left">
+				<h3>이동 자료 insert form</h3>
+			</div>
+			<div class="col-md-12 col-xs-12" style="color: black;"></div>
+			<!----------------------------------- 조건별검색(부장님)----------------------------------------- -->
+
+			<div class="col-md-12 col-xs-12">
+				<form class="form-horizontal form-label-left input_mask" >
+					<table id="datatable-responsive" class="table table-bordered" >
+						<thead>
+							<tr>
+								<th>사원번호</th>
+								<th>성명</th>
+								<th>소속부서</th>
+								<th>직 급</th>
+								<th>직 책</th>
+							</tr>
+						
+						</thead>
+						<tbody id="yidongInsert">
+						
+						</tbody>
+					</table>
+				</form>
+			</div>
+		
 		<div class="x_content" >
-			<tr th:each="y : ${yidongList}">
-				<td th:text="${y.EMP_NO}"></td>
-				<td th:text="${y.KOR_NM}"></td>
-			</tr>
+		
 				<button type="submit" class="btn btn-primary">등록</button>
 		</div>
 	</div>

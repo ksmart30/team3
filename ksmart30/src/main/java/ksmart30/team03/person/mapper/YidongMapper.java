@@ -9,4 +9,5 @@ import ksmart30.team03.person.domain.Yidong;
 @Mapper
 public interface YidongMapper {
 	List<Yidong> getYidongList();
+	List<Yidong> getYidongList2(String emp_no);
 }
