@@ -36,11 +36,11 @@ function searchResult(crt_date, end_date){
 $(document).ready(function() {	
 	
 	$('#btn-search').click(function(){		
-		var crt_date_format = $('#crt_date').val();
-		var end_date_format = $('#end_date').val();
+		let crt_date_format = $('#crt_date').val();
+		let end_date_format = $('#end_date').val();
 		
-		var crt_date = crt_date_format.substr(0,4)+crt_date_format.substr(5,2)+crt_date_format.substr(8,2);
-		var end_date = end_date_format.substr(0,4)+end_date_format.substr(5,2)+end_date_format.substr(8,2);
+		let crt_date = crt_date_format.substr(0,4)+crt_date_format.substr(5,2)+crt_date_format.substr(8,2);
+		let end_date = end_date_format.substr(0,4)+end_date_format.substr(5,2)+end_date_format.substr(8,2);
 		
 		console.log(crt_date+"날짜야 나오니?"+end_date);
 		searchResult(crt_date,end_date);		
@@ -62,24 +62,31 @@ $(document).ready(function() {
 			
 		//차트호출 함수시작
 		function barchart() {
-			//리턴하기 위한 변수 선언
-			var result;
+			
+			let time_a = 0;
+			let time_b = 0;
+			let time_c = 0;
+			let time_d = 0;
+			let time_e = 0;
+			let time_f = 0;
+			let time_g = 0;
+			let time_z = 0;
 			
 			$("#list_table tr").click(function() {//문자열 저장할 변수 선언		
-				var str = ""
+				let str = ""
 				//배열선언
-				var tdArr = new Array();
+				let tdArr = new Array();
 				//현재 클릭된 행<tr>
-				var tr = $(this);
-				var td = tr.children();
+				let tr = $(this);
+				let td = tr.children();
 				console.log("row : "+ tr.text());
 				//선택한 행의 색을 바꿔주기 위한 것
 				$("#list_table tr").css("background-color", "#ffffff");
 				$(this).css( "background-color", "#f4f4f4" );
 				//선택한 행중에서 인덱스 번호가 2인 값을 가져옴 (pjt_cd)
-				var pjt_cd = td.eq(2).text();
+				let pjt_cd = td.eq(2).text();
 				console.log("pjt_cd : "+ pjt_cd);	
-				
+				//계획 그래프 값 가져오기 시작!
 				$.ajax({
 						url : '/manHour/manHourResultGraph',
 						type : 'GET',
@@ -91,29 +98,30 @@ $(document).ready(function() {
 							//테이블의 행 클릭시 해당하는 값 출력
 							$('#chart').empty();
 							$(data).each(function(index,item) { //each = foreach (반복문)
-									a = item.plan_A;
-									b = item.plan_B;
-									c = item.plan_C;
-									d = item.plan_D;
-									e = item.plan_E;
-									f = item.plan_F;
-									g = item.plan_G;
+									plan_a = item.plan_A;
+									plan_b = item.plan_B;
+									plan_c = item.plan_C;
+									plan_d = item.plan_D;
+									plan_e = item.plan_E;
+									plan_f = item.plan_F;
+									plan_g = item.plan_G;
 									$('#chart').append('<tr>');
-									$('#chart').append('<td>'+ a+ '</td>');
-									$('#chart').append('<td>'+ b+ '</td>');
-									$('#chart').append('<td>'+ c+ '</td>');
-									$('#chart').append('<td>'+ d+ '</td>');
-									$('#chart').append('<td>'+ e+ '</td>');
-									$('#chart').append('<td>'+ f+ '</td>');
-									$('#chart').append('<td>'+ g+ '</td>');
+									$('#chart').append('<td>'+plan_a+ '</td>');
+									$('#chart').append('<td>'+plan_b+ '</td>');
+									$('#chart').append('<td>'+plan_c+ '</td>');
+									$('#chart').append('<td>'+plan_d+ '</td>');
+									$('#chart').append('<td>'+plan_e+ '</td>');
+									$('#chart').append('<td>'+plan_f+ '</td>');
+									$('#chart').append('<td>'+plan_g+ '</td>');
 									$('#chart').append('</tr>');
-									console.log("A : "+ a+ " B : "+ b+ " C : "+ c+" D : "+ d+ " E: "+ e+ " F : "+ f+ " G : "+ g);
-			
+									console.log("A : "+plan_a+ " B : "+ plan_b+ " C : "+ plan_c+" D : "+ plan_d+ " E: "+ plan_e+ " F : "+ plan_f+ " G : "+ plan_g);
 						});
 							
 					}
 									
-				});								
+				});
+				//계획 그래프 값 가져오기 끝!
+				
 				//실적 그래프 값 가져오기 시작!
 				$.ajax({
 					url:'/manHour/manHourResultGraph2',
@@ -124,79 +132,84 @@ $(document).ready(function() {
 						console.log("실적그래프 값들 출력");
 						console.log(data);						
 						$(data).each(function(index,item){
-							console.log("work_time : "+item.work_TIME +"    work_STEP :  "+item.work_STEP);		
-						
-							$('#chart2').empty();
-							$('#chart2').append('<tr>');
-							$('#chart2').append('<td>'+ item.work_STEP+ '</td>');	
-							$('#chart2').append('<td>'+ item.work_TIME+ '</td>');										
-							$('#chart2').append('</tr>');	
-							
-							if(item.work_STEP !='A' || item.work_STEP !='B' || item.work_STEP !='C' ||item.work_STEP !='D' || item.work_STEP !='E' || item.work_STEP !='F' ||item.work_STEP !='G'){
-								time_a = 0;
-								time_b = 0;
-								time_c = 0;
-								time_d = 0;
-								time_e = 0;
-								time_f = 0;
-								time_g = 0;
-								time_z = 0;									
-							}									
-							if(item.work_STEP =='B'){
-								time_b = item.work_TIME;	
-								console.log("time_b : "+time_b);
-								
+							console.log("work_time : "+item.work_TIME +"    work_STEP :  "+item.work_STEP);								
+							//WORK_STEP에 따른 WORK_TIME을 가져오기 위한 조건문							
+							if(item.work_STEP =='A'){
+								time_a = item.work_TIME;	
+								console.log("time_a : "+time_a);								
 							}
+							if(item.work_STEP =='B'){
+								time_b = item.work_TIME;
+								console.log("time_b : "+time_b);								
+							}							
 							if(item.work_STEP =='C'){
 								time_c = item.work_TIME;
-								console.log("time_c : "+time_c);
-								
+								console.log("time_c : "+time_c);								
 							}
 							if(item.work_STEP =='D'){
 								time_d = item.work_TIME;
-								console.log("time_d : "+time_d);
-								
+								console.log("time_d : "+time_d);								
 							}
 							if(item.work_STEP =='E'){
 								time_e = item.work_TIME;
-								console.log("time_e : "+time_e);
-								
+								console.log("time_e : "+time_e);								
 							}
 							if(item.work_STEP =='F'){
 								time_f = item.work_TIME;
-								console.log("time_f : "+time_f);
-								
+								console.log("time_f : "+time_f);								
 							}
 							if(item.work_STEP =='G'){
 								time_g = item.work_TIME;
-								console.log("time_g : "+time_g);
-								
+								console.log("time_g : "+time_g);								
 							}
 							if(item.work_STEP =='Z'){
 								time_z = item.work_TIME;
-								console.log("time_z : "+time_z);
-								return false;
-							}		
-						});							
+								console.log("time_z : "+time_z);								
+							}
+							$('#chart2').empty();
+							$('#chart2').append('<tr>');
+							$('#chart2').append('<td>'+time_a+ '</td>');
+							$('#chart2').append('<td>'+time_b+ '</td>');
+							$('#chart2').append('<td>'+time_c+ '</td>');
+							$('#chart2').append('<td>'+time_d+ '</td>');	
+							$('#chart2').append('<td>'+time_e+ '</td>');
+							$('#chart2').append('<td>'+time_f+ '</td>');	
+							$('#chart2').append('<td>'+time_g+ '</td>');	
+							$('#chart2').append('<td>'+time_z+ '</td>');
+							$('#chart2').append('</tr>');														
+						});																	
 					}					
-				});
-						
+				});						
 				 console.log(time_a +" / "+time_b+" / "+time_c+" / "+time_d+" / "+time_e+" / "+time_f+" / "+time_g); 
 				
 				//실적 그래프 값 가져오기 끝!			
 				
-
-				//차트를 넣어보자 시작
-				
-				var ctx = document.getElementById("mybarChart3");
-				var mybarChart = new Chart(ctx,{
+				/* //인건비(계획) 그래프 값 가져오기 시작!(나중에 다시 시작해보자!)		
+				$.ajax({
+					url:'/manHour/manHourResultGraph3',
+					data:{pjt_cd:pjt_cd},
+					type:'GET',
+					dataType : "json",
+					sucess:function(data){
+						console.log("인건비누계그래프 실행");
 						
+					}
+					
+					
+				});
+
+				//인건비 그래프 값 가져오기 끝! */
+
+				//차트 시작
+				
+				let ctx = document.getElementById("mybarChart3");
+				let mybarChart = new Chart(ctx,{						
 						type : 'bar',
 						data : {
 						labels : [ "기획", "심의", "허가","착공", "실시", "A/S", "준공" ], //X축의 제목
 						datasets : [{			
 								backgroundColor : "#3366FF",
-								data : [ a, b, c, d, e, f, g ]},{ // 변수들->AJAX 실행 후 호출된 값
+								data : [ plan_a, plan_b, plan_c, plan_d, plan_e, plan_f, plan_g ]},{ // 변수들->AJAX 실행 후 호출된 값
 								//label : '# of Votes',
 								backgroundColor : "#FF0000",
 								data : [time_a,time_b,time_c,time_d,time_f,time_g]}
@@ -211,15 +224,13 @@ $(document).ready(function() {
 										}
 									}
 								});
+				//차트 끝
 				
 			
-				//차트를 넣어보자 끝
-			});
-			//여기?		
+			});					
 		}
-		//차트호출 함수끝!
-				
-		var ccc = barchart();
+		//차트호출 함수끝!	
+		let ccc = barchart();
 		
 	}
 		
@@ -240,16 +251,7 @@ $(document).ready(function() {
 					
 				</div>
 			</div>
-		<div class="x_content" style="text-align: right">
-				<div class="btn-group" >
-					<button class="btn btn-default" type="reset">입력</button>
-					<button class="btn btn-default" type="button">수정</button>
-					<button class="btn btn-default" type="button">삭제</button>
-					<button class="btn btn-default" type="button">저장</button>
-					<button class="btn btn-default" type="button">출력</button>
-						</div>
-			
-				</div>
+		
 	
 	<div class="x_panel">
 				
@@ -408,8 +410,15 @@ $(document).ready(function() {
 														<table class="table table-striped jambo_table bulk_action">
 														<thead>
 															<tr class="headings">
-																<th class="column-title">단계</th>
-																<th class="column-title">시간</th>
+																<th class="column-title">기획</th>
+																
+																<th class="column-title">심의</th>																
+																<th class="column-title">허가</th>																
+																<th class="column-title">착공</th>																
+																<th class="column-title">실시</th>																
+																<th class="column-title">A/S</th>
+																<th class="column-title">준공</th>
+																<th class="column-title">기타</th>
 																														
 															</tr>
 														</thead>

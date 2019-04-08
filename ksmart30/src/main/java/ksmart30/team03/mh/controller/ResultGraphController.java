@@ -34,13 +34,12 @@ public class ResultGraphController {
 		System.out.println("CONTROLLER : M/H계획 실적 검색화면으로 이동");
 		System.out.println("시작날짜 : "+ crt_date+" 마감날짜 : "+end_date);
 		List<ResultList> data2 = resultGraphService.getResultGraphListDate(crt_date, end_date);
+
 		System.out.println("날짜별 검색 data"+data2);
 		model.addAttribute("graphList", data2);
 		return "mh/result/resultPlanGraphView";
 	}
-	
-	
-	
+
 	// 5.2.1 M/H 계획(그래프)에 해당하는 값 출력 컨트롤러
 	@GetMapping("/manHour/manHourResultGraph")
 	public @ResponseBody List<ResultList> manHourPlanGraphList(@RequestParam(value = "pjt_cd") String pjt_cd) {
@@ -55,16 +54,17 @@ public class ResultGraphController {
 	public @ResponseBody List<ResultList> manHourPlanGraphList2(@RequestParam(value = "pjt_cd") String pjt_cd) {
 		System.out.println("cd : " + pjt_cd);
 		List<ResultList> data = resultGraphService.getResultGraph2(pjt_cd);
-		System.out.println("data2"+data);
-		
-		/*	for(int i=0; i<data.size(); i++) {
-			
-				Map map =(HashMap)data.get(i);
-				System.out.println(map+"map");
-			
-		}*/
+		System.out.println("data2"+data);		
 		return data;
 	}
-
+	/*
+	 * // 5.2.1 M/H 인건비(그래프)에 해당하는 값 출력 컨트롤러
+	 * 
+	 * @GetMapping("/manHour/manHourResultGraph3") public @ResponseBody
+	 * List<ResultList> manHourPlanGraphList3(@RequestParam(value = "pjt_cd") String
+	 * pjt_cd) { System.out.println("cd : " + pjt_cd); List<ResultList> data =
+	 * resultGraphService.getResultGraph3(pjt_cd); System.out.println("data3"+data);
+	 * return data; }
+	 */
 	
 }

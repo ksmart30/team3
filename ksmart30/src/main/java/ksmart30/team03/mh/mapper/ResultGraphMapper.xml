@@ -38,7 +38,7 @@
 		
 	</select>
 	
-	<!--5.2.1 MH 계획,실적 차트 출력 select문  -->
+	<!--5.2.1 MH 계획,실적 차트 출력 select문 (계획) -->
 	<select id="getResultGraph" 
 	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
 		SELECT 
@@ -54,7 +54,7 @@
 		WHERE PJT_CD=#{PJT_CD} GROUP BY PJT_CD;	
 	</select>
 	
-	
+	<!--5.2.1 MH 계획,실적 차트 출력 select문 (실적) -->
 	<select id="getResultGraph2"
 	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
 	SELECT 
@@ -64,9 +64,26 @@
 	FROM t_pm1020  
 	WHERE PJT_CD=#{PJT_CD} 
 	GROUP BY PJT_CD, WORK_STEP;
-	
-	
+
 	</select>
 	
+	<!--5.2.1 MH 계획,실적 차트 출력 select문 (단계별 인건비 누계) -->
+	<select id="getResultGraph3"
+	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
+		SELECT 
+			sum(PLAN_A*DANGA) as PLAN_A, 
+			sum(PLAN_B*DANGA) as PLAN_B,
+			sum(PLAN_C*DANGA) as PLAN_C,
+			sum(PLAN_D*DANGA) as PLAN_D,
+			sum(PLAN_E*DANGA) as PLAN_E,
+			sum(PLAN_F*DANGA) as PLAN_F,
+			sum(PLAN_G*DANGA) as PLAN_G
+		FROM T_P11050 
+		WHERE PJT_CD=#{PJT_CD};
+
+	</select>
+	
+	
+
 	
 </mapper>

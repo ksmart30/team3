@@ -11,7 +11,6 @@ import ksmart30.team03.mh.mapper.ResultGraphMapper;
 @Service
 public class ResultGraphService {
 		@Autowired private ResultGraphMapper resultGraphMapper;
-	
 		
 	//5.2.1 M/H계획 실적 그래프 리스트 출력
 	public List<ResultList> getResultGraphList() {
@@ -21,7 +20,17 @@ public class ResultGraphService {
 	//5.2.1 M/H계획 실적 그래프 리스트 출력(날짜검색추가)
 		public List<ResultList> getResultGraphListDate(String crt_date, String end_date) {
 			System.out.println("SERVICE : M/H계획 실적 그래프 리스트 출력");
-			return resultGraphMapper.getResultGraphListDate(crt_date,end_date);
+			List<ResultList> data2 = resultGraphMapper.getResultGraphList();
+	//crt_date, end_date 중에 하나라도 없으면 전체 리스트를 출력
+			if(crt_date == "" && end_date == "" || 
+				crt_date !="" && end_date == "" ||
+			   	crt_date =="" && end_date != "") {
+				System.out.println("시작,종료날짜 null인경우 출력!");
+				data2 = resultGraphMapper.getResultGraphList();	
+			}else {
+				data2 = resultGraphMapper.getResultGraphListDate(crt_date, end_date);	
+			}			
+			return data2;
 	}		
 	//5.2.1M/H 계획 그래프 차트에 입력될 값 출력
 	public List<ResultList> getResultGraph(String pjt_cd) {
@@ -33,6 +42,12 @@ public class ResultGraphService {
 			System.out.println("SERVICE : M/H계획 실적 그래프 값 출력");
 			return resultGraphMapper.getResultGraph2(pjt_cd);
 	}
-	
-	
+
+	//5.2.1 M/H 인건비 그래프 차트에 입력될 값 출력
+	/*
+	 * public List<ResultList> getResultGraph3(String pjt_cd) {
+	 * System.out.println("SERVICE : M/H계획 실적 그래프 값 출력"); return
+	 * resultGraphMapper.getResultGraph3(pjt_cd); }
+	 */
+
 }

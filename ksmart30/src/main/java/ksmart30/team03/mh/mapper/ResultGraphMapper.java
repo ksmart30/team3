@@ -15,5 +15,7 @@ public interface ResultGraphMapper {
 	List<ResultList> getResultGraph(String pjt_cd);
 	//5.2.1 M/H 실적 그래프 뿌려주기
 	List<ResultList> getResultGraph2(String pjt_cd);
+	//5.2.1 M/H 단계별 인건비 누계 그래프 뿌려주기
+	/* List<ResultList> getResultGraph3(String pjt_cd); */	
 	
 }
