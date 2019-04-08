@@ -4,6 +4,7 @@ public class WorkTimeSingleList {
 	private String KOR_NM;
 	private String EMP_NO;
 	private String WORK_DT;
+	private String END_DT;
 	private String START_TIME;
 	private String END_TIME;
 	public String getKOR_NM() {
@@ -24,6 +25,12 @@ public class WorkTimeSingleList {
 	public void setWORK_DT(String wORK_DT) {
 		WORK_DT = wORK_DT;
 	}
+	public String getEND_DT() {
+		return END_DT;
+	}
+	public void setEND_DT(String eND_DT) {
+		END_DT = eND_DT;
+	}
 	public String getSTART_TIME() {
 		return START_TIME;
 	}
@@ -38,10 +45,10 @@ public class WorkTimeSingleList {
 	}
 	@Override
 	public String toString() {
-		return "WorkTimeSingleList [KOR_NM=" + KOR_NM + ", EMP_NO=" + EMP_NO + ", WORK_DT=" + WORK_DT + ", START_TIME="
-				+ START_TIME + ", END_TIME=" + END_TIME + "]";
+		return "WorkTimeSingleList [KOR_NM=" + KOR_NM + ", EMP_NO=" + EMP_NO + ", WORK_DT=" + WORK_DT + ", END_DT="
+				+ END_DT + ", START_TIME=" + START_TIME + ", END_TIME=" + END_TIME + "]";
 	}
 	
 	
-
+	
 }

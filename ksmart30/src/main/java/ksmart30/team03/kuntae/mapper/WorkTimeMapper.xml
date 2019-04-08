@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team03.kuntae.mapper.WorkTimeMapper">
-	<select id="getRecordSingleList"
+	<!-- <select id="getRecordSingleList"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList">
 		SELECT 
 			a.KOR_NM,
@@ -15,5 +15,57 @@
 			T_PM1010 AS b join T_HM1000 AS a 
 		on b.EMP_NO=a.EMP_NO 
 		WHERE a.EMP_NO='20190007' 
+	</select> -->
+	
+	<!-- 사원번호 검색 -->
+	<select id="getRecordSingleNoSearch"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
+			parameterType="String">
+		SELECT 
+			a.KOR_NM,
+			a.EMP_NO,
+			b.WORK_DT,
+			b.START_TIME,
+			b.END_TIME
+		FROM 
+			T_PM1010 AS b join T_HM1000 AS a 
+		on b.EMP_NO=a.EMP_NO 
+		WHERE a.EMP_NO=#{EMP_NO}
 	</select>
+	
+	<!-- 이름검색 -->
+	<select id="getRecordSingleNameSearch"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
+			parameterType="String">
+		SELECT 
+			a.KOR_NM,
+			a.EMP_NO,
+			b.WORK_DT,
+			b.START_TIME,
+			b.END_TIME
+		FROM 
+			T_PM1010 AS b join T_HM1000 AS a 
+		on b.EMP_NO=a.EMP_NO 
+		WHERE a.KOR_NM=#{KOR_NM}
+	</select>
+	
+	<!-- 날짜 검색 -->
+	<select id="getRecordSingleDateSearch"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
+			parameterType="String">
+		SELECT 
+			a.KOR_NM,
+			a.EMP_NO,
+			b.WORK_DT,
+			b.END_DT,
+			b.START_TIME,
+			b.END_TIME
+		FROM 
+			T_PM1010 AS b join T_HM1000 AS a 
+		on b.EMP_NO=a.EMP_NO 
+		<!-- WHERE b.WORK_DT ='20120305' AND b.END_DT='20120305' -->
+		WHERE b.WORK_DT <![CDATA[>=]]> #{WORK_DT} and b.END_DT <![CDATA[<=]]> #{END_DT};
+	</select>
+
+
 </mapper>

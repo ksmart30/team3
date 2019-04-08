@@ -3,43 +3,120 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>kuntae</title>
+		
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<th:block th:include="layout/customHead"></th:block>
 	<!-- FullCalendar -->
 	<link href="/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
 	<link href="/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
-		
-	
-	</th:block>
-	<th:block layout:fragment="customBody">
-<!-- 	<script>
+	<head>
+	<script>
+
+	/* 사원번호 검색*/
 	$(document).ready(function(){
 		console.log('출,퇴근(개인별) 리스트 출력')
-	    $('#btn_list').on('click',function(){
-	        $.ajax({
-	            url:'/kuntae/recordSingleView',
+	     $('#btn_list').click(function(){
+	    	var EMP_NO = $('#EMP_NO').val();
+	    	/* var KOR_NM = $('#KOR_NM').val(); */
+	    	 $.ajax({
+	            url:'/kuntae/recordSingle',
 	            type:'GET',
-	            dataType:'json',
-	            contentType:'application/json',
-	            success:(data)=>{
-	            	console.log(data);
+	            dataType:'json',	           
+	         	data : {EMP_NO : EMP_NO},
+	            success:function(data){
+	            	console.log('사원 번호 쿼리 성공!');
 	                $('#list').empty();
 	                $(data).each(function(index,item){ //each = foreach (반복문)
 	                    $('#list').append('<tr>');
 	                    $('#list').append('<td>'+item.kor_NM+'</td>');
-	                    $('#list').append('<td>'+item.emp_CD+'</td>');
-	                    $('#list').append('<td>'+item.work_DT+'</td>');
+	                   	/*  $('#list').append('<td>'+item.emp_NO+'</td>'); */
+	                    $('#list').append('<td>'+item.work_DT.substring(0,6)+'</td>');
+	                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');         
 	                    $('#list').append('<td>'+item.start_TIME+'</td>'); 
 	                    $('#list').append('<td>'+item.end_TIME+'</td>');
-	                    $('#list').append('</tr>');
-	                    
-	                }); 
-	                            
+	                    $('#list').append('</tr>'); 
+	                });                   
 	            }
 	        });
 	    });
-		
-</script> -->
+	 });
+	
+	/* 이름 검색 */
+	$(document).ready(function(){
+		console.log('출,퇴근(개인별) 리스트 출력')
+		 $('#btn_name').click(function(){
+		    	var KOR_NM = $('#KOR_NM').val();
+		    	 $.ajax({
+		            url:'/kuntae/recordSingleName',
+		            type:'GET',
+		            dataType:'json',	           
+		         	data : {KOR_NM : KOR_NM},
+		            success:function(data){
+		            	console.log('이름 검색 쿼리 성공!');
+		                $('#list').empty();
+		                $(data).each(function(index,item){ //each = foreach (반복문)
+		                    $('#list').append('<tr>');
+		                    $('#list').append('<td>'+item.kor_NM+'</td>');
+		                   	/*  $('#list').append('<td>'+item.emp_NO+'</td>'); */
+		                    $('#list').append('<td>'+item.work_DT.substring(0,6)+'</td>');
+		                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');         
+		                    $('#list').append('<td>'+item.start_TIME+'</td>'); 
+		                    $('#list').append('<td>'+item.end_TIME+'</td>');
+		                    $('#list').append('</tr>'); 
+		                });                   
+		            }
+		        });
+		    });
+	 	});
+
+/* 날짜 검색 
+	$(document).ready(function(){
+		console.log('출,퇴근(개인별) 리스트 출력')
+		 $('#btn_day').click(function(){
+		    	var WORK_DT_format = $('#WORK_DT').val();
+		    	var END_DT_format = $('#END_DT').val();
+		    	
+		    	var WORK_DT = WORK_DT_format.substr(0,4)+WORK_DT_format.substr(5,2)+WORK_DT_format.substr(8,2);
+		    	var END_DT = END_DT_format.substr(0,4)+END_DT_format.substr(5,2)+END_DT_format.substr(8,2);
+			    	
+		    	
+		    	 $.ajax({
+		            url:'/kuntae/recordSingleDateSearchProcess',
+		            type:'GET',
+		            dataType:'json',	           
+		         	data : {WORK_DT:WORK_DT, END_DT:END_DT},
+		            success:function(data){
+		            	console.log('날짜 검색 ');
+		                $('#list').empty();
+		                $(data).each(function(index,item){ //each = foreach (반복문)
+		                    $('#list').append('<tr>');
+		                    $('#list').append('<td>'+item.kor_NM+'</td>');
+		                   	/*  $('#list').append('<td>'+item.emp_NO+'</td>'); 
+		                    $('#list').append('<td>'+item.work_DT.substring(0,6)+'</td>');
+		                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');         
+		                    $('#list').append('<td>'+item.end_DT.substring(0,6)+'</td>');
+		                    $('#list').append('<td>'+item.end_DT.substring(6,8)+'</td>');
+		                    $('#list').append('<td>'+item.start_TIME+'</td>'); 
+		                    $('#list').append('<td>'+item.end_TIME+'</td>');
+		                    $('#list').append('</tr>'); 
+		                });                   
+		            }
+		        });
+		    });
+	 	}); 
+	 	  */
+	 	
+	
+	
+	
+</script> 
+	
+	</head>
+	</th:block>
+	<th:block layout:fragment="customBody">
+
 	          <div class="">
             <div class="page-title">
               <div class="title_left">
@@ -56,8 +133,39 @@
                   </div>
                 </div>
               </div>
+      
+      <div class="x_panel">
+				
+		<div class="x_content">
+
+			<div class="col-md-12 col-sm-6 col-xs-12" style="width: 100%">
+			
+					<br>
+					<div class="x_content">
+						<form action="/kuntae/recordSingleDateSearchProcess">
+							<table class="table table-bordered">
+								<thead>
+									<tr style="font-size: 15px">
+										<th>검색조건 &emsp;</th>
+										<th>시작년월 &emsp;&emsp;&emsp; 
+										<input type="date" id="WORK_DT" name="WORK_DT"> &emsp;&emsp;										
+										</th>
+										<th>마감년월 &emsp;&emsp;&emsp; 
+										<input type="date" id="END_DT" name="END_DT"> &emsp;&emsp;										
+											<button id="btn_day" class="btn" style="color:black">검색</button>
+										</th>
+									</tr>									
+								</thead>
+							</table>
+						</form>
+					</div>
+				
+			</div>        
+              
+              
             </div>
-            
+
+           
 	
 <div class="clearfix"></div>
 		<div class="col-md-12 col-sm-12 col-xs-12">
@@ -84,19 +192,20 @@
 
 						<tr>
 							<th>사원번호</th>
+							
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
-									
-                   						<button id="btn_list" type="button"><i class="fa fa-search"></i></button>
-									
+									<input type="text" id="EMP_NO" name="EMP_NO">
+                   						<button type="button" id="btn_list"><i class="fa fa-search"></i></button>
 								</div>
 							</td>
+		
                    						
 							<th>이름</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<input type="text" id="KOR_NM" name="KOR_NM">
+									<button type="button" id="btn_name"><i class="fa fa-search"></i></button>	
 								</div>
 							</td>
 						</tr>
@@ -127,176 +236,63 @@
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
                     </ul>
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
 					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
 						<table class="table">
 									<thead>
-					
-										<tr>
-											<th rowspan="2">직급</th>
-											<th rowspan="2">성명</th>
-											<th rowspan="2">년월</th>
-											<th rowspan="2">구분</th>
-											<th colspan="1">연차</th>
-											<th colspan="1">PJT</th>
-											<th colspan="2">1</th>
-											<th colspan="2">2</th>
-											<th colspan="2">3</th>
-											<th colspan="2">4</th>
-											<th colspan="2">5</th>
-											<th colspan="2">6</th>
-											<th colspan="2">7</th>
-											<th colspan="2">8</th>
-											<th colspan="2">9</th>
-											<th colspan="2">10</th>
-											<th colspan="2">11</th>
-											<th rowspan="2">12</th>
-											<th rowspan="2">13</th>
-											<th rowspan="2">14</th>
-											<th rowspan="2">15</th>
-											<th rowspan="2">16</th>
-											<th rowspan="2">17</th>
-											<th rowspan="2">18</th>
-											<th rowspan="2">19</th>
-											<th rowspan="2">20</th>
-											<th rowspan="2">21</th>
-											<th rowspan="2">22</th>
-											<th rowspan="2">23</th>
-											<th rowspan="2">24</th>
-											<th rowspan="2">25</th>
-											<th rowspan="2">26</th>
-											<th rowspan="2">27</th>
-											<th rowspan="2">28</th>
-											<th rowspan="2">29</th>
-											<th rowspan="2">30</th>
-											<th rowspan="2">31</th>																
+										<tr class="headings">
+											<!-- <th class="column-title" rowspan="2">직급</th> -->
+											<th class="column-title" rowspan="2">성명</th>
+											<th class="column-title" rowspan="2">년월</th>
+											<th class="column-title" rowspan="2">일자</th>
+											<th class="column-title" rowspan="2">출근</th>
+											<th class="column-title" rowspan="2">퇴근</th>
+											<!-- <th class="column-title" colspan="1">연차</th>
+											<th class="column-title" colspan="1">PJT</th>	 -->													
 										</tr>
-										<tr>
+										<!--  <tr>
 											<th>휴가</th>
-											<th>지각</th>	
-											<!-- 1 -->
-											<th>출근</th>
-											<th>퇴근</th>
-											<!-- 2 -->
-											<th>출근</th>
-											<th>퇴근</th>
-											<!-- 3 -->
-											<th>출근</th>
-											<th>퇴근</th>	
-											<!-- 4 -->
-											<th>출근</th>
-											<th>퇴근</th>	
-											<!-- 5 -->
-											<th>출근</th>
-											<th>퇴근</th>	
-											<!-- 6 -->
-											<th>출근</th>
-											<th>퇴근</th>	
-											<!-- 7 -->
-											<th>출근</th>
-											<th>퇴근</th>
-											<!-- 8 -->
-											<th>출근</th>
-											<th>퇴근</th>	
-											<!-- 9 -->
-											<th>출근</th>
-											<th>퇴근</th>	
-											<!-- 10 -->
-											<th>출근</th>
-											<th>퇴근</th>	
-											<!-- 11 -->
-											<th>출근</th>
-											<th>퇴근</th>	
-											
-												
-										</tr>
+											<th>일자</th>				
+										</tr>  -->
 									</thead>
 						
-									<tbody>
+									<!-- <tbody id="list">
 										<tr th:each="s : ${singleList}">
 											<td></td>
 											<td th:text="${s.KOR_NM}"></td>
-											<td th:text="${s.WORK_DT}"></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td th:text="${s.START_TIME}"></td>
-											<td th:text="${s.END_TIME}"></td>
 											
+											<td th:text="${s.WORK_DT.substring(0,6)}"></td>
+											<td th:text="${s.WORK_DT.substring(6,8)}+'일'"></td>
+											<td th:text="${s.START_TIME.substring(0,2)}+':'+${s.START_TIME.substring(2,4)}"></td>
+											<td th:text="${s.END_TIME}"></td>	
 											<td></td>
 											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>									
+											
+													
+																		
 										</tr>										
-									</tbody>
+									</tbody> -->
+									<tbody id="list">	
+									<tr class="even pointer">
+                            			<td></td>
+                            
+                            
+                          			</tr>											
+									</tbody>									
+
 						</table>
 					</div>
 					
-<!-- 					<div class="x_content" style="overflow-x:auto">
-                    <table class="table table-bordered">
-                    	<thead>
-                    	<tr>
-                    		<th rowspan="2">성명</th>
-                    		<th rowspan="2">년월</th>
-                    		<th colspan="2">구분</th>
-                    		<th colspan="2">변경(후)</th>
-                    	</tr>
-                    	<tr>
-                    		<th>구분</th>
-                    		<th>계약금액</th>
-                    		<th>지분(%)</th>
-                    		<th>계약금액</th>
-                    	</tr>
-                    	</thead>
-                    	<tbody>
-                    		<tr >
-                    			<td rowspan="2">1</td>
-                    			<td rowspan="2">현대건설(주)</td>
-                    			<td colspan="1" >출근</td>
-                    			<td colspan="1">1,000,000,000</td>
-                    			<td>0.00</td>
-                    			<td>1,000,000,000</td>
-                    		</tr>
-                    		<tr>
-                    			<td>퇴근</td>
-                    			<td>02</td>
-                    			<td>03</td>
-                    			<td>04</td>
-                    		
-                    		</tr>
-                    	</tbody>
-                    	<tbody>
-                    	<tr >
-	                    	<th colspan="2">합계</th>
-	                    	<th scope="row">0.00</th>
-	                    	<th scope="row">1,000,000,000</th>
-	                    	<th scope="row">0.00</th>
-	                    	<th scope="row">1,000,000,000</th>
-                    	</tr>
-                    </tbody></table>
-                  </div> -->
 
                   </div>
                 </div>
+              
               </div>
-
+             </div>
+			</div>
+			
 	</th:block>
 	<th:block layout:fragment="customJquery">
 		<th:block th:include="layout/customJquery"></th:block>

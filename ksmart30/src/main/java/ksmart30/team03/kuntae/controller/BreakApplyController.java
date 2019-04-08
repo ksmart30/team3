@@ -19,10 +19,5 @@ public class BreakApplyController {
 		return "/kuntae/breakApplyWriteView";
 	}
 	
-	// 휴가 신청 입력 처리
-	@PostMapping("")
-	public String breakApplyInsertAction() {
-		return "";
-	}
 
 }
