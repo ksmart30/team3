@@ -3,10 +3,129 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>10.기준정보관리 - 학교코드등록</title>
+
+		<!-- jquery 사용 -->
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<!-- 검색조건 selected시 리스트 출력 -->
+		<script>
+			$(document).ready(function() { 
+				$("#schoolList tr").click(function() {
+					// 행과 각각의 값들을 담아옴
+						let tr = $(this);
+						let td = tr.children();
+					// 클릭한 행만 색상 변경
+						$("#schoolList tr").css("background-color", "#ffffff");
+						$(this).css( "background-color", "#CEFBC9" );
+					// 가져온 값을 수정폼에 대입(변경)
+						$('#SCHOOL_GB').val(td.eq(1).text()).prop("selected", true);	// 학력구분
+						$('#SCHOOL_NM').val(td.eq(3).text());	// 학교명
+						$('#SCHOOL_CD').val(td.eq(2).text());	// 학교코드
+					// 클릭된 행의 값 (배열)
+					console.log("클릭된 행의 값 : "+ tr.text());
+				});
+			});
+		</script>
 		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
-		schoolCode 조회
+		<div class="col-md-12 col-xs-12" style="color:black;">
+			<div class="page-title">
+				<div class="title_left">
+					<h2><b>학교코드 등록</b></h2>
+					<h5><fontcolor="gray"><b>10.기준정보 관리&nbsp;>&nbsp;&nbsp;10.2인력관리</b></h5>
+				</div>
+			</div>
+		</div>
+		<div class="x_content" style="text-align: right">
+				<div class="btn-group" >
+						<button class="btn btn-default" id ="btnWrite"type="reset">입력</button>
+						<button class="btn btn-default" type="button">수정</button>
+						<button class="btn btn-default" type="button">삭제</button>
+						<button class="btn btn-default" type="button">출력</button>
+				</div>
+		</div>
+		<div class="x_panel" style="color: black;">
+			<div class="col-md-12 col-xs-12">
+			<div class="x_content">
+				<form>
+					<h5 style="color:black;">⊙ 검색 조건</h5>
+						<div class="col-md-12 col-sm-12 col-xs-12">
+						학력구분 
+							<select id="SCHOOL_GB_SEARCH" name="SCHOOL_GB_SEARCH">
+								<option value="3">고등학교</option>
+								<option value="4">대학</option>
+								<option value="6">대학교</option>
+								<option value="7">최고위과정</option>
+							</select>
+						학교명 
+							<input type="text" id="SCHOOL_NM_SEARCH" name="SCHOOL_NM_SEARCH">
+						학교코드
+							<input type="text" id="SCHOOL_CD_SEARCH" name="SCHOOL_CD_SEARCH">
+
+							<button type="submit" class="btn" style="color:black" name="schoolButton">검색</button>			
+						</div>
+				</form>
+			</div>
+			</div>
+		</div>
+		<div class="x_panel" style="color: black;">
+			<div class="x_title">
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content"><br>
+				<div class="col-md-4 col-sm-12 col-xs-12 table-responsive" style="overflow: scroll; height: 750px; padding: 10px; background-color: white; color:black;">
+					<table class="table jambo_table bulk_action">
+						<thead>
+							<tr>
+								<td></td>
+								<td>학교코드</td>
+								<td>학교명</td>
+							</tr>
+						</thead>
+						<tbody id="schoolList">
+							<tr th:each="schoolList : ${schoolList}">
+								<td></td>
+								<td style="display: none" th:text="${schoolList.SCHOOL_GB}">	
+								</td>
+								<td th:text="${schoolList.SCHOOL_CD}">
+								</td>
+								<td th:text="${schoolList.SCHOOL_NM}">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-8 col-sm-12 col-xs-12">
+					<table class="table table-striped table-bordered">
+						<tbody>
+							<tr>
+								<td>학력구분</td>
+								<td>
+									<select id="SCHOOL_GB" name="SCHOOL_GB">
+										<option value="3">고등학교</option>
+										<option value="4">대학</option>
+										<option value="6">대학교</option>
+										<option value="7">최고위과정</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>학교명</td>
+								<td>
+									<input type="text" id="SCHOOL_NM" name="SCHOOL_NM" style="width: 100%">
+								</td>
+							</tr>
+							<tr>
+								<td>학교코드</td>
+								<td>
+									<input type="text" id="SCHOOL_CD" name="SCHOOL_CD" style="width: 20%">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</th:block>
 	<th:block layout:fragment="customJquery">
 		<th:block th:include="layout/customJquery"></th:block>

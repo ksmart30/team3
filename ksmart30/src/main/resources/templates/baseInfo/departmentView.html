@@ -3,7 +3,10 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>10.기준정보관리 - 부서코드등록</title>
+
+		<!-- jquery 사용 -->
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		
 		<script>
 			$(document).ready(function() { 
 					$("#departmentList tr").click(function() {
@@ -12,7 +15,7 @@
 							let td = tr.children();
 							// 클릭한 행만 색상 변경
 							$("#departmentList tr").css("background-color", "#ffffff");
-							$(this).css( "background-color", "#f4f4f4" );
+							$(this).css( "background-color", "#CEFBC9" );
 							// 체크 표시
 
 							// 변수 초기화
@@ -114,7 +117,7 @@
 			<div class="page-title">
 				<div class="title_left">
 					<h2><b>부서코드 등록</b></h2>
-					<h5><fontcolor="gray"><b>10.기준정보 관리&nbsp;>&nbsp;&nbsp;10.2인력관리</b></font></h5>
+					<h5><fontcolor="gray"><b>10.기준정보 관리&nbsp;>&nbsp;&nbsp;10.2인력관리</b></h5>
 				</div>
 			</div>
 		</div>
