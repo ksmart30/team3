@@ -6,8 +6,7 @@
 	<th:block th:include="layout/customHead"></th:block>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>M/H 계획/실적(그래프)</title>
-
+	<title>M/H 계획/실적(그래프)</title>	
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -24,7 +23,28 @@
 	<!-- 리스트뿌려주기 -->
 	<head>
 <script>
-$(document).ready(function() {
+
+function searchResult(crt_date, end_date){
+	
+	console.log("날짜별 검색 시작");	
+	$.ajax({
+		url:'/manHour/manHourResultGraphSearchView',
+		data:{crt_date:crt_date,end_date:end_date},	
+	});	
+};
+
+$(document).ready(function() {	
+	
+	$('#btn-search').click(function(){		
+		var crt_date_format = $('#crt_date').val();
+		var end_date_format = $('#end_date').val();
+		
+		var crt_date = crt_date_format.substr(0,4)+crt_date_format.substr(5,2)+crt_date_format.substr(8,2);
+		var end_date = end_date_format.substr(0,4)+end_date_format.substr(5,2)+end_date_format.substr(8,2);
+		
+		console.log(crt_date+"날짜야 나오니?"+end_date);
+		searchResult(crt_date,end_date);		
+	});
 	
 		init_charts();
 		console.log('프로젝트 리스트 출력');
@@ -45,7 +65,7 @@ $(document).ready(function() {
 			//리턴하기 위한 변수 선언
 			var result;
 			
-			$("#example-table-1 tr").click(function() {//문자열 저장할 변수 선언		
+			$("#list_table tr").click(function() {//문자열 저장할 변수 선언		
 				var str = ""
 				//배열선언
 				var tdArr = new Array();
@@ -53,6 +73,10 @@ $(document).ready(function() {
 				var tr = $(this);
 				var td = tr.children();
 				console.log("row : "+ tr.text());
+				//선택한 행의 색을 바꿔주기 위한 것
+				$("#list_table tr").css("background-color", "#ffffff");
+				$(this).css( "background-color", "#f4f4f4" );
+				//선택한 행중에서 인덱스 번호가 2인 값을 가져옴 (pjt_cd)
 				var pjt_cd = td.eq(2).text();
 				console.log("pjt_cd : "+ pjt_cd);	
 				
@@ -100,67 +124,64 @@ $(document).ready(function() {
 						console.log("실적그래프 값들 출력");
 						console.log(data);						
 						$(data).each(function(index,item){
+							console.log("work_time : "+item.work_TIME +"    work_STEP :  "+item.work_STEP);		
+						
 							$('#chart2').empty();
 							$('#chart2').append('<tr>');
-							$('#chart2').append('<td>'+ item.work_TIME+ '</td>');
-							$('#chart2').append('<td>'+ item.work_STEP+ '</td>');				
-							$('#chart2').append('</tr>');							
-							console.log("work_time : "+item.work_TIME +"    work_STEP :  "+item.work_STEP);							
-							work_time = item.work_TIME;
-							work_step = item.work_STEP;
+							$('#chart2').append('<td>'+ item.work_STEP+ '</td>');	
+							$('#chart2').append('<td>'+ item.work_TIME+ '</td>');										
+							$('#chart2').append('</tr>');	
+							
+							if(item.work_STEP !='A' || item.work_STEP !='B' || item.work_STEP !='C' ||item.work_STEP !='D' || item.work_STEP !='E' || item.work_STEP !='F' ||item.work_STEP !='G'){
+								time_a = 0;
+								time_b = 0;
+								time_c = 0;
+								time_d = 0;
+								time_e = 0;
+								time_f = 0;
+								time_g = 0;
+								time_z = 0;									
+							}									
+							if(item.work_STEP =='B'){
+								time_b = item.work_TIME;	
+								console.log("time_b : "+time_b);
 								
-						});
-						console.log("work_time? : "+work_time +"    work_STEP :  "+work_step);
-						if(work_step =='A'){
-							time_a = work_time;
-							//console.log(time_a+" 기획A");		
-						}else{
-							time_a = 0;
-						}
-						if(work_step =='B'){
-							time_b = work_time;
-							//console.log(time_b+" 심의B");
-						}else{
-							time_b = 0;
-							break;
-						}	
-						if(work_step =='C'){
-							time_c = work_time;
-							//console.log(time_c+" 허가C");
-						}else{
-							time_c = 0;
-							break;
-						}
-						if(work_step =='D'){
-							time_d = work_time;
-							//console.log(time_d+" 착공D");
-						}else{
-							time_d = 0;
-						}
-						if(work_step =='E'){
-							time_e = work_time;
-							//console.log(time_e+" 실시E");
-						}else{
-							time_e = 0;
-						}
-						if(work_step =='F'){
-							time_f = work_time;
-							//console.log(time_f+" A/S F");
-						}else{
-							time_f = 0;
-						}
-						if(work_step =='G'){
-							time_g = work_time;
-							//console.log(time_g+" 준공G");
-						}else{
-							time_g = 0;
-						}											
-						console.log("이게나와야 차트에서 사용가능     기획 : "+time_a +"심의 : "+time_b+"허가 : "+time_c+"착공 : "+time_d+ "실시 : "+time_e+"A/S : "+time_f+"준공 " +time_g);
-	
-					}
-					
+							}
+							if(item.work_STEP =='C'){
+								time_c = item.work_TIME;
+								console.log("time_c : "+time_c);
+								
+							}
+							if(item.work_STEP =='D'){
+								time_d = item.work_TIME;
+								console.log("time_d : "+time_d);
+								
+							}
+							if(item.work_STEP =='E'){
+								time_e = item.work_TIME;
+								console.log("time_e : "+time_e);
+								
+							}
+							if(item.work_STEP =='F'){
+								time_f = item.work_TIME;
+								console.log("time_f : "+time_f);
+								
+							}
+							if(item.work_STEP =='G'){
+								time_g = item.work_TIME;
+								console.log("time_g : "+time_g);
+								
+							}
+							if(item.work_STEP =='Z'){
+								time_z = item.work_TIME;
+								console.log("time_z : "+time_z);
+								return false;
+							}		
+						});							
+					}					
 				});
-				/* console.log("기획 : "+time_a +"심의 : "+time_b+"평가 : "+time_c+time_d); */
+						
+				 console.log(time_a +" / "+time_b+" / "+time_c+" / "+time_d+" / "+time_e+" / "+time_f+" / "+time_g); 
 				
 				//실적 그래프 값 가져오기 끝!			
 				
@@ -178,7 +199,7 @@ $(document).ready(function() {
 								data : [ a, b, c, d, e, f, g ]},{ // 변수들->AJAX 실행 후 호출된 값
 								//label : '# of Votes',
 								backgroundColor : "#FF0000",
-								data : [time_a,time_b,time_c,time_d,time_e,time_f,time_g ]}
+								data : [time_a,time_b,time_c,time_d,time_f,time_g]}
 								]},
 									options : {
 										scales : {
@@ -201,7 +222,7 @@ $(document).ready(function() {
 		var ccc = barchart();
 		
 	}
-
+		
 });
 </script>
 
@@ -238,19 +259,19 @@ $(document).ready(function() {
 				<div class="x_panel">
 					<br>
 					<div class="x_content">
-						<form>
+						<form action="/manHour/manHourResultGraphSearchView">
 							<table class="table table-bordered">
 								<thead>
 									<tr style="font-size: 15px">
 										<th>◎검색조건 &emsp;</th>
-										<th>마감년월 &emsp;&emsp;&emsp; <input type="date"
-											name=amount value="0000-00-00"> &emsp;&emsp; <select>
-												<option>&emsp;&emsp;&emsp;</option>
-												<option>전
-													&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;사</option>
-										</select>
+										<th>시작년월 &emsp;&emsp;&emsp; 
+										<input type="date" name="crt_date" id="crt_date"> &emsp;&emsp;										
 										</th>
-									</tr>
+										<th>마감년월 &emsp;&emsp;&emsp; 
+										<input type="date" name="end_date" id="end_date"> &emsp;&emsp;										
+											<button id="btn-search" class="btn" style="color:black">검색</button>
+										</th>
+									</tr>									
 								</thead>
 							</table>
 						</form>
@@ -267,12 +288,8 @@ $(document).ready(function() {
 					<div class="x_content">
 
 						<div class="table-responsive">
-							<div
-								style="overflow: scroll; width: 100%; height: 650px; padding: 10px; background-color:;">
-
-
-								<table id="example-table-1"
-									class="table table-striped jambo_table bulk_action">
+							<div style="overflow: scroll; width: 100%; height: 650px; padding: 10px; background-color:;">
+								<table class="table jambo_table bulk_action">
 									<thead>
 										<tr class="headings">
 											<th class="column-title">PM</th>
@@ -283,8 +300,7 @@ $(document).ready(function() {
 											<th class="column-title">종료일</th>
 										</tr>
 									</thead>
-
-									<tbody style="font-size: 14px; line-height: 25px">
+									<tbody  id="list_table" style="font-size: 14px; line-height: 25px">
 										<!-- 화면에 뿌려줄 것! -->
 										<tr th:each="g : ${graphList}">
 											<td th:text="${g.KOR_NM}"></td>
@@ -294,8 +310,8 @@ $(document).ready(function() {
 											<td th:text="${g.CRT_DATE}"></td>
 											<td th:text="${g.END_DATE}"></td>
 										</tr>
-
 									</tbody>
+							
 									<!-- 차트에 뿌릴 데이터 테이블에 연습 시작 -->
 								</table>
 
@@ -333,33 +349,20 @@ $(document).ready(function() {
 
 								<div class="" data-example-id="togglable-tabs">
 									<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-										<li role="presentation" class="active"><a
-											href="#tab_content1" id="home-tab" role="tab"
-											data-toggle="tab" aria-expanded="true">설계1</a></li>
-										<li role="presentation" class=""><a href="#tab_content2"
-											role="tab" id="profile-tab" data-toggle="tab"
-											aria-expanded="false">설계2</a></li>
-										<li role="presentation" class=""><a href="#tab_content3"
-											role="tab" id="profile-tab2" data-toggle="tab"
-											aria-expanded="false">PD전략부</a></li>
-										<li role="presentation" class=""><a href="#tab_content4"
-											role="tab" id="profile-tab4" data-toggle="tab"
-											aria-expanded="false">설계지원</a></li>
+										<li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">설계1</a></li>
+										<li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">설계2</a></li>
+										<li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">PD전략부</a></li>
+										<li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab4" data-toggle="tab" aria-expanded="false">설계지원</a></li>
 									</ul>
 
 
 									<div id="myTabContent" class="tab-content">
 										<!-- 학력사항 -->
-										<div role="tabpanel" class="tab-pane fade active in"
-											id="tab_content1" aria-labelledby="home-tab">
+										<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
 											<div class="col-md-12 col-sm-6 col-xs-12">
-												<div class="x_panel">
-												
-													
-												
+												<div class="x_panel">	
 
 													<!-- 차트 연습 시작 -->
-
 													<table>
 														<div class="col-md-12 col-sm-12 col-xs-20">
 															<div class="x_panel">
@@ -372,7 +375,7 @@ $(document).ready(function() {
 																	
 																	<div class="clearfix"></div>
 																</div>
-																<div class="x_content" >
+																<div class="x_content">
 																	<canvas id="mybarChart3" width="20" height="10"></canvas>
 																</div>
 
@@ -397,10 +400,7 @@ $(document).ready(function() {
 															</tr>
 														</thead>
 
-														<tbody id="chart"
-															style="font-size: 14px; line-height: 25px">
-
-
+														<tbody id="chart" style="font-size: 14px; line-height: 25px">
 														</tbody>
 													</table>
 													
@@ -408,30 +408,24 @@ $(document).ready(function() {
 														<table class="table table-striped jambo_table bulk_action">
 														<thead>
 															<tr class="headings">
-																<th class="column-title">시간</th>
 																<th class="column-title">단계</th>
-															
+																<th class="column-title">시간</th>
+																														
 															</tr>
 														</thead>
 
-														<tbody id="chart2"
-															style="font-size: 14px; line-height: 25px">
+														<tbody id="chart2" style="font-size: 14px; line-height: 25px">
 
 
 														</tbody>
-													</table>
-													
-													
-													
-													
+													</table>						
 												</div>
 											</div>
 										</div>
 
 
 										<!-- 가족사항 -->
-										<div role="tabpanel" class="tab-pane fade in"
-											id="tab_content2" aria-labelledby="tab">
+										<div role="tabpanel" class="tab-pane fade in" id="tab_content2" aria-labelledby="tab">
 											<div class="col-md-12 col-sm-6 col-xs-12">
 												<div class="x_panel">
 													<div class="x_title">
@@ -475,8 +469,7 @@ $(document).ready(function() {
 										</div>
 
 										<!-- 자격,면허사항 -->
-										<div role="tabpanel" class="tab-pane fade in"
-											id="tab_content3" aria-labelledby="tab">
+										<div role="tabpanel" class="tab-pane fade in" id="tab_content3" aria-labelledby="tab">
 											<div class="col-md-12 col-sm-6 col-xs-12">
 												<div class="x_panel">
 													<div class="x_title">
@@ -520,8 +513,7 @@ $(document).ready(function() {
 
 
 										<!-- 외국어사항 -->
-										<div role="tabpanel" class="tab-pane fade in"
-											id="tab_content4" aria-labelledby="tab">
+										<div role="tabpanel" class="tab-pane fade in" id="tab_content4" aria-labelledby="tab">
 											<div class="col-md-12 col-sm-6 col-xs-12">
 												<div class="x_panel">
 													<div class="x_title">
@@ -571,7 +563,8 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</div>
-		</font>
+		</div>
+	</font>
 		
 </th:block>
 <th:block layout:fragment="customJquery">

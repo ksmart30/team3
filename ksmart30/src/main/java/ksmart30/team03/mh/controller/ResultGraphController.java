@@ -17,23 +17,7 @@ import ksmart30.team03.mh.service.ResultGraphService;
 @Controller
 public class ResultGraphController {
 	@Autowired private ResultGraphService resultGraphService;
-	// M/H 계획/실적(그래프) e
-	/*
-	 * @GetMapping("/manHour/manHourPlanGraphView") public String
-	 * manHourPlanGraphView() { System.out.println("CONTROLLER : M/H계획 실적 화면으로 이동");
-	 * return "mh/result/resultPlanGraphView"; }
-	 */
 
-	/*
-	 * // M/H 계획/실적(그래프) 리스트 출력 컨트롤러
-	 * 
-	 * @GetMapping("/manHour/manHourResultGraphList") public List<ResultList>
-	 * manHourPlanGraphList() {
-	 * System.out.println("CONTROLLER : M/H계획 실적 그래프 리스트 출력"); List<ResultList> data
-	 * = resultGraphService.resultSearch(); System.out.println(data);
-	 * 
-	 * return data; }
-	 */
 	// 5.2.1 M/H 계획/실적(그래프) 리스트 출력 컨트롤러
 	@GetMapping("/manHour/manHourResultGraphView")
 	public String manHourPlanGraphView(Model model) {
@@ -42,6 +26,21 @@ public class ResultGraphController {
 		model.addAttribute("graphList", data);
 		return "mh/result/resultPlanGraphView";
 	}
+	
+	
+	// 5.2.1 M/H 계획/실적(그래프) 리스트 출력 컨트롤러 (날짜검색추가)
+	@GetMapping("/manHour/manHourResultGraphSearchView")
+	public String manHourPlanGraphSearchView(Model model,@RequestParam(value="crt_date") String crt_date, @RequestParam(value="end_date") String end_date) {
+		System.out.println("CONTROLLER : M/H계획 실적 검색화면으로 이동");
+		System.out.println("시작날짜 : "+ crt_date+" 마감날짜 : "+end_date);
+		List<ResultList> data2 = resultGraphService.getResultGraphListDate(crt_date, end_date);
+		System.out.println("날짜별 검색 data"+data2);
+		model.addAttribute("graphList", data2);
+		return "mh/result/resultPlanGraphView";
+	}
+	
+	
+	
 	// 5.2.1 M/H 계획(그래프)에 해당하는 값 출력 컨트롤러
 	@GetMapping("/manHour/manHourResultGraph")
 	public @ResponseBody List<ResultList> manHourPlanGraphList(@RequestParam(value = "pjt_cd") String pjt_cd) {
@@ -64,10 +63,8 @@ public class ResultGraphController {
 				System.out.println(map+"map");
 			
 		}*/
-
 		return data;
 	}
-	
-	
+
 	
 }

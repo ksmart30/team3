@@ -18,6 +18,11 @@ public class ResultGraphService {
 		System.out.println("SERVICE : M/H계획 실적 그래프 리스트 출력");
 		return resultGraphMapper.getResultGraphList();
 	}
+	//5.2.1 M/H계획 실적 그래프 리스트 출력(날짜검색추가)
+		public List<ResultList> getResultGraphListDate(String crt_date, String end_date) {
+			System.out.println("SERVICE : M/H계획 실적 그래프 리스트 출력");
+			return resultGraphMapper.getResultGraphListDate(crt_date,end_date);
+	}		
 	//5.2.1M/H 계획 그래프 차트에 입력될 값 출력
 	public List<ResultList> getResultGraph(String pjt_cd) {
 		System.out.println("SERVICE : M/H계획 실적 그래프 값 출력");
@@ -27,7 +32,7 @@ public class ResultGraphService {
 		public List<ResultList> getResultGraph2(String pjt_cd) {
 			System.out.println("SERVICE : M/H계획 실적 그래프 값 출력");
 			return resultGraphMapper.getResultGraph2(pjt_cd);
-		}
+	}
 	
 	
 }

@@ -4,8 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ksmart30.team03.mh.mapper.ResultGraphMapper">
-	<!--MH 계획,실적 리스트 출력 select문  -->
-	<select id="getResultGraphList" resultType="ksmart30.team03.mh.domain.ResultList">
+	<!--5.2.1 MH 계획,실적 리스트 출력 select문-->
+	<select id="getResultGraphList" 
+	resultType="ksmart30.team03.mh.domain.ResultList">
 		SELECT 
 			b.KOR_NM,
 			c.PJT_CD, 
@@ -16,6 +17,25 @@
 		FROM T_HM1000 AS b join T_P11000 AS a 
 		on b.EMP_NO=a.PM_EMP_NO join T_PS1000 AS c 
 		on c.PJT_CD=a.PJT_CD join T_SC1010 AS d on b.DEPT_CD=d.DEPT_CD
+		
+	</select>
+	
+	<!--5.2.1 MH 계획,실적 리스트 출력 select문  (날짜 검색)-->
+	<select id="getResultGraphListDate" 
+	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
+			SELECT 
+			b.KOR_NM,
+			c.PJT_CD, 
+			c.SVC,
+			c.CRT_DATE,
+			c.END_DATE,
+			d.DEPT_NM
+		FROM T_HM1000 AS b join T_P11000 AS a 
+		on b.EMP_NO=a.PM_EMP_NO join T_PS1000 AS c 
+		on c.PJT_CD=a.PJT_CD join T_SC1010 AS d on b.DEPT_CD=d.DEPT_CD
+		WHERE c.CRT_DATE <![CDATA[>=]]> #{crt_date} and c.END_DATE <![CDATA[<=]]> #{end_date};
+		
+		
 	</select>
 	
 	<!--5.2.1 MH 계획,실적 차트 출력 select문  -->
