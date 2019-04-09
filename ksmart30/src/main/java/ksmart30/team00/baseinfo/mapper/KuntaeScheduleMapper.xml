@@ -3,20 +3,56 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team00.baseinfo.mapper.KuntaeScheduleMapper">
-    <!-- 10.3.5.1 근태월력표 조회(왼쪽) -->
-    <select id="getKuntaeScheduleLeftList"
+    <!-- 10.3.5.1 근태월력표 리스트(왼쪽) -->
+    <select id="getKuntaeScheduleList"
             parameterType="ksmart30.team00.baseinfo.domain.KuntaeSchedule"
             resultType="ksmart30.team00.baseinfo.domain.KuntaeSchedule">
             DECLARE @Calendar DATETIME = #{TODAY}
             SELECT 
-            NUMBER M_NUM,
-            DATEPART(DW, CONVERT(DATETIME, @Calendar)+ NUMBER-1) M_PART,
-            DATENAME(DW, CONVERT(DATETIME, @Calendar)+ NUMBER-1) M_NAME,
-            DATEDIFF(WK, @Calendar, DATEADD(D, NUMBER-1, @Calendar)) WK,
-            (CASE CONVERT(VARCHAR(8), CONVERT(DATETIME, @Calendar) + NUMBER - 1, 112) 
-            WHEN CONVERT(VARCHAR(8), GETDATE(), 112) THEN '(오늘)' ELSE '' END) TODAY
+              NUMBER M_NUM,
+              DATEPART(DW, CONVERT(DATETIME, @Calendar)+ NUMBER-1) M_PART,
+              DATENAME(DW, CONVERT(DATETIME, @Calendar)+ NUMBER-1) M_NAME,
+              DATEDIFF(WK, @Calendar, DATEADD(D, NUMBER-1, @Calendar)) WK,
+              (CASE CONVERT(VARCHAR(8), CONVERT(DATETIME, @Calendar) + NUMBER - 1, 112) 
+            WHEN CONVERT(VARCHAR(8), GETDATE(), 112) THEN '(오늘)' ELSE '' END) TODAY2
             FROM MASTER..SPT_VALUES
             WHERE TYPE = 'P'
             AND NUMBER BETWEEN 1 AND DATEDIFF(D, @Calendar, DATEADD(MM, 1, @Calendar))
+    </select>
+    <!-- 10.3.5.2 근태월력표 달력(오른쪽) -->
+    <select id="getKuntaeScheduleCalendar"
+            parameterType="ksmart30.team00.baseinfo.domain.KuntaeSchedule"
+            resultType="ksmart30.team00.baseinfo.domain.KuntaeSchedule">
+            DECLARE @Calendar DATETIME, @Calendar_Wk VARCHAR(2)
+            SET @Calendar = #{TODAY}
+            WITH TBL_DATE AS 
+            (
+            SELECT 
+              NUMBER M_NUM,
+              DATEPART(DW, CONVERT(DATETIME, @Calendar)+NUMBER-1) M_PART,
+              DATENAME(DW, CONVERT(DATETIME, @Calendar)+NUMBER-1) M_NAME, 
+              DATEDIFF(WK, @Calendar, DATEADD(D, NUMBER-1, @Calendar)) WK,
+              (CASE CONVERT(VARCHAR(8), CONVERT(DATETIME, @Calendar) + NUMBER - 1, 112) 
+            WHEN CONVERT(VARCHAR(8), GETDATE(), 112) THEN '(오늘)' ELSE '' END) TODAY2
+            FROM MASTER..SPT_VALUES
+            WHERE TYPE='P'
+            AND NUMBER BETWEEN 1 AND DATEDIFF(D, @Calendar, DATEADD(MM, 1, @Calendar))
+            )
+            SELECT 
+              T1.WK,
+              'SUN' = MAX(CASE M_PART WHEN '1' THEN CONVERT(VARCHAR,M_NUM)+TODAY2 ELSE '' END),
+              'MON' = MAX(CASE M_PART WHEN '2' THEN CONVERT(VARCHAR,M_NUM)+TODAY2 ELSE '' END),
+              'TUE' = MAX(CASE M_PART WHEN '3' THEN CONVERT(VARCHAR,M_NUM)+TODAY2 ELSE '' END),
+              'WEN' = MAX(CASE M_PART WHEN '4' THEN CONVERT(VARCHAR,M_NUM)+TODAY2 ELSE '' END),
+              'THU' = MAX(CASE M_PART WHEN '5' THEN CONVERT(VARCHAR,M_NUM)+TODAY2 ELSE '' END),
+              'FRI' = MAX(CASE M_PART WHEN '6' THEN CONVERT(VARCHAR,M_NUM)+TODAY2 ELSE '' END),
+              'SAT' = MAX(CASE M_PART WHEN '7' THEN CONVERT(VARCHAR,M_NUM)+TODAY2 ELSE '' END)       
+            FROM TBL_DATE T1 
+            JOIN MASTER..SPT_VALUES T2 
+            ON T1.WK = T2.NUMBER
+            WHERE
+            T2.TYPE = 'P'
+            GROUP BY T1.WK
+            ORDER BY T1.WK
     </select>
 </mapper>
