@@ -1,1 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team03.person.mapper.PersonMapper">
+	<!-- 직원 list 출력하는 쿼리 -->
+	<select id="personInsaEmployeeSearchView" resultType="ksmart30.team03.person.domain.Person">
+		SELECT X.*   
+  			FROM (
+ 				SELECT   
+			  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
+			  		B.SHORT_NM DEPT_NM, 
+			  		A.EMP_NO, 
+			  		A.KOR_NM, 
+			  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
+			    	(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM,
+			 		A.IN_PHONE_NO
+   				FROM T_HM1000 A, T_SC1010 B
+      			WHERE A.DEPT_CD = B.DEPT_CD	
+  		) X
+	</select>
+	
+	<select id="personInsaEmployeeDetailView"
+	resultType="ksmart30.team03.person.domain.Person" parameterType="String">
+	SELECT
+		  A.EMP_NO, 
+		  A.KOR_NM, 
+		  (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
+		  (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM, 
+		  A.IN_PHONE_NO,
+    	  A.PHONE_NO,
+    	  A.BIRTH_DT,
+    	  A.CUR_ADDRESS,
+    	  A.AUDIT_TM,
+    	  A.MAIL_ADDRESS
+    FROM T_HM1000 A,
+      T_SC1010 B
+      WHERE A.DEPT_CD = B.DEPT_CD AND A.EMP_NO=#{EMP_NO};
+	
+	</select>
+</mapper>  

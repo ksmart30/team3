@@ -4,14 +4,102 @@
 	layout:decorator="layout/main">
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
-	<title>조건별 전표검색</title>
-	<link
-		href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css"
-		rel="stylesheet">
+	<title>직원검색</title>
 	<th:block th:include="layout/customHead"></th:block>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<head>
+<script>
+function detail(emp_NO){
+	console.log('직원번호 '+emp_NO);
+	$.ajax({
+		url:'/person/personInsaEmployeeDetailView',
+		type:'GET',
+		data:{EMP_NO:emp_NO},
+		success:function(data){
+			console.log(data);
+			emp_no = data.emp_NO;
+			A = jikgup_NM.val();
+			console.log("직원 디테일 : "+emp_no+"/"+A+"/"+data.jikchk_NM+"/"+data.in_PHONE_NO+"/"+data.audit_TM);
+			/* $('#').append('<tr class="even pointer">');
+			$('#').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
+			$('#').append('<td>'+emp_NO+'</td>');
+			$('#').append('<td>'+kor_NM+'</td>');
+			$('#').append('<td>'+jikgup_NM+'</td>');
+			$('#').append('<td>'+jikchk_NM+'</td>');
+			$('#').append('<td>'+in_PHONE_NO+'</td>');
+			$('#').append('<td>'+audit_TM+'</td>');
+			$('#').append('<td>'+phone_NO+'</td>');	
+			$('#').append('<td>'+birth_DT+'</td>');
+			$('#').append('<td>'+in_PHONE_NO+'</td>');
+			$('#').append('<td>'+audit_TM+'</td>');
+			$('#').append('<td>'+cur_ADDRESS+'</td>');	
+			$('#').append('<td>'+mail_ADDRESS+'</td>');
+		
+			$('#').append('</tr>');	 */
+			
+		}
+		
+	});
+	
+}
+
+$(document).ready(function(){
+	 console.log('직원list 출력해보자');	
+	//검색버튼 클릭 시 전체 직원조회
+	 $("#btn_list").click(function(){
+		 console.log('직원list 출력해보자2');	
+			$.ajax({
+				url:'/person/personInsaEmployeeView',
+				type:'GET',
+				success:(data)=>{
+					$(data).each(function(index,item){
+						//한 행을 클릭시 사원번호
+						$('#list').append('<tr class="even pointer">');
+						$('#list').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
+						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.sort_VALUE+'</td>');
+						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.dept_NM+'</td>');
+						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.emp_NO+'</td>');
+						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.kor_NM+'</td>');
+						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.jikgup_NM+'</td>');
+						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.jikchk_NM+'</td>');
+						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.in_PHONE_NO+'</td>');		
+						$('#list').append('</tr>');	
+					
+						
+					});
+				}					
+		 }); 				
+	 });
+	
+	/* //각 행 클릭시 상세정보 출력
+	 $("#list").on('click',function(){
+		let tr = $(this);
+		console.log("row : "+tr.text());
+		let td = tr.children();
+		let emp_no = td.eq(2).text();
+		console.log("row emp_no : "+emp_no);				 		 
+	 });
+ 	//상세정보 출력 끝!	 */
+	
+ 
+});
+
+
+</script>
+</head>
 </th:block>
 <th:block layout:fragment="customBody">
+<font color="black">
 
+	<div class="page-title">
+				<div class="title_left">
+					
+					<h2><b>직원검색</b></h2>
+					<h5><font color="gray"><b>6.인사/급여&nbsp;>&nbsp;&nbsp;6.1인력관리</b></font></h5>
+					
+				</div>
+			</div>
 
 	<!-- 내꺼 -->
 	<div class="col-md-12 col-xs-12">
@@ -65,11 +153,9 @@
 								<button>
 									<i class="fa fa-search"></i>
 								</button> - <input type="text" style="width: 15%">
-								<button>
-									<i class="fa fa-search"></i>
-								</button> <label class="control-label"
-								style="padding-left: 20px; padding-right: 14px;">프로젝트</label> <input
-								type="text" style="width: 15%">
+								<button><i class="fa fa-search"></i></button> 
+								<label class="control-label" style="padding-left: 20px; padding-right: 14px;">프로젝트</label>
+								<input type="text" style="width: 15%">
 								<button>
 									<i class="fa fa-search"></i>
 								</button> <label class="control-label">-</label> <input type="text"
@@ -109,9 +195,9 @@
 
 						</tr>
 						<div class="x_content" style="text-align: right">
-							<button type="button" class="btn btn-primary">검색</button>
-
+							<button type="button" class="btn" style="color:black" id="btn_list">검색</button>
 						</div>
+
 					</table>
 				</form>
 			</div>
@@ -122,120 +208,40 @@
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>직원 List</h2>
-
 				<div class="clearfix"></div>
 			</div>
 
 			<div class="x_content">
-
-
 				<div class="table-responsive">
-					<table class="table table-striped jambo_table bulk_action">
-						<thead>
-							<tr class="headings">
-								<th><input type="checkbox" id="check-all" class="flat">
-								</th>
-								<th class="column-title">Invoice</th>
-								<th class="column-title">Invoice Date</th>
-								<th class="column-title">Order</th>
-								<th class="column-title">Bill to Name</th>
-								<th class="column-title">Status</th>
-								<th class="column-title">Amount</th>
-								<th class="column-title no-link last"><span class="nobr">Action</span>
-								</th>
-								<th class="bulk-actions" colspan="7"><a class="antoo"
-									style="color: #fff; font-weight: 500;">Bulk Actions ( <span
-										class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-								</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							<tr class="even pointer">
-								<td class="a-center "><input type="checkbox" class="flat"
-									name="table_records"></td>
-								<td class=" ">121000040</td>
-								<td class=" ">May 23, 2014 11:47:56 PM</td>
-								<td class=" ">121000210 <i
-									class="success fa fa-long-arrow-up"></i></td>
-								<td class=" ">John Blank L</td>
-								<td class=" ">Paid</td>
-								<td class="a-right a-right ">$7.45</td>
-								<td class=" last"><a href="#">View</a></td>
-							</tr>
-							<tr class="odd pointer">
-								<td class="a-center "><input type="checkbox" class="flat"
-									name="table_records"></td>
-								<td class=" ">121000039</td>
-								<td class=" ">May 23, 2014 11:30:12 PM</td>
-								<td class=" ">121000208 <i
-									class="success fa fa-long-arrow-up"></i>
-								</td>
-								<td class=" ">John Blank L</td>
-								<td class=" ">Paid</td>
-								<td class="a-right a-right ">$741.20</td>
-								<td class=" last"><a href="#">View</a></td>
-							</tr>
-							<tr class="even pointer">
-								<td class="a-center "><input type="checkbox" class="flat"
-									name="table_records"></td>
-								<td class=" ">121000038</td>
-								<td class=" ">May 24, 2014 10:55:33 PM</td>
-								<td class=" ">121000203 <i
-									class="success fa fa-long-arrow-up"></i>
-								</td>
-								<td class=" ">Mike Smith</td>
-								<td class=" ">Paid</td>
-								<td class="a-right a-right ">$432.26</td>
-								<td class=" last"><a href="#">View</a></td>
-							</tr>
-							<tr class="odd pointer">
-								<td class="a-center "><input type="checkbox" class="flat"
-									name="table_records"></td>
-								<td class=" ">121000037</td>
-								<td class=" ">May 24, 2014 10:52:44 PM</td>
-								<td class=" ">121000204</td>
-								<td class=" ">Mike Smith</td>
-								<td class=" ">Paid</td>
-								<td class="a-right a-right ">$333.21</td>
-								<td class=" last"><a href="#">View</a></td>
-							</tr>
-							<tr class="even pointer">
-								<td class="a-center "><input type="checkbox" class="flat"
-									name="table_records"></td>
-								<td class=" ">121000040</td>
-								<td class=" ">May 24, 2014 11:47:56 PM</td>
-								<td class=" ">121000210</td>
-								<td class=" ">John Blank L</td>
-								<td class=" ">Paid</td>
-								<td class="a-right a-right ">$7.45</td>
-								<td class=" last"><a href="#">View</a></td>
-							</tr>
-							<tr class="odd pointer">
-								<td class="a-center "><input type="checkbox" class="flat"
-									name="table_records"></td>
-								<td class=" ">121000039</td>
-								<td class=" ">May 26, 2014 11:30:12 PM</td>
-								<td class=" ">121000208 <i
-									class="error fa fa-long-arrow-down"></i>
-								</td>
-								<td class=" ">John Blank L</td>
-								<td class=" ">Paid</td>
-								<td class="a-right a-right ">$741.20</td>
-								<td class=" last"><a href="#">View</a></td>
-							</tr>
-
-						</tbody>
-					</table>
+					<div style="overflow: scroll; width: 100%; height: 650px; padding: 10px; background-color:;">
+						<table class="table table-striped jambo_table bulk_action">
+							<thead>
+								<tr class="headings">
+									<th><input type="checkbox" id="check-all" class="flat">
+									</th>
+									<th class="column-title">순번</th>
+									<th class="column-title">부서명</th>
+									<th class="column-title">사원번호</th>
+									<th class="column-title">사원명</th>
+									<th class="column-title">직급</th>
+									<th class="column-title">직책</th>	
+									<th class="column-title">사내번호</th>	
+									<th class="bulk-actions" colspan="7"><a class="antoo"
+										style="color: #fff; font-weight: 500;">전체 선택<i class="fa fa-chevron-down"></i></a> 
+									</th>
+								</tr>
+							</thead>
+							<tbody id="list" style="font-size: 14px; line-height: 25px">
+								<!--직원 LIST -->
+							</tbody>
+						</table>
+					</div>
 				</div>
-
 
 			</div>
 		</div>
 	</div>
-
-
-
+	</font>
 	<!-- /page content -->
 </th:block>
 <th:block layout:fragment="customJquery">
