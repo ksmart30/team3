@@ -4,19 +4,61 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Yidong {
-	private String EMP_NO;
-	private String KOR_NM;
-	private int DEPT_CD;
-	private int JIKGUP_CD;
-	private int JIKCHK_CD;
-	private String DEPT_NM;
-	private String JIKGUP_NM;
-	private String JIKCHK_NM;
+	private String EMP_NO; //사원번호
+	private String KOR_NM; //성명
+	private int DEPT_CD; //부서 코드
+	private int JIKGUP_CD; //직급 코드
+	private int JIKCHK_CD; //직책 코드
+	private String DEPT_NM; //부서명
+	private String JIKGUP_NM; //직급명
+	private String JIKCHK_NM; //직책명
+	private String APPOINT_NO; //명령번호(인사발령대장)
+	private String APPOINT_GB; //명령종류
+	private String APPOINT_DT; //명령일자
+	private String APPOINT_SUMMARY; //명령내역
+	private String REMARK; //비고
+	private String APPROVE_YN; //승인여부
 	public String getEMP_NO() {
 		return EMP_NO;
 	}
 	public int getDEPT_CD() {
 		return DEPT_CD;
+	}
+	public String getAPPOINT_NO() {
+		return APPOINT_NO;
+	}
+	public void setAPPOINT_NO(String aPPOINT_NO) {
+		APPOINT_NO = aPPOINT_NO;
+	}
+	public String getAPPOINT_GB() {
+		return APPOINT_GB;
+	}
+	public void setAPPOINT_GB(String aPPOINT_GB) {
+		APPOINT_GB = aPPOINT_GB;
+	}
+	public String getAPPOINT_DT() {
+		return APPOINT_DT;
+	}
+	public void setAPPOINT_DT(String aPPOINT_DT) {
+		APPOINT_DT = aPPOINT_DT;
+	}
+	public String getAPPOINT_SUMMARY() {
+		return APPOINT_SUMMARY;
+	}
+	public void setAPPOINT_SUMMARY(String aPPOINT_SUMMARY) {
+		APPOINT_SUMMARY = aPPOINT_SUMMARY;
+	}
+	public String getREMARK() {
+		return REMARK;
+	}
+	public void setREMARK(String rEMARK) {
+		REMARK = rEMARK;
+	}
+	public String getAPPROVE_YN() {
+		return APPROVE_YN;
+	}
+	public void setAPPROVE_YN(String aPPROVE_YN) {
+		APPROVE_YN = aPPROVE_YN;
 	}
 	public void setDEPT_CD(int dEPT_CD) {
 		DEPT_CD = dEPT_CD;
@@ -64,6 +106,7 @@ public class Yidong {
 	public String toString() {
 		return "Yidong [EMP_NO=" + EMP_NO + ", KOR_NM=" + KOR_NM + ", DEPT_CD=" + DEPT_CD + ", JIKGUP_CD=" + JIKGUP_CD
 				+ ", JIKCHK_CD=" + JIKCHK_CD + ", DEPT_NM=" + DEPT_NM + ", JIKGUP_NM=" + JIKGUP_NM + ", JIKCHK_NM="
-				+ JIKCHK_NM + "]";
+				+ JIKCHK_NM + ", APPOINT_NO=" + APPOINT_NO + ", APPOINT_GB=" + APPOINT_GB + ", APPOINT_DT=" + APPOINT_DT
+				+ ", APPOINT_SUMMARY=" + APPOINT_SUMMARY + ", REMARK=" + REMARK + ", APPROVE_YN=" + APPROVE_YN + "]";
 	}
 }
