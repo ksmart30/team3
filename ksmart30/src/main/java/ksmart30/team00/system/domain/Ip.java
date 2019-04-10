@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Ip {
 
-    private String IP;
-    private String USER_ID;
+    private String IP;      // IP정보
+    private String USER_ID; // 로그인ID
 
     public String getIP() {
         return IP;
@@ -20,5 +20,9 @@ public class Ip {
     public void setUSER_ID(String uSER_ID) {
         USER_ID = uSER_ID;
     }
+    @Override
+	public String toString() {
+		return "Ip [IP=" + IP + ", USER_ID=" + USER_ID +"]";
+	}
 
 }

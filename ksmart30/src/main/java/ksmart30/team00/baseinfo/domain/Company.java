@@ -4,23 +4,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Company {
-    private String COMP_NM;
-    private String COMP_NO;
-    private String CORPORATION_NO;
-    private String TAX_OFFICE_NM;
-    private String PRESIDENT_NM;
-    private String ZIP_NO;
-    private String ADDRESS;
-    private String PHONE_NO;
-    private String FAX_NO;
-    private String UPTAE;
-    private String UPJONG;
-    private String AUDIT_ID;
-    private String H_INSURE;
-    private String AUDIT_TM;
-    private String PENSION;
-    private String E_INSURE;
-    private String IMG_LOC;
+    private String COMP_NM;         // 회사명
+    private String COMP_NO;         // 사업자번호
+    private String CORPORATION_NO;  // 법인등록번호
+    private String TAX_OFFICE_NM;   // 관할세무서명
+    private String PRESIDENT_NM;    // 대표자명
+    private String ZIP_NO;          // 우편번호
+    private String ADDRESS;         // 주소
+    private String PHONE_NO;        // 전화번호
+    private String FAX_NO;          // 팩스번호
+    private String UPTAE;           // 업태
+    private String UPJONG;          // 업종
+    private String AUDIT_ID;        // 등록자
+    private String H_INSURE;        // 건강보험
+    private String AUDIT_TM;        // 등록일시
+    private String PENSION;         // 국민연금
+    private String E_INSURE;        // 고용보험
+    private String IMG_LOC;         // 회사로고
 
     public String getCOMP_NM() {
         return COMP_NM;

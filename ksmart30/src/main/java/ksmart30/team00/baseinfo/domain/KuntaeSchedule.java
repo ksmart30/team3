@@ -5,96 +5,54 @@ import org.springframework.stereotype.Component;
 @Component
 public class KuntaeSchedule {
 
-    private String M_NUM;
-    private String M_PART;
-    private String M_NAME;
-    private String WK;
-    private String TODAY;
-    private String TODAY2;
-    private String SUN;
-    private String MON;
-    private String TUE;
-    private String WEN;
-    private String THU;
-    private String FRI;
-    private String SAT;
+    private String DAY_YM;      // 년월
+	private String DAY_DD;      // 일
+	private String DAY_WEEK;    // 주
+	private String HOLID_GB;    // 휴일(토,일 또는 휴무일)
+	private String HOLID_NM;    // 휴일명
+	private String AUDIT_ID;    // 등록 및 수정한 아이디
+	private String AUDIT_TM;    // 등록 및 수정일자
 
-    public String getM_NUM() {
-        return M_NUM;
+    public String getDAY_YM() {
+        return DAY_YM;
     }
-    public void setM_NUM(String m_NUM) {
-        M_NUM = m_NUM;
+    public void setDAY_YM(String dAY_YM) {
+        DAY_YM = dAY_YM;
     }
-    public String getM_PART() {
-        return M_PART;
+    public String getDAY_DD() {
+        return DAY_DD;
     }
-    public void setM_PART(String m_PART) {
-        M_PART = m_PART;
+    public void setDAY_DD(String dAY_DD) {
+        DAY_DD = dAY_DD;
     }
-    public String getM_NAME() {
-        return M_NAME;
+    public String getDAY_WEEK() {
+        return DAY_WEEK;
     }
-    public void setM_NAME(String m_NAME) {
-        M_NAME = m_NAME;
+    public void setDAY_WEEK(String dAY_WEEK) {
+        DAY_WEEK = dAY_WEEK;
     }
-    public String getWK() {
-        return WK;
+    public String getHOLID_GB() {
+        return HOLID_GB;
     }
-    public void setWK(String wK) {
-        WK = wK;
+    public void setHOLID_GB(String hOLID_GB) {
+        HOLID_GB = hOLID_GB;
     }
-    public String getTODAY() {
-        return TODAY;
+    public String getHOLID_NM() {
+        return HOLID_NM;
     }
-    public void setTODAY(String tODAY) {
-        TODAY = tODAY;
+    public void setHOLID_NM(String hOLID_NM) {
+        HOLID_NM = hOLID_NM;
     }
-    public String getSUN() {
-        return SUN;
+    public String getAUDIT_ID() {
+        return AUDIT_ID;
     }
-    public void setSUN(String sUN) {
-        SUN = sUN;
+    public void setAUDIT_ID(String aUDIT_ID) {
+        AUDIT_ID = aUDIT_ID;
     }
-    public String getMON() {
-        return MON;
+    public String getAUDIT_TM() {
+        return AUDIT_TM;
     }
-    public void setMON(String mON) {
-        MON = mON;
-    }
-    public String getTUE() {
-        return TUE;
-    }
-    public void setTUE(String tUE) {
-        TUE = tUE;
-    }
-    public String getWEN() {
-        return WEN;
-    }
-    public void setWEN(String wEN) {
-        WEN = wEN;
-    }
-    public String getTHU() {
-        return THU;
-    }
-    public void setTHU(String tHU) {
-        THU = tHU;
-    }
-    public String getFRI() {
-        return FRI;
-    }
-    public void setFRI(String fRI) {
-        FRI = fRI;
-    }
-    public String getSAT() {
-        return SAT;
-    }
-    public void setSAT(String sAT) {
-        SAT = sAT;
-    }
-    public String getTODAY2() {
-        return TODAY2;
-    }
-    public void setTODAY2(String tODAY2) {
-        TODAY2 = tODAY2;
+    public void setAUDIT_TM(String aUDIT_TM) {
+        AUDIT_TM = aUDIT_TM;
     }
 }

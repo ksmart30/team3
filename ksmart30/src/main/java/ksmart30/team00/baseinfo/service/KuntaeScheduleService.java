@@ -14,17 +14,17 @@ public class KuntaeScheduleService {
 
     // 10.3.5.1 근태월력표 리스트(왼쪽)
     public List<KuntaeSchedule> getKuntaeScheduleList(KuntaeSchedule toDay) {
-        System.out.println("(S) 10.3.5.1 근태월력표 리스트(왼쪽) getKuntaeScheduleList()");
+        System.out.println("(S) 10.3.5.1 근태월력표 리스트와 달력 getKuntaeScheduleList()");
         List<KuntaeSchedule> kuntaeList = kuntaeScheduleMapper.getKuntaeScheduleList(toDay);
-        System.out.println("(M) 10.3.5.1 근태월력표 리스트(왼쪽) 쿼리 완료");
+        System.out.println("(M) 10.3.5.1 근태월력표 리스트와 달력 쿼리 완료");
         return kuntaeList;
     }
 
-    // 10.3.5.2 근태월력표 달력(오른쪽)
+    // 10.3.5.2 근태월력표 검색
     public List<KuntaeSchedule> getKuntaeScheduleCalendar(KuntaeSchedule toDay) {
-        System.out.println("(S) 10.3.5.2 근태월력표 달력(오른쪽) getKuntaeScheduleCalendar()");
-        List<KuntaeSchedule> kuntaeCalendar = kuntaeScheduleMapper.getKuntaeScheduleCalendar(toDay);
-        System.out.println("(M) 10.3.5.2 근태월력표 달력(오른쪽) 쿼리 완료");
+        System.out.println("(S) 10.3.5.2 근태월력표 검색 getKuntaeScheduleCalendar()");
+        List<KuntaeSchedule> kuntaeCalendar = kuntaeScheduleMapper.getKuntaeScheduleSearch(toDay);
+        System.out.println("(M) 10.3.5.2 근태월력표 검색 쿼리 완료");
         return kuntaeCalendar;
     }
 }

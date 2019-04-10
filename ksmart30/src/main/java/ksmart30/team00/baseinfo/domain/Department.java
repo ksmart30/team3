@@ -5,27 +5,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class Department {
 
-    private String DEPT_CD;
-	private String SYS_COD;
-	private String DEPT_NM;
-	private String SHORT_NM;
-	private String SHORT_NM1;
-	private String LEVEL_GB;
-	private String PRT_SEQ;
-	private String DIV_TYPE;
-	private String DIV_ID;
-	private String ACC_UNIT;
-	private String ACC_DEPT;
-	private String NOT_USE;
-	private String NOTUSE_DATE;
-	private String ETC_CD1;
-	private String ETC_CD2;
-	private String ETC_CD3;
-	private String AUDIT_ID;
-	private String AUDIT_TM;
-	private String GROUP_CD;
-	private String FOREIGN_WORK;
-	private String SYS_COD2;
+    private String DEPT_CD;		// 부서코드
+	private String SYS_COD;		// 내부코드
+	private String DEPT_NM;		// 부서명
+	private String SHORT_NM;	// 부서약칭
+	private String SHORT_NM1;	// 부서약칭(2)
+	private String LEVEL_GB;	// LEVEL구분
+	private String PRT_SEQ;		// 출력순서
+	private String DIV_TYPE;	// 배부부문
+	private String DIV_ID;		// 배부ID
+	private String ACC_UNIT;	// 회계단위
+	private String ACC_DEPT;	// 회계부서
+	private String NOT_USE;		// 미사용부서
+	private String NOTUSE_DATE;	// 미사용일자
+	private String ETC_CD1;		// 여분컬럼 1
+	private String ETC_CD2;		// 여분컬럼 2
+	private String ETC_CD3;		// 여분컬럼 3
+	private String AUDIT_ID;	// 등록자
+	private String AUDIT_TM;	// 등록일시
+	private String GROUP_CD;	// 그룹코드(미사용)
+	private String FOREIGN_WORK;// 해외부서
+	private String SYS_COD2;	// 부서내부코드2(소트순서)
 	
 	public String getDEPT_CD() {
 		return DEPT_CD;
