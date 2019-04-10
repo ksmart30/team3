@@ -11,4 +11,6 @@ public interface ResultNugaeMapper {
 
 	//프로젝트 코드pjtcd 출력 메서드
 		List<ResultList> getResultNugaeList();
+		
+		List<ResultList> getResultNugaeList2(String pjt_cd);
 }

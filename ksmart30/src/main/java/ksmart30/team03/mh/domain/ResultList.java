@@ -26,9 +26,28 @@ public class ResultList {
 	private String WORK_STEP;
 	private String WORK_NM;
 	private int TOT_PLAN;
+	private String YEA_MD;//계획(예산)MH
+	private String SIL_TM;//실적MH
+	
 	
 	public String getPJT_NM() {
 		return PJT_NM;
+	}
+
+	public String getYEA_MD() {
+		return YEA_MD;
+	}
+
+	public void setYEA_MD(String yEA_MD) {
+		YEA_MD = yEA_MD;
+	}
+
+	public String getSIL_TM() {
+		return SIL_TM;
+	}
+
+	public void setSIL_TM(String sIL_TM) {
+		SIL_TM = sIL_TM;
 	}
 
 	public int getTOT_PLAN() {
@@ -215,7 +234,8 @@ public class ResultList {
 				+ ", PLAN_F=" + PLAN_F + ", PLAN_G=" + PLAN_G + ", TOT_MD=" + TOT_MD + ", DEPT_NAME=" + DEPT_NAME
 				+ ", KOR_NM=" + KOR_NM + ", END_DATE=" + END_DATE + ", SVC=" + SVC + ", DEPT_NM=" + DEPT_NM
 				+ ", PJT_NM=" + PJT_NM + ", WORK_TIME=" + WORK_TIME + ", WORK_STEP=" + WORK_STEP + ", WORK_NM="
-				+ WORK_NM + ", TOT_PLAN=" + TOT_PLAN + ", CRT_DATE=" + CRT_DATE + "]";
+				+ WORK_NM + ", TOT_PLAN=" + TOT_PLAN + ", YEA_MD=" + YEA_MD + ", SIL_TM=" + SIL_TM + ", CRT_DATE="
+				+ CRT_DATE + "]";
 	}
 
 }

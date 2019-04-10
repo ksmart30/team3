@@ -11,9 +11,14 @@ import ksmart30.team03.mh.mapper.ResultNugaeMapper;
 @Service
 public class ResultNugaeService {
 @Autowired ResultNugaeMapper resultNugeMapper;
-	//list에 프로젝트코드pjt_cd 뿌려주기
+	//list에 데이터 뿌려주기
 	public List<ResultList> getResultNugaeList(){
-		System.out.print("getPjtcd 메서드 호출(service)");
+		System.out.print("getResultNugaeList 메서드 호출(service)");
 		return resultNugeMapper.getResultNugaeList();
 	}
+	public List<ResultList> getResultNugaeList2(String pjt_cd){
+		System.out.print("getResultNugaeList2 메서드 호출(service)");
+		return resultNugeMapper.getResultNugaeList2(pjt_cd);
+	}
+	
 }

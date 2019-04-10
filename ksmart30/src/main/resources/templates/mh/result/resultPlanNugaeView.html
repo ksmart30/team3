@@ -8,6 +8,128 @@
 		
 <script>
 		$(document).ready(function(){
+			console.log('상세보기 ajax 사용하자')
+			let time_a=0;
+			let time_b=0;
+			let time_c=0;
+			let time_d=0;
+			let time_e=0;
+			let time_f=0;
+			let time_g=0;
+			let time_t=0;
+			
+			let sil_a=0;
+			let sil_b=0;
+			let sil_c=0;
+			let sil_d=0;
+			let sil_e=0;
+			let sil_f=0;
+			let sil_g=0;
+			let sil_t=0;
+			$("#list_table tr").click(function() {//문자열 저장할 변수 선언		
+				//현재 클릭된 행<tr>
+				let tr = $(this);
+				let td = tr.children();
+				console.log("row : "+ tr.text());
+				//선택 행의 색상 바꾸기
+				$("#list_table tr").css("background-color", "#ffffff");
+				$(this).css( "background-color", "#f4f4f4" );
+				//선택 행의 0번째 값 변수 dept_nm
+				//1번째 값 변수pjt_cd에 저장,2번째 값 svc에 저장
+				//부서명,프로젝트코드,프로젝트명
+				let dept_nm = td.eq(0).text();
+				let pjt_cd = td.eq(1).text();
+				let svc = td.eq(2).text();
+				console.log("pjt_cd : "+ pjt_cd);
+				$.ajax({
+					 url:'/manHour/manHourResultNugaeList2',
+			         type:'GET',
+			         dataType : "json",
+			         data : {pjt_cd : pjt_cd,svc : svc},
+			         success : function(data){
+			        	 console.log('상세데이터 출력!');
+			        	 console.log(data);
+			        	 $(data).each(function(index,item){
+			        		console.log(" work_STEP :  "+item.work_STEP);
+			        		if(item.work_STEP=='A'){
+			        			time_a=item.yea_MD;
+			        			sil_a=item.sil_TM;
+			        			console.log("time_a : "+time_a);
+			        		}			        		 
+			        		if(item.work_STEP=='B'){
+				        			time_b=item.yea_MD;
+				        			sil_b=item.sil_TM;
+									console.log("time_b : "+time_b);								
+
+				         	}
+			        		if(item.work_STEP=='C'){
+				        			time_c=item.yea_MD;
+				        			sil_c=item.sil_TM;
+									console.log("time_c : "+time_c);								
+
+				        	}
+			        		if(item.work_STEP=='D'){
+				        			time_d=item.yea_MD;
+				        			sil_d=item.sil_TM;
+									console.log("time_d : "+time_d);								
+
+				        	}
+			        		if(item.work_STEP=='E'){
+				        			time_e=item.yea_MD;
+				        			sil_e=item.sil_TM;
+									console.log("time_e : "+time_e);								
+
+				        	}
+			        		if(item.work_STEP=='F'){
+				        			time_f=item.yea_MD;
+				        			sil_f=item.sil_TM;
+									console.log("time_f : "+time_f);								
+
+				        	}
+			        		if(item.work_STEP=='G'){
+				        			time_g=item.yea_MD;
+				        			sil_g=item.sil_TM;
+									console.log("time_g : "+time_g);								
+
+				        	}
+			        		if(item.work_STEP=='T'){
+			        			time_t=item.yea_MD;
+			        			sil_t=item.sil_TM;
+								console.log("time_t : "+time_t);								
+
+			        	}
+			        	 
+			        		 $('#ngss').empty();
+			        		 $('#ngss').append('<tr>');
+			        		 $('#ngss').append('<td>'+ dept_nm+'</td>');
+			        		 $('#ngss').append('<td>'+ item.pjt_CD+svc+'</td>');
+			        		 
+			        		 $('#ngss').append('<td>'+ time_t+'</td>'+'<td>'+ sil_t+'</td>');
+			        		 $('#ngss').append('<td>'+ (time_t-sil_t)+'</td>');
+			        		 $('#ngss').append('<td>'+ time_a+'</td>'+'<td>'+ sil_a+'</td>');
+			        		 $('#ngss').append('<td>'+ (time_a-sil_a)+'</td>');
+			        		 $('#ngss').append('<td>'+ time_b+'</td>'+'<td>'+ sil_b+'</td>');
+			        		 $('#ngss').append('<td>'+ (time_b-sil_b)+'</td>');
+			        		 $('#ngss').append('<td>'+ time_c+'</td>'+'<td>'+ sil_c+'</td>');
+			        		 $('#ngss').append('<td>'+ (time_c-sil_c)+'</td>');
+			        		 $('#ngss').append('<td>'+ time_d+'</td>'+'<td>'+ sil_d+'</td>');
+			        		 $('#ngss').append('<td>'+ (time_d-sil_d)+'</td>');
+			        		 $('#ngss').append('<td>'+ time_e+'</td>'+'<td>'+ sil_e+'</td>');
+			        		 $('#ngss').append('<td>'+ (time_e-sil_e)+'</td>');
+			        		 $('#ngss').append('<td>'+ time_f+'</td>'+'<td>'+ sil_f+'</td>');
+			        		 $('#ngss').append('<td>'+ (time_f-sil_f)+'</td>');
+			        		 $('#ngss').append('<td>'+ time_g+'</td>'+'<td>'+ sil_g+'</td>');
+			        		 $('#ngss').append('<td>'+ (time_g-sil_g)+'</td>');
+			        		 $('#ngss').append('</tr>');
+			        	 });
+			    
+				}
+			});
+		});
+			console.log(time_a +" / "+time_b+" / "+time_c+" / "+time_d+" / "+time_e+" / "+time_f+" / "+time_g+" / "+time_t);
+	});
+		
+/* 		$(document).ready(function(){
 		    // 목록
 		    console.log('데이터 출력해보자')
 		    $('#btn_list').on('click',function(){
@@ -39,7 +161,7 @@
 		            }
 		        });
 		    });
-		});
+		}); */
 
 </script>		
 		
@@ -130,17 +252,20 @@
                     <div class="table-responsive">
                       <table class="table table-striped jambo_table bulk_action" >
                         <thead>
-                          <tr class="headings">
-                            
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;M/H 투입 누계
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;M/H 투입 계획
-                            <th class="column-title">부서 </th>
-                            <th class="column-title">프로젝트 코드명 </th>
+                        <tr class="headings"  >
+                        	<th rowspan="2">부서</th>
+                        	<th rowspan="2">프로젝트 코드명</th>
+                        	<th rowspan="2">프로젝트명</th>
+                        	<th colspan="4">M/H 투입 누계</th>
+                        	<th colspan="8">M/H 투입 계획</th>
+                        </tr>
+                          <tr class="headings" > 
+                          
                             <th class="column-title">단계</th>
                             <th class="column-title">계획</th>
                             <th class="column-title">실적</th>
                             <th class="column-title">차이</th>
-                            <th></th>
+                            
                             <th class="column-title">기획</th>
                             <th class="column-title">심의</th>
                             <th class="column-title">허가</th>
@@ -151,30 +276,113 @@
                             <th class="column-title">합계</th>
                             
                             
-                            </th>
+                            
                             <th class="bulk-actions" colspan="7">
                               <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                             </th>
                           </tr>
                         </thead>
 
-                        <tbody id="list">
-                          <tr class="even pointer">
-                            
-                            
-                            
-                          </tr>
-                          
-                          
-                        </tbody>
-                      </table>
+
+
+
+						<tbody data-toggle="modal" data-target="#ok" id="list_table">
+						
+								
+							<tr th:each="r : ${resultList}" >
+							
+								
+							
+								<td th:text="${r.DEPT_NM}">
+								<td th:text="${r.PJT_CD}">
+								<td th:text="${r.PJT_NM}">
+								<td th:text="${r.WORK_NM}">
+								<td th:text="${r.TOT_PLAN}">
+								<td th:text="${r.WORK_TIME}">
+								<td th:text="${r.TOT_PLAN-r.WORK_TIME}" style="color:b">
+								
+								
+								<td th:text="${r.PLAN_A}">
+								<td th:text="${r.PLAN_B}">
+								<td th:text="${r.PLAN_C}">
+								<td th:text="${r.PLAN_D}">
+								<td th:text="${r.PLAN_E}">
+								<td th:text="${r.PLAN_F}">
+								<td th:text="${r.PLAN_G}">
+								<td th:text="${r.TOT_MD}">
+							</tr>
+						</tbody>
+					</table>
                     </div>
 							
 						
                   </div>
                 </div>
               </div>
-              
+		     <!-- 상세보기 modal -->
+		
+		<div class="modal fade bs-example-modal-fullsize" tabindex="-1" role="dialog" aria-hidden="true" id="ok">
+		   <div class="modal-dialog modal-fullsize">
+		     <div class="modal-content modal-fullsize" style="width:1000px;height:500px" >
+		       <div class="modal-header">
+		         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+		         </button>
+		         <h4 class="modal-title" id="myModalLabel2">프로젝트 단계별 실적,대비표</h4>
+		       </div>
+		       <table id="datatable-responsive" class="table table-striped jambo_table bulk_action" >
+						<thead>
+							<tr>
+								<th rowspan="2">부서</th>
+								<th rowspan="2">프로젝트코드명</th>
+								<th colspan="3">합계</th>
+								<th colspan="3">기획</th>
+								<th colspan="3">심의</th>
+								<th colspan="3">허가</th>
+								<th colspan="3">착공</th>
+								<th colspan="3">실시</th>
+								<th colspan="3">A/S</th>
+								<th colspan="3">준공</th>
+								
+							</tr>
+							<tr>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+							</tr>
+						
+						</thead>
+						<tbody id="ngss">
+						
+						</tbody>
+				</table>
+		      
+		       
+		       
+		     </div>
+		   </div>
+		 </div>		                 
+		<!-- / 승인 modals -->          
 	
 
 
