@@ -8,10 +8,24 @@
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+		<script>
+			/* 검색에 현재의 년월을 기준, 자동선택 */
+			$(document).ready(function() { 
+				/* id="NowYYDD"에서 Element를 가져온다. (model에서의 DAY_YM을 가져오기 위함) */
+				let nowYYDD = document.getElementById('NowYYDD');
+				console.log('현재년월 : ' + $(nowYYDD).text());
+				$('#DAY_YM').val($(nowYYDD).text().substring(0,4)).prop("selected", true);	/* 년 자동선택 */
+				$('#DAY_DD').val($(nowYYDD).text().substring(4,6)).prop("selected", true);	/* 월 자동선택 */
+				$("#kuntaeList tr").click(function() {
+					// 클릭한 행만 색상 변경(리스트)
+					$("#kuntaeList tr").css("background-color", "#ffffff");
+					$(this).css( "background-color", "#CEFBC9" );
+				});
+			});
+		</script>
 		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
-	<div class="">
 		<div class="page-title">
 			<div class="col-md-12 col-xs-12" style="color:black;">
 				<div class="page-title">
@@ -22,168 +36,174 @@
 			</div>
 		</div>
 		<div class="clearfix"></div>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="x_panel" style="color: black;">
-					<div class="x_title">
-						<form action="/baseInfo/kuntaeScheduleSearchProcess" method="POST">
-							<h5 style="color:black;">⊙ 검색 조건</h5>
-							<div class="col-md-4 col-sm-12 col-xs-12">
-								<select name="DAY_YM" id="DAY_YM" style="width:20%;">년
-									<option value="2006">2006</option>
-									<option value="2007">2007</option>
-									<option value="2008">2008</option>
-									<option value="2009">2009</option>
-									<option value="2010">2010</option>
-									<option value="2011">2011</option>
-									<option value="2012">2012</option>
-									<option value="2013">2013</option>
-									<option value="2014">2014</option>
-									<option value="2015">2015</option>
-									<option value="2016">2016</option>
-									<option value="2017">2017</option>
-									<option value="2018">2018</option>
-									<option value="2019">2019</option>
-									<option value="2020">2020</option>
-								</select>
-								<select name="DAY_DD" id="DAY_DD" style="width:10%;">월
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
-									<option value="10">10</option>
-									<option value="11">11</option>
-									<option value="12">12</option>
-								</select>
-								<button type="submit"name="kuntaeSearch">검색</button>
-							</div>
-						</form>
-					</div>
-					</div>
-				</div>
-			</div>
-			<div class="x_panel" style="color: black;">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel" style="color: black;">
 				<div class="x_title">
-					<div class="clearfix"></div>
+					<form action="/baseInfo/kuntaeScheduleSearchProcess" method="POST">
+						<h5 style="color:black;">⊙ 검색 조건</h5>
+						<select name="DAY_YM" id="DAY_YM" style="width:10%;">년
+							<option value="2006">2006</option>
+							<option value="2007">2007</option>
+							<option value="2008">2008</option>
+							<option value="2009">2009</option>
+							<option value="2010">2010</option>
+							<option value="2011">2011</option>
+							<option value="2012">2012</option>
+							<option value="2013">2013</option>
+							<option value="2014">2014</option>
+							<option value="2015">2015</option>
+							<option value="2016">2016</option>
+							<option value="2017">2017</option>
+							<option value="2018">2018</option>
+							<option value="2019">2019</option>
+							<option value="2020">2020</option>
+						</select>
+						<select name="DAY_DD" id="DAY_DD" style="width:5%;">월
+							<option value="01">1</option>
+							<option value="02">2</option>
+							<option value="03">3</option>
+							<option value="04">4</option>
+							<option value="05">5</option>
+							<option value="06">6</option>
+							<option value="07">7</option>
+							<option value="08">8</option>
+							<option value="09">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+						</select>
+							<button type="submit"name="kuntaeSearch">검색</button>
+					</form>
 				</div>
-				<div class="x_content"><br>
-					<div class="col-md-4 col-sm-12 col-xs-12 table-responsive" style="overflow: scroll; height: 600px; padding: 10px; color:black;">
-						<table class="table jambo_table bulk_action">
-							<thead>
-								<tr>
-									<td style="width:2%;"></td>
-									<td style="text-align: center">일자</td>
-									<td style="text-align: center">요일</td>
-									<td style="text-align: center">휴일</td>
-									<td style="text-align: center; width:60%;">휴일명</td>
-								</tr>
-							</thead>
-							<tbody id="kuntaeList">
-								<tr th:each="kuntaeList : ${kuntaeList}">
-									<td style="width:2%;"></td>
-									<!-- 휴일이면 빨간색 글씨 -->
-									<td th:if="${kuntaeList.HOLID_GB == '1'}" th:text="${kuntaeList.DAY_DD}" style="text-align: center; color: red;"></td>
-									<td th:unless="${kuntaeList.HOLID_GB == '1'}" th:text="${kuntaeList.DAY_DD}" style="text-align: center"></td>
-									<!-- 요일 한글명으로 변경 (IF문) -->
-									<td th:if="${kuntaeList.DAY_WEEK == '1'}" style="text-align: center; color: red;">일</td>
-									<td th:if="${kuntaeList.DAY_WEEK == '2' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">월</td>
-									<td th:if="${kuntaeList.DAY_WEEK == '2' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">월</td>
-
-									<td th:if="${kuntaeList.DAY_WEEK == '3' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">화</td>
-									<td th:if="${kuntaeList.DAY_WEEK == '3' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">화</td>
-
-									<td th:if="${kuntaeList.DAY_WEEK == '4' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">수</td>
-									<td th:if="${kuntaeList.DAY_WEEK == '4' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">수</td>
-
-									<td th:if="${kuntaeList.DAY_WEEK == '5' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">목</td>
-									<td th:if="${kuntaeList.DAY_WEEK == '5' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">목</td>
-
-									<td th:if="${kuntaeList.DAY_WEEK == '6' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">금</td>
-									<td th:if="${kuntaeList.DAY_WEEK == '6' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">금</td>
-
-									<td th:if="${kuntaeList.DAY_WEEK == '7'}" style="text-align: center; color:red" >토</td>
-									<!-- 휴일이면 체크, 아니면 체크아님 -->
-									<td th:if="${kuntaeList.HOLID_GB == '0'}" style="text-align: center">
-										<input type="checkbox">
-									</td>
-									<td th:if="${kuntaeList.HOLID_GB == '1'}" style="text-align: center">
-										<input type="checkbox" th:checked="${kuntaeList.HOLID_GB}">
-									</td>
-									<td th:text="${kuntaeList.HOLID_NM}" style="text-align: center"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="col-md-8 col-sm-12 col-xs-12">
-						<table class="table table-striped table-bordered">
-							<thead>
-							</thead>
-							<tbody>
-								<!-- 요일 (한글명) -->
-								<tr>
-									<td>일</td>
-									<td>월</td>
-									<td>화</td>
-									<td>수</td>
-									<td>목</td>
-									<td>금</td>
-									<td>토</td>
-								</tr>
-								<!-- 일자 / 1주 -->
-								<th:block th:each="kuntaeList : ${kuntaeList}">
-								<!-- 1주 빈칸 채우기 -->
-									<th:block th:if="${kuntaeList.DAY_DD == '01'}">
-										<th:block th:if="${kuntaeList.DAY_WEEK == '1'}">
-											<!-- 일요일 시작 : 없음 -->											
-										</th:block>
-										<th:block th:if="${kuntaeList.DAY_WEEK == '2'}">
-											<!-- 월요일 시작 : 1칸 -->
-											<td></td>										
-										</th:block>
-										<th:block th:if="${kuntaeList.DAY_WEEK == '3'}">
-											<!-- 화요일 시작 : 2칸 -->
-											<td></td><td></td>											
-										</th:block>
-										<th:block th:if="${kuntaeList.DAY_WEEK == '4'}">
-											<!-- 수요일 시작 : 3칸 -->
-											<td></td><td></td><td></td>											
-										</th:block>
-										<th:block th:if="${kuntaeList.DAY_WEEK == '5'}">
-											<!-- 목요일 시작 : 4칸 -->
-											<td></td><td></td><td></td><td></td>											
-										</th:block>
-										<th:block th:if="${kuntaeList.DAY_WEEK == '6'}">
-											<!-- 금요일 시작 : 5칸 -->
-											<td></td><td></td><td></td><td></td><td></td>											
-										</th:block>
-										<th:block th:if="${kuntaeList.DAY_WEEK == '7'}">	
-											<!-- 토요일 시작 : 6칸 -->
-											<td></td><td></td><td></td><td></td><td></td><td></td>										
-										</th:block>
-									</th:block>
-									<td th:if="${kuntaeList.DAY_WEEK == '7'}" th:text="${kuntaeList.DAY_DD}  + ${kuntaeList.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
-									<td th:if="${kuntaeList.DAY_WEEK == '1'}" th:text="${kuntaeList.DAY_DD}  + ${kuntaeList.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
-									<td th:if="${kuntaeList.DAY_WEEK == '2'}" th:text="${kuntaeList.DAY_DD}  + ${kuntaeList.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
-									<td th:if="${kuntaeList.DAY_WEEK == '3'}" th:text="${kuntaeList.DAY_DD}  + ${kuntaeList.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
-									<td th:if="${kuntaeList.DAY_WEEK == '4'}" th:text="${kuntaeList.DAY_DD}  + ${kuntaeList.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
-									<td th:if="${kuntaeList.DAY_WEEK == '5'}" th:text="${kuntaeList.DAY_DD}  + ${kuntaeList.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
-									<td th:if="${kuntaeList.DAY_WEEK == '6'}" th:text="${kuntaeList.DAY_DD}  + ${kuntaeList.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
-									<tr th:if="${kuntaeList.DAY_WEEK == '7'}">
-										<!-- 휴일명 가져오기 -->
-<!-- 										<td th:if="${kuntaeList.HOLID_NM != null }" th:text="${kuntaeList.HOLID_NM}"></td>
-										<td th:unless="${kuntaeList.HOLID_NM != null }"></td> -->
-									</tr>
-								</th:block>
-							</tbody>
-						</table>
-					</div>
 				</div>
 			</div>
+		</div>
+		<div class="x_panel" style="color: black;">
+			<div class="x_title">
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content"><br>
+				<div class="col-md-4 col-sm-12 col-xs-12 table-responsive" style="overflow: scroll; height: 600px; padding: 10px; color:black;">
+					<table class="table jambo_table bulk_action">
+						<thead>
+							<tr>
+								<td style="width:2%;"></td>
+								<td style="text-align: center">일자</td>
+								<td style="text-align: center">요일</td>
+								<td style="text-align: center">휴일</td>
+								<td style="text-align: center; width:60%;">휴일명</td>
+							</tr>
+						</thead>
+						<tbody id="kuntaeList">
+							<tr th:each="kuntaeList : ${kuntaeList}">
+								<td style="display: none" th:text="${kuntaeList.DAY_YM}" id="NowYYDD"></td>
+								<td style="width:2%;"></td>
+								<!-- 휴일이면 빨간색, 토요일이면 파란색 -->
+								<td th:if="${kuntaeList.HOLID_GB == '1' AND kuntaeList.DAY_WEEK == '7'}" th:text="${kuntaeList.DAY_DD}" style="text-align: center; color: blue;"></td>
+								<td th:if="${kuntaeList.HOLID_GB == '1' AND kuntaeList.DAY_WEEK != '7'}" th:text="${kuntaeList.DAY_DD}" style="text-align: center; color: red;"></td>
+								<td th:unless="${kuntaeList.HOLID_GB == '1'}" th:text="${kuntaeList.DAY_DD}" style="text-align: center"></td>
+								<!-- 요일 한글명으로 변경 (IF문) -->
+								<td th:if="${kuntaeList.DAY_WEEK == '1'}" style="text-align: center; color: red;">일</td>
+								<td th:if="${kuntaeList.DAY_WEEK == '2' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">월</td>
+								<td th:if="${kuntaeList.DAY_WEEK == '2' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">월</td>
+
+								<td th:if="${kuntaeList.DAY_WEEK == '3' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">화</td>
+								<td th:if="${kuntaeList.DAY_WEEK == '3' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">화</td>
+
+								<td th:if="${kuntaeList.DAY_WEEK == '4' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">수</td>
+								<td th:if="${kuntaeList.DAY_WEEK == '4' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">수</td>
+
+								<td th:if="${kuntaeList.DAY_WEEK == '5' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">목</td>
+								<td th:if="${kuntaeList.DAY_WEEK == '5' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">목</td>
+
+								<td th:if="${kuntaeList.DAY_WEEK == '6' AND kuntaeList.HOLID_GB == '0'}" style="text-align: center">금</td>
+								<td th:if="${kuntaeList.DAY_WEEK == '6' AND kuntaeList.HOLID_GB == '1'}" style="text-align: center; color: red;">금</td>
+
+								<td th:if="${kuntaeList.DAY_WEEK == '7'}" style="text-align: center; color:blue" >토</td>
+								<!-- 휴일이면 체크, 아니면 체크아님 -->
+								<td th:if="${kuntaeList.HOLID_GB == '0'}" style="text-align: center">
+									<input type="checkbox">
+								</td>
+								<td th:if="${kuntaeList.HOLID_GB == '1'}" style="text-align: center">
+									<input type="checkbox" th:checked="${kuntaeList.HOLID_GB}">
+								</td>
+								<!-- 공휴일명 -->
+								<td th:text="${kuntaeList.HOLID_NM}" style="text-align: center; color: red;"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 달력 조회(오른쪽) -->
+				<div class="col-md-8 col-sm-12 col-xs-12">
+					<table class="table table-striped table-bordered">
+						<thead>
+						</thead>
+						<tbody id="kuntaeCalendar">
+							<!-- 요일 (한글명) -->
+							<tr>
+								<td style="color: red;">일</td>
+								<td>월</td>
+								<td>화</td>
+								<td>수</td>
+								<td>목</td>
+								<td>금</td>
+								<td style="color: blue;">토</td>
+							</tr>
+							<!-- 일자  -->
+							<th:block th:each="kuntaeCalendar : ${kuntaeList}">
+							<!-- 1주 빈칸 채우기 (1주만 해당)-->
+								<th:block th:if="${kuntaeCalendar.DAY_DD == '01'}">
+									<th:block th:if="${kuntaeCalendar.DAY_WEEK == '1'}">
+										<!-- 일요일 시작 : 없음 -->											
+									</th:block>
+									<th:block th:if="${kuntaeCalendar.DAY_WEEK == '2'}">
+										<!-- 월요일 시작 : 1칸 -->
+										<td></td>										
+									</th:block>
+									<th:block th:if="${kuntaeCalendar.DAY_WEEK == '3'}">
+										<!-- 화요일 시작 : 2칸 -->
+										<td></td><td></td>											
+									</th:block>
+									<th:block th:if="${kuntaeCalendar.DAY_WEEK == '4'}">
+										<!-- 수요일 시작 : 3칸 -->
+										<td></td><td></td><td></td>											
+									</th:block>
+									<th:block th:if="${kuntaeCalendar.DAY_WEEK == '5'}">
+										<!-- 목요일 시작 : 4칸 -->
+										<td></td><td></td><td></td><td></td>											
+									</th:block>
+									<th:block th:if="${kuntaeCalendar.DAY_WEEK == '6'}">
+										<!-- 금요일 시작 : 5칸 -->
+										<td></td><td></td><td></td><td></td><td></td>											
+									</th:block>
+									<th:block th:if="${kuntaeCalendar.DAY_WEEK == '7'}">	
+										<!-- 토요일 시작 : 6칸 -->
+										<td></td><td></td><td></td><td></td><td></td><td></td>										
+									</th:block>
+								</th:block>
+								<!-- 달력 번호 및 휴일명 ,색 선택(휴일, 공휴일이면 빨간색, 토요일은 파란색, 평일은 검정색) -->
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '7'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%; color: blue;"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '1'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%; color: red;"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '2' AND kuntaeCalendar.HOLID_GB == '1'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%; color: red;"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '2' AND kuntaeCalendar.HOLID_GB == '0'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '3' AND kuntaeCalendar.HOLID_GB == '1'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%; color: red;"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '3' AND kuntaeCalendar.HOLID_GB == '0'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '4' AND kuntaeCalendar.HOLID_GB == '1'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%; color: red;"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '4' AND kuntaeCalendar.HOLID_GB == '0'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '5' AND kuntaeCalendar.HOLID_GB == '1'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%; color: red;"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '5' AND kuntaeCalendar.HOLID_GB == '0'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '6' AND kuntaeCalendar.HOLID_GB == '1'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%; color: red;"></td>
+								<td th:if="${kuntaeCalendar.DAY_WEEK == '6' AND kuntaeCalendar.HOLID_GB == '0'}" th:text="${kuntaeCalendar.DAY_DD}  + ${kuntaeCalendar.HOLID_NM}" Style="height: 110px; padding: 10px; width: 5%"></td>
+								<!-- 주 마다 줄 넘김 -->
+								<tr th:if="${kuntaeCalendar.DAY_WEEK == '7'}">
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</th:block>
 	<th:block layout:fragment="customJquery">
 			<th:block th:include="layout/customJquery"></th:block>

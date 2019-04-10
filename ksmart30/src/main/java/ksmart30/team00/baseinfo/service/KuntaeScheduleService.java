@@ -23,6 +23,11 @@ public class KuntaeScheduleService {
     // 10.3.5.2 근태월력표 검색
     public List<KuntaeSchedule> getKuntaeScheduleCalendar(KuntaeSchedule toDay) {
         System.out.println("(S) 10.3.5.2 근태월력표 검색 getKuntaeScheduleCalendar()");
+        // 1. 년 값과 월의 문자열을 서로 더함
+        String addToday = toDay.getDAY_YM() + toDay.getDAY_DD();
+        // 2. 서로 더한 문자열을 toDay객체에 Setting
+        toDay.setDAY_YM(addToday);
+        // 3. Mapper 실행(결과값 : 검색된 근태월력표)
         List<KuntaeSchedule> kuntaeCalendar = kuntaeScheduleMapper.getKuntaeScheduleSearch(toDay);
         System.out.println("(M) 10.3.5.2 근태월력표 검색 쿼리 완료");
         return kuntaeCalendar;

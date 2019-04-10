@@ -4,7 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team00.baseinfo.mapper.KuntaeScheduleMapper">
     <!-- 10.3.5.1 근태월력표 리스트와 달력 -->
-    <!-- CONVERT(VARCHAR(6), GETDATE() , 112) -->
     <select id="getKuntaeScheduleList"
             resultType="ksmart30.team00.baseinfo.domain.KuntaeSchedule">
             SELECT 
@@ -16,7 +15,7 @@
               AUDIT_ID,
               AUDIT_TM
             FROM T_SC9200
-            WHERE DAY_YM = 201501
+            WHERE DAY_YM = CONVERT(VARCHAR(6), GETDATE() , 112)
     </select>
     <!-- 10.3.5.2 근태월력표 검색 -->
     <select id="getKuntaeScheduleSearch"
