@@ -17,27 +17,26 @@ function detail(emp_NO){
 		type:'GET',
 		data:{EMP_NO:emp_NO},
 		success:function(data){
-			console.log(data);
-			emp_no = data.emp_NO;
-			A = jikgup_NM.val();
-			console.log("직원 디테일 : "+emp_no+"/"+A+"/"+data.jikchk_NM+"/"+data.in_PHONE_NO+"/"+data.audit_TM);
-			/* $('#').append('<tr class="even pointer">');
-			$('#').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
-			$('#').append('<td>'+emp_NO+'</td>');
-			$('#').append('<td>'+kor_NM+'</td>');
-			$('#').append('<td>'+jikgup_NM+'</td>');
-			$('#').append('<td>'+jikchk_NM+'</td>');
-			$('#').append('<td>'+in_PHONE_NO+'</td>');
-			$('#').append('<td>'+audit_TM+'</td>');
-			$('#').append('<td>'+phone_NO+'</td>');	
-			$('#').append('<td>'+birth_DT+'</td>');
-			$('#').append('<td>'+in_PHONE_NO+'</td>');
-			$('#').append('<td>'+audit_TM+'</td>');
-			$('#').append('<td>'+cur_ADDRESS+'</td>');	
-			$('#').append('<td>'+mail_ADDRESS+'</td>');
-		
-			$('#').append('</tr>');	 */
-			
+			$(data).each(function(index,item){
+				console.log(data);		
+				
+        		$('#detail').empty();
+				$('#detail').append('<tr>');			
+				$('#detail').append('<td>'+item.emp_NO+'</td>');
+				$('#detail').append('<td>'+item.kor_NM+'</td>');
+				$('#detail').append('<td>'+item.jikgup_NM+'</td>');
+				$('#detail').append('<td>'+item.jikchk_NM+'</td>');	
+				$('#detail').append('<td>'+item.in_PHONE_NO+'</td>');			
+				$('#detail').append('<td>'+item.audit_TM+'</td>');			
+				$('#detail').append('<td>'+item.phone_NO+'</td>');					
+				$('#detail').append('<td>'+item.birth_DT+'</td>');				
+				$('#detail').append('<td>'+item.in_PHONE_NO+'</td>');				
+				$('#detail').append('<td>'+item.audit_TM+'</td>');			
+				$('#detail').append('<td>'+item.cur_ADDRESS+'</td>');				
+				$('#detail').append('<td>'+item.mail_ADDRESS+'</td>');
+				$('#detail').append('</tr>');		
+			});
+					
 		}
 		
 	});
@@ -47,42 +46,41 @@ function detail(emp_NO){
 $(document).ready(function(){
 	 console.log('직원list 출력해보자');	
 	//검색버튼 클릭 시 전체 직원조회
-	 $("#btn_list").click(function(){
-		 console.log('직원list 출력해보자2');	
-			$.ajax({
+	 $("#btn_list").click(function(){	
+		 
+		 let KOR_NM2 = $('#KOR_NM2').val();
+		 let AUDIT_TM_FORMAT = $('#AUDIT_TM2').val();
+		 let AUDIT_TM2 = AUDIT_TM_FORMAT.substr(0,4)+AUDIT_TM_FORMAT.substr(5,2)+AUDIT_TM_FORMAT.substr(8,2);
+		 let JIKGUP_NM2	=$('#JIKGUP_NM2').val();
+		 let JIKCHK_NM2 = $('#JIKCHK_NM2').val();
+		 let EMP_NO2 = $('#EMP_NO2').val();
+		 console.log('직원  검색조건 (사원번호) : '+EMP_NO2+'직원  검색조건 (이름) : '+KOR_NM2+"    검색조건(직급) :  "+JIKGUP_NM2+"    검색조건(직책) :  "+JIKCHK_NM2+"  검색조건(입사일) : "+AUDIT_TM2);
+			
+		 $.ajax({				
 				url:'/person/personInsaEmployeeView',
 				type:'GET',
+				data:{EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2},
 				success:(data)=>{
 					$(data).each(function(index,item){
-						//한 행을 클릭시 사원번호
+						//한 행을 클릭시 사원번호	
+						
 						$('#list').append('<tr class="even pointer">');
 						$('#list').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
 						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.sort_VALUE+'</td>');
-						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.dept_NM+'</td>');
-						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.emp_NO+'</td>');
-						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.kor_NM+'</td>');
-						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.jikgup_NM+'</td>');
-						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.jikchk_NM+'</td>');
-						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.in_PHONE_NO+'</td>');		
-						$('#list').append('</tr>');	
-					
-						
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.dept_NM+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.emp_NO+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.kor_NM+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.jikgup_NM+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.jikchk_NM+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.in_PHONE_NO+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.audit_TM+'</td>');						
+						$('#list').append('</tr>');							
 					});
 				}					
 		 }); 				
 	 });
 	
-	/* //각 행 클릭시 상세정보 출력
-	 $("#list").on('click',function(){
-		let tr = $(this);
-		console.log("row : "+tr.text());
-		let td = tr.children();
-		let emp_no = td.eq(2).text();
-		console.log("row emp_no : "+emp_no);				 		 
-	 });
- 	//상세정보 출력 끝!	 */
-	
- 
+
 });
 
 
@@ -91,7 +89,6 @@ $(document).ready(function(){
 </th:block>
 <th:block layout:fragment="customBody">
 <font color="black">
-
 	<div class="page-title">
 				<div class="title_left">
 					
@@ -108,99 +105,102 @@ $(document).ready(function(){
 				<h3>직원 검색</h3>
 			</div>
 			<div class="col-md-12 col-xs-12" style="color: black;"></div>
-			<!----------------------------------- 조건별검색(부장님)----------------------------------------- -->
 
-			<div class="col-md-12 col-xs-12">
-				<form class="form-horizontal form-label-left input_mask">
-					<table id="datatable-responsive"
-						class="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
-						role="grid" aria-describedby="datatable-responsive_info"
-						style="width: 100%;">
-						<tr role="row">
-							<th class="sorting_asc" tabindex="0"
-								aria-controls="datatable-responsive" rowspan="1" colspan="1"
-								style="width: 65%;" aria-sort="ascending"
-								aria-label="First name: activate to sort column descending">
-								<label class="control-label">검색조건</label>
-							</th>
-
-						</tr>
-						<tr role="row">
-							<th class="sorting_asc" tabindex="0"
-								aria-controls="datatable-responsive" rowspan="1" colspan="1"
-								style="width: 100%;" aria-sort="ascending"
-								aria-label="First name: activate to sort column descending">
-								<label class="control-label"
-								style="padding-left: 10px; padding-right: 40px;">입사일자</label> <input
-								type="date" style="width: 16%"> <label
-								class="control-label">-</label> <input type="date"
-								style="width: 17%"> <label class="control-label"
-								style="padding-left: 35px; padding-right: 40px;">직급</label> <input
-								type="text" style="width: 18%;"> <label
-								class="control-label">-</label> <input type="text"
-								style="width: 18%">
-							</th>
-
-						</tr>
-						<tr role="row">
-							<th class="sorting_asc" tabindex="0"
-								aria-controls="datatable-responsive" rowspan="1" colspan="1"
-								style="width: 65%;" aria-sort="ascending"
-								aria-label="First name: activate to sort column descending">
-								<label class="control-label"
-								style="padding-left: 35px; padding-right: 40px;">직책</label> <input
-								type="text" style="width: 15%">
-								<button>
-									<i class="fa fa-search"></i>
-								</button> - <input type="text" style="width: 15%">
-								<button><i class="fa fa-search"></i></button> 
-								<label class="control-label" style="padding-left: 20px; padding-right: 14px;">프로젝트</label>
-								<input type="text" style="width: 15%">
-								<button>
-									<i class="fa fa-search"></i>
-								</button> <label class="control-label">-</label> <input type="text"
-								style="width: 15%">
-								<button>
-									<i class="fa fa-search"></i>
-								</button>
-							</th>
-
-						</tr>
-						<tr role="row">
-							<th class="sorting_asc" tabindex="0"
-								aria-controls="datatable-responsive" rowspan="1" colspan="1"
-								style="width: 17%;" aria-sort="ascending"
-								aria-label="First name: activate to sort column descending">
-								<label class="control-label">전표일자</label> <input type="text"
-								style="width: 18"> - <input type="text"
-								style="width: 18%"> <label class="control-label"
-								style="padding-left: 15px; padding-right: 40px;">금액</label> <input
-								type="text" style="width: 18%"> - <input type="text"
-								style="width: 18%">
-							</th>
-
-						</tr>
-						<tr role="row">
-							<th class="sorting_asc" tabindex="0"
-								aria-controls="datatable-responsive" rowspan="1" colspan="1"
-								style="width: 17%;" aria-sort="ascending"
-								aria-label="First name: activate to sort column descending">
-								<label class="control-label">계정과목</label> <input type="text"
-								style="width: 18"> - <input type="text"
-								style="width: 18%"> <label class="control-label"
-								style="padding-left: 15px; padding-right: 27px;">거래처</label> <input
-								type="text" style="width: 18%"> - <input type="text"
-								style="width: 18%">
-							</th>
-
-						</tr>
-						<div class="x_content" style="text-align: right">
-							<button type="button" class="btn" style="color:black" id="btn_list">검색</button>
-						</div>
-
-					</table>
-				</form>
+	<!-- 조건별 직원 검색 -->			
+		<div class="col-md-12 col-sm-6 col-xs-12 table-responsive" style="width:100%">
+			<div class="x_panel">
+				<div class="x_title">
+					<form>
+						<h5 style="color:black;">⊙ 검색 조건</h5>		
+						<button type="button" class="btn" style="color:black" id="btn_list">검색</button>	
+						
+					</form>
+				</div>
+				<div class="x_content">
+					<!-- 입력 폼 -->
+					<form class="form-horizontal form-label-left">
+						<table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" id="personSearch_table"role="grid" aria-describedby="datatable-responsive_info" style="width:100%;">
+							<tr role="row">
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									&nbsp;사원번호
+								</th>
+								<th class="sorting" aria-controls="datatable-responsive">
+									<input type="text" name="EMP_NO2" id="EMP_NO2" style="width:50%;">
+								</th>
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									&nbsp;사원명
+								</th>
+								<th class="sorting" aria-controls="datatable-responsive">
+									<input type="text" name="KOR_NM2" id="KOR_NM2" style="width:50%;">
+								</th>
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									입사일
+								</th>
+								<th style="width:330px;height:30px;" class="sorting" aria-controls="datatable-responsive">
+									<input type="date" name="AUDIT_TM2" id="AUDIT_TM2" style="width:50%;">
+								</th>
+							</tr>
+							<tr role="row">
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									직급
+								</th>											
+								<th>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<select style="width:230px;height:25px;" id="JIKGUP_NM2">
+											<option></option>
+											<option value="회장">회장</option>
+											<option value="부회장">부 회 장</option>
+											<option value="대표이사">대표이사</option>
+											<option value="사장">사     장</option>
+											<option value="부사장">부 사 장</option>
+											<option value="전무">전     무</option>
+											<option value="상무">상     무</option>
+											<option value="이사">이     사</option>
+											<option value="실장">실     장</option>
+											<option value="팀장">팀     장</option>
+											<option value="대리">대     리</option>
+											<option value="사원">사     원</option>
+											<option value="인턴사원">인턴사원</option>
+											<option value="촉탁사원">촉탁사원</option>
+											<option value="계약직">계 약 직</option>
+										</select>
+									</div>
+								</th>
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									직책
+								</th>
+								<th>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+											<select style="width:230px;height:25px;" id="JIKCHK_NM2">
+												<option></option>
+												<option value="회장">회      장</option>
+												<option value="대표이사">대표이사</option>
+												<option value="대표">대      표</option>
+												<option value="사장">사      장</option>
+												<option value="부문장">부 문 장</option>
+												<option value="본부장">본 부 장</option>
+												<option value="본부장(직무대행)">본 부 장(직무대행)</option>
+												<option value="실장">실     장</option>
+												<option value="소장">소     장</option>
+												<option value="소장(직무대행)">소     장(직무대행)</option>
+												<option value="직원">직     원</option>
+												<option value="감사">감     사</option>
+												<option value="고문">고     문</option>
+												<option value="임원">임     원</option>
+												<option value="연구원">연 구 원</option>
+												<option value="별정직">별 정 직</option>
+											</select>
+										</div>						
+									</th>								
+								</tr>
+							<tr>
+						</table>
+					</form>
+				</div>
 			</div>
+			
+			</div>
+			
 		</div>
 	</div>
 
@@ -226,6 +226,7 @@ $(document).ready(function(){
 									<th class="column-title">직급</th>
 									<th class="column-title">직책</th>	
 									<th class="column-title">사내번호</th>	
+									<th class="column-title">입사일</th>
 									<th class="bulk-actions" colspan="7"><a class="antoo"
 										style="color: #fff; font-weight: 500;">전체 선택<i class="fa fa-chevron-down"></i></a> 
 									</th>
@@ -241,6 +242,46 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	
+	<!-- 디테일 modal -->
+
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="ok" >
+   <div class="modal-dialog modal-lg" >
+     <div class="modal-content modal-lg" >
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+         </button>
+         <h4 class="modal-title" id="myModalLabel2">직원상세정보</h4>
+       </div>     
+       <table class="table table-striped jambo_table bulk_action">
+	     	<thead>
+	        	<tr>
+	        		<td>1</td>
+	        		<td>2</td>
+	        		<td>3</td>
+	        		<td>4</td>	        
+	        		<td>5</td>	        
+	        		<td>6</td>	        	
+	        		<td>7</td>	        	
+	        		<td>8</td>
+     	       		<td>9</td>	        	
+	        		<td>10</td>	        	
+	        		<td>11</td>
+	        		<td>12</td>
+	        	</tr>
+	        </thead>		              		
+			<tbody id="detail" style="font-size: 14px; line-height: 25px">						
+			</tbody>       				
+	       <div class="modal-footer">
+	         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	       </div>      
+       </table>    
+     </div>
+   </div>
+ </div>		                               
+<!-- / 디테일 modals -->
+	
+	
 	</font>
 	<!-- /page content -->
 </th:block>

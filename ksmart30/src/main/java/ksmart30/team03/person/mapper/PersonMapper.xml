@@ -3,23 +3,51 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team03.person.mapper.PersonMapper">
-	<!-- 직원 list 출력하는 쿼리 -->
-	<select id="personInsaEmployeeSearchView" resultType="ksmart30.team03.person.domain.Person">
-		SELECT X.*   
-  			FROM (
- 				SELECT   
-			  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
-			  		B.SHORT_NM DEPT_NM, 
-			  		A.EMP_NO, 
-			  		A.KOR_NM, 
-			  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
-			    	(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM,
-			 		A.IN_PHONE_NO
-   				FROM T_HM1000 A, T_SC1010 B
-      			WHERE A.DEPT_CD = B.DEPT_CD	
-  		) X
+	<!-- 6.1.2 직원 list 출력하는 쿼리 -->
+	<select id="personInsaEmployeeSearchView" 
+	parameterType="String"
+		resultType="java.util.Map">
+		SELECT   
+  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
+  		B.SHORT_NM DEPT_NM, 
+  		A.EMP_NO, 
+  		A.KOR_NM, 
+  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
+    	(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM,
+ 		A.IN_PHONE_NO,
+ 		CONVERT(varchar(30), A.AUDIT_TM,112) AUDIT_TM
+	FROM T_HM1000 A, T_SC1010 B
+   		WHERE A.DEPT_CD = B.DEPT_CD AND
+	   		EMP_NO LIKE '%'+#{EMP_NO}+'%' AND
+			KOR_NM LIKE '%'+#{KOR_NM}+'%' AND
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) LIKE '%'+#{JIKGUP_NM}+'%' AND
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) LIKE '%'+#{JIKCHK_NM}+'%' AND
+			CONVERT(varchar(30), A.AUDIT_TM,112) LIKE '%'+#{AUDIT_TM}+'%'
+	   		
 	</select>
 	
+		 <!-- 6.1.2 직원 검색 후 출력하는 쿼리 -->
+	<!--
+	<select id="personInsaEmployeeSearchView" 
+	resultType="ksmart30.team03.person.domain.Person"  parameterType="String">
+	SELECT   
+  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
+  		B.SHORT_NM DEPT_NM, 
+  		A.EMP_NO, 
+  		A.KOR_NM, 
+  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
+    	(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM,
+ 		A.IN_PHONE_NO		
+	FROM T_HM1000 A, T_SC1010 B
+   		WHERE A.DEPT_CD = B.DEPT_CD AND
+	   		EMP_NO=#{EMP_NO2} AND
+			KOR_NM=#{KOR_NM2}	AND
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD)= #{JIKGUP_NM2} AND
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD)= #{JIKCHK_NM2}  		
+	</select>
+	 -->
+	
+	<!--6.1.2 직원 디테일 출력하는 쿼리 -->
 	<select id="personInsaEmployeeDetailView"
 	resultType="ksmart30.team03.person.domain.Person" parameterType="String">
 	SELECT
