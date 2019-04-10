@@ -19,8 +19,6 @@ public class KuntaeScheduleController {
 	@GetMapping("/baseInfo/kuntaeScheduleListView")
 	public String kuntaeScheduleListView(Model model, KuntaeSchedule toDay) {
 		System.out.println("(C) 10.3.5.1~2 근태월력표 리스트(왼쪽)와 달력(오른쪽) kuntaeScheduleListView()");
-		// 임시적 기간 적용
-		toDay.setDAY_YM("201904");
 		// 1. Service 실행하여 근태월력표 리스트와 달력 정보 가져오기
 		List<KuntaeSchedule> kuntaeList = kuntaeScheduleService.getKuntaeScheduleList(toDay);
 		// 2. Model에 Setting하기
@@ -34,7 +32,6 @@ public class KuntaeScheduleController {
 	public String kuntaeScheduleSearchProcess(Model model, KuntaeSchedule toDay) {
 		// 임시적 기간 적용
 		toDay.setDAY_YM("201904");
-		toDay.setDAY_DD("01");
 		// 1. Service 실행하여 근태월력표 리스트와 달력 조회 정보 가져오기
 		List<KuntaeSchedule> kuntaeList = kuntaeScheduleService.getKuntaeScheduleList(toDay);
 		// 2. Service 실행하여 근태월력표 검색 정보 가져오기
