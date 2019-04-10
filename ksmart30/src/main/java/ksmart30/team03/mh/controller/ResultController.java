@@ -15,20 +15,30 @@ import ksmart30.team03.mh.service.ResultService;
 public class ResultController {
 	@Autowired
 	private ResultService resultService;
-	//M/H 실적 입력 폼 & M/H 실적 리스트 
-		@GetMapping("/manHour/resultWriteView")
-		public String resultWriteView(Model model) {
-			System.out.println("resultWriteView 폼 실행");
-			List<Result> list = resultService.getListView();
-			model.addAttribute("list", list);
-			return "mh/result/resultWriteView";
+	//M/H 실적 입력 폼   &  M/H 실적 리스트 
+	@GetMapping("/manHour/resultWriteView")
+	public String resultWriteView(Model model) {
+		System.out.println("resultWriteView 폼 실행");
+		
+		List<Result> list = resultService.getListView();
+		model.addAttribute("list", list);
+		return "mh/result/resultWriteView";
 		}
+		
 		//M/H 실적 입력 액션 
 		@PostMapping("/manHour/resultWriteView")
 		public String resultWriteView(Result result) {
 			System.out.println("resultWriteView 액션");
+			System.out.println("일자 : "+result.getWORK_DT());
 			resultService.addResult(result);
-			return "redirect:/resultWriteView";
-			
+			return "redirect:mh/result/resultWriteView";	
 		}
-	}
+		/*// M/H 실적 리스트 
+		@GetMapping("/manHour/resultWriteViewList")
+		public String resultWriteView(Model model) {
+			System.out.println("resultWriteView 폼 실행");
+			List<Result> list = resultService.getListView();
+			model.addAttribute("list", list);
+			return "redirect:/resultWriteView";*/
+	//}
+}

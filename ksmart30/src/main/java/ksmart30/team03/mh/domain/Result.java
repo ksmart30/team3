@@ -13,7 +13,7 @@ public class Result {
 	private String WORK_TIME; //7.작업시간
 	private String ETC_SPEC;  //8.상세내용
 	private String JIKGUP_CD; //9.직급코드
-	private String A_DEPT_CD;  //10.전문가
+	private String A_DEPT_CD;  //10.부서코드
 	public String getEMP_NO() {
 		return EMP_NO;
 	}

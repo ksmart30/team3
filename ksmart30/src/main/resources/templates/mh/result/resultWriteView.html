@@ -76,24 +76,6 @@
 					</div>
 				</fieldset>
 			</div>
-		<!-- 	<div class="col-md-3">
-				<fieldset>
-					<div class="control-group">
-						<div class="controls">
-							<p>퇴근일시</p>
-							<div class="col-md-11 xdisplay_inputx form-group has-feedback">
-								<input type="text" class="form-control has-feedback-left"
-									id="single_cal4" placeholder="First Name"
-									aria-describedby="inputSuccess2Status4"> <span
-									class="fa fa-calendar-o form-control-feedback left"
-									aria-hidden="true"></span> <span id="inputSuccess2Status4"
-									class="sr-only"><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">(성공)</font></font></span>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-			</div> -->
 			<div class="row">
 				<div class="col-sm-12 table-responsive">
 					<table id="datatable"
@@ -121,6 +103,13 @@
 									style="vertical-align: inherit;"><font
 										style="vertical-align: inherit;">작업단계</font></font>
 								</th>
+								<th class="sorting" tabindex="0" aria-controls="datatable"
+									rowspan="1" colspan="1"
+									aria-label="Age: activate to sort column ascending"
+									style="width: 25px;"><font
+									style="vertical-align: inherit;"><font
+										style="vertical-align: inherit;">작업내용</font></font>
+								</th>
 							</tr>
 							<tr>						
 								<td><!-- 사원번호 -->
@@ -146,16 +135,18 @@
 									</div>
 								</div>
 								</td>
+								
+								<td> <!-- 작업내용 -->
+								<div class="form-group">
+									<div class="col-md-7 col-sm-12 col-xs-12">
+										<input type="text" name="WORK_SPEC">
+									</div>
+								</div>
+								</td>	
+								
 							</tr>
 							
-							<tr>
-								<th class="sorting" tabindex="0" aria-controls="datatable"
-									rowspan="1" colspan="1"
-									aria-label="Age: activate to sort column ascending"
-									style="width: 25px;"><font
-									style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">작업내용</font></font>
-								</th>
+							<tr>												
 								<th class="sorting" tabindex="0" aria-controls="datatable"
 									rowspan="1" colspan="1"
 									aria-label="Start date: activate to sort column ascending"
@@ -170,30 +161,6 @@
 									style="vertical-align: inherit;"><font
 										style="vertical-align: inherit;">작업시간</font></font>
 								</th>
-							</tr>
-							<tr>
-								<td> <!-- 작업내용 -->
-								<div class="form-group">
-									<div class="col-md-7 col-sm-12 col-xs-12">
-										<input type="text" name="WORK_SPEC">
-									</div>
-								</div>
-								</td>								
-								<td> <!-- 부서코드 -->
-								<div class="form-group">
-									<div class="col-md-7 col-sm-12 col-xs-12">
-										<input type="text" name="DEPT_CD">
-									</div>
-								</div>
-								</td>								
-								<td> <!-- 작업시간 -->
-								<div class="form-group">
-									<div class="col-md-7 col-sm-12 col-xs-12">
-										<input type="text" name="WORK_TIME">
-									</div>
-								</div>
-							</tr>
-							<tr>
 								<th class="sorting" tabindex="0" aria-controls="datatable"
 									rowspan="1" colspan="1"
 									aria-label="Start date: activate to sort column ascending"
@@ -208,25 +175,23 @@
 									style="vertical-align: inherit;"><font
 										style="vertical-align: inherit;">직급 코드</font></font>
 								</th>
-								<th class="sorting" tabindex="0" aria-controls="datatable"
-									rowspan="1" colspan="1"
-									aria-label="Start date: activate to sort column ascending"
-									style="width: 30px;"><font
-									style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">전문가</font></font>
-								</th>									
 							</tr>
-						</thead>
-
-						<tbody>
-							<tr role="row" class="odd">	
-							<tr>													
-								
-																						
-									
-															
-								
-								</td><td> <!-- 상세내용 -->
+							<tr>						
+								<td> <!-- 부서코드 -->
+								<div class="form-group">
+									<div class="col-md-7 col-sm-12 col-xs-12">
+										<input type="text" name="DEPT_CD">
+									</div>
+								</div>
+								</td>								
+								<td> <!-- 작업시간 -->
+								<div class="form-group">
+									<div class="col-md-7 col-sm-12 col-xs-12">
+										<input type="text" name="WORK_TIME">
+									</div>
+								</div>
+								</td>
+								<td> <!-- 상세내용 -->
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
 										<input type="text" name="ETC_SPEC">
@@ -240,15 +205,9 @@
 									</div>
 								</div>
 								</td>
-								<td> <!-- 전문가 -->
-								<div class="form-group">
-									<div class="col-md-7 col-sm-12 col-xs-12">
-										<input type="text" name="A_DEPT_CD">
-									</div>
-								</div>
-								</td>
+							</tr>							
+						</thead>		
 								<!-- <td class=""><font style="vertical-align: inherit;">ㅇㅇ</font></td> -->
-							</tr>
 						</tbody>
 
 					</table>
@@ -319,9 +278,8 @@
 						<font style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">취소</font></font>
 					</button>
-					<button id="send" type="submit" class="btn btn-success">
-						<font style="vertical-align: inherit;"><font
-							style="vertical-align: inherit;">제출</font></font>
+					<button type="submit" class="btn btn-success">
+						<font style="vertical-align: inherit;">제출</font>
 					</button>
 				</div>
 

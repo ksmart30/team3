@@ -16,6 +16,7 @@ import ksmart30.team03.mh.service.ApprovalService;
 public class ApprovalController {
 	@Autowired
 	private ApprovalService approvalService;
+	
 	//5.2  실적 승인(List)
 	@GetMapping("/manHour/approvalSearchView")
 	public String approvalSearchView(Model model) {

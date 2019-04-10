@@ -1,15 +1,28 @@
 package ksmart30.team03.mh.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import ksmart30.team03.mh.domain.Result;
+import ksmart30.team03.mh.service.ResultListService;
 
 @Controller
 public class ResultListController {
-	//M/H 실적 조회
+	@Autowired
+	private ResultListService resultListService ;
+	//M/H실적(월별) 개인 리스트
 	@GetMapping("/manHour/resultListView")
-	public String resultListView() {
+	public String resultListView(Model model) {
+		System.out.println("controller resultListView 요청");
+		List<Result> ListView = resultListService.getresultListView();
+		model.addAttribute("ListView", ListView);
 		return "mh/result/resultListView";
 	}
+	
 	// M/H실적(프로젝트별 누계) a
 	@GetMapping("/manHour/result/nugae")
 	public String resultNugae() {

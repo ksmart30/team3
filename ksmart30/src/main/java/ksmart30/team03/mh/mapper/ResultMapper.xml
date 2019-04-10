@@ -7,11 +7,31 @@
 	<!-- 5.1 M/H 입력 -->
 	<insert id="resultWriteView"
 			parameterType="ksmart30.team03.mh.domain.Result">
-		INSERT INTO T_PM1020
-		
+		INSERT INTO
+			T_PM1020_BNT(
+					EMP_NO,
+					WORK_DT,
+					PJT_CD,
+					WORK_STEP,
+					WORK_SPEC,
+					DEPT_CD,
+					WORK_TIME,
+					ETC_SPEC,
+					JIKGUP_CD
+			) VALUES(
+					#{EMP_NO},
+					#{WORK_DT},
+					#{PJT_CD},
+					#{WORK_STEP},
+					#{WORK_SPEC},
+					#{DEPT_CD},
+					#{WORK_TIME},
+					#{ETC_SPEC},
+					#{JIKGUP_CD}
+				)
 	</insert>
 	
-	<!--  -->
+	<!-- M/H실적 리스트 -->
 	<select id="getListView"
 			resultType="ksmart30.team03.mh.domain.Result">
 		SELECT
@@ -36,7 +56,7 @@ FROM T_PM1020_BNT A,
 	AND(A.PJT_CD *= E.PJT_CD)
 	</select>
 	
-	<!--  -->
+	<!-- M/H실적 리스트 검색 -->
 	<select id="getListSearch"
 			parameterType="ksmart30.team03.mh.domain.Result"
 			resultType="ksmart30.team03.mh.domain.Result">
