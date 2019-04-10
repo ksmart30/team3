@@ -17,7 +17,7 @@
 		WHERE a.EMP_NO='20190007' 
 	</select> -->
 	
-	<!-- 사원번호 검색 -->
+	<!-- 출,퇴근 기록부(개인별) 사원번호 검색 -->
 	<select id="getRecordSingleNoSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
@@ -66,6 +66,48 @@
 		<!-- WHERE b.WORK_DT ='20120305' AND b.END_DT='20120305' -->
 		WHERE b.WORK_DT <![CDATA[>=]]> #{WORK_DT} and b.END_DT <![CDATA[<=]]> #{END_DT};
 	</select>
+	
+	<!-- 출,퇴근 기록부(개인별) 사원번호 검색 -->
+	<select id="getRecordTotalNoSearch"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
+			parameterType="String">
+		SELECT X.*   
+  			FROM (
+ 				SELECT
+ 					DEPT_NM,
+ 					A.DEPT_CD,
+ 					(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM,
+				   (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM,
+					A.KOR_NM,
+					A.EMP_NO,
+					B.WORK_DT,
+				 	B.START_TIME,
+				 	B.END_TIME
+   				FROM T_HM1000 A , T_PM1010 B JOIN T_SC1010 D ON b.DEPT_CD=d.DEPT_CD 
+      			WHERE A.DEPT_CD = B.DEPT_CD AND A.EMP_NO=#{EMP_NO}		
+  		) X
+	</select>
+	
+	<select id="getRecordTotalList"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList">
+		SELECT 
+				 DEPT_NM,
+				 b.LEVEL2_NM AS JIKGUP_NM,
+				 a.EMP_NO,
+				 a.KOR_NM,
+				 e.WORK_DT,
+				 e.START_TIME,
+				 e.END_TIME,
+				 e.END_DT
+		FROM T_HM1000 a 
+		JOIN T_SC9100 b ON a.JIKGUP_CD=b.LEVEL2_CD
+		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
+		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
+		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO,
+		(Select Convert(varchar(10),Getdate(),112) o) o 
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt=o.o
 
+	</select> 
+	
 
 </mapper>

@@ -3,31 +3,108 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<title>worktime_record_list.html</title>
+		<title>출,퇴근 기록부(Total)</title>
+		
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		
 		<th:block th:include="layout/customHead"></th:block>
+<head>
+<script>
+	/* 사원번호 검색*/
+	$(document).ready(function(){
+		console.log('출,퇴근(Total) 리스트 출력')
+	     $('#btn_empno').click(function(){
+	    	var EMP_NO = $('#EMP_NO').val();
+	    	 $.ajax({
+	            url:'/kuntae/recordTotal',
+	            type:'GET',
+	            dataType:'json',	           
+	         	data : {EMP_NO : EMP_NO},
+	            success:function(data){
+	            	console.log('사원 번호 쿼리 성공!');
+	                $('#list').empty();
+	                $(data).each(function(index,item){ //each = foreach (반복문)
+	                    $('#list').append('<tr>');
+	                    $('#list').append('<td>'+item.dept_NM+'</td>');
+	                    $('#list').append('<td>'+item.jikgup_NM+'</td>'); 
+	                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
+	                    $('#list').append('<td>'+item.work_DT.substring(0,4)+'</td>');
+	                    $('#list').append('<td>'+item.work_DT.substring(4,6)+'</td>');
+	                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
+	                    $('#list').append('<td>'+item.start_TIME+'</td>');
+	                    $('#list').append('<td>'+item.end_TIME+'</td>');
+	                    $('#list').append('</tr>'); 
+	                });                   
+	            }
+	        });
+	    });
+	 });		
+	
+	</script> 
+
+</head>
+
 </th:block>
 	<th:block layout:fragment="customBody">
-	
-	          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>근태관리 <small><a href="/kuntae/recordTotal">출퇴근기록부</a></small></h3>
-              </div>
 
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
+<font color="black">
+	<div class="col-md-9 col-xs-12" style="color:black;">
+        <div class="page-title">
+			<div class="title_left">
+				<h2><b>4. 근태 관리</b></h2>
+				<h5></h5>
+				<h5><font color= "gray"><b>4.2 출퇴근 기록부&nbsp;</b></font></h5>
+			</div>
+		</div>
+    </div>
 	
-<div class="clearfix"></div>
+	<div class="">
+		
+<div class="x_panel" style=""> 	
+    <div class="x_title">
+        <h2>기본내역 </h2>
+        	<!-- 검색 버튼 -->
+			<div class="x_content" style="text-align: right">
+				<button class="btn" style="color:black">검색</button>
+			</div>
+	   <!-- 박스내의 상단 -->
+	<div class="clearfix"></div>
+</div>
+    
+    <div class="x_content">
+		<div class="col-sm-4">	
+			<label class="control-label">년월</label><br>
+			<input type="date" name="">
+		</div>
+	
+		<div class="col-sm-4">
+		    <label>부서
+				<select name="datatable-keytable_length" aria-controls="datatable-keytable" class="form-control input-sm">
+					<option>부서</option>
+					<option>전사</option>
+					<option>경영부문</option>
+					<option>경영지원실</option>
+					<option>인사총무실</option>
+					<option>품질관리실</option>
+					<option>재무관리실</option>
+					<option>수주부문</option>
+					<option>수주전략본부</option>
+					<option>수주부문</option>
+				</select>
+			</label>
+		</div>
+		
+		<div class="col-sm-4">
+			<label class="control-label">사원번호</label><br>
+				<input type="text" id="EMP_NO" name="EMP_NO">
+	            <button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
+	   	</div>	
+	</div>
+</div>
+
+
+
+<!-- <div class="clearfix"></div>
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			
 				<table class="table">
@@ -70,9 +147,8 @@
 				</table>
 				</div>
 				</div>
+				 -->
 				
-				
-		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
                 <div class="x_panel">
                   <div class="x_title">
                     <ul class="nav navbar-right panel_toolbox">
@@ -100,77 +176,24 @@
                           <th bgcolor="#EAEAEA">부서</th>
                           <th bgcolor="#EAEAEA">직급</th>
                           <th bgcolor="#EAEAEA">성명</th>
-                          <th bgcolor="#EAEAEA">구분</th>
+                          <th bgcolor="#EAEAEA">년</th>
+                          <th bgcolor="#EAEAEA">월</th>
+                          <th bgcolor="#EAEAEA">일</th>
                           <th bgcolor="#EAEAEA">출근</th>
-                          <th bgcolor="#EAEAEA">지각</th>                                                  
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA">土</th>
-                          <th bgcolor="#EAEAEA">日</th>
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA">土</th>
-                          <th bgcolor="#EAEAEA">日</th>
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA">土</th>
-                          <th bgcolor="#EAEAEA">日</th>
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA">土</th>
-                          <th bgcolor="#EAEAEA">日</th>
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
+                          <th bgcolor="#EAEAEA">퇴근</th>                                                  
+
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <th bgcolor="#EAEAEA"></th>
-                          <th bgcolor="#EAEAEA"></th>
-                          <th bgcolor="#EAEAEA"></th>
-                          <th bgcolor="#EAEAEA"></th>    
-                          <th bgcolor="#EAEAEA">1</th>
-                          <th bgcolor="#EAEAEA">2</th>
-                          <th bgcolor="#EAEAEA">3</th>
-                          <th bgcolor="#EAEAEA">4</th>
-                          <th bgcolor="#EAEAEA">5</th>
-                          <th bgcolor="#EAEAEA">6</th>
-                          <th bgcolor="#EAEAEA">7</th>
-                          <th bgcolor="#EAEAEA">8</th>
-                          <th bgcolor="#EAEAEA">9</th>
-                          <th bgcolor="#EAEAEA">10</th>
-                          <th bgcolor="#EAEAEA">11</th>
-                          <th bgcolor="#EAEAEA">12</th>
-                          <th bgcolor="#EAEAEA">13</th>
-                          <th bgcolor="#EAEAEA">14</th>
-                          <th bgcolor="#EAEAEA">15</th>
-                          <th bgcolor="#EAEAEA">16</th>
-                          <th bgcolor="#EAEAEA">17</th>
-                          <th bgcolor="#EAEAEA">18</th>
-                          <th bgcolor="#EAEAEA">19</th>
-                          <th bgcolor="#EAEAEA">20</th>
-                          <th bgcolor="#EAEAEA">21</th>
-                          <th bgcolor="#EAEAEA">22</th>
-                          <th bgcolor="#EAEAEA">23</th>
-                          <th bgcolor="#EAEAEA">24</th>
-                          <th bgcolor="#EAEAEA">25</th>
-                          <th bgcolor="#EAEAEA">26</th>
-                          <th bgcolor="#EAEAEA">27</th>
-                          <th bgcolor="#EAEAEA">28</th>
-                          <th bgcolor="#EAEAEA">29</th>
-                          <th bgcolor="#EAEAEA">30</th>
+                      <tbody id="list">                   
+                        <tr th:each=" t : ${data}">
+                          <th th:text="${t.DEPT_NM}"></th>
+                          <th th:text="${t.JIKGUP_NM}"></th>
+                          <th th:text="${t.KOR_NM}"></th>
+                          <th th:text="${t.WORK_DT.substring(0,4)}"></th>
+                          <th th:text="${t.WORK_DT.substring(4,6)}"></th>    
+                          <th th:text="${t.WORK_DT.substring(6,8)}"></th>
+                          <th th:text="${t.START_TIME}"></th>
+                          <th th:text="${t.END_TIME}"></th>
                         </tr>                        
                       </tbody>
                     </table>

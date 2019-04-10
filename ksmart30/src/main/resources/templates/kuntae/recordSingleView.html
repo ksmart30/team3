@@ -107,7 +107,28 @@
 		    });
 	 	}); 
 	 	  */
-	 	
+
+	 	 function searchResult(WORK_DT, END_DT){
+	 			
+	 			console.log("날짜별 검색 시작");	
+	 			$.ajax({
+	 				url:'/kuntae/recordSingleDateSearchProcess',
+	 				data:{WORK_DT:WORK_DT,END_DT:END_DT},	
+	 			});	
+	 		};
+	 	  
+	 	  $(document).ready(function() {	
+	 		
+	 		$("#btn-search").click(function(){		
+	 			let work_date_format = $('#WORK_DT').val();
+	 			let end_date_format = $('#END_DT').val();
+	 			
+	 			let WORK_DT = work_date_format.substr(0,4)+work_date_format.substr(5,2)+work_date_format.substr(8,2);
+	 			let END_DT = end_date_format.substr(0,4)+end_date_format.substr(5,2)+end_date_format.substr(8,2);
+	 			
+	 			console.log(WORK_DT+"날짜야 나오니?"+END_DT);
+	 			searchResult(WORK_DT,END_DT);		
+	 		});
 	
 	
 	
@@ -134,36 +155,7 @@
                 </div>
               </div>
       
-      <div class="x_panel">
-				
-		<div class="x_content">
-
-			<div class="col-md-12 col-sm-6 col-xs-12" style="width: 100%">
-			
-					<br>
-					<div class="x_content">
-						<form action="/kuntae/recordSingleDateSearchProcess">
-							<table class="table table-bordered">
-								<thead>
-									<tr style="font-size: 15px">
-										<th>검색조건 &emsp;</th>
-										<th>시작년월 &emsp;&emsp;&emsp; 
-										<input type="date" id="WORK_DT" name="WORK_DT"> &emsp;&emsp;										
-										</th>
-										<th>마감년월 &emsp;&emsp;&emsp; 
-										<input type="date" id="END_DT" name="END_DT"> &emsp;&emsp;										
-											<button id="btn_day" class="btn" style="color:black">검색</button>
-										</th>
-									</tr>									
-								</thead>
-							</table>
-						</form>
-					</div>
-				
-			</div>        
-              
-              
-            </div>
+   
 
            
 	
@@ -173,22 +165,6 @@
 				<table class="table">
 					<tbody>
 
-						<tr>
-							<th>년월</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="date" name="">
-								</div>
-							</td>
-							
-							<th>부서</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
-								</div>
-							</td>
-							
-						</tr>
 
 						<tr>
 							<th>사원번호</th>
@@ -216,6 +192,39 @@
 				</form>
 				</div>
 				</div>
+	   <div class="x_panel">
+				
+		<div class="x_content">
+
+			<div class="col-md-12 col-sm-6 col-xs-12" style="width: 100%">
+			
+					<br>
+					<div class="x_content">
+						<form action="/kuntae/recordSingleDateSearchProcess">
+							<table class="table table-bordered">
+								<thead>
+									<tr style="font-size: 15px">
+										
+										<th>시작년월 &emsp;&emsp;&emsp; 
+										<input type="date" id="WORK_DT" name="WORK_DT"> &emsp;&emsp;										
+										</th>
+										<th>마감년월 &emsp;&emsp;&emsp; 
+										<input type="date" id="END_DT" name="END_DT"> &emsp;&emsp;										
+											<button id="btn_day" class="btn" style="color:black">검색</button>
+										</th>
+									</tr>									
+								</thead>
+							</table>
+						</form>
+						
+						
+					</div>
+				
+			</div>        
+              
+              
+            </div>	
+	
 				
 				
 		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
@@ -276,7 +285,7 @@
 									</tbody> -->
 									<tbody id="list">	
 									<tr class="even pointer">
-                            			<td></td>
+                            		
                             
                             
                           			</tr>											

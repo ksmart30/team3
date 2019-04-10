@@ -23,31 +23,46 @@ public class WorkTimeController {
 		return "/kuntae/daySearchView";
 	}
 	
-	// 출, 퇴근 기록부 (조회)
+	// 출, 퇴근 기록부 (Total)
 	@GetMapping("/kuntae/recordTotalView")
-	public String recordTotalView() {
+	public String recordTotalView(Model model) {
+		System.out.println("C : Total 기록부 화면 먼저 호출");
+		List<WorkTimeSingleList> data = workTimeService.getRecordTotalList();
+		model.addAttribute("data", data);
 		return "/kuntae/recordTotalView";
 	}
+	
+	// 출, 퇴근 기록부(Total) 사원번호 검색
+ 	@GetMapping("/kuntae/recordTotal")
+	public @ResponseBody List<WorkTimeSingleList> recordTotalNoSearch(@RequestParam(value = "EMP_NO") String EMP_NO){
+		System.out.println("C : Total 사원번호 검색");
+		List<WorkTimeSingleList> data = workTimeService.getRecordTotalNoSearch(EMP_NO);
+		System.out.println("C : Total EMP_NO data 정보  =>" +data);
+		return data;
+	}
+	
 	
 	/*
 	 * // 출, 퇴근 기록부 (개인별)
 	 * 
-	 * @GetMapping("/kuntae/recordSingleView") public List<WorkTimeSingleList>
-	 * recordSingleView() { System.out.println("C : 출, 퇴근 기록부 (개인별)");
+	 * @GetMapping("/kuntae/recordSingleView") 
+	 * public List<WorkTimeSingleList> recordSingleView() { 
+	 * System.out.println("C : 출, 퇴근 기록부 (개인별)");
 	 * List<WorkTimeSingleList> result = workTimeService.getRecordSingleList();
 	 * return result; }
 	 */
 	
 	// 출, 퇴근 기록부 (개인별)
 	/*
-	 * @GetMapping("/kuntae/recordSingleView") public String recordSingleView(Model
-	 * model) { System.out.println("C : 출, 퇴근 기록부 (개인별)"); List<WorkTimeSingleList>
-	 * data = workTimeService.getRecordSingleList();
-	 * model.addAttribute("singleList", data); System.out.println("C 개인별 data :"
-	 * +data); return "/kuntae/recordSingleView"; }
+	 * @GetMapping("/kuntae/recordSingleView") 
+	 * public String recordSingleView(Model model) { 
+	 * System.out.println("C : 출, 퇴근 기록부 (개인별)"); 
+	 * List<WorkTimeSingleList> data = workTimeService.getRecordSingleList();
+	 * model.addAttribute("singleList", data); System.out.println("C 개인별 data :"+data); 
+	 * return "/kuntae/recordSingleView"; }
 	 */
 	
-	// 이름 검색
+	// 출, 퇴근 기록부 (개인별) 이름 검색
 	@GetMapping("/kuntae/recordSingleName")
 	public @ResponseBody List<WorkTimeSingleList> recordingSingleName(@RequestParam(value = "KOR_NM") String KOR_NM){
 		System.out.println("C : 이름 검색 ");
@@ -57,7 +72,7 @@ public class WorkTimeController {
 		return data;
 	}
 	
-	// 사원번호 검색
+	// 출, 퇴근 기록부 (개인별) 사원번호 검색
 	@GetMapping("/kuntae/recordSingle")
 	public @ResponseBody List<WorkTimeSingleList> recordSingleList(@RequestParam(value = "EMP_NO") String EMP_NO){
 		System.out.println("C : 사원번호 검색 ");
@@ -67,7 +82,7 @@ public class WorkTimeController {
 		return data;
 	}
 	
-	// 날짜 검색
+	// 출, 퇴근 기록부 (개인별) 날짜 검색
 	@GetMapping("/kuntae/recordSingleDateSearchProcess")
 	public String recordSingleDateSearchProcess(Model model, @RequestParam(value = "WORK_DT") String WORK_DT, @RequestParam(value="END_DT")String END_DT){
 		System.out.println("C : 날짜 검색 ");
