@@ -2,11 +2,184 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<title>userId</title>
+		<title>11.시스템 관리 - User-ID 등록</title>
+
+		<!-- Jquery, Ajax 선언 -->
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<!-- 직원 검색 -->
+		<script>
+		$(document).ready(function(){
+			//검색버튼 클릭 시 전체 직원조회
+			$("#btn_list").click(function(){		
+				let KOR_NM2 = $('#KOR_NM').val();
+				let AUDIT_TM_FORMAT = $('#User_ID').val();
+				let AUDIT_TM2 = $('#User_ID').val();
+				let JIKGUP_NM2	=$('#User_ID').val();
+				let JIKCHK_NM2 = $('#User_ID').val();
+				let EMP_NO2 = $('#User_ID').val();
+				let IN_PHONE_NO2 = $('#User_ID').val();
+				let DEPT_NM2 = $('#User_ID').val();		 
+				let SEX_GB2 = $('#User_ID').val();
+				console.log('직원  검색조건 (사원번호) : '+EMP_NO2+'직원  검색조건 (이름) : '+KOR_NM2+"    검색조건(직급) :  "+JIKGUP_NM2+"    검색조건(직책) :  "+JIKCHK_NM2+"  검색조건(입사일) : "+AUDIT_TM2);
+					
+				$.ajax({				
+						url:'/person/personInsaEmployeeView',
+						type:'GET',
+						data:{EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
+						success:(data)=>{
+							$('#list').empty();
+							$(data).each(function(index,item){
+								//한 행을 클릭시 사원번호	
+								console.log(data);						
+								$('#list').append('<tr>');
+								$('#list').append('<td style="width:2%;"></td>');
+								//$('#list').append('<td>'+item.DEPT_NM+'</td>');			// 부서이름
+								//$('#list').append('<td>'+item.EMP_NO+'</td>');			// 사원번호
+								$('#list').append('<td style="text-align: center">'+item.KOR_NM+'</td>');			// 사원명
+								$('#list').append('<td style="text-align: center">'+item.JIKGUP_NM+'</td>');		// 직급명
+								$('#list').append('<td style="text-align: center">'+item.JIKCHK_NM+'</td>');		// 직책명
+								$('#list').append('<td style="text-align: center">'+item.DEPT_NM+'</td>');			// 부서이름
+								//$('#list').append('<td>'+item.IN_PHONE_NO+'</td>');	// 전화번호
+								//$('#list').append('<td>'+item.SEX_GB+'</td>');			// 성별
+								//$('#list').append('<td>'+item.AUDIT_TM+'</td>');		// 입사일	
+								$('#list').append('</tr>');					
+							});
+						}					
+				}); 				
+			});
+			$("#list tr").click(function() {
+				// 행과 각각의 값들을 담아옴
+				let tr = $(this);
+				let td = tr.children();
+				// 클릭한 행만 색상 변경
+				$("#list tr").css("background-color", "#ffffff");
+				$(this).css( "background-color", "#CEFBC9" );
+			});
+		});
+		</script>
 		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
-		User-Id 등록
+		<div class="page-title">
+			<div class="col-md-12 col-xs-12" style="color:black;">
+				<div class="page-title">
+					<div class="title_left">
+						<h2><b>User-ID 등록</b></h2>
+						<h5><fontcolor="gray"><b>11.시스템 관리&nbsp;>&nbsp;&nbsp;11.1 User_ID관리</b></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="x_content" style="text-align: right">
+				<div class="btn-group" >
+						<button class="btn btn-default" id ="btnWrite"type="reset">입력</button>
+						<button class="btn btn-default" type="button">수정</button>
+						<button class="btn btn-default" type="button">삭제</button>
+						<button class="btn btn-default" type="button">출력</button>
+				</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="x_panel" style="color: black;">
+					<div class="x_content">
+						<form>
+							<h5 style="color:black;">⊙ 시스템 사용가능 대상 정보</h5>
+							• 사용자 구분
+							<input type="radio" name="#" value="1">직원
+							<input type="radio" name="#" value="0">직원 외
+							<br>
+							• 사원명
+							<input type="text" name="KOR_NM" id="KOR_NM">
+							<button type="button" class="btn" style="color:black" name="btn_list" id="btn_list">검색</button>
+							<br>
+							• 정렬순서
+							<input type="radio" name="#" value="0">사원명
+							<input type="radio" name="#" value="1">직급
+							<input type="radio" name="#" value="2">부서
+						</form>
+					</div>
+				</div>
+				<div class="x_panel" style="color: black;">
+					<div class="x_content">
+						<div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="overflow: scroll; height: 600px; padding: 10px; color:black;">
+							<table class="table jambo_table bulk_action">
+								<thead>
+									<tr>
+										<td style="width:2%;"></td>
+										<td style="text-align: center">성명</td>
+										<td style="text-align: center">직급</td>
+										<td style="text-align: center">직책</td>
+										<td style="text-align: center">부서명</td>
+									</tr>
+								</thead>
+								<tbody id="list">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="x_panel" style="color: black;">
+					<div class="x_content">
+					<div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="overflow: scroll; height: 760px; padding: 10px; color:black;">
+						<h5 style="color:black;">⊙ 사용자 등록정보</h5>
+						<table class="table jambo_table bulk_action">
+								<tr>
+									<td style="text-align: center">User ID</td>
+									<td>
+										<input type="text" name="User_ID" id="User_ID" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center">사용자명</td>
+									<td>
+										<input type="text" name="User_ID" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center">주민번호</td>
+									<td>
+										<input type="text" name="User_ID" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center">새 비밀번호</td>
+									<td>
+										<input type="text" name="User_ID">
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center">새 비밀번호 확인</td>
+									<td>
+										<input type="text" name="User_ID">
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center">등록자</td>
+									<td></td>
+									<td style="text-align: center">등록일자</td>
+									<td>
+										<input type="text" name="User_ID" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center">수정자</td>
+									<td></td>
+									<td style="text-align: center">수정일자</td>
+									<td>
+										<input type="text" name="User_ID">
+									</td>
+								</tr>
+						</table>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</th:block>
 	<th:block layout:fragment="customJquery">
 		<th:block th:include="layout/customJquery"></th:block>
