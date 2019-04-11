@@ -3,8 +3,67 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<title>kuntae_search.html</title>
+		<title>근태현황</title>
 		<th:block th:include="layout/customHead"></th:block>
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+	$(document).ready(function(){
+		 console.log('근태현황list 출력해보자');	
+		//검색버튼 클릭 시 근태현황 출력
+		 $('#btn_list').click(function(){
+			 let FRDATE =$('#FRDATE').val();
+			 let TODATE =$('#TODATE').val();
+			 let DEPT_CD =$('#DEPT_CD').val();
+			 $.ajax({				
+					url:'/kuntae/searchView2',
+					type:'GET',
+					data:{FRDATE:FRDATE,TODATE:TODATE,DEPT_CD:DEPT_CD},
+					success:(data)=>{
+						
+						$('#list').empty();
+						
+						console.log("나와라"+data);
+						$(data).each(function(index,item){
+								
+													
+							$('#list').append('<tr>');	
+							$('#list').append('<td>'+item.DEPT_NM+'</td>');
+							$('#list').append('<td>'+item.JIKGUP_NM+'</td>');
+							$('#list').append('<td>'+item.KOR_NM+'</td>');
+							$('#list').append('<td>'+item.JIGAK+'</td>');
+							$('#list').append('<td>'+item.KYULGUN1+'</td>');
+							$('#list').append('<td>'+item.KYULGUN2+'</td>');
+							$('#list').append('<td>'+item.SAYU_NM+'</td>');
+							$('#list').append('<td>'+item.HOLI_WORK+'</td>');
+							$('#list').append('<td>'+item.YEARLY_DAY+'</td>');
+							
+							$('#list').append('<td>'+item.HOLI_1+'</td>');
+							$('#list').append('<td>'+item.HOLI_2+'</td>');
+							$('#list').append('<td>'+item.HOLI_3+'</td>');
+							$('#list').append('<td>'+item.HOLI_4+'</td>');
+							$('#list').append('<td>'+item.HOLI_5+'</td>');
+							$('#list').append('<td>'+item.HOLI_6+'</td>');
+							$('#list').append('<td>'+item.HOLI_7+'</td>');
+
+							$('#list').append('<td>'+item.KYUL_TOT+'</td>');
+							$('#list').append('<td>'+item.YEARLY_CHA+'</td>');
+							
+
+							$('#list').append('</tr>');							
+						});
+					}					
+			 }); 				
+		 });
+		
+
+	});
+	
+	
+	</script>
+	
+	
+	
 	</th:block>
 	<th:block layout:fragment="customBody">
 	
@@ -30,6 +89,7 @@
             
             <div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
+				<button type="button" class="btn" style="color:black" id="btn_list">검색</button>
 				
 
 				<table class="table">
@@ -39,24 +99,23 @@
 							<th>년월</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="date" name="">
+									<input type="month" name="FRDATE" id="FRDATE">
+								</div>
+							</td>
+							<td>
+								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+									<input type="month" name="TODATE" id="TODATE">
 								</div>
 							</td>
 							
-							<th>부서</th>
+							<th>부서코드</th>
 							<td>
-								<select name="datatable-keytable_length" aria-controls="datatable-keytable" class="form-control input-sm">
-									<option>근태구분</option>
-									<option>출퇴근 정정신청</option>
-									<option>출장</option>
-									<option>외부교육</option>
-									<option>예비군훈련</option>
-									<option>연(월)차 휴가</option>
-									<option>경조휴가</option>
-									<option>PJ휴가</option>
-									<option>공가</option>
-									<option>포상휴가</option>
-								</select>
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									
+								</th>
+								<th class="sorting" aria-controls="datatable-responsive">
+									<input type="text" name="DEPT_CD" id="DEPT_CD" >
+								</th>
 							</td>	
 						</tr>
 					</tbody>
@@ -82,85 +141,30 @@
                     <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
                       <thead>
                         <tr>                         
-                          <th>본부</th>
+                          <th>부서명</th>
                           <th>직급</th>
-                          <th>사번</th>
                           <th>성명</th>
-                          <th>횟수</th>
-                          <th>시간(분)</th>
-                          <th>퇴근미입력</th>
-                          <th>결근</th>
-                          <th>교육훈련</th>
-                          <th>연차</th>
-                          <th>PJT휴가</th>
-                          <th>병가</th>
+                          <th>지각</th>
+                          <th>사고계제출</th>
+                          <th>무단결근</th>
+                          <th>결근사유</th>
+                          <th>휴일근무일수</th>
+                          <th>연차휴가발생</th>
+                          <th>휴가</th>
+                          <th>경조</th>
+                          <th>철야</th>
+                          <th>공상</th>
+                          <th>포상</th>
+                          <th>출산</th>
                           <th>휴직</th>
+                          <th>무단결근</th>
+                          <th>잔여 휴가일수</th>
                         </tr>
                       </thead>
 
 
-                      <tbody>
-                        <tr>                          
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr>
-                         	<td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          
-                        </tr>
-                        <tr>
-							<td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
+                      <tbody id="list">
+                        
 
                       </tbody>
                     </table>
