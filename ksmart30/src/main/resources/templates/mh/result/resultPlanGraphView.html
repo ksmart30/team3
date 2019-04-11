@@ -128,6 +128,7 @@ $(document).ready(function() {
 						console.log("실적그래프 값들 출력");
 						console.log(data);						
 						$(data).each(function(index,item){
+							$('#chart2').empty();
 							console.log("work_time : "+item.work_TIME +"    work_STEP :  "+item.work_STEP);								
 							//WORK_STEP에 따른 WORK_TIME을 가져오기 위한 조건문							
 							if(item.work_STEP =='A'){
@@ -190,8 +191,7 @@ $(document).ready(function() {
 						console.log("인건비누계그래프 실행");
 						
 					}
-					
-					
+										
 				});
 
 				//인건비 그래프 값 가져오기 끝! */
@@ -208,7 +208,7 @@ $(document).ready(function() {
 								data : [ plan_a, plan_b, plan_c, plan_d, plan_e, plan_f, plan_g ]},{ // 변수들->AJAX 실행 후 호출된 값
 								//label : '# of Votes',
 								backgroundColor : "#FF0000",
-								data : [time_a,time_b,time_c,time_d,time_f,time_g]}
+								data : [time_a,time_b,time_c,time_d,time_e,time_f,time_g]}
 								]},
 									options : {
 										scales : {
@@ -247,8 +247,7 @@ $(document).ready(function() {
 					
 				</div>
 			</div>
-		
-	
+			
 	<div class="x_panel">
 				
 		<div class="x_content">

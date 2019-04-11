@@ -8,6 +8,27 @@ public class Person {
 	private String AUDIT_TM;
 	private String BIRTH_DT;
 	private String CUR_ADDRESS;
+	private String SORT_VALUE;
+	private String DEPT_NM;
+	private String EMP_NO;
+	private String KOR_NM;
+	private String JIKGUP_NM;
+	private String JIKCHK_NM;
+	private String IN_PHONE_NO;
+	private String KOR_NM2;
+	private String SEX_GB;
+	public String getSEX_GB() {
+		return SEX_GB;
+	}
+	public void setSEX_GB(String sEX_GB) {
+		SEX_GB = sEX_GB;
+	}
+	public String getKOR_NM2() {
+		return KOR_NM2;
+	}
+	public void setKOR_NM2(String kOR_NM2) {
+		KOR_NM2 = kOR_NM2;
+	}
 	public String getMAIL_ADDRESS() {
 		return MAIL_ADDRESS;
 	}
@@ -33,13 +54,6 @@ public class Person {
 		CUR_ADDRESS = cUR_ADDRESS;
 	}
 
-	private String SORT_VALUE;
-	private String DEPT_NM;
-	private String EMP_NO;
-	private String KOR_NM;
-	private String JIKGUP_NM;
-	private String JIKCHK_NM;
-	private String IN_PHONE_NO;
 	public String getIN_PHONE_NO() {
 		return IN_PHONE_NO;
 	}
@@ -88,7 +102,7 @@ public class Person {
 		return "Person [MAIL_ADDRESS=" + MAIL_ADDRESS + ", AUDIT_TM=" + AUDIT_TM + ", BIRTH_DT=" + BIRTH_DT
 				+ ", CUR_ADDRESS=" + CUR_ADDRESS + ", SORT_VALUE=" + SORT_VALUE + ", DEPT_NM=" + DEPT_NM + ", EMP_NO="
 				+ EMP_NO + ", KOR_NM=" + KOR_NM + ", JIKGUP_NM=" + JIKGUP_NM + ", JIKCHK_NM=" + JIKCHK_NM
-				+ ", IN_PHONE_NO=" + IN_PHONE_NO + "]";
+				+ ", IN_PHONE_NO=" + IN_PHONE_NO + ", KOR_NM2=" + KOR_NM2 + ", SEX_GB=" + SEX_GB + "]";
 	}
    
 }

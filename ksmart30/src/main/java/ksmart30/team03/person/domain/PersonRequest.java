@@ -6,6 +6,27 @@ public class PersonRequest {
 	private String AUDIT_TM;
 	private String JIKGUP_NM;
 	private String JIKCHK_NM;
+	private String IN_PHONE_NO;
+	private String DEPT_NM;
+	public String getDEPT_NM() {
+		return DEPT_NM;
+	}
+	public void setDEPT_NM(String dEPT_NM) {
+		DEPT_NM = dEPT_NM;
+	}
+	public String getSEX_GB() {
+		return SEX_GB;
+	}
+	public void setSEX_GB(String sEX_GB) {
+		SEX_GB = sEX_GB;
+	}
+	private String SEX_GB;
+	public String getIN_PHONE_NO() {
+		return IN_PHONE_NO;
+	}
+	public void setIN_PHONE_NO(String iN_PHONE_NO) {
+		IN_PHONE_NO = iN_PHONE_NO;
+	}
 	public String getEMP_NO() {
 		return EMP_NO;
 	}

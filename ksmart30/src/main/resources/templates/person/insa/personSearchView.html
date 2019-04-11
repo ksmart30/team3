@@ -19,7 +19,7 @@ function detail(emp_NO){
 		success:function(data){
 			$(data).each(function(index,item){
 				console.log(data);		
-				
+			
         		$('#detail').empty();
 				$('#detail').append('<tr>');			
 				$('#detail').append('<td>'+item.emp_NO+'</td>');
@@ -54,26 +54,32 @@ $(document).ready(function(){
 		 let JIKGUP_NM2	=$('#JIKGUP_NM2').val();
 		 let JIKCHK_NM2 = $('#JIKCHK_NM2').val();
 		 let EMP_NO2 = $('#EMP_NO2').val();
+		 let IN_PHONE_NO2 = $('#IN_PHONE_NO2').val();
+		 let DEPT_NM2 = $('#DEPT_NM2').val();		 
+		 let SEX_GB2 = $('#SEX_GB2').val();
 		 console.log('직원  검색조건 (사원번호) : '+EMP_NO2+'직원  검색조건 (이름) : '+KOR_NM2+"    검색조건(직급) :  "+JIKGUP_NM2+"    검색조건(직책) :  "+JIKCHK_NM2+"  검색조건(입사일) : "+AUDIT_TM2);
 			
 		 $.ajax({				
 				url:'/person/personInsaEmployeeView',
 				type:'GET',
-				data:{EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2},
+				data:{EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
 				success:(data)=>{
+					$('#list').empty();
 					$(data).each(function(index,item){
 						//한 행을 클릭시 사원번호	
-						
+						console.log(data);						
 						$('#list').append('<tr class="even pointer">');
 						$('#list').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
-						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.sort_VALUE+'</td>');
-						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.dept_NM+'</td>');
-						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.emp_NO+'</td>');
-						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.kor_NM+'</td>');
-						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.jikgup_NM+'</td>');
-						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.jikchk_NM+'</td>');
-						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.in_PHONE_NO+'</td>');
-						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.emp_NO+')">'+item.audit_TM+'</td>');						
+						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.SORT_VALUE+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.DEPT_NM+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.EMP_NO+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.KOR_NM+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.IN_PHONE_NO+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.SEX_GB+'</td>');
+						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.AUDIT_TM+'</td>');						
+						
 						$('#list').append('</tr>');							
 					});
 				}					
@@ -96,24 +102,19 @@ $(document).ready(function(){
 					<h5><font color="gray"><b>6.인사/급여&nbsp;>&nbsp;&nbsp;6.1인력관리</b></font></h5>
 					
 				</div>
-			</div>
+			
 
 	<!-- 내꺼 -->
 	<div class="col-md-12 col-xs-12">
-		<div class="x_panel">
-			<div class="title_left">
-				<h3>직원 검색</h3>
-			</div>
-			<div class="col-md-12 col-xs-12" style="color: black;"></div>
+		
 
 	<!-- 조건별 직원 검색 -->			
 		<div class="col-md-12 col-sm-6 col-xs-12 table-responsive" style="width:100%">
 			<div class="x_panel">
 				<div class="x_title">
 					<form>
-						<h5 style="color:black;">⊙ 검색 조건</h5>		
-						<button type="button" class="btn" style="color:black" id="btn_list">검색</button>	
-						
+						<h4 style="color:black;">⊙ 검색 조건</h4>		
+							 <button type="button" class="btn" style="color:black" id="btn_list">검색</button>
 					</form>
 				</div>
 				<div class="x_content">
@@ -191,8 +192,35 @@ $(document).ready(function(){
 												<option value="별정직">별 정 직</option>
 											</select>
 										</div>						
-									</th>								
+									</th>
+									<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									&nbsp;사내번호
+									</th>
+									<th class="sorting" aria-controls="datatable-responsive">
+										<input type="text" name="IN_PHONE_NO2" id="IN_PHONE_NO2" style="width:50%;">
+									</th>
 								</tr>
+								
+								<tr role="row">
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									&nbsp;부서
+								</th>
+								<th class="sorting" aria-controls="datatable-responsive">
+									<input type="text" name="DEPT_NM2" id="DEPT_NM2" style="width:50%;">
+								</th>
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+									&nbsp;성별
+								</th>
+								<th>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<select style="width:230px;height:25px;" id="SEX_GB2">
+											<option></option>
+											<option value="2">여     자</option>
+											<option value="1">남     자</option>												
+										</select>
+									</div>						
+								</th>			
+							</tr> 			
 							<tr>
 						</table>
 					</form>
@@ -201,7 +229,7 @@ $(document).ready(function(){
 			
 			</div>
 			
-		</div>
+		
 	</div>
 
 	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -225,7 +253,8 @@ $(document).ready(function(){
 									<th class="column-title">사원명</th>
 									<th class="column-title">직급</th>
 									<th class="column-title">직책</th>	
-									<th class="column-title">사내번호</th>	
+									<th class="column-title">사내번호</th>
+									<th class="column-title">성별</th>
 									<th class="column-title">입사일</th>
 									<th class="bulk-actions" colspan="7"><a class="antoo"
 										style="color: #fff; font-weight: 500;">전체 선택<i class="fa fa-chevron-down"></i></a> 
@@ -242,7 +271,7 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
-	
+</div>	
 	<!-- 디테일 modal -->
 
 <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="ok" >
@@ -278,7 +307,8 @@ $(document).ready(function(){
        </table>    
      </div>
    </div>
- </div>		                               
+ </div>	
+ 	                               
 <!-- / 디테일 modals -->
 	
 	
