@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ksmart30.team03.mh.domain.ResultCost;
 import ksmart30.team03.mh.domain.ResultList;
 import ksmart30.team03.mh.mapper.ResultGraphMapper;
 
@@ -43,11 +44,16 @@ public class ResultGraphService {
 			return resultGraphMapper.getResultGraph2(pjt_cd);
 	}
 
-	//5.2.1 M/H 인건비 그래프 차트에 입력될 값 출력
-	/*
-	 * public List<ResultList> getResultGraph3(String pjt_cd) {
-	 * System.out.println("SERVICE : M/H계획 실적 그래프 값 출력"); return
-	 * resultGraphMapper.getResultGraph3(pjt_cd); }
-	 */
+	
+	//5.2.1 M/H 인건비 그래프 차트에 입력될 값 출력(계획)
+	public List<ResultCost> getResultGraphPlanNugae(String pjt_cd) {
+		System.out.println("SERVICE : M/H계획실적 인건비 계획 그래프 값 출력"); 
+		return resultGraphMapper.getResultGraphPlanNugae(pjt_cd); 
+	}
+	//5.2.1 M/H 인건비 그래프 차트에 입력될 값 출력(실적)
+	public List<ResultCost> getResultGraphResultNugae(String pjt_cd) {
+		System.out.println("SERVICE : M/H계획실적 인건비 실적 그래프 값 출력"); 
+		return resultGraphMapper.getResultGraphResultNugae(pjt_cd); 
+	}
 
 }

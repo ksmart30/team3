@@ -67,9 +67,9 @@
 
 	</select>
 	
-	<!--5.2.1 MH 계획,실적 차트 출력 select문 (단계별 인건비 누계) -->
-	<select id="getResultGraph3"
-	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
+	<!--5.2.1 MH 계획,실적 차트 출력 select문 (단계별 계획 인건비 누계 ) -->
+	<select id="getResultGraphPlanNugae"
+	resultType="ksmart30.team03.mh.domain.ResultCost" parameterType="String">
 		SELECT 
 			sum(PLAN_A*DANGA) as PLAN_A, 
 			sum(PLAN_B*DANGA) as PLAN_B,
@@ -80,10 +80,23 @@
 			sum(PLAN_G*DANGA) as PLAN_G
 		FROM T_P11050 
 		WHERE PJT_CD=#{PJT_CD};
-
+	</select>
+	
+	<!--5.2.1 MH 계획,실적 차트 출력 select문 (단계별 실적  인건비 누계 ) -->
+	<select id="getResultGraphResultNugae"
+	resultType="ksmart30.team03.mh.domain.ResultCost" parameterType="String">
+		SELECT 
+			SUM(A.WORK_TIME*B.DANGA) TOTAL, 
+			WORK_STEP
+		FROM T_PM1020 A JOIN T_P11050 B ON A.JIKGUP_CD=B.JIKGUB
+		WHERE A.PJT_CD=B.PJT_CD AND 
+			  A.PJT_CD=#{PJT_CD} 
+		GROUP BY A.WORK_STEP 
+		ORDER BY WORK_STEP;
 	</select>
 	
 	
-
+	
+	
 	
 </mapper>

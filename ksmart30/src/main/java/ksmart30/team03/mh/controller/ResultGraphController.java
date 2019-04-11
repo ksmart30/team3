@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 /*import org.springframework.web.bind.annotation.PostMapping;*/
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ksmart30.team03.mh.domain.ResultCost;
+
 /*import org.springframework.web.bind.annotation.RestController;*/
 
 import ksmart30.team03.mh.domain.ResultList;
@@ -57,14 +59,23 @@ public class ResultGraphController {
 		System.out.println("data2"+data);		
 		return data;
 	}
-	/*
-	 * // 5.2.1 M/H 인건비(그래프)에 해당하는 값 출력 컨트롤러
-	 * 
-	 * @GetMapping("/manHour/manHourResultGraph3") public @ResponseBody
-	 * List<ResultList> manHourPlanGraphList3(@RequestParam(value = "pjt_cd") String
-	 * pjt_cd) { System.out.println("cd : " + pjt_cd); List<ResultList> data =
-	 * resultGraphService.getResultGraph3(pjt_cd); System.out.println("data3"+data);
-	 * return data; }
-	 */
 	
+	 // 5.2.1 M/H 인건비 계획(그래프)에 해당하는 값 출력 컨트롤러 
+	 
+	 @GetMapping("/manHour/manHourResultGraphPlanNugae") 
+	 public @ResponseBody List<ResultCost> manHourPlanGraphListPlanNugae(@RequestParam(value = "pjt_cd") String  pjt_cd) {
+		 System.out.println("cd : " + pjt_cd); 
+		 List<ResultCost> data = resultGraphService.getResultGraphPlanNugae(pjt_cd); 
+		 System.out.println("data3"+data);
+		 return data; 
+	 }	
+	// 5.2.1 M/H 인건비 실적(그래프)에 해당하는 값 출력 컨트롤러
+	 
+	 @GetMapping("/manHour/manHourResultGraphResultNugae") 
+	 public @ResponseBody List<ResultCost> manHourPlanGraphListResultNugae(@RequestParam(value = "pjt_cd") String  pjt_cd) {
+		 System.out.println("cd : " + pjt_cd); 
+		 List<ResultCost> data = resultGraphService.getResultGraphResultNugae(pjt_cd); 
+		 System.out.println("data4"+data);
+		 return data; 
+	 }		 	
 }

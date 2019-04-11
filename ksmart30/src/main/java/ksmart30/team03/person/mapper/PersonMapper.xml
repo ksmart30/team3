@@ -7,7 +7,7 @@
 	<!-- 6.1.2 직원 검색 출력하는 쿼리 -->
 	<select id="personInsaEmployeeSearchView" 
 	parameterType="String" resultType="java.util.Map">
-		SELECT   
+	SELECT   
   		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
   		B.SHORT_NM DEPT_NM, 
   		A.EMP_NO, 
@@ -27,7 +27,7 @@
 			A.IN_PHONE_NO LIKE '%'+#{IN_PHONE_NO}+'%' AND
 			SEX_GB LIKE '%'+#{SEX_GB}+'%' AND
 			DEPT_NM LIKE '%'+#{DEPT_NM}+'%'
-	   		
+	 	ORDER BY SORT_VALUE;  		
 	</select>
 			
 	<!--6.1.2 직원 디테일 출력하는 쿼리 -->
