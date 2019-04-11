@@ -63,15 +63,10 @@
 					<div class="control-group">
 						<div class="controls">
 							<p>작업일</p>
-							<div class="col-md-11 xdisplay_inputx form-group has-feedback">
-								<input type="text" name="WORK_DT"class="form-control has-feedback-left"
-									id="single_cal3" placeholder="First Name"
-									aria-describedby="inputSuccess2Status3"> <span
-									class="fa fa-calendar-o form-control-feedback left"
-									aria-hidden="true"></span> <span id="inputSuccess2Status3"
-									class="sr-only"><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">(성공)</font></font></span>
-							</div>
+							<div style="width:330px;height:30px;" class="sorting" aria-controls="datatable-responsive">				
+								
+								<input type="date" name="WORK_DT" id="AUDIT_TM2" style="width:50%;">
+							</div>							
 						</div>
 					</div>
 				</fieldset>
@@ -123,6 +118,9 @@
 								<td><!-- 프로젝트 코드 -->
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
+										<select>
+											<option value=""></option>
+										</select>
 										<input type="text" name="PJT_CD">
 									</div>
 								</div>
@@ -360,72 +358,9 @@
 		                        <td th:text="${l.DEPT_CD}"></td>
 		                        <td th:text="${l.WORK_TIME}"></td>
 		                        <td th:text="${l.ETC_SPEC}"></td>
-		                        <td th:text="${l.JIKGUP_CD}"></td>
-		                        <td></td>
-		                       <!--  <td th:text="${l.A_DEPT_CD}"></td> -->                                       
-		                       </tr>
-                          <tr class="even pointer">                            
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">임홍근</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>                            
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                         
-                                                     
-                          </tr>  
-                          
-                           <tr class="even pointer">                           
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">백승한</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                  
-                          </tr>   
-                          
-                           <tr class="even pointer">                            
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">정다금</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                  
-                          </tr>   
-                          
-                           <tr class="even pointer">                           
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">박기훈</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                                            
-                          </tr>                                            
-                        </tbody>
-                        
-                         <tr class="even pointer">                            
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">유지수</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                            
-                          </tr>
-                          
+		                        <td th:text="${l.JIKGUP_CD}"></td>		                     		                                                           
+		                      </tr>		                                                                                                                                                                                       
+                        </tbody>                                                                         
                       </table>							
 						</div>
 					</div>
@@ -437,3 +372,16 @@
 		<th:block th:include="layout/customJquery"></th:block>
     </th:block>
 </html>
+
+<!--  <td th:text="${l.A_DEPT_CD}"></td> -->  
+                          <!-- <tr class="even pointer">                            
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">임홍근</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>                            
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
+                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                                             
+                          </tr>  -->

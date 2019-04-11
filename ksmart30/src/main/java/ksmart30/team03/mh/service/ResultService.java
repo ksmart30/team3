@@ -17,6 +17,12 @@ public class ResultService {
 	
 	//M/H 입력 
 	public int addResult(Result result) {
+		System.out.println("addResult 요청");
+		System.out.println("받아온 값 : "+result.getWORK_DT());
+		String result2 = result.getWORK_DT().substring(0, 4)+result.getWORK_DT().substring(5, 7)+result.getWORK_DT().substring(8, 10);
+		System.out.println("날짜 :"+result);
+		result.setWORK_DT(result2);
+		System.out.println("받아온 값 : "+result.getWORK_DT());
 		return resultMapper.resultWriteView(result);
 	}
 	//M/H 실적 리스트

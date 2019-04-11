@@ -28,17 +28,8 @@ public class ResultController {
 		//M/H 실적 입력 액션 
 		@PostMapping("/manHour/resultWriteView")
 		public String resultWriteView(Result result) {
-			System.out.println("resultWriteView 액션");
-			System.out.println("일자 : "+result.getWORK_DT());
+			System.out.println("resultWriteView 액션");		
 			resultService.addResult(result);
-			return "redirect:mh/result/resultWriteView";	
-		}
-		/*// M/H 실적 리스트 
-		@GetMapping("/manHour/resultWriteViewList")
-		public String resultWriteView(Model model) {
-			System.out.println("resultWriteView 폼 실행");
-			List<Result> list = resultService.getListView();
-			model.addAttribute("list", list);
-			return "redirect:/resultWriteView";*/
-	//}
+			return "redirect:/manHour/resultWriteView";						
+		}		
 }
