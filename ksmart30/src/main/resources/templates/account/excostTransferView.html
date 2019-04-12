@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>외주비 지급전표 이관</title>
+		<th:block th:include="layout/customHead"></th:block>
+	</th:block>
+	<th:block layout:fragment="customBody">
+	<font color="black">
+		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
+                <div class="x_panel">
+                 
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+		            <h1>외주비 지급전표 이관</h1>	                   	
+		            <h5 style="color:gray;"><b>8.회계관리&nbsp;>&nbsp;&nbsp;8.8.외주비 지급전표 이관</b></h5> 	                    
+	            </div>
+	            <div class="col-md-6 col-sm-6 col-xs-12">    
+	            	<div class="x_content" style="text-align: right">
+						<div class="btn-group" >
+							<button class="btn btn-default" type="button" id="search">조회</button>
+							<button class="btn btn-default" type="reset">입력</button>
+							<button class="btn btn-default" type="button">수정</button>
+							<button class="btn btn-default" type="button">삭제</button>
+							<button class="btn btn-default" type="button">저장</button>
+							<button class="btn btn-default" type="button">출력</button>
+						</div>							
+					</div>
+				</div>	        
+                   
+                
+                  <div class="x_content">
+
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                          	◎검색조건　　
+                          	⊙기준일자
+							<input type="date" name="date"> 
+							⊙거래처
+							<input type="text" name="">
+							<button>ㅁ</button>
+                          </th>                          
+                        </tr>
+                      </thead>                     
+                    </table>					
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
+                <div class="x_panel">
+                  
+                  <div class="x_content">
+					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
+		            	<div class="col-md-6 col-sm-6 col-xs-12">   
+		                    <button>전체선택</button>
+		                    <button>전체취소</button>
+		                </div>    
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							⊙전표일자
+							<input type="date" name="">
+							⊙전표번호
+							<input type="text" name="">
+							<button>ㅁ</button>
+						</div>
+					
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>                         
+                          <th bgcolor=#EAEAEA>지급예정일자</th>
+                          <th bgcolor=#EAEAEA>거래처</th>
+                          <th bgcolor=#EAEAEA>프로젝트</th>
+                          <th bgcolor=#EAEAEA>지급금액</th>
+                          <th bgcolor=#EAEAEA>전표이관</th>
+                          <th bgcolor=#EAEAEA>전표일자</th>
+                          <th bgcolor=#EAEAEA>전표번호</th>
+                          <th bgcolor=#EAEAEA>전표순번</th>              
+                        </tr>
+                      </thead>
+                      <tbody>
+                                      
+                      </tbody>
+                    </table>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+              </font>             
+	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
+</html>

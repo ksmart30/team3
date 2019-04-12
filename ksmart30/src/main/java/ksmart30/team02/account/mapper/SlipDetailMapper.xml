@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team02.account.mapper.SlipDetailMapper">
+	<!-- 계정과목 리스트 -->
+	<select id="getAccountCodeList" parameterType="String" resultType="java.util.Map">
+		SELECT ACC_CD AS accCd, 
+			   ACC_DTL_CD AS accDtlCd, 
+			   ACC_LONG_NM AS accShrtNm
+		FROM T_AC0100
+		WHERE ACC_LEVEL='5' AND ACC_LONG_NM LIKE '%' + #{account} + '%' OR ACC_LEVEL='5' AND ACC_CD LIKE '%' + #{account} + '%'
+	</select>
+	
+	<!-- 부서 리스트 -->
+	<select id="getDeptCodeList" parameterType="String" resultType="java.util.Map">
+		SELECT  DEPT_CD,
+		 		DEPT_NM
+		FROM T_SC1010
+		WHERE DEPT_CD LIKE '%' + #{dept} + '%' OR DEPT_NM LIKE '%' + #{dept} + '%'
+	</select>
+	
+	<!-- 거래처 리스트 -->
+	<select id="getCustCodeList" parameterType="String" resultType="java.util.Map">
+		SELECT  CUST_CD,
+		 		CUST_NM
+		FROM T_AC0300
+		WHERE CUST_CD LIKE '%' + #{cust} + '%' OR CUST_NM LIKE '%' + #{cust} + '%'
+	</select>
+	
+	<!-- 검색 리스트 -->
+	<select id="getSlipList" parameterType="hashmap" resultType="java.util.Map">
+		SELECT *
+		FROM	
+			(SELECT (CASE WHEN F.CONFIRM_YN = '0' THEN '미승인' ELSE '승인' END) AS CONFIRM_YN,
+					(CASE WHEN A.JS_CODE = '01' THEN '현금'
+						  WHEN A.JS_CODE = '02' THEN '' ELSE '대체' END) AS JS_CODE,
+					CONVERT(VARCHAR,(CONVERT(DATE, A.SLIP_DATE)),111) AS SLIP_DATE,
+					A.SLIP_NO AS SLIP_NO,
+					A.SLIP_SEQ AS SLIP_SEQ,
+					(A.ACC_CD + '-' + A.ACC_DTL_CD) AS ACC_CD,
+					B.ACC_LONG_NM AS ACC_LONG_NM,
+					A.DRCR_GB AS DRCR_GB,
+					A.ACC_AMT AS ACC_AMT,
+					C.DEPT_NM AS DEPT_NM,
+					E.CUST_NM AS CUST_NM,
+					D.PJT_NM AS PJT_NM,
+					A.DESCR AS DESCR
+			FROM T_AC1120 A INNER JOIN T_AC0100 B ON A.ACC_CD = B.ACC_CD AND A.ACC_DTL_CD = B.ACC_DTL_CD 
+							INNER JOIN T_SC1010 C ON A.BELONG_DEPT_CD = C.DEPT_CD 
+							LEFT JOIN T_SM3000 D ON A.PROJ_CD = (D.PJT_CD + D.PJT_TYPE)
+							LEFT JOIN T_AC0300 E ON A.CUST_CD = E.CUST_CD
+							LEFT JOIN T_AC1110 F ON A.SLIP_DATE = F.SLIP_DATE AND A.SLIP_NO = F.SLIP_NO
+			WHERE A.SLIP_DATE BETWEEN #{FSLIP_DATE} AND #{ESLIP_DATE} AND A.ACC_CD LIKE '%' + #{ACC_CD} + '%' 
+				  AND A.ACC_DTL_CD LIKE '%' + #{ACC_DTL_CD} + '%' AND A.ACC_UNIT LIKE '%' + #{ACC_UNIT} + '%' 
+				  AND A.CUST_CD LIKE '%' + #{CUST_CD} + '%' AND A.JS_CODE LIKE '%' + #{JS_CODE} + '%'
+				  AND A.BELONG_DEPT_CD LIKE '%' + #{DEPT_CD} + '%' AND F.CONFIRM_YN LIKE '%' + #{CONFIRM_YN} + '%') AS t1
+		WHERE t1.JS_CODE LIKE'%' + #{SJS_CODE} + '%'
+		ORDER BY SLIP_DATE DESC;
+	</select>
+</mapper>

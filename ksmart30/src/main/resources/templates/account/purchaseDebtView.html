@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>매입채무입력</title>
+		
+		<!-- Bootstrap -->
+	    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Font Awesome -->
+	    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	    <!-- NProgress -->
+	    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+	    <!-- iCheck -->
+	    <link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	    <!-- Datatables -->
+	    <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+		
+	    <!-- Custom Theme Style -->
+	    <link href="/build/css/custom.min.css" rel="stylesheet">
+	</th:block>
+	<th:block layout:fragment="customBody">
+		 <div class="col" role="main" style="color:black;">
+          <div class="col-md-9 col-xs-12" style="color:black;">
+        <div class="page-title" >
+	<div class="title_left">
+	 <h2><b>매입채무관리</b></h2>
+	<h5><fontcolor="gray"><b>8.6매입채무관리</b></fontcolor></h5>
+					
+	</div>
+	</div>
+        </div>
+
+            	<div class="x_content" style="text-align: right">
+					<div class="btn-group" >
+					<button class="btn btn-default" type="button"><i class="fa fa-search"> </i> 조회 </button>
+					<button class="btn btn-default" type="reset">입력</button>
+					<button class="btn btn-default" type="button">수정</button>
+					<button class="btn btn-default" type="button">삭제</button>
+					<button class="btn btn-default" type="button">저장</button>
+					<button class="btn btn-default" type="button">출력</button>
+					</div>
+				</div>
+              
+		 <div class="x_panel">
+              <div class="x_title">
+              
+             	<h4>검색조건</h4>
+
+                <div class="clearfix"></div>
+              <div class="x_content">
+                <div class="row">
+                  <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                                           청구년월 <input type="date" placeholder="청구년월">
+                  </div>
+                  <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+ 		 			지급예정일자 
+ 		 			<select>
+		 			<option>날짜선택하는거 구현해야된다아~</option>						
+	   			</select>
+	              </div>
+                  <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+                                              코드명<input type="text" size="3"><button><i class="fa fa-search"></i></button>
+               			<input type="text">
+                  </div>
+              </div>
+            </div>
+            </div>
+            <div>
+                <h4>&nbsp;전표생성유무</h4>
+	                <div class="col-md-6 col-sm-6 col-xs-12">
+	                  <div id="gender" class="btn-group" data-toggle="buttons">
+	                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+	                      <input type="radio" name="slip" value="exist"> &nbsp; 유 &nbsp;
+	                    </label>
+	                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+	                      <input type="radio" name="slip" value="noneexist"> 무
+	                    </label>
+	                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+	                      <input type="radio" name="slip" value="all"> ALL
+	                    </label><br><br>
+	                    
+	                  </div>
+	                </div>
+             </div>
+                </div>
+            
+             <div class="x_panel">
+              <div class="x_title">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+					
+                    <table id="datatable-responsive" class="table table-striped table-bordered jambo_table dt-responsive nowrap" cellspacing="0" width="100%">
+                    	조회건수:<input type="text" class="col-right-3 form-group">건
+                      <thead>
+                      <tr class="headings">
+                      		<th>
+                              	전체적용<button type="checkbox" id="check-all" class="fa-check"></button>
+                            </th>
+                        <tr>
+                          	<td>계정과목</td>
+                          	<td>프로젝트명</td>
+                          	<td>거래처</td>
+                          	<td>상태</td>
+                          	<td>매입일자</td>
+                          	<td>미결잔액</td>
+							<td>지급예정</td>
+							<td>전표일자</td>
+							<td>전표번호</td>
+							<td>전표순번</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      	<th:block th:each="p : ${List}">
+                      		<tr>
+                      			<td th:text="${p.ACC_CD}"></td>
+								<td th:text="${p.PJT_NM}"></td>
+								<td th:text="${p.CUST_CD}"></td>
+								<td th:text="${p.PROG_STAT}"></td>
+								<td th:text="${p.PAY_DT}"></td>
+								<td th:text="${p.REMAIN_AMT}"></td>
+								<td th:text="${p.SCHD_DT}"></td>
+								<td th:text="${p.SLIP_DATE}"></td>
+								<td th:text="${p.SLIP_NO}"></td>
+								<td th:text="${p.SLIP_SEQ}"></td>	
+                      		</tr>
+                      	</th:block>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+	</th:block>
+	<th:block layout:fragment="customJquery">
+		<!-- jQuery -->
+	    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+	    <!-- Bootstrap -->
+	    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	    <!-- FastClick -->
+	    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+	    <!-- NProgress -->
+	    <script src="/vendors/nprogress/nprogress.js"></script>
+	    <!-- iCheck -->
+	    <script src="/vendors/iCheck/icheck.min.js"></script>
+	    <!-- Datatables -->
+	    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+	    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+	    <script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+	    <script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+	    <script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+	    <script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+	    <script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+	    <script src="/vendors/jszip/dist/jszip.min.js"></script>
+	    <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+	    <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+	    
+	    <!-- Custom Theme Scripts -->
+	    <script src="/build/js/custom.min.js"></script>
+    </th:block>
+</html>

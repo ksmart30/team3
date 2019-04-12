@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team02.account.mapper.SlipAdmitMapper">
+<!-- 전표헤더 -->
+<select id="slipAdmitList"
+		resultType="ksmart30.team02.account.domain.SlipAdmit"
+>
+		SELECT 
+			SLIP_CASH_GB,
+			SLIP_DATE,
+			SLIP_NO,
+			CONFIRM_YN,
+			CONFIRM_CHECK,
+			CANCEL_REASON,
+			DR_AMT,
+			CR_AMT,
+			(SELECT DEPT_NM FROM T_SC1010  WHERE DEPT_CD = INIT_DEPT_CD) as INIT_DEPT_CD,
+			(SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = INIT_EMP_NO) as INIT_EMP_NO
+		FROM T_AC1110 
+		WHERE SLIP_DATE BETWEEN #{SLIP_DATE} and #{SLIP_DATE2}
+		and SLIP_NO BETWEEN #{SLIP_NO} and #{SLIP_NO2}
+</select>
+<!-- 전표상세 -->
+<select id="slipAdmitList2"
+		resultType="ksmart30.team02.account.domain.SlipAdmit"
+>
+	SELECT
+	SLIP_SEQ,
+	ACC_CD,
+	ACC_DTL_CD,
+	(SELECT ACC_LONG_NM FROM T_AC0100 a WHERE a.ACC_CD = b.ACC_CD AND a.ACC_DTL_CD = b.ACC_DTL_CD) as ACC_NM,
+	(SELECT DEPT_NM FROM T_SC1010 WHERE BELONG_DEPT_CD = DEPT_CD) as BELONG_DEPT_CD,
+	DRCR_GB,
+	ACC_AMT,
+	DESCR,
+	CUST_CD,
+	(SELECT PJT_NM FROM T_SM3000_2016 c WHERE c.PJT_CD = b.PROJ_CD) as PROJ_CD,
+	TAX_CD,
+	PROV_AMT,
+	VAT_AMT
+	
+FROM
+	T_AC1120 b
+WHERE SLIP_DATE BETWEEN #{SLIP_DATE} and #{SLIP_DATE2}
+		and SLIP_NO BETWEEN #{SLIP_NO} and #{SLIP_NO2}
+</select>
+<!-- 계정과목 리스트 -->
+	<select id="getAccountCodeList" parameterType="String" resultType="java.util.Map">
+		SELECT ACC_CD AS accCd, 
+			   ACC_DTL_CD AS accDtlCd, 
+			   ACC_LONG_NM AS accShrtNm
+		FROM T_AC0100
+		WHERE ACC_LEVEL='5' AND ACC_LONG_NM LIKE '%' + #{account} + '%' OR ACC_LEVEL='5' AND ACC_CD LIKE '%' + #{account} + '%'
+	</select>
+
+</mapper>

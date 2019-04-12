@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team02.account.mapper.SlipMapper">
+	<!-- 8.1.전표입력
+	   @file     SlipMapper.xml
+	   @brief    전표입력 XML
+	   @author  ksmart30 박찬업
+	-->
+	<!-- 8.1.전표입력
+	  @param  String slip_DATE, String slip_NO 
+	  @brief    전표리스트 SELECT 쿼리문
+	  @return  ksmart30.team02.account.domain.SlipDetailDomain
+	-->
+	<select id="getSlipInfo"
+			resultType="ksmart30.team02.account.domain.SlipDetailDomain">
+		SELECT 
+			SLIP_SEQ,
+			ACC_CD,
+			ACC_DTL_CD,
+			(SELECT DEPT_NM FROM T_SC1010 WHERE DEPT_CD = BELONG_DEPT_CD) AS BELONG_DEPT_CD,
+			DRCR_GB,
+			ACC_AMT
+		FROM
+			T_AC1120
+		WHERE 									
+			SLIP_DATE=#{SLIP_DATE}
+		AND
+			SLIP_NO=#{SLIP_NO}		
+	</select>
+	
+	<select id="getControlItemInfo"
+			resultType="ksmart30.team02.account.domain.SlipDetailDomain">
+		SELECT 
+			SLIP_SEQ,
+			ACC_CD,
+			ACC_DTL_CD,
+			(SELECT DEPT_NM FROM T_SC1010 WHERE DEPT_CD = BELONG_DEPT_CD) AS BELONG_DEPT_CD,
+			DRCR_GB,
+			ACC_AMT,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD1 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM1,
+			CONT_CD1,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD2 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM2,
+			CONT_CD2,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD3 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM3,
+			CONT_CD3,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD4 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM4,
+			CONT_CD4,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD5 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM5,
+			CONT_CD5,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD6 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM6,
+			CONT_CD6,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD7 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM7,
+			CONT_CD7,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD8 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM8,
+			CONT_CD8,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD9 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM9,
+			CONT_CD9,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=(SELECT DR_CONT_CD10 FROM T_AC0100 b WHERE a.ACC_CD=b.ACC_CD 
+				AND a.ACC_DTL_CD=b.ACC_DTL_CD)) AS CONT_NM10,
+			CONT_CD10			
+		FROM
+			T_AC1120 a
+		WHERE 									
+			ACC_CD=#{ACC_CD}
+		AND
+			ACC_DTL_CD=#{ACC_DTL_CD}
+		AND
+			SLIP_DATE=#{SLIP_DATE}
+		AND
+			SLIP_NO=#{SLIP_NO}		
+	</select>
+	
+	
+	<select id="getSlipHeaderInfo"
+			parameterType="ksmart30.team02.account.domain.SlipDetailDomain"
+			resultType="ksmart30.team02.account.domain.SlipHeaderDomain">
+		SELECT 
+			SLIP_CASH_GB,
+			SLIP_DATE,
+			SLIP_NO,
+			INIT_DATE,
+			INIT_DEPT_CD,
+			INIT_EMP_NO
+		FROM T_AC1110
+		WHERE 
+			SLIP_DATE =#{SLIP_DATE}
+		AND
+			SLIP_NO=#{SLIP_NO}		
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team00.baseinfo.mapper.AssetClassifyCodeMapper">
+	
+	<!--
+		   @file    AssetClassifyCodeMapper.xml
+		   @brief    자산분류코드 XML
+		   @author  ksmart30 박찬업
+	-->
+	<!--
+		  @brief    자산분류코드 리스트 SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.AssetClassifyCodeDomain
+	-->
+	<select id="assetClassifyCodeList"
+			resultType="ksmart30.team00.baseinfo.domain.AssetClassifyCodeDomain">
+		SELECT 
+			ASSET_CD, 
+			CODE_NM, 
+			LAW_YY, 
+			ACC_CD, 
+			ACC_DTL_CD 
+		FROM t_ac4100
+	</select>
+</mapper>

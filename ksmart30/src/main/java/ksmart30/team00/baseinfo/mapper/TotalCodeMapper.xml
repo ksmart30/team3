@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team00.baseinfo.mapper.TotalCodeMapper">
+	<!-- 트리메뉴 -->
+	<select id="totalCodeTreeSelect" resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+		SELECT 
+			BUSI_GB,  
+			LEVEL1_CD,
+			LEVEL1_NM 
+		FROM t_sc9000	
+	</select>
+	<select id="totalCodeClassifySelect" parameterType="String" resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+		SELECT 
+			L.BUSI_GB,
+			L.LEVEL1_CD,
+			LEVEL1_NM,
+			LEVEL2_CODE_LEN, 
+			LEVEL2_NAME_LEN, 
+			REF1_LEN,
+			REF2_LEN, 
+			REF1_EXPENSES, 
+			REF2_EXPENSES,
+			LEVEL2_CD,
+			LEVEL2_NM,
+			LEVEL2_SHORT_NM
+		FROM T_SC9000 L LEFT JOIN T_SC9100 R ON L.BUSI_GB = R.BUSI_GB AND L.LEVEL1_CD = R.LEVEL1_CD
+		WHERE L.LEVEL1_NM = #{LEVEL1_NM};
+	</select>
+</mapper>

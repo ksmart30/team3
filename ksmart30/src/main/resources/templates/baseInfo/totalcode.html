@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>test</title>
+		
+		<!-- Bootstrap -->
+	    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Font Awesome -->
+	    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	    <!-- NProgress -->
+	    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+	    <!-- iCheck -->
+	    <link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	    <!-- Datatables -->
+	    <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+		
+	    <!-- Custom Theme Style -->
+	    <link href="/build/css/custom.min.css" rel="stylesheet">
+	    
+	    <link rel="stylesheet" type="text/css" href="/build/css/zTreeStyle/zTreeStyle.css"/>
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script>
+			const zNodes =[
+			    { id : "1", name:"최상위1" },
+			    { id : "11", pId : "1", name:"최상위1의 하위1"},
+			    { id : "12", pId : "1", name:"최상위1의 하위2"},
+			    { id : "2", name:"최상위2" },
+			    { id : "21", pId : "2", name:"최상위2의 하위1"},
+			    { id : "22", pId : "2", name:"최상위2의 하위2"}
+			];
+			const setting = {
+			    data: {
+			        simpleData: {
+			            enable: true
+			        }
+			    },
+			    callback: {
+					beforeClick: beforeClick
+				},
+				view: {
+					fontCss: getFont,
+					nameIsHTML: true
+				}
+			}
+			
+			function getFont(treeId, node) {
+				return node.font ? node.font : {};
+			}
+			
+			function beforeClick(treeId, treeNode, clickFlag) {
+				let codeName = treeNode.name;
+				$('#level2List').empty();
+				$.when(
+						$.ajax({
+							url:'/treeselected',
+							type:'GET',
+							data:{LEVEL1_NM:codeName}
+						})).done((selected)=>{
+							$('#BUSI_GB').val(selected[0].busi_GB).prop('selected',true);
+							$('#REF1_LEN').val(selected[0].ref1_LEN);
+							$('#LEVEL1_CD').val(selected[0].level1_CD);
+							$('#REF2_LEN').val(selected[0].ref2_LEN);
+							$('#LEVEL1_NM').val(selected[0].level1_NM);
+							$('#REF1_EXPENSES').val(selected[0].ref1_EXPENSES);
+							$('#LEVEL2_CODE_LEN').val(selected[0].level2_CODE_LEN);
+							$('#REF2_EXPENSES').val(selected[0].ref2_EXPENSES);
+							$('#LEVEL2_NAME_LEN').val(selected[0].level2_NAME_LEN);
+
+							let tr = '';
+							let checkloop = 0;
+							$(selected).each((index,item)=>{
+								checkloop++;
+								tr += '<tr>';
+								tr += '<td></td>';
+								tr += '<td><input type="text" name="level2_CD' + checkloop + '" value="' + item.level2_CD + '"></td>';
+								tr += '<td><input type="text" name="level2_NM' + checkloop + '" value="'+ item.level2_NM + '"></td>';
+								tr += '<td><input type="text" name="level2_SHORT_NM' + checkloop + '" value="' + item.level2_SHORT_NM + '"></td>';
+								tr += '</tr>';
+							});
+							
+							if(checkloop <= 15){
+								for(let i = checkloop; i<15; i++){
+									tr += '<tr>';
+									tr += '<td></td>';
+									tr += '<td><input type="text" name="level2_CD' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="level2_CD' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="level2_CD' + checkloop + '"></td>';
+									tr += '</tr>';
+								}
+							}
+							$('#level2List').append(tr);
+							/* console.log(selected[0].ref2_EXPENSES); */
+							/* $(selected).each((index,item)=>{
+								$('#BUSI_GB option:eq('+selected.BUSI_NM+')').attr('selected','selected');
+								console.log(selected.BUSI_NM+'<--구분값');
+			            	}); */
+						});
+				$('#test1').val(treeNode.name);
+				return (treeNode.click != false);
+			}
+			
+			$(document).ready(function(){
+				for(let i = 0; i<20; i++){
+					let tr = '<tr>';
+					tr += '<td></td>';
+					tr += '<td><input type="text" readonly="readonly" style="border: 0px; background-color:transparent;"></td>';
+					tr += '<td><input type="text" readonly="readonly" style="border: 0px; background-color:transparent;"></td>';
+					tr += '<td><input type="text" readonly="readonly" style="border: 0px; background-color:transparent;"></td>';
+					tr += '</tr>';
+					$('#level2List').append(tr);
+				}
+				$.ajax({
+		            url:'/treemenu',
+		            type:'GET',
+		            
+		            success:(tree)=>{
+		            	let treelist =[
+		            		{ id : "1", name:"사업성검토/MH계약프로젝트", font:{'font-weight':'bold'}},
+		            		{ id : "2", name:"설계정보", font:{'font-weight':'bold'}},
+		            		{ id : "3", name:"회계관리", font:{'font-weight':'bold'}},
+		            		{ id : "4", name:"인력관리", font:{'font-weight':'bold'}},
+		            		{ id : "5", name:"경영정보", font:{'font-weight':'bold'}},
+		            		{ id : "6", name:"시스템관리", font:{'font-weight':'bold'}}
+		            	];
+		            	$(tree).each((index,item)=>{
+		            		treelist.push({ id : item.id, pId : item.pid, name:item.name});
+		            	});
+		            	$.fn.zTree.init($("#treeDemo"), setting, treelist);
+		            }
+		        });
+			   /* $.fn.zTree.init($("#treeDemo"), setting, zNodes); */
+			});
+		</script>
+	</th:block>
+	
+	<th:block layout:fragment="customBody">
+	<form>
+		<div class="col-md-9 col-xs-12" style="color:black;">
+			<div class="page-title">
+				<div class="title_left">
+					<h2><b>종합코드</b></h2>
+				</div>
+			</div>
+        </div>
+        <div class="col-md-3 col-xs-12" style="color:black;">
+			<div class="page-title">
+				<div class="btn-group">
+					<button class="btn btn-default" type="reset">입력</button>
+					<button class="btn btn-default" type="button">수정</button>
+					<button class="btn btn-default" type="button">삭제</button>
+					<button class="btn btn-default" type="button">저장</button>
+					<button class="btn btn-default" type="button">종료</button>
+				</div>
+			</div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+			<div class="x_panel" style="color: black;">
+				<div class="x_title">
+					<h3>종합코드입력</h3>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content"><br>
+					<ul id="treeDemo" class="ztree" style="width:100%;  overflow:auto; height:1000px;"></ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 col-xs-12">
+			<div class="x_panel" style="color: black;">
+				<div class="x_title">
+					<h3>종합코드입력</h3>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content"><br>
+					<table class="table table-striped table-bordered" >
+						
+						<tbody>
+							<tr>
+								<td>업무구분</td>
+								<td>
+									<select id="BUSI_GB" name="BUSI_GB">
+										<option value="J">사업성검토/MH/계약프로젝트</option>
+										<option value="P">설계정보</option>
+										<option value="A">회계관리</option>
+										<option value="H">인력관리</option>
+										<option value="E">경영정보</option>
+										<option value="S">시스템관리</option>
+									</select>
+								</td>
+								<td>참조1길이</td>
+								<td>
+									<input type="text" id="REF1_LEN" name="REF1_LEN"> (최대50자리)
+								</td>
+							</tr>
+							<tr>
+								<td>대분류코드</td>
+								<td>
+									<input type="text" id="LEVEL1_CD" name="LEVEL1_CD" style="width: 100%">
+								</td>
+								<td>참조2길이</td>
+								<td>
+									<input type="text" id="REF2_LEN" name="REF2_LEN"> (최대50자리)
+								</td>
+							</tr>
+							<tr>
+								<td>대분류코드명</td>
+								<td>
+									<input type="text" id="LEVEL1_NM" name="LEVEL1_NM" style="width: 100%">
+								</td>
+								<td>참조1용도</td>
+								<td>
+									<input type="text" id="REF1_EXPENSES" name="REF1_EXPENSES" style="width: 100%">
+								</td>
+							</tr>
+							<tr>
+								<td>소분류코드길이</td>
+								<td>
+									<input type="text" id="LEVEL2_CODE_LEN" name="LEVEL2_CODE_LEN">(최대20자리)
+								</td>
+								<td>참조2용도</td>
+								<td>
+									<input type="text" id="REF2_EXPENSES" name="REF2_EXPENSES" style="width: 100%">
+								</td>
+							</tr>
+							<tr>
+								<td>소분류코드명길이</td>
+								<td colspan="3">
+									<input type="text" id="LEVEL2_NAME_LEN" name="LEVEL2_NAME_LEN">(최대300자리)
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="x_panel" style="color: black;">
+				<div class="x_title">
+					<h3>종합코드입력</h3>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content" style="overflow: auto; height: 600px;" ><br>
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th></th>
+								<th>소분류코드</th>
+								<th>소분류코드명</th>
+								<th>소분류약어</th>
+							</tr>
+						</thead>
+						<tbody id="level2List">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</form>
+	</th:block>
+	
+	<th:block layout:fragment="customJquery">
+		<!-- jQuery -->
+	    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+	    <!-- Bootstrap -->
+	    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	    <!-- FastClick -->
+	    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+	    <!-- NProgress -->
+	    <script src="/vendors/nprogress/nprogress.js"></script>
+	    <!-- iCheck -->
+	    <script src="/vendors/iCheck/icheck.min.js"></script>
+	    <!-- Datatables -->
+	    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+	    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+	    <script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+	    <script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+	    <script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+	    <script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+	    <script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+	    <script src="/vendors/jszip/dist/jszip.min.js"></script>
+	    <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+	    <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+	    
+	    <!-- Custom Theme Scripts -->
+	    <script src="/build/js/custom.min.js"></script>
+	    <script type="text/javascript" src="/build/js/jquery.ztree.core.min.js"></script>
+    </th:block>
+</html>

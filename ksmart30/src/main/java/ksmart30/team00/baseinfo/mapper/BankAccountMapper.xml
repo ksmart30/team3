@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team00.baseinfo.mapper.BankAccountMapper">
+
+<select	id="addBankAccount"
+		resultType="ksmart30.team00.baseinfo.domain.BankAccount"
+>
+		SELECT 
+			ACNT_NO,
+			L.BRCH_LONG_NM,
+			L.BANK_BRCH_CD,
+		 	ACNT_KIND,
+		 	ACNT_OWNER,
+			ACNT_NM,
+			ABLE_YN,
+			INT_RATE,
+			STR_DATE,
+			END_DATE,
+			REM
+		FROM 
+			T_AC0500 L LEFT JOIN T_AC0600 R ON L.BANK_BRCH_CD = R.BANK_BRCH_CD
+	
+</select>
+
+<select id="bankAccountList" parameterType="String"
+		resultType="ksmart30.team00.baseinfo.domain.BankAccount"
+>
+	SELECT 
+			ACNT_NO,
+			L.BRCH_LONG_NM,
+			L.BRCH_SHRT_NM,
+			L.BANK_BRCH_CD,
+		 	ACNT_KIND,
+		 	ACNT_OWNER,
+			ACNT_NM,
+			ABLE_YN,
+			TEL_NO,
+			FAX_NO,
+			INT_RATE,
+			STR_DATE,
+			END_DATE,
+			REM
+		FROM 
+			T_AC0500 L LEFT JOIN T_AC0600 R ON L.BANK_BRCH_CD = R.BANK_BRCH_CD
+		WHERE 
+			L.BRCH_LONG_NM=#{BRCH_LONG_NM}
+</select>
+<select id="bankAccountList1" parameterType="String"
+		resultType="ksmart30.team00.baseinfo.domain.BankAccount"
+>
+	SELECT 
+			ACNT_NO,
+			L.BRCH_LONG_NM,
+			L.BRCH_SHRT_NM,
+			L.BANK_BRCH_CD,
+		 	ACNT_KIND,
+		 	ACNT_OWNER,
+			ACNT_NM,
+			ABLE_YN,
+			TEL_NO,
+			FAX_NO,
+			INT_RATE,
+			STR_DATE,
+			END_DATE,
+			REM
+		FROM 
+			T_AC0500 L LEFT JOIN T_AC0600 R ON L.BANK_BRCH_CD = R.BANK_BRCH_CD
+		WHERE 
+			ACNT_NO=#{ACNT_NO}
+</select>
+</mapper>

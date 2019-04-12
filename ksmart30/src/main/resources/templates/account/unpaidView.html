@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<!-- Bootstrap -->
+	    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Font Awesome -->
+	    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	    <!-- NProgress -->
+	    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+	    <!-- iCheck -->
+	    <link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	    <!-- Datatables -->
+	    <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+		
+	    <!-- Custom Theme Style -->
+	    <link href="/build/css/custom.min.css" rel="stylesheet">
+	    
+	    <link rel="stylesheet" type="text/css" href="/build/css/zTreeStyle/zTreeStyle.css"/>
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<link href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+		
+		<script>
+		
+			$(document).ready(()=>{
+				$('#btn_select').click(()=>{
+				 	let unpaid= $('#crt').val().split('-');
+					let slp= $('#slp').val().split('-');
+					let convertUnpaid = unpaid[0]+unpaid[1]+unpaid[2];
+					let convertslp = slp[0]+slp[1]+slp[2];
+					console.log(convertUnpaid+'<--값 나와라');
+					console.log(slp+'<--너는 들어왔니?');
+			        $.ajax({
+			            url:'/unpaidView',
+			            type:'GET',
+			            data:{SLIP_DATE:convertUnpaid},
+			            success:function(data){
+			                $('#unpaidlist').empty();
+			                let tr = '';
+			                let sum = '';
+			                $(data).each((index,item)=>{
+			                   tr += '<tr>';
+			                   tr += '<td>' + item.slip_DATE + item.js_CODE + item.slip_NO + item.slip_SEQ + '</td>';
+			                   tr += '<td>' + item.cust_NM + '</td>';
+			                   tr += '<td>' + item.occr_AMT + '</td>';
+			                   tr += '<td><button id="choice" type="button"></button></td>';
+			                   tr += '<td>' + item.remain_AMT + '</td>';
+			                   tr += '<td>' + item.occr_AMT + '</td>';	
+			                   tr += '<td>' + 0 + '</td>';
+			                   tr += '<td>' + item.not_CONF_AMT + '</td>';
+			                   tr += '<td>' + item.acc_AMT + '</td>';
+			                   tr += '<td>' + item.descr + '</td>';
+			                   tr +='</tr>';
+			                   sum +='<td>'+ item.remainamt + '</td>';
+			                   sum +='<td>'+ item.occrsum + '</td>';
+			                   sum +='<td>'+ item.notconfirm + '</td>';
+			                   sum +='</tr>';
+			                });
+			                   tr += '<tr>';
+			                   tr += '<td>**합 계**</td>';
+			                   tr += '<td></td>';
+			                   tr += '<td>' + data[0].occrsum + '</td>';
+			                   tr += '<td><button id="choice" type="button"></button></td>';
+			                   tr += '<td>' + data[0].remainamt + ' </td>';	
+			                   tr += '<td>' + data[0].notconfirm + '</td>';
+			                   tr += '<td></td>';
+			                   tr += '<td></td>';
+			                   tr += '<td></td>';
+			                   tr += '<td></td>';
+			                   tr +='</tr>';
+			                   $('#unpaidlist').append(tr);
+			            }
+			        });
+			    });
+				$('#btnAccountSearch').click(()=>{
+					let ColumnValue = $('#accountValue').val();
+	    			$.ajax({
+			            url:'/unpaidaccountSearchView',
+			            type:'GET',
+			            data:{account : ColumnValue},
+			            success:(list)=>{
+			            	console.log(list);
+			            	let tr='';
+			            	$(list).each((index,item)=>{
+			            		$('#accountList').empty();
+			            		tr += '<tr>';
+								tr += '<td>'+item.ACC_CD+'</td>';
+								tr += '<td>'+item.ACC_DTL_CD+'</td>';
+								tr += '<td>'+item.ACC_LONG_NM+'</td>';
+								tr += '</tr>';
+			            	});
+			            	$('#accountList').append(tr);
+			            }
+			        });
+    			});
+				$('#accountList').delegate('tr', 'dblclick', function(){
+					let tr = $(this);
+					let td = tr.children();
+					$('#ACC_CD').val(td.eq(0).text());
+					$('#ACC_DTL_CD').val(td.eq(1).text());
+					$('#accountValue').val('');
+					$('#accountModal').click();
+	    		});
+			});
+			   
+		</script>
+	</th:block>
+	<th:block layout:fragment="customBody">
+		<div class="col-md-12 col-xs-12" style="color:black;">
+			<div class="page-title" style="color:black;">
+				<div class="title_left">
+					<h2><b>미지급금 입력</b></h2>
+				</div>
+			</div>
+        </div>
+		<div class="x_content" style="text-align: right">
+					<div class="btn-group" >
+					<button id="btn_select" class="btn btn-default" type="button"><i class="fa fa-search"> </i> 조회 </button>
+					<button class="btn btn-default" type="reset">입력</button>
+					<button class="btn btn-default" type="button">수정</button>
+					<button id="btn_remove" class="btn btn-default" type="button">삭제</button>
+					<button id="btn_add" class="btn btn-default" type="button">저장</button>
+					<button class="btn btn-default" type="button">출력</button>
+					</div>
+				</div>
+		<div class="col-md-12 col-xs-12">
+			<div class="x_panel" style=" color: black;">
+            <div class="x_title">
+					<div class="clearfix"></div>
+				</div>
+            <div class="x_content">
+                <form class="form-horizontal form-label-left input_mask">
+	                      <table class="table table-striped table-bordered" >
+						<tr role="row">
+							<th>
+		                  		<div class="col-md-3 col-sm-12 col-xs-12 form-group">          	
+		                  			검색조건                
+		                  		</div>		                  
+			                  	<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+			                  		 <input type="radio" name="1"> 생성일자 <input type="date" id="crt"> <br>
+			                  		 <input type="radio" name="1"> 전표일자 <input type="date" id="slp">
+			                  	</div>			
+			                  	<td><b>계정과목</b></td>
+									<td>
+										<input type="text" id="ACC_CD"> 
+										<input type="text" id="ACC_DTL_CD">
+										<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg1"><i class="fa fa-search"></i></button>
+			                 	<div class="modal fade bs-example-modal-lg1" tabindex="-1" role="dialog" aria-hidden="true">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content">
+													<form class="form-horizontal">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal" id="accountModal"><span aria-hidden="true">×</span>
+															</button>
+															<h4 class="modal-title" id="myModalLabel"><b>계정과목코드 조회</b></h4><br>
+															<!-- <div class="table-responsive"> -->
+																<table class="table table-bordered">
+																	<tbody>
+																		<tr>
+																			<td><label class="control-label">검색항목</label></td>
+																			<td>
+																				<select class="form-control" style="width: 40%" id="selectedAccount">
+																					<option value="ACC_CD">계정코드</option>
+																					<option selected="selected" value="ACC_LONG_NM">계정과목명</option>
+																				</select>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td><label class="control-label">검색조건</label></td>
+																			<td>
+																				<input type="text" id="accountValue">
+																				<button id="btnAccountSearch" type="button"><i class="fa fa-search"></i></button>																	
+																			</td>
+																		</tr>
+																	</tbody>																	
+																</table>
+															<!-- </div> -->
+														</div>
+														<div class="modal-body">
+															<div class="table-responsive" style="overflow: auto; height: 400px;">
+															<table class="table table-striped table-bordered table-hover jambo_table">
+																<thead>
+																	<tr>
+																		<th>계정코드</th>
+																		<th>세목</th>
+																		<th>계정과목명</th>
+																	</tr>
+																</thead>
+																<tbody id="accountList">
+																</tbody>																	
+															</table>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</font>
+       	<div class="x_panel">          	
+       		<div class="col-md-12 col-sm-12 col-xs-12"> 
+            	<button>전체적용</button><span>조회건수 0건</span>
+                <div class="clearfix"></div>
+          	</div>
+            <div class="x_content">                   
+            	<div class="table-responsive">
+                  	<table id="datatable-responsive" class="table table-striped table-bordered jambo_table" style="width: 100%">
+                    	<thead>
+                      		<tr>
+	                         	<th>발생전표번호 </th>
+	                          	<th>거래처명</th>
+	                          	<th>발생금액 </th>
+	                          	<th>선택 </th>
+	                          	<th>미결잔액 </th>
+	                          	<th>미승인반제액 </th>
+	                          	<th>지급예정 </th>
+	                          	<th>잡이익/손실 </th>
+	                          	<th>잔 액 </th>
+	                          	<th>적 요 </th>
+                      		</tr>
+                    	</thead>
+						<tbody id="unpaidlist">		
+                      	</tbody>	
+                  	</table>
+             	</div>													
+         	</div>
+     	</div>             
+	</th:block>
+	<th:block layout:fragment="customJquery">
+		<!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <!-- Datatables -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+
+    </th:block>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>test</title>
+		
+		<!-- Bootstrap -->
+	    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Font Awesome -->
+	    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	    <!-- NProgress -->
+	    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+	    <!-- iCheck -->
+	    <link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	    <!-- Datatables -->
+	    <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+		
+	    <!-- Custom Theme Style -->
+	    <link href="/build/css/custom.min.css" rel="stylesheet">
+	    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script>
+			$(document).ready(()=>{
+				$('#search').click(()=>{	
+					$('#')
+					if($('#slipDate').val() == ''){
+						alert('전표일자를 입력하세요');
+					} else if($('#slipNo').val() == ''){
+						alert('전표번호를 입력하세요');
+					} else {					
+						const date = $('#slipDate').val();
+						const no = $('#slipNo').val();
+						console.log('눌렀다..');
+						$.ajax({
+				            url:'/acc/slipSearchProcess',
+				            type:'POST',
+				            data: {SLIP_DATE:date, SLIP_NO:no},
+				            success:(map)=>{
+								console.log(map.slip + '<--다시 나와라요~~!');
+								$('#list').empty();
+								let cAmt = null;
+								let dAmt = null;
+								let tr='';								
+								$(map.slip).each((index,item)=>{	//each = forEach
+									tr += '<tr>';
+									tr += '<td>'+'</td>';	//0
+									tr += '<td>'+item.slip_SEQ+'</td>'; //1
+									tr += '<td>'+item.acc_CD+'</td>';	//2
+									tr += '<td>'+item.acc_DTL_CD+'</td>';	//3
+									tr += '<td>'+item.belong_DEPT_CD+'</td>';	//4
+									 if(item.drcr_GB == 'C'){
+										 tr += '<td>'+'</td>';	//5
+										 tr += '<td>'+item.acc_AMT+'</td>';				//6    								    	 
+								    } else {
+								    	 tr += '<td>'+item.acc_AMT+'</td>';
+								    	 tr += '<td>'+'</td>';									 		
+								    }
+									
+									tr += '<td style="display:none;">'+item.dESCR+'</td>';	//7
+									tr += '<td style="display:none;">'+item.drcr_GB+'</td>';	//8
+									tr += '</tr>';				            					            																		   	 
+								});																	
+								tr += '<tr>';
+								tr += '<td>'+'</td>';
+								tr += '<td colspan="4">'+ '합 계'+'</td>';
+								tr += '<td>'+map.accAmtD+'</td>';
+								tr += '<td>'+map.accAmtC+'</td>';
+								tr += '</tr>';							
+								$('#list').append(tr);	
+								console.log("slipHeader : " + map.slipHeader);
+								if($(map.slipHeader.slip_CASH_GB)=='1'){
+									$('#slipCashGb1').prop("checked", true);
+								} else {
+									$('#slipCashGb2').prop("checked", true);
+								}
+								$('#slipDateG').val(map.slipHeader.slip_DATE);
+								$('#slipNoG').val(map.slipHeader.slip_NO);
+								$('#initDate').val(map.slipHeader.init_DATE);
+								$('#initDept').val(map.slipHeader.init_DEPT_CD);
+								$('#initEmp').val(map.slipHeader.init_EMP_NO);
+							}
+						});	
+			        }
+				});				
+				$('#list').delegate('tr', 'click', function(){
+					console.log('눌렀다요');
+					let tr = $(this);
+					let td = tr.children();					
+					console.log('td : ' + td);
+					$('#slipSeq').val(td.eq(1).text());
+					$('#accCd').val(td.eq(2).text());
+					$('#accDtlCd').val(td.eq(3).text());
+					$('#belongDept').val(td.eq(4).text());
+					if(td.eq(8).text() == 'C'){
+						$('#cr').prop("checked", true);
+						$('#amt').val(td.eq(6).text());
+					} else if(td.eq(8).text() == 'D') {
+						$('#dr').prop("checked", true);
+						$('#amt').val(td.eq(5).text());
+					}					
+					$('#jeokyo').val(td.eq(7).text());
+					const accCd = td.eq(2).text();
+					const accDtlCd = td.eq(3).text();
+					const date = $('#slipDate').val();
+					const no = $('#slipNo').val();
+					let tr2='';	
+					$.ajax({
+						url : "/acc/controlItemSearchProcess",
+						type : "POST",
+						data : {SLIP_DATE:date, SLIP_NO:no, ACC_CD : accCd, ACC_DTL_CD : accDtlCd},
+						success:(list)=>{
+							$('#controlbody').empty();												
+							if(list.cont_NM1 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM1+'</td>';
+								tr2 += '<td><input type="text" value="'+list.cont_CD1+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}
+							if(list.cont_NM2 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM2+'</td>';
+								tr2 += '<td><input type="text" value="'+list.cont_CD2+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}
+							if(list.cont_NM3 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM3+'</td>';
+								tr2 += '<td><input type="text" value="'+list.cont_CD3+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}
+							if(list.cont_NM4 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM4+'</td>';
+								tr2 += '<td><input type="text" value="'+list.cont_CD4+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}
+							if(list.cont_NM5 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM5+'</td>';
+								tr2 += '<td><input type="text" value="'+list.cont_CD5+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}	
+							if(list.cont_NM6 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM6+'</td>';
+								tr2 += '<td><input type="text" value="'+list.cont_CD6+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}
+							if(list.cont_NM7 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM7+'</td>';
+								tr2 += '<td><input type="text" value="'+list.cont_CD7+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}
+							if(list.cont_NM8 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM8+'</td>';	//0
+								tr2 += '<td><input type="text" value="'+list.cont_CD8+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}
+							if(list.cont_NM9 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM9+'</td>';	//0
+								tr2 += '<td><input type="text" value="'+list.cont_CD9+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}
+							if(list.cont_NM10 != null){
+								tr2 += '<tr>';
+								tr2 += '<td>'+list.cont_NM10+'</td>';	//0
+								tr2 += '<td><input type="text" value="'+list.cont_CD10+'"></td>';
+								tr2 += '</tr>';
+							} else {
+								
+							}	
+													
+							$('#controlList').append(tr2);
+							
+						}
+					});							
+	    		});
+			});
+			
+		</script>
+	</th:block>
+	<th:block layout:fragment="customBody">
+		<font color="black">
+<!-- ---------------------------------------------------------------검색메뉴--------------------------------------------------------------------------------------- -->		
+		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
+	        <div class="x_panel">             
+	            <div class="col-md-6 col-sm-6 col-xs-12">
+		            <h1>전표입력</h1>	                   	
+		            <h5 style="color:gray;"><b>8.회계관리&nbsp;>&nbsp;&nbsp;8.1전표입력</b></h5> 	                    
+	            </div>
+	            <div class="col-md-6 col-sm-6 col-xs-12">    
+	            	<div class="x_content" style="text-align: right">
+						<div class="btn-group" >
+							<button class="btn btn-default" type="button" id="search">조회</button>
+							<button class="btn btn-default" type="reset">입력</button>
+							<button class="btn btn-default" type="button">수정</button>
+							<button class="btn btn-default" type="button">삭제</button>
+							<button class="btn btn-default" type="button">저장</button>
+							<button class="btn btn-default" type="button">출력</button>
+						</div>							
+					</div>
+				</div>	                         
+	            <div class="x_content">
+					<!-- <form action="/acc/slipSearchProcess" method="post" id="form"> -->
+						회계단위
+						<select name="aCC_UNIT" id="accUnit">
+							<option>ANU디자인그룹(주)</option>
+						</select>
+						전표유형
+						<select name="jS_CODE" id="jsCode">
+							<option>일반전표</option>
+							<option>대금지금전표</option>
+							<option>결산전표</option>
+						</select>
+						전표일자
+							<input type="date" id="slipDate" name="sLIP_DATE">-
+							<input type="text" id="slipNo" name="sLIP_NO" size="3">
+							<button type="button" name="">ㅁ</button>
+					<!-- </form> -->																				
+						<button type="button" name="">순번추가</button>
+						<button type="button" name="">순번삭제</button>						
+	           	</div>
+	      	</div>
+      	</div>
+<!-- ------------------------------------------------------전표리스트----------------------------------------------------------------------------- -->              
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">                                                       
+                  <div class="x_content">
+					<div style="overflow:scroll;  width:100%; height:1000px; padding:10px;">
+                    	<table class="table table-striped table-bordered table-hover jambo_table" id="table">                  
+							<thead>
+								<tr>
+									<td></td>
+									<td>순번</td>
+									<td>계정코드</td>
+									<td>세목</td>
+									<td>귀속부서</td>
+									<td>차변금액</td>
+									<td>대변금액</td>
+								</tr>
+							</thead>							
+							<tbody id="list">																								
+								<tr>
+									<td></td>
+									<td colspan="4">합 계</td>																								
+									<td>0</td>
+									<td>0</td>								
+								</tr>								
+							</tbody>
+						</table>
+					</div>
+                  </div>
+                </div>
+              </div>
+<!-- -------------------------------------------------------------전표기본내역--------------------------------------------------------------------------- -->              
+              <div class="col-md-6 col-sm-6 col-xs-12" style="width:50%">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h3>전표기본내역</h3>
+                   
+                    
+                  </div>
+                  <div class="x_content">
+
+                    <table class="table table-bordered">
+				<tr>
+					<td style="width:15%;">
+						회계단위
+					</td>
+					<td colspan="3">
+						<select>
+							<option>
+								ANU디자인그룹(주)
+							</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						전표유형
+					</td>
+					<td>
+						<select>
+							<option>일반전표</option>
+							<option>대금지불전표</option>
+							<option>결산전표</option>
+						</select>	
+					</td>
+					<td style="width:15%;">종　　류</td>
+					<td>
+						<input type="radio" name="pay" id="slipCashGb1">현금
+						<input type="radio" name="pay" id="slipCashGb2">대체
+					</td>
+				</tr>
+				<tr>
+					<td>
+						전표일자
+					</td>
+					<td>
+						<input type="date" name="" id="slipDateG">
+					</td>
+					<td>
+					전표번호
+					</td>
+					<td>
+						<input type="text"name="" id="slipNoG">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						발의일자
+					</td>
+					<td>
+						<input type="date"name="" id="initDate">
+					</td>
+					<td>
+						발의부서
+					</td>
+					<td>
+						<input type="text"name="" id="initDept">
+						<button type="button"name="">ㅁ</button>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						발 의 자
+					</td>
+					<td>
+					<input type="text"name="" id="initEmp">
+					<button type="button"name="">ㅁ</button>
+					</td>
+					<td>
+						상　　태
+					</td>
+					<td>
+						<input type="text"name="">
+					</td>
+				</tr>
+			</table>
+                  </div>
+                </div>
+              </div>
+<!-- -----------------------------------------------------------전표상세내역------------------------------------------------------------------------------ -->              
+              <div class="col-md-5 col-sm-6 col-xs-12" style="width:50%">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h3>전표상세내역</h3>
+                    <ul class="nav navbar-right panel_toolbox">                     
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                   <table class="table table-bordered">
+                     <thead>
+				<tr>
+					<th colspan="8">기본내역</th>
+				</tr>
+					</thead>
+					<tbody>
+				<tr>
+					<td>전표순번</td>
+					<td colspan="4"><input type="text"name="" id="slipSeq" size="3"></td>
+				</tr>
+				<tr>
+					<td>
+						계정코드
+					</td>
+					<td colspan="4">
+						<input type="text"name="" id="accCd" size="5">
+						<input type="text"name="" id="accDtlCd" size="3">
+						<button type="button"name="">ㅁ</button>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						귀속부서
+					</td>
+					<td colspan="4">
+						<input type="text"name="" id="belongDept" size="5">
+						<button type="button"name="">ㅁ</button>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						차대구분
+					</td>
+					<td>
+						<input type="radio" name="4" id="dr">차변
+						<input type="radio" name="4" id="cr">대변
+					<td>
+					<td>
+						금　　액
+					</td>
+					<td>
+						<input type="text"name="" id="amt">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						적요
+					</td>
+					<td colspan="4">
+						<input type="text"name="" id="jeokyo" style="width:100%;">
+					</td>
+				</tr>			
+				</tbody>
+			</table>
+<!-- --------------------------------------------------------------------관리항목------------------------------------------------------------------------------ -->				
+			
+			<table class="table table-bordered" id="controlList">
+				<thead>
+					<tr>
+						<th colspan="2">관리항목</th>						
+					</tr>
+				</thead>
+				<tbody id="controlbody">
+				</tbody>
+			</table>
+
+                  </div>
+                </div>
+              </div>
+              </font>
+	</th:block>
+	<th:block layout:fragment="customJquery">
+		<!-- jQuery -->
+	    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+	    <!-- Bootstrap -->
+	    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	    <!-- FastClick -->
+	    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+	    <!-- NProgress -->
+	    <script src="/vendors/nprogress/nprogress.js"></script>
+	    <!-- iCheck -->
+	    <script src="/vendors/iCheck/icheck.min.js"></script>
+	    <!-- Datatables -->
+	    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+	    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+	    <script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+	    <script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+	    <script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+	    <script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+	    <script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+	    <script src="/vendors/jszip/dist/jszip.min.js"></script>
+	    <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+	    <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+	    
+	    <!-- Custom Theme Scripts -->
+	    <script src="/build/js/custom.min.js"></script>
+    </th:block>
+</html>

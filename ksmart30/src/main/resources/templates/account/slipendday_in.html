@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>전표마감(일)</title>
+		<th:block th:include="layout/customHead"></th:block>
+	</th:block>
+	<th:block layout:fragment="customBody">
+	<font color="black">
+		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h1>전표마감(일)</h1>
+                    <ul class="nav navbar-right panel_toolbox">               
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                          	◎검색조건　　
+                          	⊙마감년월
+                          	<input type="date"name="">
+                          	<button>조회</button>
+                          	<button>마감처리</button>
+                          	<button>마감취소</button>
+                          </th>                          
+                        </tr>
+                      </thead>                     
+                    </table>					
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <ul class="nav navbar-right panel_toolbox">
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>                         
+                          <th bgcolor=#EAEAEA>月</th>
+                          <th bgcolor=#EAEAEA>火</th>
+                          <th bgcolor=#EAEAEA>水</th>
+                          <th bgcolor=#EAEAEA>木</th>
+                          <th bgcolor=#EAEAEA>金</th>
+                          <th bgcolor=#EAEAEA>土</th>
+                          <th bgcolor=#EAEAEA>日</th>
+                          <th bgcolor=#EAEAEA>月</th>
+                          <th bgcolor=#EAEAEA>火</th>
+                          <th bgcolor=#EAEAEA>水</th>
+                          <th bgcolor=#EAEAEA>木</th>
+                          <th bgcolor=#EAEAEA>金</th>
+                          <th bgcolor=#EAEAEA>土</th>
+                          <th bgcolor=#EAEAEA>日</th>
+                          <th bgcolor=#EAEAEA>月</th>
+                          <th bgcolor=#EAEAEA>火</th>
+                          <th bgcolor=#EAEAEA>水</th>
+                          <th bgcolor=#EAEAEA>木</th>
+                          <th bgcolor=#EAEAEA>金</th>
+                          <th bgcolor=#EAEAEA>土</th>
+                          <th bgcolor=#EAEAEA>日</th>
+                          <th bgcolor=#EAEAEA>月</th>
+                          <th bgcolor=#EAEAEA>火</th>
+                          <th bgcolor=#EAEAEA>水</th>
+                          <th bgcolor=#EAEAEA>木</th>
+                          <th bgcolor=#EAEAEA>金</th>
+                          <th bgcolor=#EAEAEA>土</th>
+                          <th bgcolor=#EAEAEA>日</th>
+                          <th bgcolor=#EAEAEA>月</th>
+                          <th bgcolor=#EAEAEA>火</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th bgcolor=#EAEAEA>1</th>
+                          <th bgcolor=#EAEAEA>2</th>
+                          <th bgcolor=#EAEAEA>3</th>
+                          <th bgcolor=#EAEAEA>4</th>
+                          <th bgcolor=#EAEAEA>5</th>
+                          <th bgcolor=#EAEAEA>6</th>
+                          <th bgcolor=#EAEAEA>7</th>
+                          <th bgcolor=#EAEAEA>8</th>
+                          <th bgcolor=#EAEAEA>9</th>
+                          <th bgcolor=#EAEAEA>10</th>
+                          <th bgcolor=#EAEAEA>11</th>
+                          <th bgcolor=#EAEAEA>12</th>
+                          <th bgcolor=#EAEAEA>13</th>
+                          <th bgcolor=#EAEAEA>14</th>
+                          <th bgcolor=#EAEAEA>15</th>
+                          <th bgcolor=#EAEAEA>16</th>
+                          <th bgcolor=#EAEAEA>17</th>
+                          <th bgcolor=#EAEAEA>18</th>
+                          <th bgcolor=#EAEAEA>19</th>
+                          <th bgcolor=#EAEAEA>20</th>
+                          <th bgcolor=#EAEAEA>21</th>
+                          <th bgcolor=#EAEAEA>22</th>
+                          <th bgcolor=#EAEAEA>23</th>
+                          <th bgcolor=#EAEAEA>24</th>
+                          <th bgcolor=#EAEAEA>25</th>
+                          <th bgcolor=#EAEAEA>26</th>
+                          <th bgcolor=#EAEAEA>27</th>
+                          <th bgcolor=#EAEAEA>28</th>
+                          <th bgcolor=#EAEAEA>29</th>
+                          <th bgcolor=#EAEAEA>30</th>
+                        </tr>                        
+                      </tbody>
+                    </table>
+					</div>
+                  </div>
+                </div>
+              </div> 
+              </font>             
+	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
+</html>

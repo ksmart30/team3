@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team02.account.mapper.UnpaidMapper">
+	<select id="getUnpaidContentsList" parameterType="String" resultType="ksmart30.team02.account.domain.UnpaidDomain">
+		SELECT D.SLIP_DATE AS SLIP_DATE,
+				 D.JS_CODE AS JS_CODE,
+				 D.SLIP_NO AS SLIP_NO,
+		   	 	 A.SLIP_SEQ AS SLIP_SEQ,
+				 B.CUST_NM AS CUST_NM,
+				 A.OCCR_AMT AS OCCR_AMT,
+				 A.REMAIN_AMT AS REMAIN_AMT,
+				 A.NOT_CONF_AMT AS NOT_CONF_AMT,
+				 C.ACC_AMT AS ACC_AMT,
+				 C.DESCR AS DESCR,
+				 (SELECT SUM(A.OCCR_AMT)
+				FROM T_AC1230 A INNER JOIN T_AC1120 C
+				ON A.SLIP_DATE=C.SLIP_DATE AND A.SLIP_NO=C.SLIP_NO AND A.SLIP_SEQ=C.SLIP_SEQ
+				WHERE C.ACC_CD = '21107' AND C.DRCR_GB = 'C' AND A.REMAIN_AMT > 0) AS OCCRSUM,
+				
+				(SELECT SUM(A.NOT_CONF_AMT)
+				FROM T_AC1230 A INNER JOIN T_AC1120 C
+				ON A.SLIP_DATE=C.SLIP_DATE AND A.SLIP_NO=C.SLIP_NO AND A.SLIP_SEQ=C.SLIP_SEQ
+				WHERE C.ACC_CD = '21107' AND C.DRCR_GB = 'C' AND A.REMAIN_AMT > 0) AS NOTCONFIRM,
+				
+				(SELECT SUM(A.REMAIN_AMT)
+				FROM T_AC1230 A INNER JOIN T_AC1120 C
+				ON A.SLIP_DATE=C.SLIP_DATE AND A.SLIP_NO=C.SLIP_NO AND A.SLIP_SEQ=C.SLIP_SEQ
+				WHERE C.ACC_CD = '21107' AND C.DRCR_GB = 'C' AND A.REMAIN_AMT > 0) AS REMAINAMT
+		FROM T_AC1230 A INNER JOIN T_AC0300 B 
+				ON A.UN_CONT_CD1 = B.CUST_CD INNER JOIN T_AC1120 C
+				ON A.SLIP_DATE = C.SLIP_DATE  AND A.SLIP_NO = C.SLIP_NO AND A.SLIP_SEQ = C.SLIP_SEQ INNER JOIN T_AC1110 D
+				ON A.SLIP_DATE=D.SLIP_DATE AND A.SLIP_NO = D.SLIP_NO
+		WHERE C.ACC_CD = '21107' AND C.DRCR_GB = 'C' AND A.REMAIN_AMT > 0 OR <![CDATA[ D.SLIP_DATE > #{SLIP_DATE}]]> AND <![CDATA[ D.SLIP_DATE = #{SLIP_DATE}]]> 
+
+	</select>
+	
+	<select id="getAccountCodeList" parameterType="String" resultType="java.util.Map">
+		SELECT *
+			FROM 
+			(SELECT ACC_CD, ACC_DTL_CD, ACC_LONG_NM 
+			FROM T_AC0100 
+			WHERE ACC_CD='21107' AND ACC_DTL_CD='217' OR ACC_DTL_CD='219') AS A
+		WHERE ACC_CD LIKE '%'+#{account}+'%' AND ACC_LONG_NM LIKE '%'+#{account}+'%';
+	</select>
+</mapper>

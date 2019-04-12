@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>test</title>
+		
+		<!-- Bootstrap -->
+	    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Font Awesome -->
+	    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	    <!-- NProgress -->
+	    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+	    <!-- iCheck -->
+	    <link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	    <!-- Datatables -->
+	    <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+	    <link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+		
+	    <!-- Custom Theme Style -->
+	    <link href="/build/css/custom.min.css" rel="stylesheet">
+		 <!-- jQuery  -->
+    	 
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script>
+			$(document).ready(()=>{			
+				$('#table tr').click(function(){ 
+		        	console.log('눌렀다');		
+		        	let tdArr = new Array();
+		        	let tr = $(this);	
+					let td = tr.children();
+					console.log('td 데이터 : ' + td.text());	
+					td.each(function(i){
+						tdArr.push(td.eq(i).text());
+					});
+					console.log("배열에 담긴 값 : "+tdArr);
+					$('#accCdD').val(td.eq(1).text());
+					$('#accDtlCdD').val(td.eq(2).text());
+					$('#accShrtNmD').val(td.eq(7).text());
+					$('#accLongNmD').val(td.eq(3).text());
+					$('#accLevelD').val(td.eq(6).text());
+					$('#accClasD').val(td.eq(4).text());
+					if(td.eq(5).text() == '대변'){
+						$('#drcrGbC').prop("checked",true);
+					} else {
+						$('#drcrGbD').prop("checked",true);
+					}
+					if(td.eq(8).text() == '2'){
+						$('#slipExistN').prop("checked",true);
+					} else {
+						$('#slipExistY').prop("checked",true);
+					}
+					if(td.eq(9).text() == '2'){
+						$('#budgN').prop("checked",true);
+					} else {
+						$('#budgY').prop("checked",true);
+					}
+					$('#controlItemCodeDrSelect1').val(td.eq(10).text());
+					$('#controlItemCodeDrSelect2').val(td.eq(11).text());
+					$('#controlItemCodeDrSelect3').val(td.eq(12).text());
+					$('#controlItemCodeDrSelect4').val(td.eq(13).text());
+					$('#controlItemCodeDrSelect5').val(td.eq(14).text());
+					$('#controlItemCodeDrSelect6').val(td.eq(15).text());
+					$('#controlItemCodeDrSelect7').val(td.eq(16).text());
+					$('#controlItemCodeDrSelect8').val(td.eq(17).text());
+					$('#controlItemCodeDrSelect9').val(td.eq(18).text());
+					$('#controlItemCodeDrSelect10').val(td.eq(19).text());
+					if(td.eq(20).text() == '2'){
+						$('#controlItemCodeDrMust1').val('선택');
+					} else if(td.eq(20).text() == '1') {
+						$('#controlItemCodeDrMust1').val('필수');
+					} else {
+						$('#controlItemCodeDrMust1').val('');
+					}
+					if(td.eq(21).text() == '2'){
+						$('#controlItemCodeDrMust2').val('선택');
+					} else if(td.eq(21).text() == '1') {
+						$('#controlItemCodeDrMust2').val('필수');
+					} else {
+						$('#controlItemCodeDrMust2').val('');
+					}
+					if(td.eq(22).text() == '2'){
+						$('#controlItemCodeDrMust3').val('선택');
+					} else if(td.eq(22).text() == '1') {
+						$('#controlItemCodeDrMust3').val('필수');
+					} else {
+						$('#controlItemCodeDrMust3').val('');
+					}
+					if(td.eq(23).text() == '2'){
+						$('#controlItemCodeDrMust4').val('선택');
+					} else if(td.eq(23).text() == '1') {
+						$('#controlItemCodeDrMust4').val('필수');
+					} else {
+						$('#controlItemCodeDrMust4').val('');
+					}
+					if(td.eq(24).text() == '2'){
+						$('#controlItemCodeDrMust5').val('선택');
+					} else if(td.eq(24).text() == '1') {
+						$('#controlItemCodeDrMust5').val('필수');
+					} else {
+						$('#controlItemCodeDrMust5').val('');
+					}
+					if(td.eq(25).text() == '2'){
+						$('#controlItemCodeDrMust6').val('선택');
+					} else if(td.eq(25).text() == '1') {
+					 	$('#controlItemCodeDrMust6').val('필수');
+					} else {
+						$('#controlItemCodeDrMust6').val('');
+					}
+					if(td.eq(26).text() == '2'){
+						$('#controlItemCodeDrMust7').val('선택');
+					} else if(td.eq(26).text() == '1') {
+						$('#controlItemCodeDrMust7').val('필수');
+					} else {
+						$('#controlItemCodeDrMust7').val('');
+					}
+					if(td.eq(27).text() == '2'){
+						$('#controlItemCodeDrMust8').val('선택');
+					} else if(td.eq(27).text() == '1') {
+						$('#controlItemCodeDrMust8').val('필수');
+					} else {
+						$('#controlItemCodeDrMust8').val('');
+					}
+					if(td.eq(28).text() == '2'){
+						$('#controlItemCodeDrMust9').val('선택');
+					} else if(td.eq(28).text() == '1') {
+						$('#controlItemCodeDrMust9').val('필수');
+					} else {
+						$('#controlItemCodeDrMust9').val('');
+					}
+					if(td.eq(29).text() == '2'){
+						$('#controlItemCodeDrMust10').val('선택');
+					} else if(td.eq(29).text() == '1') {
+						$('#controlItemCodeDrMust10').val('필수');
+					} else {
+						$('#controlItemCodeDrMust10').val('');
+					}
+					$('#controlItemCodeCrSelect1').val(td.eq(30).text());
+					$('#controlItemCodeCrSelect2').val(td.eq(31).text());
+					$('#controlItemCodeCrSelect3').val(td.eq(32).text());
+					$('#controlItemCodeCrSelect4').val(td.eq(33).text());
+					$('#controlItemCodeCrSelect5').val(td.eq(34).text());
+					$('#controlItemCodeCrSelect6').val(td.eq(35).text());
+					$('#controlItemCodeCrSelect7').val(td.eq(36).text());
+					$('#controlItemCodeCrSelect8').val(td.eq(37).text());
+					$('#controlItemCodeCrSelect9').val(td.eq(38).text());
+					$('#controlItemCodeCrSelect10').val(td.eq(39).text());
+					if(td.eq(40).text() == '2'){
+						$('#controlItemCodeCrMust1').val('선택');
+					} else if(td.eq(40).text() == '1') {
+						$('#controlItemCodeCrMust1').val('필수');
+					} else {
+						$('#controlItemCodeCrMust1').val('');
+					}
+					if(td.eq(41).text() == '2'){
+						$('#controlItemCodeCrMust2').val('선택');
+					} else if(td.eq(41).text() == '1') {
+						$('#controlItemCodeCrMust2').val('필수');
+					} else {
+						$('#controlItemCodeCrMust2').val('');
+					}
+					if(td.eq(42).text() == '2'){
+						$('#controlItemCodeCrMust3').val('선택');
+					} else if(td.eq(42).text() == '1') {
+						$('#controlItemCodeCrMust3').val('필수');
+					} else {
+						$('#controlItemCodeCrMust3').val('');
+					}
+					if(td.eq(43).text() == '2'){
+						$('#controlItemCodeCrMust4').val('선택');
+					} else if(td.eq(43).text() == '1') {
+						$('#controlItemCodeCrMust4').val('필수');
+					} else {
+						$('#controlItemCodeCrMust4').val('');
+					}
+					if(td.eq(44).text() == '2'){
+						$('#controlItemCodeCrMust5').val('선택');
+					} else if(td.eq(44).text() == '1') {
+						$('#controlItemCodeCrMust5').val('필수');
+					} else {
+						$('#controlItemCodeCrMust5').val('');
+					}
+					if(td.eq(45).text() == '2'){
+						$('#controlItemCodeCrMust6').val('선택');
+					} else if(td.eq(45).text() == '1') {
+					 	$('#controlItemCodeCrMust6').val('필수');
+					} else {
+						$('#controlItemCodeCrMust6').val('');
+					}
+					if(td.eq(46).text() == '2'){
+						$('#controlItemCodeCrMust7').val('선택');
+					} else if(td.eq(46).text() == '1') {
+						$('#controlItemCodeCrMust7').val('필수');
+					} else {
+						$('#controlItemCodeCrMust7').val('');
+					}
+					if(td.eq(47).text() == '2'){
+						$('#controlItemCodeCrMust8').val('선택');
+					} else if(td.eq(47).text() == '1') {
+						$('#controlItemCodeCrMust8').val('필수');
+					} else {
+						$('#controlItemCodeCrMust8').val('');
+					}
+					if(td.eq(48).text() == '2'){
+						$('#controlItemCodeCrMust9').val('선택');
+					} else if(td.eq(48).text() == '1') {
+						$('#controlItemCodeCrMust9').val('필수');
+					} else {
+						$('#controlItemCodeCrMust9').val('');
+					}
+					if(td.eq(49).text() == '2'){
+						$('#controlItemCodeCrMust10').val('선택');
+					} else if(td.eq(49).text() == '1') {
+						$('#controlItemCodeCrMust10').val('필수');
+					} else {
+						$('#controlItemCodeCrMust10').val('');
+					}
+					$('#bkContCd1').val(td.eq(50).text());
+					$('#bkContCd2').val(td.eq(51).text());
+					$('#bkContCd3').val(td.eq(52).text());
+					if(td.eq(53).text() == '1'){
+						$('#unManaY').prop("checked",true);
+					} else {
+						$('#unManaN').prop("checked",true);
+					}
+					if(td.eq(54).text() == '1'){
+						$('#unManaS').prop("checked",true);
+					} else {
+						$('#unManaT').prop("checked",true);
+					}
+					$('#unContCd1').val(td.eq(55).text());
+					$('#unContCd2').val(td.eq(56).text());
+					$('#highAccCd1').val(td.eq(57).text());
+					$('#highAccCd2').val(td.eq(58).text());
+					$('#highAccCd3').val(td.eq(59).text());
+					$('#highAccCd4').val(td.eq(60).text());
+					$('#highAccCd5').val(td.eq(61).text());
+					$('#highAccCd6').val(td.eq(62).text());					
+				});
+				/* $('#accCdS').click(()=>{
+					const accCd = $('#accCdS').val();
+					const accCd = $('#accCdS').val();
+					const accCd = $('#accCdS').val();
+					$.ajax({
+						url:'/accCdSelect',
+						type:'GET',
+						data:{boardPw:pw,boardTitle:title,boardContent:content,boardUser:user},
+						success:(list)=>{
+							
+						}
+					});	
+				}); */
+				
+		});
+		        </script>
+	
+	</th:block>
+	<th:block layout:fragment="customBody">
+		<!------------------------------------------------- 계정과목코드등록 상단 --------------------------------------------------------->	
+		<div class="x_panel" style="color:black;">
+        	<div class="col-md-6 col-sm-12 col-xs-12">	          	
+                <h2>계정과목코드등록 </h2>
+                <h5 style="color:gray;"><b>
+               		10.기준정보관리&nbsp;>&nbsp;&nbsp;10.2.회계관리&nbsp;>&nbsp;&nbsp;10.2.5.계정과목코드</b></h5>
+            </div> 
+            <div class="col-md-6 col-sm-12 col-xs-12"> 		
+               	<div class="x_content" style="text-align: right">
+					<div class="btn-group" >
+						<button class="btn btn-default" type="reset">입력</button>
+						<button class="btn btn-default" type="button">수정</button>
+						<button class="btn btn-default" type="button">삭제</button>
+						<button class="btn btn-default" type="button">저장</button>
+						<button class="btn btn-default" type="button">출력</button>
+					</div>
+				
+				</div>
+			</div>	
+                	
+                
+                <div class="clearfix"></div>
+        	
+            <div class="x_content">
+            	<div class="row">
+              		<table class="table table-bordered">
+						<tr>
+							<th>
+                  				<div class="col-md-1 col-sm-12 col-xs-12 form-group">          	
+                  					검색조건                
+                  				</div>                  
+                  				<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                  		 			계정코드 <input type="text" size="5" id="accCdS">
+                  				</div>
+                  				<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                  					세목 <input type="text" size="3" id="accDtlCdS">                  	  
+                  				</div>
+                  				<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        			과목명칭 <input type="text" size="10" id="accNmS">
+                  				</div>                                    
+                  				<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                   	 	 			<input type="checkbox"> 실계정                  	   
+                  				</div>
+				                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				                    <input type="checkbox"> 미결계정
+				                </div>
+				
+				                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+				                    <input type="checkbox"> 자금코드사용
+				                </div>								
+				                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+				                    <input type="checkbox"> 비용유형코드사용
+				                </div>                  
+                  			</th>
+                  		</tr>
+                  	</table>
+          		</div>                                  
+           	</div>
+     	</div>            
+        <!----------------------------------------------------- 계정코드리스트 --------------------------------------------------------->
+        <div class="col-md-6 col-sm-12 col-xs-12" style="color:black;">
+        	<div class="x_panel">                              	
+                <div class="x_content">                   
+                	<div class="col-md-12 col-sm-12 col-xs-12">
+                    	<div style="overflow:scroll;  width:100%; height:1000px; padding:10px; background-color:;">	
+	                    	<div class="row">
+	                    	<table id="table" class="table table-striped table-bordered table-hover jambo_table">
+	                        	<thead>
+	                          		<tr>
+	                            		<th></th>
+	                            		<th>계정과목 </th>
+	                            		<th>세목 </th>
+	                            		<th>계정코드명칭 </th>
+	                            		<th>계정구분 </th>
+	                            		<th>차대구분 </th>
+	                            		<th>레벨 </th>                            		
+	                          		</tr>
+	                        	</thead>	                   
+	                          	<tbody id="list">
+        							<th:block th:each="d : ${list}">	
+	        							<tr>
+	        								<td></td>
+	        								<!-- 1 --><td th:text="${d.aCC_CD}"></td>
+	        								<!-- 2 --><td th:text="${d.aCC_DTL_CD}"></td>
+	        								<!-- 3 --><td th:text="${d.aCC_SHRT_NM}"></td>
+	        								<!-- 4 --><td th:if="${d.aCC_CLAS}=='1'" th:text=자산></td>
+				        							  <td th:if="${d.aCC_CLAS}=='2'" th:text=부채></td>
+				        							  <td th:if="${d.aCC_CLAS}=='3'" th:text=자본></td>
+				        							  <td th:if="${d.aCC_CLAS}=='4'" th:text=수익></td>
+				        							  <td th:if="${d.aCC_CLAS}=='5'" th:text=비용></td>
+	        								<!-- 5 --><td th:if="${d.dRCR_GB}=='D'" th:text=차변></td>
+	        										  <td th:if="${d.dRCR_GB}=='C'" th:text=대변></td>       								        								
+	        								<!-- 6 --><td th:text="${d.aCC_LEVEL}"></td> 
+	        								<!-- 7 --><td th:text="${d.aCC_LONG_NM}" style="display:none;"></td>
+	        								<!-- 8 --><td th:text="${d.sLIP_EXIST_YN}" style="display:none;"></td>
+	        							    <!-- 9 --><td th:text="${d.bUDG_YN}" style="display:none;"></td>
+	        							    <!-- 10 --><td th:text="${d.dR_CONT_CD1}" style="display:none;"></td> 
+	        							    <!-- 11 --><td th:text="${d.dR_CONT_CD2}" style="display:none;"></td> 
+	        							    <!-- 12 --><td th:text="${d.dR_CONT_CD3}" style="display:none;"></td> 
+	        							    <!-- 13 --><td th:text="${d.dR_CONT_CD4}" style="display:none;"></td> 
+	        							    <!-- 14 --><td th:text="${d.dR_CONT_CD5}" style="display:none;"></td> 
+	        							    <!-- 15 --><td th:text="${d.dR_CONT_CD6}" style="display:none;"></td> 
+	        							    <!-- 16 --><td th:text="${d.dR_CONT_CD7}" style="display:none;"></td> 
+	        							    <!-- 17 --><td th:text="${d.dR_CONT_CD8}" style="display:none;"></td> 
+	        							    <!-- 18 --><td th:text="${d.dR_CONT_CD9}" style="display:none;"></td>
+	        							    <!-- 19 --><td th:text="${d.dR_CONT_CD10}" style="display:none;"></td>
+	        							    <!-- 20 --><td th:text="${d.dR_MUST_YN1}" style="display:none;"></td>
+	        							    <!-- 21 --><td th:text="${d.dR_MUST_YN2}" style="display:none;"></td>
+	        							    <!-- 22 --><td th:text="${d.dR_MUST_YN3}" style="display:none;"></td>
+	        							    <!-- 23 --><td th:text="${d.dR_MUST_YN4}" style="display:none;"></td>
+	        							    <!-- 24 --><td th:text="${d.dR_MUST_YN5}" style="display:none;"></td>
+	        							    <!-- 25 --><td th:text="${d.dR_MUST_YN6}" style="display:none;"></td>
+	        							    <!-- 26 --><td th:text="${d.dR_MUST_YN7}" style="display:none;"></td>
+	        							    <!-- 27 --><td th:text="${d.dR_MUST_YN8}" style="display:none;"></td>
+	        							    <!-- 28 --><td th:text="${d.dR_MUST_YN9}" style="display:none;"></td>
+	        							    <!-- 29 --><td th:text="${d.dR_MUST_YN10}" style="display:none;"></td>
+	        							    <!-- 30 --><td th:text="${d.cR_CONT_CD1}" style="display:none;"></td> 
+	        							    <!-- 31 --><td th:text="${d.cR_CONT_CD2}" style="display:none;"></td> 
+	        							    <!-- 32 --><td th:text="${d.cR_CONT_CD3}" style="display:none;"></td> 
+	        							    <!-- 33 --><td th:text="${d.cR_CONT_CD4}" style="display:none;"></td> 
+	        							    <!-- 34 --><td th:text="${d.cR_CONT_CD5}" style="display:none;"></td> 
+	        							    <!-- 35 --><td th:text="${d.cR_CONT_CD6}" style="display:none;"></td> 
+	        							    <!-- 36 --><td th:text="${d.cR_CONT_CD7}" style="display:none;"></td> 
+	        							    <!-- 37 --><td th:text="${d.cR_CONT_CD8}" style="display:none;"></td> 
+	        							    <!-- 38 --><td th:text="${d.cR_CONT_CD9}" style="display:none;"></td>
+	        							    <!-- 39 --><td th:text="${d.cR_CONT_CD10}" style="display:none;"></td>
+	        							    <!-- 40 --><td th:text="${d.cR_MUST_YN1}" style="display:none;"></td>
+	        							    <!-- 41 --><td th:text="${d.cR_MUST_YN2}" style="display:none;"></td>
+	        							    <!-- 42 --><td th:text="${d.cR_MUST_YN3}" style="display:none;"></td>
+	        							    <!-- 43 --><td th:text="${d.cR_MUST_YN4}" style="display:none;"></td>
+	        							    <!-- 44 --><td th:text="${d.cR_MUST_YN5}" style="display:none;"></td>
+	        							    <!-- 45 --><td th:text="${d.cR_MUST_YN6}" style="display:none;"></td>
+	        							    <!-- 46 --><td th:text="${d.cR_MUST_YN7}" style="display:none;"></td>
+	        							    <!-- 47 --><td th:text="${d.cR_MUST_YN8}" style="display:none;"></td>
+	        							    <!-- 48 --><td th:text="${d.cR_MUST_YN9}" style="display:none;"></td>
+	        							    <!-- 49 --><td th:text="${d.cR_MUST_YN10}" style="display:none;"></td>   
+	        							    <!-- 50 --><td th:text="${d.bK_CONT_CD1}" style="display:none;"></td>
+	        							    <!-- 51 --><td th:text="${d.bK_CONT_CD2}" style="display:none;"></td>
+	        							    <!-- 52 --><td th:text="${d.bK_CONT_CD3}" style="display:none;"></td>
+	        							    <!-- 53 --><td th:text="${d.uN_MANA_YN}" style="display:none;"></td>
+	        							    <!-- 54 --><td th:text="${d.uN_MANA_ST}" style="display:none;"></td>
+	        							    <!-- 55 --><td th:text="${d.uN_CONT_CD1}" style="display:none;"></td>
+	        							    <!-- 56 --><td th:text="${d.uN_CONT_CD2}" style="display:none;"></td> 
+	        							    <!-- 57 --><td th:text="${d.hIGH_ACC_CD1}" style="display:none;"></td>
+	        							    <!-- 58 --><td th:text="${d.hIGH_ACC_CD2}" style="display:none;"></td>
+	        							    <!-- 59 --><td th:text="${d.hIGH_ACC_CD3}" style="display:none;"></td>
+	        							    <!-- 60 --><td th:text="${d.hIGH_ACC_CD4}" style="display:none;"></td>
+	        							    <!-- 61 --><td th:text="${d.hIGH_ACC_CD5}" style="display:none;"></td>
+	        							    <!-- 62 --><td th:text="${d.hIGH_ACC_CD6}" style="display:none;"></td>        								
+	        							</tr>	        								
+	        						</th:block>	
+        						</tbody>			                    	                        	
+	                      	</table>
+	                      	</div>
+	                	</div>      	       	 
+	                </div>												
+             	</div>
+          	</div>
+      	</div>             
+        
+        <div class="col-md-6 col-sm-6 col-xs-12" style="color:black;">
+	        <div class="x_panel">
+	          
+		        <div class="x_content" style="width:100%">
+					<form class="form-horizontal form-label-left input_mask">
+			            <table class="table table-bordered">
+			            	<tbody>				         
+				                <tr>
+					                <th style="width:10%">과목</th>
+					                <td style="width:15%">
+						                <input type="text" size="5" id="accCdD" readonly>	
+	                   	 			</td>
+					                <th style="width:10%">세목</th>
+					                <td style="width:15%">
+										<input type="text" size="5" id="accDtlCdD">
+									</td>
+									<th style="width:10%">구분</th>
+					                <td style="width:15%">
+										<select style="width:100%" id="accClasD">
+			                   	 			<option>자산</option>
+			                   	 			<option>부채</option>
+			                   	 			<option>자본</option>
+			                   	 			<option>수익</option>
+			                   	 			<option>비용</option>
+		                   	 			</select>
+									</td>
+									<th style="width:10%">레벨</th>
+					                <td style="width:15%">
+										<select style="width:100%" id="accLevelD">
+			                   	 			<option>1</option>
+			                   	 			<option>2</option>
+			                   	 			<option>3</option>
+			                   	 			<option>4</option>
+			                   	 			<option>5</option>
+		                   	 			</select>
+									</td>														                
+				                </tr>
+				                <tr>
+					                <th style="width:12%">계정명칭</th>
+					                <td colspan="3" style="width:13%">
+						                <input type="text" style="width:100%" id="accShrtNmD">	
+	                   	 			</td>
+					                <th style="width:12%">계정약칭</th>
+					                <td colspan="3" style="width:13%">
+										<input type="text" style="width:100%" id="accLongNmD">
+									</td>														                
+				                </tr>
+				                <tr>
+					                <th style="width:10%">차대구분</th>
+					                <td colspan="3" style="width:15%">
+						                <input type="radio" name="1" id="drcrGbD"> 차변 
+						                <input type="radio" name="1" id="drcrGbC"> 대변	
+	                   	 			</td>
+					                <th style="width:10%">실계정</th>
+					                <td colspan="3" style="width:15%">
+										<input type="radio" name="2" id="slipExistY"> 유 <input type="radio" name="2" id="slipExistN"> 무
+									</td>														                
+				                </tr>
+				                <tr>
+					                <th style="width:10%">자금Dr</th>
+					                <td colspan="3" style="width:15%">
+						                <select style="width:100%">
+			                   	 			<option>자산</option>
+			                   	 			<option>부채</option>
+			                   	 			<option>자본</option>
+			                   	 			<option>수익</option>
+			                   	 			<option>비용</option>
+		                   	 			</select>	
+	                   	 			</td>
+					                <th style="width:10%">자금Cr</th>
+					                <td colspan="3" style="width:15%">
+										<select style="width:100%">
+			                   	 			<option>자산</option>
+			                   	 			<option>부채</option>
+			                   	 			<option>자본</option>
+			                   	 			<option>수익</option>
+			                   	 			<option>비용</option>
+		                   	 			</select>
+									</td>														                
+				                </tr>
+				                <tr>
+					                <th style="width:10%">예산통제</th>
+					                <td colspan="3" style="width:15%">
+						                <input type="radio" name="3" id="budgY"> 유 <input type="radio" name="3" id="budgN"> 무	
+	                   	 			</td>
+					                <th style="width:10%">비용유형</th>
+					                <td colspan="3" style="width:15%">
+										<select style="width:100%">
+			                   	 			<option>자산</option>
+			                   	 			<option>부채</option>
+			                   	 			<option>자본</option>
+			                   	 			<option>수익</option>
+			                   	 			<option>비용</option>
+		                   	 			</select>
+									</td>														                
+				                </tr>	                
+			              	</tbody>
+			            </table>
+				  	</form>	
+		       	</div>
+	    	</div>
+		</div>        	                
+       	
+       	<div class="col-md-6 col-sm-6 col-xs-12" style="color:black;">
+	        <div class="x_panel">
+	          	<div class="x_title">
+	            	관리항목
+	            	
+	            	<div class="clearfix"></div>
+	       		</div>
+		        <div class="x_content" style="width:100%">
+					<form class="form-horizontal form-label-left input_mask">
+				    	<div style="overflow:scroll;  width:100%; height:175px; padding:10px; background-color:;">        
+				            <table class="table table-bordered" style="text-align:center;">
+				            	<thead>
+				            		<tr>
+				            			<th colspan="2">차변</th>
+				            			<th colspan="2">대변</th>
+				            		</tr>
+				            	</thead>
+				            	<tbody>				         
+					                <tr>
+						                <th style="width:10%">항목1</th>
+						                <td style="width:23%">
+							                <select style="width:65%" id="controlItemCodeDrSelect1">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust1">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>	
+		                   	 			</td>
+						                <th style="width:10%">항목1</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect1">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust1">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>				                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목2</th>
+						                <td style="width:23%">
+							               <select style="width:65%" id="controlItemCodeDrSelect2">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust2">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>				                   	 			
+			                   	 			</select>
+		                   	 			</td>
+						                <th style="width:10%">항목2</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect2">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust2">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목3</th>
+						                <td style="width:23%">
+							                <select style="width:65%" id="controlItemCodeDrSelect3">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust3">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>	
+		                   	 			</td>
+						                <th style="width:10%">항목3</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect3">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust3">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목4</th>
+						                <td style="width:23%">
+							                <select style="width:65%" id="controlItemCodeDrSelect4">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust4">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>
+		                   	 			</td>
+						                <th style="width:10%">항목4</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect4">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust4">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목5</th>
+						                <td style="width:23%">
+							                <select style="width:65%" id="controlItemCodeDrSelect5">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust5">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>				                   	 			
+			                   	 			</select>	
+		                   	 			</td>
+						                <th style="width:10%">항목5</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect5">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust5">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>				                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목6</th>
+						                <td style="width:23%">
+							               <select style="width:65%" id="controlItemCodeDrSelect6">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust6">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>		                   	 			
+			                   	 			</select>	
+		                   	 			</td>
+						                <th style="width:10%">항목6</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect6">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust6">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>				                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목7</th>
+						                <td style="width:23%">
+							               <select style="width:65%" id="controlItemCodeDrSelect7">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust7">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>	
+		                   	 			</td>
+						                <th style="width:10%">항목7</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect7">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust7">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목8</th>
+						                <td style="width:23%">
+							               <select style="width:65%" id="controlItemCodeDrSelect8">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust8">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>	
+		                   	 			</td>
+						                <th style="width:10%">항목8</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect8">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust8">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>			                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목9</th>
+						                <td style="width:23%">
+							                <select style="width:65%" id="controlItemCodeDrSelect9">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust9">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>		                   	 			
+			                   	 			</select>	
+		                   	 			</td>
+						                <th style="width:10%">항목9</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect9">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust9">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>		                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>
+					                <tr>
+						                <th style="width:10%">항목10</th>
+						                <td style="width:23%">
+							                <select style="width:65%" id="controlItemCodeDrSelect10">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeDrMust10">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>				                   	 			
+			                   	 			</select>	
+		                   	 			</td>
+						                <th style="width:10%">항목10</th>
+						                <td style="width:23%">
+											<select style="width:65%" id="controlItemCodeCrSelect10">
+				                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+			                   	 			</select>	
+			                   	 			 <select style="width:30%" id="controlItemCodeCrMust10">
+				                   	 			<option></option>
+				                   	 			<option>필수</option>
+				                   	 			<option>선택</option>				                   	 			
+			                   	 			</select>
+										</td>															                
+					                </tr>	                
+				              	</tbody>
+				            </table>
+				    	</div>        
+				  	</form>	
+		       	</div>
+	    	</div>
+		</div>
+ <!-- ------------------------------------------------------장부관리항목----------------------------------------------------------------------- -->    	
+     	<div class="col-md-6 col-sm-6 col-xs-12" style="color:black;">
+	        <div class="x_panel">
+	          	<div class="x_title">
+	            	장부관리항목
+	            	
+	            	<div class="clearfix"></div>
+	       		</div>
+		        <div class="x_content" style="width:100%">
+					<form class="form-horizontal form-label-left input_mask">
+			            <table class="table table-bordered">
+			            	<tbody>				         
+				                <tr>
+					                <th style="width:10%">항목1</th>
+					                <td style="width:23%">
+						                <select style="width:100%" id="bkContCd1">
+			                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+		                   	 			</select>	
+	                   	 			</td>
+					                <th style="width:10%">항목2</th>
+					                <td style="width:23%">
+										<select style="width:100%" id="bkContCd2">
+			                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+		                   	 			</select>
+									</td>
+									<th style="width:10%">항목3</th>
+					                <td style="width:23%">
+										<select style="width:100%" id="bkContCd3">
+			                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+		                   	 			</select>
+									</td>					                
+				                </tr>	                
+			              	</tbody>
+			            </table>
+				  	</form>	
+		       	</div>
+	    	</div>
+		</div>     	
+<!-- ------------------------------------------------------미결관리항목------------------------------------------------------------------ -->     	
+     	<div class="col-md-6 col-sm-6 col-xs-12" style="color:black;">
+	        <div class="x_panel">
+	          	<div class="x_title">
+	            	미결관리항목            	
+	            	<div class="clearfix"></div>
+	       		</div>
+		        <div class="x_content" style="width:100%">
+					<form class="form-horizontal form-label-left input_mask">
+			            <table class="table table-bordered">
+			            	<tbody>
+				                <tr>
+				                	<th style="width:10%">관리</th>
+				                    <td style="width:40%"><input type="radio" name="2" id="unManaY"> 유 
+				                    					  <input type="radio" name="2" id="unManaN"> 무</td>
+				                    <th style="width:10%">기준</th>
+				                    <td style="width:40%"><input type="radio" name="3" id="unManaS"> 누계별 
+				                    					  <input type="radio" name="3" id="unManaT"> 건별  			                   
+				                </tr>
+				                <tr>
+					                <th>항목1</th>
+					                <td>
+						                <select style="width:100%" id="unContCd1">
+			                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+		                   	 			</select>	
+	                   	 			</td>
+					                <th>항목2</th>
+					                <td>
+										<select style="width:100%" id="unContCd2">
+			                   	 			<option></option>
+				                   	 			<th:block th:each="c : ${controlItemCodeList}">
+					                 				<option th:text="${c.cONT_NM}"></option>					                   	 			
+				                   	 			</th:block>
+		                   	 			</select>
+									</td>					                
+				                </tr>	                
+			              	</tbody>
+			            </table>
+				  	</form>	
+		       	</div>
+	    	</div>
+		</div>                        
+<!-- -------------------------------------------------------상위계정코드------------------------------------------------------------------------------ -->     	
+     	<div class="col-md-6 col-sm-6 col-xs-12" style="color:black;">
+	        <div class="x_panel">
+	          	<div class="x_title">
+	            	상위계정코드
+	            	
+	            	<div class="clearfix"></div>
+	       		</div>
+		        <div class="x_content" style="width:100%">
+					<form class="form-horizontal form-label-left input_mask">
+			            <table class="table table-bordered">
+			            	<tbody>
+				                <tr>
+				                	<th>1</th>
+				                    <td><input type="text" style="width:100%" id="highAccCd1"></td>
+				                    <th>2</th>
+				                    <td><input type="text" style="width:100%" id="highAccCd2"></td>
+				                    <th>3</th>
+				                    <td><input type="text" style="width:100%" id="highAccCd3"></td>
+				                </tr>
+				                <tr>
+					                <th>4</th>
+					                <td><input type="text" style="width:100%" id="highAccCd4"></td>
+					                <th>5</th>
+					                <td><input type="text" style="width:100%" id="highAccCd5"></td>
+					                <th>6</th>
+					                <td><input type="text" style="width:100%" id="highAccCd6"></td>
+				                </tr>	                
+			              	</tbody>
+			            </table>
+				  	</form>	
+		       	</div>
+	    	</div>
+		</div>           
+	</th:block>
+	<th:block layout:fragment="customJquery">
+		<!-- jQuery -->
+	    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+	    <!-- Bootstrap -->
+	    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	    <!-- FastClick -->
+	    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+	    <!-- NProgress -->
+	    <script src="/vendors/nprogress/nprogress.js"></script>
+	    <!-- iCheck -->
+	    <script src="/vendors/iCheck/icheck.min.js"></script>
+	    <!-- Datatables -->
+	    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+	    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+	    <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+	    <script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+	    <script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+	    <script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+	    <script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+	    <script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+	    <script src="/vendors/jszip/dist/jszip.min.js"></script>
+	    <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+	    <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+	    
+	    <!-- Custom Theme Scripts -->
+	    <script src="/build/js/custom.min.js"></script>
+    </th:block>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>용역계약서 변경 조회</title>
+		<th:block th:include="layout/customHead"></th:block>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script>
+		
+		// 용역계약서 리스트에서 현황 리스트를 출력하는 메서드
+		function pjtOneBtn(PJT_CD) {
+			console.log(PJT_CD);
+			$.ajax({
+				url:'/project/projectManageChangeHyunhwangListProcess',
+				type:'POST',
+				data:{PJT_CD:PJT_CD},	// 프로젝트 코드
+				success:function(data) {
+					console.log(data);
+					$('#pjtHistoryDetailList').empty();
+					for(let i=0; i<data.length; i++) {
+						$('#pjtHistoryDetailList').append('<tr id="test" onclick="pjtSangseBtn('+data[i].PJT_CD+','+data[i].PJT_SEQ+')"><td>'+data[i].PJT_DATE+'</td><td>'+data[i].LEVEL2_NM+'</td></tr>');
+					}
+					pjtSangseBtn(data[0].PJT_CD, data[0].PJT_SEQ);
+				}
+			});
+		}
+		
+		// 현황 리스트에서 해당 용역계약서의 상세 내용을 출력하는 메서드
+		function pjtSangseBtn(PJT_CD, PJT_SEQ) {
+			console.log(PJT_CD,PJT_SEQ);
+			$.ajax({
+				url:'/project/projectManageChangeSangseProcess',
+				type:'POST',
+				data:{PJT_CD:PJT_CD, PJT_SEQ:PJT_SEQ},		// 프로젝트 코드, 프로젝트 시퀀스
+				success:function(data) {
+					console.log(data);
+					$('#S_PJT_CD').empty();				// 프로젝트 코드
+					$('#S_PJT_CD').append(data.sangse.PJT_CD);
+					$('#S_PJT_NM').empty();				// 프로젝트 명
+					$('#S_PJT_NM').append(data.sangse.PJT_NM);
+					$('#S_DEPT_NM').empty();			// 수행부서명
+					$('#S_DEPT_NM').append(data.sangse.DEPT_NM);
+					$('#S_PM_EMP_NM').empty();			// PM
+					$('#S_PM_EMP_NM').append(data.sangse.PM_EMP_NM);
+					$('#S_PJT_DATE').empty();			// 변경 일자
+					$('#S_PJT_DATE').append(data.sangse.PJT_DATE);
+					$('#S_LEVEL2_NM').empty()			// 변경 구분
+					$('#S_LEVEL2_NM').append(data.sangse.LEVEL2_NM);
+					$('#S_CHANGE_SAYU').empty();		// 변경 사유
+					$('#S_CHANGE_SAYU').append(data.sangse.CHANGE_SAYU);
+					// 원계약 정보
+					$('#TOT_CONTRACT_AMT_ONE').empty();	// 당사총계약액 (원)
+					$('#TOT_CONTRACT_AMT_ONE').append(data.one.TOT_CONTRACT_AMT);
+					$('#PJT_CONTRACT_AMT_ONE').empty();	// PJT총계약액 (원)
+					$('#PJT_CONTRACT_AMT_ONE').append(data.one.TOT_CONTRACT_AMT);
+					$('#G_AREA_P_ONE').empty();		// 대지면적 (원)
+					$('#G_AREA_P_ONE').append(data.one.G_AREA_P);
+					$('#G_AREA_M_ONE').empty();
+					$('#G_AREA_M_ONE').append(data.one.G_AREA_M);
+					$('#G_YAREA_P_ONE').empty();		//연면적 (원)
+					$('#G_YAREA_P_ONE').append(data.one.G_YAREA_P);
+					$('#G_YAREA_M_ONE').empty();
+					$('#G_YAREA_M_ONE').append(data.one.G_YAREA_M);
+					// 변경 (후)
+					$('#TOT_CONTRACT_AMT_AFTER').empty();	// 당사총계약액 변경(후)
+					$('#TOT_CONTRACT_AMT_AFTER').append(data.sangse.TOT_CONTRACT_AMT);
+					$('#PJT_CONTRACT_AMT_AFTER').empty();	// PJT총계약액 변경(후)
+					$('#PJT_CONTRACT_AMT_AFTER').append(data.sangse.TOT_CONTRACT_AMT);
+					$('#G_AREA_P_AFTER').empty();		// 대지면적 변경(후)
+					$('#G_AREA_P_AFTER').append(data.sangse.G_AREA_P);
+					$('#G_AREA_M_AFTER').empty();
+					$('#G_AREA_M_AFTER').append(data.sangse.G_AREA_M);
+					$('#G_YAREA_P_AFTER').empty();		//연면적 변경(후)
+					$('#G_YAREA_P_AFTER').append(data.sangse.G_YAREA_P);
+					$('#G_YAREA_M_AFTER').empty();
+					$('#G_YAREA_M_AFTER').append(data.sangse.G_YAREA_M);
+					
+					// 발주처
+					// 변경(전)
+					$('#pjtOwnerListBefore').empty();
+					$(data.owner_before).each((index, item) => {
+						$('#pjtOwnerListBefore').append('<tr><td></td><td>'+item.CUST_NM+'</td><td>'+item.N_RATE+'</td><td>'+item.CONTRACT_AMT+'</td><td></td><td></td></tr>');
+					});
+					$('#ownerSumBefore').empty();		// 금액 합계
+					$('#ownerSumBefore').append(data.owner_before[0].CONTRACT_AMT_SUM);
+					$('#ownerRateSumBefore').empty();		// 지분 합계
+					$('#ownerRateSumBefore').append(data.owner_before[0].N_RATE_SUM);
+					// 변경(후)
+					$('#pjtOwnerListAfter').empty();
+					$(data.owner_after).each((index, item) => {
+						$('#pjtOwnerListAfter').append('<tr><td></td><td>'+item.CUST_NM+'</td><td></td><td></td><td>'+item.N_RATE+'</td><td>'+item.CONTRACT_AMT+'</td></tr>');
+					});
+					$('#ownerSumAfter').empty();		// 금액 합계
+					$('#ownerSumAfter').append(data.owner_after[0].CONTRACT_AMT_SUM);
+					$('#ownerRateSumAfter').empty();	// 지분 합계
+					$('#ownerRateSumAfter').append(data.owner_after[0].N_RATE_SUM);
+					
+					// 기성단계
+					// 변경(전)
+					$('#pjtGiseongBeforeList').empty();
+					$(data.giseong_before).each((index, item) => {
+						$('#pjtGiseongBeforeList').append('<tr><td>'+item.RM_SEQ+'</td><td>'+item.RM_STEP_NM+'</td><td>'+item.SALE_STEP_NM+'</td><td>'+item.RM_AMT+'</td><td>'+item.SUGUM_RATE+'</td><td></td><td></td></tr>');
+					});
+					$('#giseongSumBefore').empty();		// 금액 합계
+					$('#giseongSumBefore').append(data.giseong_before[0].RM_AMT_SUM);
+					$('#giseongRateSumBefore').empty();		// 수금 합계
+					$('#giseongRateSumBefore').append(data.giseong_before[0].SUGUM_RATE_SUM);
+					// 변경(후)
+					$('#pjtGiseongAfterList').empty();
+					$(data.giseong_after).each((index, item) => {
+						$('#pjtGiseongAfterList').append('<tr><td>'+item.RM_SEQ+'</td><td>'+item.RM_STEP_NM+'</td><td>'+item.SALE_STEP_NM+'</td><td></td><td></td><td>'+item.RM_AMT+'</td><td>'+item.SUGUM_RATE+'</td></tr>');
+					});
+					$('#giseongSumAfter').empty();		// 금액 합계
+					$('#giseongSumAfter').append(data.giseong_after[0].RM_AMT_SUM);
+					$('#giseongRateSumAfter').empty();		// 수금 합계
+					$('#giseongRateSumAfter').append(data.giseong_after[0].SUGUM_RATE_SUM);
+					// 수고했어 백승한ㅠㅠ
+					/* if(item.PJT_SEQ==PJT_SEQ) {
+						console.log('됐나?');
+						$('#pjtGiseongList').append('<tr>');
+						$('#pjtGiseongList').append('<td>'+item.RM_SEQ+'</td><td>'+item.RM_STEP_NM+'</td><td>'+item.SALE_STEP_NM+'</td>');
+						$('#pjtGiseongList').append('<td>'+item.RM_AMT+'</td><td>'+item.SUGUM_RATE+'</td>')
+						if(item.RE_SEQ==PJT_SEQ) {
+						}else{	
+							$('#pjtGiseongList').append('<td>'+item.RM_AMT+'</td><td>'+item.SUGUM_RATE+'</td>')
+							$('#pjtGiseongList').append('</tr>');
+						}
+					}if(item.PJT_SEQ!=PJT_SEQ) {
+						console.log('안됐나?');
+						$('#pjtGiseongList').append('<td>'+item.RM_AMT+'</td><td>'+item.SUGUM_RATE+'</td>');
+						if(item.RE_SEQ!=PJT_SEQ) {
+						}else{
+							$('#pjtGiseongList').append('<td>'+item.RM_AMT+'</td><td>'+item.SUGUM_RATE+'</td>');
+							$('#pjtGiseongList').append('</tr>');
+						}
+					} */
+				}
+			});
+		}
+
+		// 전체 document ready
+		$(document).ready(function(){
+			$('#pjtSearchBtn').click(function(){
+				let PJT_CD = $('#pjtCd').val();
+				let YEAR = $('#pjtYear').val();
+				let DEPT_CD = $('#pjtDept').val();
+				console.log(PJT_CD+YEAR+DEPT_CD);
+				
+				$.ajax({
+					url:'/project/projectManageChangeListProcess',
+					type:'POST',
+					data:{PJT_CD:PJT_CD, DEPT_CD:DEPT_CD, YEAR:YEAR},
+					success:function(data){
+						console.log(data);
+						$('#pjtHistoryList').empty();
+						for(let i=0; i<data.length; i++) {
+							$('#pjtHistoryList').append('<tr><td style="background-color:#fff9df">'+data[i].PJT_CD+'</td><td onclick="pjtOneBtn('+data[i].PJT_CD+')">'+data[i].PJT_NM+'</td></tr>');
+						}
+						pjtOneBtn(data[0].PJT_CD);
+					}
+				});
+			});
+			
+			// 모달 테스트 (사용방법 연구중 ㅜㅜ)
+			$('#PjtSearchBtn').click(()=>{
+    			let column = $('#selectedPjtItem option:selected').val();
+    			let columnValue = $('#pjtValue').val();
+    			let subvalue = columnValue.substr(0,1);
+    			if(column == 'PJT_CD' && !($.isNumeric(columnValue))){
+    				alert('숫자로 입력하세요');
+    			}else if(column == 'PJT_NM' && ($.isNumeric(subvalue))){
+    				alert('한글로 입력하세요');
+    			}else{
+    				console.log('검색 값 : ');
+	    			console.log(columnValue);
+	    			$.ajax({
+						url:'/project/projectManageSearchProcess',
+				        type:'POST',
+						data:{column:column, columnValue:columnValue},
+						success:(data)=>{
+							console.log(data);
+							$('#pjtSearchList').delegate('tr', 'dblclick', function(){
+								let tr = $(this);
+								let td = tr.children();
+								$('#CUST_CD').val(td.eq(0).text());
+								$('#CUST_NM').text(td.eq(1).text());
+								$('#custModal').click();
+				    		});
+						}
+	    			});
+				}
+			});
+			$('#pjtSearchList').delegate('tr', 'click', function(){
+				let tr = $(this);
+				let td = tr.children();
+				$('#CUST_CD').val(td.eq(0).text());
+				$('#CUST_NM').text(td.eq(1).text());
+				$('#custModal').click();
+    		});
+		});
+		</script>
+	</th:block>
+	<th:block layout:fragment="customBody">
+	<div class="col-md-9 col-xs-12" style="color:black;">
+        <div class="page-title">
+			<div class="title_left">
+				<h2><b>용역계약서 변경 조회</b></h2>
+				<h5><font color="gray"><b>2.계약프로젝트 관리&nbsp;>&nbsp;&nbsp;2.1용역계약서 관리</b></font></h5>			
+			</div>
+		</div>
+    </div>
+    
+    <div class="x_content" style="text-align:right">
+		<div class="btn-group" >
+			<button class="btn btn-default" type="submit" id="pjtSearchBtn">조회</button>
+			<button class="btn btn-default" type="reset">입력</button>
+			<button class="btn btn-default" type="button">수정</button>
+			<button class="btn btn-default" type="button">삭제</button>
+			<button class="btn btn-default" type="button">저장</button>
+			<button class="btn btn-default" type="button">출력</button>
+		</div>
+	</div>
+	<font color="black">
+		<!-- 검색부분 start -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		<div class="x_panel">
+		<div class="x_content">
+		<div  style="overflow-x:auto">
+			<label for="ex3">검색조건</label><br>
+			<table>
+				<tr>
+					<td>
+						년도
+					</td>
+					<td>
+						<input type="number" id="pjtYear">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						부서
+					</td>
+					<td>
+						<select id="pjtDept">
+							<option value="">전 사</option>
+							<option value="7530">설계1본부</option>
+							<option value="7630">설계2본부</option>
+							<option value="7730">설계3본부</option>
+							<option value="7830">설계4본부</option>
+							<option value="7930">설계5본부</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						코드명
+					</td>
+					<td>
+						<input type="text" id="PJT_CD">
+					</td>
+					<td>
+						<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg1"><i class="fa fa-search"></i></button>
+						<span id="PJT_NM"></span>
+				<!-- 	</td>
+				</tr>
+				<tr>
+					<td>
+						TEST 거래처
+					</td>
+					<td>
+						<input type="text" id="CUST_CD">
+						<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg3"><i class="fa fa-search"></i></button> 
+						<label id="CUST_NM"></label>
+					</td>
+					<td>
+						<button type="submit" id="pjtSearchBtn"><i class="fa fa-search"></i></button> -->
+						<!------------------------------------------ 거래처코드 조회 modal--------------------------------------------------- -->
+						<div class="modal fade bs-example-modal-lg1" tabindex="-1" role="dialog" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<form class="form-horizontal ">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" id="custModal"><span aria-hidden="true">×</span>
+											</button>
+											<h4 class="modal-title" id="myModalLabel"><b>거래처코드조회</b></h4><br>
+											<div class="table-responsive">
+												<table class="table table-bordered">
+													<tbody>
+														<tr>
+															<td><label class="control-label">검색항목</label></td>
+															<td>
+																<select class="form-control" style="width: 40%" id="selectedPjtItem">
+																	<option selected="selected"  value="PJT_CD">프로젝트 코드</option>
+																	<option value="PJT_NM">프로젝트 명</option>
+																</select>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td><label class="control-label">검색조건</label></td>
+																			<td>
+																				<input type="text" id="pjtValue">
+																				<button type="button" id="PjtSearchBtn"><i class="fa fa-search"></i></button>																	
+																			</td>
+																		</tr>
+																	</tbody>																	
+																</table>
+															</div>
+														</div>
+														<div class="modal-body">
+															<div class="table-responsive" style="overflow: auto; height: 400px;">
+																<table class="table table-striped table-bordered table-hover">
+																	<thead>
+																		<tr>
+																			<th>프로젝트코드</th>
+																			<th>프로젝트명</th>
+																		</tr>
+																	</thead>
+																	<tbody id="pjtSearchList">
+																		<tr>
+																			<td></td>
+																			<td></td>
+																		</tr>
+																	</tbody>																	
+																</table>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<!-- 검색부분 end -->
+			<div class="x_title">
+			</div>
+			<!-- 결과부분 start -->
+			<table class="table table-bordered" style="overflow:auto">
+				<thead>
+				<tr>
+					<th width="30%">PJT코드</th><th>프로젝트명</th>
+				</tr>
+				</thead>
+				<tbody id="pjtHistoryList">
+				</tbody>
+			</table>
+			<!-- 결과부분 end -->
+			<div class="x_title">
+			<span>◎ 계약서 변경 현황</span>
+			</div>
+			<!-- 계약서변경현황 start -->
+			<table class="table table-bordered">
+				<thead>
+				<tr>
+					<th width="30%">변경일자</th><th>변경구분</th>
+				</tr>
+				</thead>
+				<tbody id="pjtHistoryDetailList">
+				</tbody>
+			</table>
+			<!-- 계약서변경현황 end -->
+		</div>
+		</div>
+		</div>
+		
+		<!-- 프로젝트 start -->
+		<div class="col-md-9 col-sm-6 col-xs-12">
+		<div class="x_panel">
+		<div class="x_content">
+		<table class="table table-bordered">
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">프로젝트</td>
+				<td colspan="3"><span id="S_PJT_CD"></span>, <span id="S_PJT_NM"></span></td>
+			</tr>
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">수행부서</td>
+				<td width="25%"><span id="S_DEPT_NM"></span></td>
+				<td width="25%" style="background-color:#f3f3f3">PM</td>
+				<td width="25%"><span id="S_PM_EMP_NM"></span></td>
+			</tr>
+		</table>
+		<table class="table table-bordered">
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">변경일자</td>
+				<td width="25%"><span id="S_PJT_DATE"></span></td>
+				<td width="25%" style="background-color:#f3f3f3">변경구분</td>
+				<td width="25%"><span id="S_LEVEL2_NM"></span></td>
+			</tr>
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">변경사유</td>
+				<td colspan="3" id="S_CHANGE_SAYU"></td>
+			</tr>
+		</table>
+		<table class="table table-bordered">
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">구분</td>
+				<td style="background-color:#f3f3f3">원계약</td>
+				<td style="background-color:#f3f3f3">변경(후)</td>
+			</tr>
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">당사 총계약액</td>
+				<td><span id="TOT_CONTRACT_AMT_ONE"></span></td>
+				<td><span id="TOT_CONTRACT_AMT_AFTER"></span></td>
+			</tr>
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">PJT 총계약액</td>
+				<td><span id="PJT_CONTRACT_AMT_ONE"></span></td>
+				<td><span id="PJT_CONTRACT_AMT_AFTER"></span></td>
+			</tr>
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">대지면적</td>
+				<td><span id="G_AREA_P_ONE"></span>평, <span id="G_AREA_M_ONE"></span>m²</td>
+				<td><span id="G_AREA_P_AFTER"></span>평, <span id="G_AREA_M_AFTER"></span>m²</td>
+			</tr>
+			<tr>
+				<td style="background-color:#f3f3f3" width="25%">연면적</td>
+				<td><span id="G_YAREA_P_ONE"></span>평, <span id="G_YAREA_M_ONE"></span>m²</td>
+				<td><span id="G_YAREA_P_AFTER"></span>평, <span id="G_YAREA_M_AFTER"></span>m²</td>
+			</tr>
+		</table>
+		
+		<!-- 발주처 -->
+		<label for="ex3"> 발주처</label>
+                  </div>
+                  <div class="x_content" style="overflow-x:auto">
+                    <table class="table table-bordered" >
+                    	<thead>
+                    	<tr>
+                    		<th rowspan="2">순번</th>
+                    		<th rowspan="2">발주처</th>
+                    		<th colspan="2">변경(전)</th>
+                    		<th colspan="2">변경(후)</th>
+                    	</tr>
+                    	<tr>
+                    		<th>지분(%)</th>
+                    		<th>계약금액</th>
+                    		<th>지분(%)</th>
+                    		<th>계약금액</th>
+                    	</tr>
+                    	</thead>
+                    	<tbody id="pjtOwnerListBefore">
+                    	</tbody>
+                    	<tbody id="pjtOwnerListAfter">
+                    	</tbody>
+                    	<!-- 합계 아직 미구현 -->
+                    	<tr style="background-color:#ffeeaa">
+	                    	<th colspan="2">합계</th>
+	                    	<th><span id="ownerRateSumBefore"></span></th>
+	                    	<th><span id="ownerSumBefore"></span></th>
+	                    	<th><span id=ownerRateSumAfter></span></th>
+	                    	<th><span id="ownerSumAfter"></span></th>
+                    	</tr>
+                    </table>
+                  </div>
+                  <!-- 기성단계 -->
+                  <label for="ex3"> 기성단계</label>
+                  <div class="x_content" style="overflow-x:auto">
+                    <table class="table table-bordered">
+                    	<thead>
+                    		<tr>
+                    		<th rowspan="2">No</th>
+                    		<th rowspan="2">기성단계</th>
+                    		<th rowspan="2">단계</th>
+                    		<th colspan="2">변경(전)</th>
+                    		<th colspan="2">변경(후)</th>
+                    	</tr>
+                    	<tr>
+                    		<th>금액</th>
+                    		<th>수금(%)</th>
+                    		<th>금액</th>
+                    		<th>수금(%)</th>
+                    	</tr>
+                    	</thead>
+                    	<tbody id="pjtGiseongBeforeList">
+                    	</tbody>
+                    	<tbody id="pjtGiseongAfterList">
+                    	</tbody>
+                    	<tr style="background-color:#ffeeaa">
+	                    	<th colspan="3">합계 </th>
+	                    	<th><span id="giseongSumBefore"></span></th>
+	                    	<th><span id="giseongRateSumBefore"></span></th>
+	                    	<th><span id="giseongSumAfter"></span></th>
+	                    	<th><span id="giseongRateSumAfter"></span></th>
+                    	</tr>
+                    </table>
+		</div>
+		</div>
+		</div>
+		<!-- 프로젝트 end -->
+		</font>
+	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
+</html>

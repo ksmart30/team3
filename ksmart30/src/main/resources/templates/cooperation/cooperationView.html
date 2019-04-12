@@ -1,0 +1,460 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/main">
+<th:block layout:fragment="customHead">
+<meta charset="UTF-8">
+<title>외주계약서 입력</title>
+<th:block th:include="layout/customHead"></th:block>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+//계약서 상세내용 호출 후 출력
+function callme(IN_PJT_CD,IN_OUT_CORP){
+
+		console.log("callme호출");
+		
+		$.ajax({
+            url:'/cooperationPJTSangse', //호출할 메소드
+            type:'POST',//송신 방식 
+            data:{PJT_CD:IN_PJT_CD,OUT_CORP:IN_OUT_CORP},//넘길 데이터
+            success:(data)=>{
+            	console.log(data);
+            	//외주계약서 상세 내용
+            	$('#OUT_ITEM').attr('value',data.cooperationPJTSangse.OUT_ITEM);//부문
+				 $('select[id=OUT_ITEM]').val(data.cooperationPJTSangse.OUT_ITEM);
+            	$('#OUT_CORP').attr('value',data.cooperationPJTSangse.OUT_CORP);//외주처
+            	$('#OUT_CORP_NM').attr('value',data.cooperationPJTSangse.OUT_CORP_NM);//외주처이름
+            	$('#CONTRACT_NM').attr('value',data.cooperationPJTSangse.CONTRACT_NM);//용역명        	
+            	$('#CONTRACT_DATE').attr('value',data.cooperationPJTSangse.CONTRACT_DATE);//계약일자
+            	$('#S_DATE').attr('value',data.cooperationPJTSangse.S_DATE);//계약기간 시작
+            	$('#E_DATE').attr('value',data.cooperationPJTSangse.E_DATE);//계약기간 끝
+            	$('#E_RMK').attr('value',data.cooperationPJTSangse.E_RMK);//종료구문(까지)
+            	 $('select[id=E_RMK]').val(data.cooperationPJTSangse.E_RMK);
+            	$('#CONTRACT_AMT').attr('value',data.cooperationPJTSangse.CONTRACT_AMT);//계약액
+            	$('#CON_DOC_YN').attr('value',data.cooperationPJTSangse.CON_DOC_YN);//계약서 유무
+            	 $('select[id=CON_DOC_YN]').val(data.cooperationPJTSangse.CON_DOC_YN);
+            	$('#VAT_YN').attr('value',data.cooperationPJTSangse.VAT_YN);//VAT여부
+            	 $('select[id=VAT_YN]').val(data.cooperationPJTSangse.VAT_YN);
+            	//기성단계 출력
+            	let GI_AMT_SUM = 0;
+            	let GI_RATE_SUM = 0;
+            	$('#gisung').empty();//내용삭제
+            	$('#GI_AMT_SUM').empty();//내용삭제
+            	$('#GI_RATE_SUM').empty();//내용삭제
+            	$(data.cooperationPJTGisung).each((index,item)=>{
+            		GI_AMT_SUM = GI_AMT_SUM + item.GI_AMT; // 금액 합산
+            		GI_RATE_SUM = GI_RATE_SUM + item.GI_RATE; // % 합산
+	                	$('#gisung').append(
+	                			'<tr><td>'
+	                			+item.CRT_SEQ+'</td><td>' //순번
+	                			+item.GI_GBN_NM+'</td><td>'//기성단계
+	                			+item.GI_AMT+'</td><td>'//금액
+	                			+item.GI_RATE+'</td></tr>');//%
+	            });
+            	$('#GI_AMT_SUM').append(GI_AMT_SUM);//합산 금액
+            	$('#GI_RATE_SUM').append(GI_RATE_SUM);//합산 %
+            	//용역내용 출력
+            	$('#dragon').empty();//내용삭제
+            	$(data.cooperationPJTDragon).each((index,item)=>{
+	                	$('#dragon').append(
+	                			'<tr><td>'
+	                			+item.SEQ+'</td><td>' //순번
+	                			+item.CONTRACT_MEMO_NM+'</td></tr>');//용역내용
+	            });
+            }
+		});	
+		
+	};
+	
+$(document).ready(()=>{
+	//선택 색상 변경
+	 $("#yshh tr").click(function() {
+		$("#yshh tr").css("background-color", "#ffffff");
+		$(this).css( "background-color", "#ABF200" );
+	 });		
+    // 서치
+    $('#pjt_btn').on('click',()=>{
+    	let PJT_CD = $('#PJT_CD').val();
+    	//유효성 검사
+    	if($('#PJT_CD').val().length<5){
+    		$('#PJT_CD').attr('placeholder','5자리 PJT코드입력해주세요');
+    		$('#PJT_CD').focus();
+        	return false;
+    	}else{
+	        $.ajax({
+	            url:'/cooperationPJTYesanList',//호출할 메소드
+	            type:'POST',//송신 방식 
+	            data:{PJT_CD:PJT_CD},//넘길 데이터
+	            success:(data)=>{	//받은 데이터
+	            	console.log(data);
+	                $('#gyhh').empty();//계약현황 내용 삭제 
+	                $('#yshh').empty();//예산현황 내용 삭제 
+	                
+	                //계약현황
+	                $(data.cooperationSmallList).each((index,item)=>{
+	                	$('#gyhh').append(//계약현황에 출력시켜주기
+	                			'<tr onclick="callme('+PJT_CD+','+item.OUT_CORP+')"><td style="background-color: #fff9df" width="20%">'
+	                			+item.OUT_ITEM_NM+'</td><td>' //부문
+	                			+item.CUST_NM+'</td><td>'	//외주처
+	                			+item.CONTRACT_AMT+'</td></tr>'); //계약액
+	                });
+	                //예산현황
+	                $(data.cooperationYesanList).each((index,item)=>{
+	                	$('#yshh').append(//예산현황에 출력시켜주기
+	                			'<tr><td style="background-color: #fff9df" width="20%">'
+	                			+item.SCV_NM+'</td><td>' //부문
+	                			+item.EX_AMT+'</td><td>'	//계약예산
+	                			+item.EX_WORK_AMT+'</td></tr>'); //실행예산
+	                });
+	                $('#PJT_CD_NM').empty();//계약프로젝트 내용 삭제
+	                $('#PJT_DEPT_CD_NM').empty();//수행부서 내용 삭제
+	                $('#PJT_PM_NM').empty();//PM 내용 삭제
+	                $('#PJT_CD_NM').append('('+data.cooperationPJTPM.PJT_CD+') '+data.cooperationPJTPM.PJT_NM);
+	                $('#PJT_DEPT_CD_NM').append('('+data.cooperationPJTPM.DEPT_CD+') '+data.cooperationPJTPM.DEPT_NM);
+	                $('#PJT_PM_NM').append(data.cooperationPJTPM.PM_NM);
+	                
+	                callme(PJT_CD,data.cooperationSmallList[0].OUT_CORP);//첫번째 외주계약서 상세내용 출력 하기위해 callme 에 값넣고 호출
+	            }
+	        });
+    	}
+    });
+    
+});
+</script>
+</th:block>
+<th:block layout:fragment="customBody">
+<font color="black">
+
+
+<div class="col-md-9 col-xs-12" style="color:black;">
+	<div class="page-title">
+		<div class="title_left">
+		 	<h2><b>외주관리</b></h2>
+			<h5><font color="gray"><b>3.외주관리&nbsp;>&nbsp;&nbsp;3.1외주계약서 관리&nbsp;>&nbsp;&nbsp;3.1.1외주계약서입력</b></font></h5>
+						
+		</div>
+	</div>
+</div>
+<div class="x_content" style="text-align: right">
+	<div class="btn-group" >
+		<button class="btn btn-default" type="reset">입력</button>
+		<button class="btn btn-default" type="button">수정</button>
+		<button class="btn btn-default" type="button">삭제</button>
+		<button class="btn btn-default" type="button">저장</button>
+		<button class="btn btn-default" type="button">출력</button>
+	</div>
+</div>
+
+	<!-- 검색부분 start -->
+	<div class="col-md-4 col-sm-6 col-xs-12">
+		<div class="x_panel">
+			<div class="x_content">
+				<label for="ex3">검색조건</label><br>
+				<table>
+					<tr>
+						<th width="25%"><label>프로젝트 코드 : </label></th>
+						<td>
+							<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<input type="number" name="pjtcode" id="PJT_CD"
+									class="form-control">
+							</div>
+						</td>
+						<td>
+							<button class="btn" id="pjt_btn">검색</button>
+						</td>
+					</tr>
+					<tr><td></td>
+					<td colspan="2"><div id="pjt_cd_nm">　</div></td>
+					</tr>
+				</table>
+				<!-- 검색부분 end -->
+				<div class="x_title"></div>
+				<label>★ 계약현황</label>
+				<!-- 결과부분 start -->
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>부문</th>
+							<th>외주처</th>
+							<th>계약액</th>
+						</tr>
+					</thead>
+					<tbody id="gyhh">
+						<tr>
+							<td style="background-color: #fff9df" width="20%">건축</td>
+							<td>에이원건축(법인전환)</td>
+							<td>11,111,100</td>
+						</tr>
+						<tr>
+							<td style="background-color: #fff9df">인테리어</td>
+							<td>(주)쏠레땅쉬번양</td>
+							<td>50,300,00</td>
+						</tr>
+
+					</tbody>
+				</table>
+				<!-- 결과부분 end -->
+				<div class="x_title"></div>
+				<label>★ 예산현황</label>
+				<!-- 계약서변경현황 start -->
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>부문</th>
+							<th>계약예산</th>
+							<th>실행예산</th>
+						</tr>
+					</thead>
+					<tbody id="yshh">
+						<tr>
+							<td style="background-color: #fff9df" width="20%">건축</td>
+							<td>500,234,234</td>
+							<td>234,234,234</td>
+						</tr>
+						<tr>
+							<td style="background-color: #fff9df">인테리어</td>
+							<td>234,234,234</td>
+							<td>234,234,234</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 계약서변경현황 end -->
+			</div>
+		</div>
+	</div>
+
+	<!-- 프로젝트 start -->
+	<div class="col-md-8 col-sm-6 col-xs-12">
+		<div class="x_panel">
+			<div class="x_content">
+
+				<table class="table table-bordered">
+					<tr>
+						<td style="background-color: #f3f3f3" width="20%">프로젝트</td>
+						<td colspan="3" id="PJT_CD_NM">( 19009 ) ksmart1팀</td>
+					</tr>
+					<tr>
+						<td style="background-color: #f3f3f3">수행부서</td>
+						<td id="PJT_DEPT_CD_NM">( 7500 ) 설계1본부</td>
+						<td style="background-color: #f3f3f3">PM</td>
+						<td id="PJT_PM_NM">이다은</td>
+					</tr>
+				</table>
+
+				<table class="table">
+					<tr>
+						<td style="background-color: #f3f3f3" width="10%">부문</td>
+						<td>
+							<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<select class="form-control" id="OUT_ITEM">
+									<option value=""></option>
+									<option value="01">건축</option>
+									<option value="02">기계</option>
+									<option value="03">전기</option>
+									<option value="04">토목</option>
+									<option value="05">조경</option>
+									<option value="06">구조</option>
+									<option value="07">전경</option>
+									<option value="08">교통영향평가</option>
+									<option value="09">기타인증</option>
+									<option value="10">지질조사</option>
+									<option value="11">측량</option>
+									<option value="12">흙막이</option>
+									<option value="13">특수디자인</option>
+									<option value="14">소방</option>
+									<option value="15">환경영향평가</option>
+									<option value="16">재해영향평가</option>
+									<option value="17">VE/LCC</option>
+									<option value="18">인테리어</option>
+									<option value="19">친환경인증</option>
+									<option value="20">타당성검토</option>
+									<option value="21">교통성검토</option>
+									<option value="22">사전환경성검토</option>
+									<option value="23">사전재해영샹향성검토</option>
+									<option value="24">사전경관분석검토</option>
+									<option value="29">기타</option>
+									<option value="30">프리랜서</option>
+									<option value="99">예비비</option>
+								</select>
+							</div>
+						</td>
+						<td style="background-color: #f3f3f3" width="10%">외주처</td>
+						<td>
+							<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<input type="text" name="test" class="form-control" id="OUT_CORP">
+							</div>
+
+						</td>
+						<td width="5%">
+							<button class="btn">
+								<i class="fa fa-search"></i>
+							</button>
+
+						</td>
+						<td colspan="2">
+							<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<input type="text" name="test" class="form-control"
+									readonly="readonly" id="OUT_CORP_NM">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color: #f3f3f3">용역명</td>
+						<td colspan="6">
+							<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<input type="text" name="test" class="form-control" id="CONTRACT_NM">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color: #f3f3f3">계약일자</td>
+						<td colspan="6"><div class="col-md-4 col-sm-12 col-xs-12 ">
+								<input type="date" name="test" class="form-control" id="CONTRACT_DATE">
+							</div></td>
+
+					</tr>
+					
+					<tr>
+						<td style="background-color: #f3f3f3">계약기간</td>
+						<td>
+							<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<input type="date" name="test" class="form-control" id="S_DATE">
+							</div>
+						</td>
+						<td colspan="2">
+							<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<input type="date" name="test" class="form-control" id="E_DATE">
+							</div>
+						</td>
+						<td colspan="3">
+							<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<select class="form-control" id="E_RMK">
+									<option value="">까지</option>
+									<option value="01">사용검사완료시(준공시)</option>
+									<option value="02">기본설계완료시</option>
+									<option value="03">최종도서(보고서)납품시</option>
+									<option value="04">실시도서납품시</option>
+									<option value="05">준공도서납품시</option>
+									<option value="06">결과발표후</option>
+									<option value="07">임시(가)사용완료시</option>
+									<option value="08">용역완료시</option>
+								</select>
+							</div>
+						</td>
+						
+
+					</tr>
+
+					<tr>
+						<td style="background-color: #f3f3f3">계약액</td>
+						<td>
+						<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<input type="number" name="test" class="form-control" id="CONTRACT_AMT">
+							</div>
+						</td>
+						<td  style="background-color: #f3f3f3">계약서</td>
+						<td colspan="5">
+							<div class="col-md-4 col-sm-12 col-xs-12 ">
+								<select class="form-control" id="CON_DOC_YN">
+									<option value="0">없음</option>
+									<option value="1">있음</option>
+								</select>
+							</div>
+					</tr>
+					
+					<tr>
+						<td style="background-color: #f3f3f3">VAT여부</td>
+						<td>
+						<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<select class="form-control" id="VAT_YN">
+									<option value=""></option>
+									<option value="1">면세</option>
+									<option value="2">VAT포함</option>
+									<option value="3">VAT별도</option>
+									<option value="4">일부면세</option>
+								</select>
+							</div>
+						</td>
+						<td style="background-color: #f3f3f3">
+						면세근거
+						</td>
+						<td colspan="2">
+						<div class="col-md-12 col-sm-12 col-xs-12 ">
+								<input type="text" name="test" class="form-control">
+							</div>
+						</td>
+						<td colspan="2">
+						<button class="btn">면세근거</button>
+						</td>
+						
+						</tr>
+					
+					
+				</table>
+
+				<!-- 매입기성단계 -->
+				<label for="ex3">★ 매입기성단계</label>
+				<button class="btn">추가</button>
+				<button class="btn">수정</button>
+			</div>
+			<div class="x_content">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th width="10%">순번</th>
+							<th width="50%">기성단계</th>
+							<th width="20%">금액</th>
+							<th width="20%">%</th>
+						</tr>
+					</thead>
+					
+					<tbody id="gisung">
+						<tr>
+							<td>1</td>
+							<td>견적완료시</td>
+							<td>500,000</td>
+							<td></td>
+						</tr>
+					</tbody>
+					
+					<tr style="background-color: #ffeeaa">
+						<th ></th>
+						<th ></th>
+						<th id="GI_AMT_SUM">500,000</th>
+						<th id="GI_RATE_SUM">0</th>
+					</tr>
+				</table>
+				<!-- 용역내용 -->
+				<label for="ex3">★ 용역내용</label>
+				<button class="btn">추가</button>
+				<button class="btn">수정</button>
+			</div>
+			<div class="x_content">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th width="10%">순번</th>
+							<th >용역내용</th>
+
+						</tr>
+					</thead>
+					<tbody id="dragon">
+						<tr>
+							<td>1</td>
+							<td>대관 행정 및 업무협조</td>
+						</tr>
+
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- 프로젝트 end -->
+	</font>
+	
+</th:block>
+<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
+</html>
