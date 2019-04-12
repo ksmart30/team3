@@ -8,20 +8,93 @@
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+		<!-- 월 급여 입력창 통화형식으로 변환 (자동콤마(,)처리) -->
+		<script>
+			function number_format(data) {
+				let tmp = '';
+				let number = '';
+				let cutlen = 3;
+				let comma = ',';
+				let i;
+				let sign = data.match(/^[\+\-]/);
+				if(sign) {
+						data = data.replace(/^[\+\-]/, "");
+				}
+				len = data.length;
+				mod = (len % cutlen);
+				k = cutlen - mod;
+				for (i=0; i<data.length; i++)
+				{
+						number = number + data.charAt(i);
+						if (i < data.length - 1)
+						{
+								k++;
+								if ((k % cutlen) == 0)
+								{
+										number = number + comma;
+										k = 0;
+								}
+						}
+				}
+				if(sign != null)
+						number = sign+number;
+				return number;
+			}
+			/* 국민 연금 월 급여 통화형식 변환 */
+			$(function() {
+					$("input#INSURE_PAY1").on("keyup", function() {
+							let val = String(this.value.replace(/[^0-9]/g, ""));
+							if(val.length < 1)
+									return false;
+							this.value = number_format(val);
+					});
+					$("input#INSURE_PAY2").on("keyup", function() {
+							let val = String(this.value.replace(/[^0-9]/g, ""));
+							if(val.length < 1)
+									return false;
+							this.value = number_format(val);
+					});
+			});
+			/* 결과값 통화형식 변환 */
+			function numberWithCommas(x) {
+    		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			}
+			</script>
+
 		<script>
 		$(document).ready(function(){	
 			$('#insureKukminCal').click(function(){
-				let INSURE_PAY = $('#INSURE_PAY').val();
-				console.log(INSURE_PAY+'클릭 시작');
+				let INSURE_PAY1 = $('#INSURE_PAY1').val();
+				console.log('입력된 월 급여 : ' + INSURE_PAY1);
 				$.ajax({
 					url:'/baseInfo/fourInsureKukminProcess', 	//호출할 메소드 호출 
-					type:'GET',															//송신 POST 방식
-					data:{INSURE_PAY:INSURE_PAY},
+					type:'GET',																//송신 POST 방식
+					data:{INSURE_PAY:INSURE_PAY1},
 					success:function(data){
-						console.log(data);
-/* 						$('#INSURE_TOTAL').val(data.insure_TOTAL);
-						$('#INSURE_EMP_CAL').val(data.insure_EMP_CAL);
-						$('#INSURE_COM_CAL').val(data.insure_COM_CAL); */
+						console.log(data);											// 리턴받은 국민연금 계산값
+						// 계산 값을 화면에 보여준다.
+						$('#INSURE_TOTAL1').val(numberWithCommas(data.insure_TOTAL1));
+						$('#INSURE_EMP_CAL1').val(numberWithCommas(data.insure_EMP_CAL1));
+						$('#INSURE_COM_CAL1').val(numberWithCommas(data.insure_COM_CAL1));
+					}
+				});
+			});
+			$('#insureKeungangCal').click(function(){
+				let INSURE_PAY2 = $('#INSURE_PAY2').val();
+				console.log('입력된 월 급여 : ' + INSURE_PAY2);
+				$.ajax({
+					url:'/baseInfo/fourInsureKeungangProcess', 	//호출할 메소드 호출 
+					type:'GET',																//송신 POST 방식
+					data:{INSURE_PAY:INSURE_PAY2},
+					success:function(data){
+						console.log(data);											// 리턴받은 국민연금 계산값
+						// 계산 값을 화면에 보여준다.
+						$('#INSURE_TOTAL2').val(numberWithCommas(data.insure_TOTAL1));
+						$('#INSURE_EMP_CAL2').val(numberWithCommas(data.insure_EMP_CAL1));
+						$('#INSURE_COM_CAL2').val(numberWithCommas(data.insure_COM_CAL1));
+						$('#INSURE_TOTAL3').val(numberWithCommas(data.insure_TOTAL2));
+						$('#INSURE_EMP_CAL3').val(numberWithCommas(data.insure_EMP_CAL2));
+						$('#INSURE_COM_CAL3').val(numberWithCommas(data.insure_COM_CAL2));
 					}
 				});
 			});
@@ -63,7 +136,7 @@
 							<!-- Tab 내용 -->
 							<div id="myTabContent" class="tab-content">
 								<!-- 1. 국민연금 -->
-								<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+								<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab" style="color:black;">
 									<div class="col-md-12 col-sm-12 col-xs-12">
 										<div class="x_panel">
 											<div class="x_content">
@@ -72,7 +145,7 @@
 												<h5 style="color:black;">2019년 기준 (계산내용은 모의계산이기 때문에 실제와 다를 수 있습니다.)</h5>
 												<br>
 													• 월 급여 
-													<input type="text" name="INSURE_PAY" id="INSURE_PAY">
+													<input style="text-align: end" type="text" name="INSURE_PAY1" id="INSURE_PAY1">
 													<button type="button" class="btn" style="color:black" name="insureKukminCal" id="insureKukminCal">계산</button>
 													<button type="reset" class="btn" style="color:black" name="clear">초기화</button>
 												<br><br>
@@ -87,39 +160,43 @@
 													<tbody>
 														<tr>
 															<td>
-																<input style="width:80%;" type="text" name="INSURE_TOTAL" id="INSURE_TOTAL" readonly>원
+																<input style="width:80%; text-align: end" type="text" name="INSURE_TOTAL1" id="INSURE_TOTAL1" readonly>원
 															</td>
 															<td>
-																<input style="width:80%;" type="text" name="INSURE_EMP_CAL" id="INSURE_EMP_CAL" readonly>원
+																<input style="width:80%; text-align: end" type="text" name="INSURE_EMP_CAL1" id="INSURE_EMP_CAL1" readonly>원
 															</td>
 															<td>
-																<input style="width:80%;" type="text" name="INSURE_COM_CAL" id="INSURE_COM_CAL" readonly>원
+																<input style="width:80%; text-align: end" type="text" name="INSURE_COM_CAL1" id="INSURE_COM_CAL1" readonly>원
 															</td>
 														</tr>
 													</tbody>
 												</table>
 												<br>
 												<table style="width:70%; text-align: center" class="table table-bordered jambo_table bulk_action">
-													<tr>
-														<td></td>
-														<td>연금보험료(전체)</td>
-														<td>근로자</td>
-														<td>사업주</td>
-													</tr>
-													<tr>
-														<td style="width:20%;">
-															기준 소득월액
-														</td>
-														<td style="width:25%;">
-															9%
-														</td>
-														<td style="width:25%;">
-															4.5%
-														</td>
-														<td style="width:25%;">
-															4.5%
-														</td>
-													</tr>
+													<thead>
+														<tr>
+															<td></td>
+															<td>연금보험료(전체)</td>
+															<td>근로자</td>
+															<td>사업주</td>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td style="width:20%;">
+																기준 소득월액
+															</td>
+															<td style="width:25%;">
+																9%
+															</td>
+															<td style="width:25%;">
+																4.5%
+															</td>
+															<td style="width:25%;">
+																4.5%
+															</td>
+														</tr>
+													</tbody>
 												</table>
 												<div style="color: red">
 													&nbsp;&nbsp; • 총액 = 기준소득월액 X 9%(연금보험율)
@@ -138,11 +215,114 @@
 								</div>
 								<!-- 2. 건강보험 -->
 								<div role="tabpanel" class="tab-pane fade in" id="tab_content2" aria-labelledby="tab">				
-									<div class="col-md-12 col-sm-6 col-xs-12">
+									<div class="col-md-12 col-sm-12 col-xs-12">
 										<div class="x_panel">
-											<form>
-												<h5 style="color:black;">⊙ 건강보험</h5>
-											</form>																							
+											<div class="x_content">
+												<form>
+													<h3 style="color:black;">⊙ 건강보험</h3>
+													<h5 style="color:black;">2019년 기준 (계산내용은 모의계산이기 때문에 실제와 다를 수 있습니다.)</h5>
+													<br>
+														• 월 급여 
+														<input style="text-align: end" type="text" name="INSURE_PAY2" id="INSURE_PAY2">
+														<button type="button" class="btn" style="color:black" name="insureKeungangCal" id="insureKeungangCal">계산</button>
+														<button type="reset" class="btn" style="color:black" name="clear">초기화</button>
+													<br><br>
+													<table style="width:70%; text-align: center"class="table table-bordered jambo_table bulk_action">
+														<thead>
+															<tr>
+																<td>구분</td>
+																<td>총액</td>
+																<td>근로자 부담액</td>
+																<td>사업주 부담금</td>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td>건강보험료</td>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_TOTAL2" id="INSURE_TOTAL2" readonly>원
+																</td>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_EMP_CAL2" id="INSURE_EMP_CAL2" readonly>원
+																</td>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_COM_CAL2" id="INSURE_COM_CAL2" readonly>원
+																</td>
+															</tr>
+															<tr>
+																<td>장기요양보험료</td>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_TOTAL3" id="INSURE_TOTAL3" readonly>원
+																</td>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_EMP_CAL3" id="INSURE_EMP_CAL3" readonly>원
+																</td>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_COM_CAL3" id="INSURE_COM_CAL3" readonly>원
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<br>
+													<table style="width:70%; text-align: center" class="table table-bordered jambo_table bulk_action">
+														<thead>
+															<tr>
+																<td>구분</td>
+																<td>기준액</td>
+																<td>보험로율</td>
+																<td>근로자</td>
+																<td>사업주</td>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td style="width:20%;">
+																	건강보험료
+																</td>
+																<td style="width:20%;">
+																	보수월액
+																</td>
+																<td style="width:20%;">
+																	6.46%
+																</td>
+																<td style="width:20%;">
+																	3.23%
+																</td>
+																<td style="width:20%;">
+																	3.23%
+																</td>
+															</tr>
+															<tr>
+																<td style="width:20%;">
+																	장기요양보험료
+																</td>
+																<td style="width:20%;">
+																	건강보험료
+																</td>
+																<td style="width:20%;">
+																	8.51%
+																</td>
+																<td style="width:20%;">
+																	가입자 부담 50%
+																</td>
+																<td style="width:20%;">
+																	사업주 부담 50%
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<div>
+														&nbsp;&nbsp; • 예) 보수월액이 1,000,000원일 때, 계산방법 <br>
+														&nbsp;&nbsp;&nbsp;&nbsp; 건강보험료 : 1,000,000(보수월액) x 6.46%(건강보험료율) = 가입자 부담금 32,300원, 사업주 부담금 32,300원 <br>
+														&nbsp;&nbsp;&nbsp;&nbsp; 장기요양보험료 : 64,600원(건강보험료) x 8.51%(장기요양보험료율) = 가입자 부담금 2,740원, 사업자 부담금 2,740원 <br>
+													</div>
+													<br>
+													<div>
+														&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://minwon.nhis.or.kr/menu/retriveMenuSet.xx?menuId=MENU_WBMAB01" onclick="window.open(this.href, '_blanck'); return false">건강보험료,노인장기요양보험료,부과기준(2013) 자세히 보기</a>
+														&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://minwon.nhis.or.kr/menu/retriveMenuSet.xx?menuId=MENU_WBMAB02" onclick="window.open(this.href, '_blanck'); return false">보험료산정에 포함되는 소득의 범위?</a>
+													</div>
+													</form>	
+											</div>																						
 										</div>
 									</div>
 								</div>

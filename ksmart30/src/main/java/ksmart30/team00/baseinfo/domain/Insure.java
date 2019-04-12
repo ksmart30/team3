@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Insure {
     
-    private String INSURE_NO;           // 4대보험 코드
+	private String INSURE_NO;           // 4대보험 코드
     private String INSURE_GUBUN1;       // 4대보험 종류
     private String INSURE_GUBUN2;       // 4대보험 대분류
     private String INSURE_EMP_RATE;     // 4대보험 요율(근로자)
@@ -16,9 +16,12 @@ public class Insure {
     private String INSURE_NOTE;         // 기타
     
     private int INSURE_PAY;             // 월 급여
-    private int INSURE_TOTAL;           // 전체 계산
-    private int INSURE_EMP_CAL;         // 근로자 계산
-    private int INSURE_COM_CAL;         // 사업주 계산
+	private int INSURE_TOTAL1;           // 전체 계산
+	private int INSURE_TOTAL2;           // 전체 계산(부)
+	private int INSURE_EMP_CAL1;         // 근로자 계산
+	private int INSURE_EMP_CAL2;         // 근로자 계산(부)
+	private int INSURE_COM_CAL1;         // 사업주 계산
+	private int INSURE_COM_CAL2;         // 사업주 계산(부)
      
 	public int getINSURE_PAY() {
 		return INSURE_PAY;
@@ -26,23 +29,41 @@ public class Insure {
 	public void setINSURE_PAY(int iNSURE_PAY) {
 		INSURE_PAY = iNSURE_PAY;
 	}
-	public int getINSURE_TOTAL() {
-		return INSURE_TOTAL;
+	public int getINSURE_TOTAL1() {
+		return INSURE_TOTAL1;
 	}
-	public void setINSURE_TOTAL(int iNSURE_TOTAL) {
-		INSURE_TOTAL = iNSURE_TOTAL;
+	public void setINSURE_TOTAL1(int iNSURE_TOTAL1) {
+		INSURE_TOTAL1 = iNSURE_TOTAL1;
 	}
-	public int getINSURE_EMP_CAL() {
-		return INSURE_EMP_CAL;
+	public int getINSURE_TOTAL2() {
+		return INSURE_TOTAL2;
 	}
-	public void setINSURE_EMP_CAL(int iNSURE_EMP_CAL) {
-		INSURE_EMP_CAL = iNSURE_EMP_CAL;
+	public void setINSURE_TOTAL2(int iNSURE_TOTAL2) {
+		INSURE_TOTAL2 = iNSURE_TOTAL2;
 	}
-	public int getINSURE_COM_CAL() {
-		return INSURE_COM_CAL;
+	public int getINSURE_EMP_CAL1() {
+		return INSURE_EMP_CAL1;
 	}
-	public void setINSURE_COM_CAL(int iNSURE_COM_CAL) {
-		INSURE_COM_CAL = iNSURE_COM_CAL;
+	public void setINSURE_EMP_CAL1(int iNSURE_EMP_CAL1) {
+		INSURE_EMP_CAL1 = iNSURE_EMP_CAL1;
+	}
+	public int getINSURE_COM_CAL1() {
+		return INSURE_COM_CAL1;
+	}
+	public void setINSURE_COM_CAL1(int iNSURE_COM_CAL1) {
+		INSURE_COM_CAL1 = iNSURE_COM_CAL1;
+	}
+	public int getINSURE_EMP_CAL2() {
+		return INSURE_EMP_CAL2;
+	}
+	public void setINSURE_EMP_CAL2(int iNSURE_EMP_CAL2) {
+		INSURE_EMP_CAL2 = iNSURE_EMP_CAL2;
+	}
+	public int getINSURE_COM_CAL2() {
+		return INSURE_COM_CAL2;
+	}
+	public void setINSURE_COM_CAL2(int iNSURE_COM_CAL2) {
+		INSURE_COM_CAL2 = iNSURE_COM_CAL2;
 	}
 	public String getINSURE_NO() {
 		return INSURE_NO;
@@ -100,11 +121,12 @@ public class Insure {
 	}
 	@Override
 	public String toString() {
-		return "Insure [INSURE_NO=" + INSURE_NO + ", INSURE_GUBUN1=" + INSURE_GUBUN1 + ", INSURE_GUBUN2="
+		return "Insure [INSURE_NO=" + INSURE_NO +", INSURE_GUBUN1=" + INSURE_GUBUN1 + ", INSURE_GUBUN2="
 				+ INSURE_GUBUN2 + ", INSURE_EMP_RATE=" + INSURE_EMP_RATE + ", INSURE_COM_RATE=" + INSURE_COM_RATE
 				+ ", INSURE_APP_DATE=" + INSURE_APP_DATE + ", INSURE_REGI_DATE=" + INSURE_REGI_DATE
 				+ ", INSURE_REGI_NAME=" + INSURE_REGI_NAME + ", INSURE_NOTE=" + INSURE_NOTE + ", INSURE_PAY=" + INSURE_PAY
-				+ ", INSURE_TOTAL=" + INSURE_TOTAL + ", INSURE_EMP_CAL=" + INSURE_EMP_CAL + ", INSURE_COM_CAL="
-				+ INSURE_COM_CAL + "]";
+				+ ", INSURE_TOTAL1=" + INSURE_TOTAL1 + ", INSURE_TOTAL2=" + INSURE_TOTAL2 + ", INSURE_EMP_CAL1=" + INSURE_EMP_CAL1 + ", INSURE_COM_CAL1="
+				+ INSURE_COM_CAL1 + ", INSURE_EMP_CAL2=" + INSURE_EMP_CAL2 + ", INSURE_COM_CAL2="
+				+ INSURE_COM_CAL2 + "]";
 	}
 }
