@@ -5,7 +5,7 @@
   
 <mapper namespace="ksmart30.team03.person.mapper.YidongRegisterMapper">
 	<select id="getYidongRegister" resultType="ksmart30.team03.person.domain.Yidong">
-		SELECT 
+		SELECT TOP 100
 		    A.APPOINT_NO,
 		       A.APPOINT_GB,
 		       ISNULL(C.LEVEL2_NM,'****') AS APPOINT_NM,
