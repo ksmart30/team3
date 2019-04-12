@@ -3,6 +3,7 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<title>11.시스템 관리 - User-ID 등록</title>
+		<th:block th:include="layout/customHead"></th:block>
 
 		<!-- Jquery, Ajax 선언 -->
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -36,11 +37,11 @@
 								$('#list').append('<tr>');
 								$('#list').append('<td style="width:2%;"></td>');
 								//$('#list').append('<td>'+item.DEPT_NM+'</td>');			// 부서이름
-								//$('#list').append('<td>'+item.EMP_NO+'</td>');			// 사원번호
-								$('#list').append('<td style="text-align: center">'+item.KOR_NM+'</td>');			// 사원명
-								$('#list').append('<td style="text-align: center">'+item.JIKGUP_NM+'</td>');		// 직급명
-								$('#list').append('<td style="text-align: center">'+item.JIKCHK_NM+'</td>');		// 직책명
-								$('#list').append('<td style="text-align: center">'+item.DEPT_NM+'</td>');			// 부서이름
+								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
+								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
+								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td>');		// 직급명
+								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td>');		// 직책명
+								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.DEPT_NM+'</td>');			// 부서이름
 								//$('#list').append('<td>'+item.IN_PHONE_NO+'</td>');	// 전화번호
 								//$('#list').append('<td>'+item.SEX_GB+'</td>');			// 성별
 								//$('#list').append('<td>'+item.AUDIT_TM+'</td>');		// 입사일	
@@ -49,17 +50,24 @@
 						}					
 				}); 				
 			});
-			$("#list tr").click(function() {
-				// 행과 각각의 값들을 담아옴
-				let tr = $(this);
-				let td = tr.children();
-				// 클릭한 행만 색상 변경
-				$("#list tr").css("background-color", "#ffffff");
-				$(this).css( "background-color", "#CEFBC9" );
-			});
 		});
+		function click2(emp_NO){
+		console.log('직원번호 '+emp_NO);
+			$.ajax({
+				url:'/person/personInsaEmployeeDetailView',
+				type:'GET',
+				data:{EMP_NO:emp_NO},
+				success:function(data){
+					$(data).each(function(index,item){
+						console.log(data);
+						$('#Up_EMP_NO').val(item.emp_NO);	// User-ID
+						$('#Up_KOR_NM').val(item.kor_NM);	// 사용자명
+						$('#Up_AUDIT_TM').val(item.audit_TM);	// 등록일자					
+					});			
+				}	
+			});
+		}
 		</script>
-		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
 		<div class="page-title">
@@ -82,23 +90,30 @@
 		</div>
 		<div class="clearfix"></div>
 		<div class="row">
-			<div class="col-md-4 col-sm-12 col-xs-12">
+			<div class="col-md-5 col-sm-12 col-xs-12">
 				<div class="x_panel" style="color: black;">
 					<div class="x_content">
 						<form>
-							<h5 style="color:black;">⊙ 시스템 사용가능 대상 정보</h5>
-							• 사용자 구분
-							<input type="radio" name="#" value="1">직원
-							<input type="radio" name="#" value="0">직원 외
-							<br>
-							• 사원명
-							<input type="text" name="KOR_NM" id="KOR_NM">
-							<button type="button" class="btn" style="color:black" name="btn_list" id="btn_list">검색</button>
-							<br>
-							• 정렬순서
-							<input type="radio" name="#" value="0">사원명
-							<input type="radio" name="#" value="1">직급
-							<input type="radio" name="#" value="2">부서
+							<form>
+								<h5 style="color:black;">⊙ 시스템 사용가능 대상 정보</h5>
+								• 사용자 구분
+								<input type="radio" name="#" value="1" checked>직원
+								<input type="radio" name="#" value="0">직원 외
+								<br>
+							</form>
+							<form>
+								• 사원명
+								<input type="hidden" id="User_ID">
+								<input type="text" name="KOR_NM" id="KOR_NM">
+								<button type="button" class="btn" style="color:black" name="btn_list" id="btn_list">검색</button>
+								<br>
+							</form>
+							<form>
+								• 정렬순서
+								<input type="radio" name="#" value="0" checked>사원명
+								<input type="radio" name="#" value="1">직급
+								<input type="radio" name="#" value="2">부서
+							</form>
 						</form>
 					</div>
 				</div>
@@ -109,6 +124,7 @@
 								<thead>
 									<tr>
 										<td style="width:2%;"></td>
+										<td style="text-align: center">사원번호</td>
 										<td style="text-align: center">성명</td>
 										<td style="text-align: center">직급</td>
 										<td style="text-align: center">직책</td>
@@ -122,57 +138,59 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-8 col-sm-12 col-xs-12">
+			<div class="col-md-7 col-sm-12 col-xs-12">
 				<div class="x_panel" style="color: black;">
 					<div class="x_content">
-					<div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="overflow: scroll; height: 760px; padding: 10px; color:black;">
+					<div class="col-md-10 col-sm-12 col-xs-12 table-responsive" style="height: 760px; color:black;">
 						<h5 style="color:black;">⊙ 사용자 등록정보</h5>
-						<table class="table jambo_table bulk_action">
+						<table class="table jambo_table bulk_action" style="text-align: center">
 								<tr>
 									<td style="text-align: center">User ID</td>
 									<td>
-										<input type="text" name="User_ID" id="User_ID" readonly>
+										<input type="text" name="Up_EMP_NO" id="Up_EMP_NO" readonly>
 									</td>
+									<td></td><td></td><td></td>
 								</tr>
 								<tr>
 									<td style="text-align: center">사용자명</td>
 									<td>
-										<input type="text" name="User_ID" readonly>
+										<input type="text" name="Up_KOR_NM" id="Up_KOR_NM"readonly>
 									</td>
-								</tr>
-								<tr>
-									<td style="text-align: center">주민번호</td>
-									<td>
-										<input type="text" name="User_ID" readonly>
-									</td>
+									<td></td><td></td><td></td>
 								</tr>
 								<tr>
 									<td style="text-align: center">새 비밀번호</td>
 									<td>
-										<input type="text" name="User_ID">
+										<input type="password" name="Up_EMP_PW" id="Up_EMP_PW">
 									</td>
+									<td></td><td></td><td></td>
 								</tr>
 								<tr>
 									<td style="text-align: center">새 비밀번호 확인</td>
 									<td>
-										<input type="text" name="User_ID">
+										<input type="password" name="Up_EMP_PW2" id="Up_EMP_PW2">
 									</td>
+									<td></td><td></td><td></td>
 								</tr>
 								<tr>
 									<td style="text-align: center">등록자</td>
-									<td></td>
+									<td>
+										<input type="text" name="Up_AUDIT_NM" id="Up_AUDIT_NM" readonly>
+									</td>
 									<td style="text-align: center">등록일자</td>
 									<td>
-										<input type="text" name="User_ID" readonly>
+										<input type="text" name="Up_AUDIT_TM" id="Up_AUDIT_TM" readonly>
 									</td>
+									<td></td>
 								</tr>
 								<tr>
 									<td style="text-align: center">수정자</td>
 									<td></td>
 									<td style="text-align: center">수정일자</td>
 									<td>
-										<input type="text" name="User_ID">
+										<input type="text" name="Up_AUDIT_TM" id="Up_AUDIT_TM" readonly>
 									</td>
+									<td></td>
 								</tr>
 						</table>
 					</div>
