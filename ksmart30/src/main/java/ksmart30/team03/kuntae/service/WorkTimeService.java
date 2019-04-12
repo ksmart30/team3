@@ -32,7 +32,7 @@ public class WorkTimeService {
 	
 	// 출,퇴근 기록부(개인별) 날짜 검색
 	public List<WorkTimeSingleList> getRecordSingleDateSearch(String WORK_DT, String END_DT){
-		System.out.println("S : Single 시작 날짜 WORK_DT =>"+ WORK_DT + "끝난 날짜 END_DT =>" + END_DT);
+		System.out.println("S : 날짜 WORK_DT =>"+ WORK_DT+"날짜 END_DT =>"+WORK_DT);
 		return workTimeMapper.getRecordSingleDateSearch(WORK_DT, END_DT);
 	}
 	

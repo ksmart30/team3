@@ -33,12 +33,51 @@
 	                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
 	                    $('#list').append('<td>'+item.start_TIME+'</td>');
 	                    $('#list').append('<td>'+item.end_TIME+'</td>');
+	                    $('#list').append('<td>'+item.end_DT+'</td>');
 	                    $('#list').append('</tr>'); 
 	                });                   
 	            }
 	        });
 	    });
 	 });		
+	
+	/* 날짜 검색 */
+	$(document).ready(function(){
+		console.log('출,퇴근(Total) 날짜 출력')
+		$("#btn_day").click(function(){
+			let work_dt_format = $('#WORK_DT').val();
+			let end_dt_format = $('#END_DT').val();
+			
+			let WORK_DT = work_dt_format.substr(0,4)+work_dt_format.substr(5,2)+work_dt_format.substr(8,2);
+			let END_DT = end_dt_format.substr(0,4)+end_dt_format.substr(5,2)+end_dt_format.substr(8,2);
+			console.log(WORK_DT +"날짜"+ END_DT);		
+			
+		$.ajax({
+			url:'/kuntae/recordDateSearchProcess',
+            type:'GET',
+            dataType:'json',
+			data:{WORK_DT:WORK_DT,END_DT:END_DT},
+			success : function(data) {
+            	console.log('날짜 검색 쿼리 성공!');
+                $('#list').empty();
+                $(data).each(function(index,item){ //each = foreach (반복문)
+                    $('#list').append('<tr>');
+                    $('#list').append('<td>'+item.dept_NM+'</td>');
+                    $('#list').append('<td>'+item.jikgup_NM+'</td>'); 
+                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
+                    $('#list').append('<td>'+item.work_DT.substring(0,4)+'</td>');
+                    $('#list').append('<td>'+item.work_DT.substring(4,6)+'</td>');
+                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
+                    $('#list').append('<td>'+item.start_TIME+'</td>');
+                    $('#list').append('<td>'+item.end_TIME+'</td>');
+                    $('#list').append('<td>'+item.end_DT+'</td>');
+                    $('#list').append('</tr>'); 
+                });                   			
+			}
+		});
+	});
+});
+	
 	
 	</script> 
 
@@ -71,13 +110,31 @@
 	<div class="clearfix"></div>
 </div>
     
-    <div class="x_content">
-		<div class="col-sm-4">	
-			<label class="control-label">년월</label><br>
-			<input type="date" name="">
-		</div>
-	
-		<div class="col-sm-4">
+
+
+			
+					<br>
+					<!-- <div class="x_content">
+						<form action="/kuntae/recordDateSearchProcess">
+							<table class="table table-bordered">
+								<thead>
+									<tr style="font-size: 15px">
+										
+										<th>시작년월 &emsp;&emsp;&emsp; 
+										<input type="date" id="WORK_DT" name="WORK_DT"> &emsp;&emsp;										
+										</th>
+										<th>마감년월 &emsp;&emsp;&emsp; 
+										<input type="date" id="END_DT" name="END_DT"> &emsp;&emsp;										
+											<button id="btn_day" type="button" class="btn" style="color:black">검색</button>
+										</th>
+									</tr>									
+								</thead>
+							</table>
+						</form>
+						
+						
+					</div> -->
+<!-- 		<div class="col-sm-4">
 		    <label>부서
 				<select name="datatable-keytable_length" aria-controls="datatable-keytable" class="form-control input-sm">
 					<option>부서</option>
@@ -100,54 +157,57 @@
 	            <button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
 	   	</div>	
 	</div>
-</div>
+</div> -->
 
 
 
-<!-- <div class="clearfix"></div>
+ <div class="clearfix"></div>
 		<div class="col-md-12 col-sm-12 col-xs-12">
-			
+			<form action="/kuntae/recordDateSearchProcess">
 				<table class="table">
 					<tbody>
-
+					
 						<tr>
-							<th>년월</th>
+							<th>시작일</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="date" name="">
+									<input type="date" id="WORK_DT" name="WORK_DT">
 								</div>
 							</td>
 							
-							<th>부서</th>
+							<th>끝난일</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<input type="date" id="END_DT" name="END_DT">
+									<button id="btn_day" type="button" class="btn" style="color:black">검색</button>
 								</div>
 							</td>
+							
 							
 						</tr>
-
+					</form>
 						<tr>
 							<th>사원번호</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<input type="text" id="EMP_NO" name="EMP_NO">
+									<button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
 								</div>
 							</td>
 
-							<th>이름</th>
-							<td>
+							<th></th>
+							 <td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<!-- <input type="text" class="form-control"> -->
 								</div>
-							</td>
+							</td> 
 						</tr>
 
 					</tbody>
 				</table>
 				</div>
 				</div>
-				 -->
+
 				
                 <div class="x_panel">
                   <div class="x_title">
@@ -170,17 +230,18 @@
                   </div>
                   <div class="x_content">
 					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
-                    <table class="table table-bordered">
+                    <table class="table table-striped jambo_table bulk_action">
                       <thead>
                         <tr>
-                          <th bgcolor="#EAEAEA">부서</th>
-                          <th bgcolor="#EAEAEA">직급</th>
-                          <th bgcolor="#EAEAEA">성명</th>
-                          <th bgcolor="#EAEAEA">년</th>
-                          <th bgcolor="#EAEAEA">월</th>
-                          <th bgcolor="#EAEAEA">일</th>
-                          <th bgcolor="#EAEAEA">출근</th>
-                          <th bgcolor="#EAEAEA">퇴근</th>                                                  
+                          <th>부서</th>
+                          <th>직급</th>
+                          <th>성명</th>
+                          <th>년</th>
+                          <th>월</th>
+                          <th>일</th>
+                          <th>출근</th>
+                          <th>퇴근</th>  
+                          <th>퇴근날짜</th>                                                  
 
                         </tr>
                       </thead>
@@ -194,6 +255,7 @@
                           <th th:text="${t.WORK_DT.substring(6,8)}"></th>
                           <th th:text="${t.START_TIME}"></th>
                           <th th:text="${t.END_TIME}"></th>
+                          <th th:text="${t.END_DT}"></th>
                         </tr>                        
                       </tbody>
                     </table>

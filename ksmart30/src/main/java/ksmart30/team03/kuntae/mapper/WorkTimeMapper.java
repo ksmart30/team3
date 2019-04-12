@@ -17,7 +17,7 @@ public interface WorkTimeMapper {
 	// 출 퇴근 기록부(개인별) 이름 검색
 	List<WorkTimeSingleList> getRecordSingleNameSearch(String KOR_NM);
 	
-	// 출 퇴근 기록부(개인별) 날짜 검색
+	// 출 퇴근 기록부 (Single, Total) 날짜 검색
 	List<WorkTimeSingleList> getRecordSingleDateSearch(String WORK_DT, String END_DT);
 	
 	// 출 퇴근 기록부(Total) 사원번호 검색
@@ -25,6 +25,10 @@ public interface WorkTimeMapper {
 		
 	// 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력
 	List<WorkTimeSingleList> getRecordTotalList();
+	
+
+
+
 
 	
 }

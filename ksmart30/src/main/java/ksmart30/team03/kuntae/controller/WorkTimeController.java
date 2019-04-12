@@ -83,14 +83,13 @@ public class WorkTimeController {
 	}
 	
 	// 출, 퇴근 기록부 (개인별) 날짜 검색
-	@GetMapping("/kuntae/recordSingleDateSearchProcess")
-	public String recordSingleDateSearchProcess(Model model, @RequestParam(value = "WORK_DT") String WORK_DT, @RequestParam(value="END_DT")String END_DT){
+	@GetMapping("/kuntae/recordDateSearchProcess")
+	public @ResponseBody List<WorkTimeSingleList> recordTotalDateSearchProcess( @RequestParam(value = "WORK_DT") String WORK_DT, @RequestParam(value="END_DT")String END_DT){
 		System.out.println("C : 날짜 검색 ");
 		System.out.println("C : WORK_DT 요청 =>" + WORK_DT+" END_DT 요청 =>" +END_DT);
-		List<WorkTimeSingleList> data = workTimeService.getRecordSingleDateSearch(WORK_DT, END_DT);			
-		System.out.println("dayData =>" + data);
-		model.addAttribute("Day =>",data);
-		return "/kuntae/recordSingleView";
+		List<WorkTimeSingleList> data2 = workTimeService.getRecordSingleDateSearch(WORK_DT, END_DT);			
+		System.out.println("dayData =>" + data2);
+		return data2;
 	}
 	 
 	// 화면 호출
