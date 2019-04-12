@@ -17,6 +17,13 @@ public class Person {
 	private String IN_PHONE_NO;
 	private String KOR_NM2;
 	private String SEX_GB;
+	private String OUT_DT2;
+	public String getOUT_DT2() {
+		return OUT_DT2;
+	}
+	public void setOUT_DT2(String oUT_DT2) {
+		OUT_DT2 = oUT_DT2;
+	}
 	public String getSEX_GB() {
 		return SEX_GB;
 	}
@@ -102,7 +109,8 @@ public class Person {
 		return "Person [MAIL_ADDRESS=" + MAIL_ADDRESS + ", AUDIT_TM=" + AUDIT_TM + ", BIRTH_DT=" + BIRTH_DT
 				+ ", CUR_ADDRESS=" + CUR_ADDRESS + ", SORT_VALUE=" + SORT_VALUE + ", DEPT_NM=" + DEPT_NM + ", EMP_NO="
 				+ EMP_NO + ", KOR_NM=" + KOR_NM + ", JIKGUP_NM=" + JIKGUP_NM + ", JIKCHK_NM=" + JIKCHK_NM
-				+ ", IN_PHONE_NO=" + IN_PHONE_NO + ", KOR_NM2=" + KOR_NM2 + ", SEX_GB=" + SEX_GB + "]";
+				+ ", IN_PHONE_NO=" + IN_PHONE_NO + ", KOR_NM2=" + KOR_NM2 + ", SEX_GB=" + SEX_GB + ", OUT_DT2="
+				+ OUT_DT2 + "]";
 	}
    
 }

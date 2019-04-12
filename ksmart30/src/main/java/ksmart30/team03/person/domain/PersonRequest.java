@@ -8,6 +8,14 @@ public class PersonRequest {
 	private String JIKCHK_NM;
 	private String IN_PHONE_NO;
 	private String DEPT_NM;
+	private String OUT_DT3;
+	
+	public String getOUT_DT3() {
+		return OUT_DT3;
+	}
+	public void setOUT_DT3(String oUT_DT3) {
+		OUT_DT3 = oUT_DT3;
+	}
 	public String getDEPT_NM() {
 		return DEPT_NM;
 	}
@@ -60,7 +68,8 @@ public class PersonRequest {
 	@Override
 	public String toString() {
 		return "PersonRequest [EMP_NO=" + EMP_NO + ", KOR_NM=" + KOR_NM + ", AUDIT_TM=" + AUDIT_TM + ", JIKGUP_NM="
-				+ JIKGUP_NM + ", JIKCHK_NM=" + JIKCHK_NM + "]";
+				+ JIKGUP_NM + ", JIKCHK_NM=" + JIKCHK_NM + ", IN_PHONE_NO=" + IN_PHONE_NO + ", DEPT_NM=" + DEPT_NM
+				+ ", OUT_DT3=" + OUT_DT3 + ", SEX_GB=" + SEX_GB + "]";
 	}
 
 

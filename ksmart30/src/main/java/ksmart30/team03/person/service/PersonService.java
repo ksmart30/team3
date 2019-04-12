@@ -14,6 +14,13 @@ import ksmart30.team03.person.mapper.PersonMapper;
 public class PersonService {
 	
 	@Autowired PersonMapper personMapper;	
+	//6.1.1 인사기록카드에서 직원 list 출력
+	public List<Map<String, Object>> personListView(PersonRequest vo){
+		System.out.println("SERVICE : 인사기록카드 직원검색 리스트 출력");	
+		List<Map<String, Object>> result = personMapper.personListView(vo);
+		System.out.println("SERVICE(인사기록카드 직원 검색) 결과 : "+result);
+		return result;		
+	}
 	//6.1.2 직원 list출력(조건별)
 	public List<Map<String, Object>> personInsaEmployeeSearchView(PersonRequest vo){
 		System.out.println("SERVICE : 직원검색 리스트 출력");	
@@ -26,7 +33,6 @@ public class PersonService {
 		System.out.println("SERVICE : 직원검색 리스트 출력");
 		return personMapper.personInsaEmployeeDetailView(EMP_NO);		
 	}
-	
 
 	
 }

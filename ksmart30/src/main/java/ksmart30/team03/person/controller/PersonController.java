@@ -17,11 +17,21 @@ import ksmart30.team03.person.service.PersonService;
 public class PersonController {
 	@Autowired PersonService personService;
 	
-	//6.1.1인사기록카드 리스트 출력 컨트롤러
-	@GetMapping("person/personInsaView")
+	//6.1.1인사기록카드 리스트폼 이동 컨트롤러
+	@GetMapping("/person/personInsaView")
 	public String personInsaView() {
 		return "person/insa/personListView";
+	}
+	//6.1.1인사기록카드 리스트 직원 출력 컨트롤러
+	@GetMapping("/person/personInsaList")
+	public @ResponseBody List<Map<String, Object>> personInsaList(PersonRequest vo) {
+		System.out.println("CONTROLLER : 직원list 출력");
+		System.out.println("CONTROLLER : "+vo);	
+		List<Map<String, Object>> data = personService.personListView(vo);			
+		System.out.println("직원 검색 list : "+data);
+		return data;
 	}	
+
 	//6.1.1인사기록카드 입력(리스트) 컨트롤러
 	@GetMapping("/person/personInsaWriteView")
 	public String personInsaWriteView() {
@@ -38,8 +48,8 @@ public class PersonController {
 		System.out.println("CONTROLLER : 직원검색 폼 이동");		
 		return "person/insa/personSearchView";
 	}
+	
 	//6.1.2직원검색 list 출력 컨트롤러
-
 	@GetMapping("/person/personInsaEmployeeView")
 	public @ResponseBody List<Map<String, Object>> getPersonInsaEmployeeList(PersonRequest vo) {
 		System.out.println("CONTROLLER : 직원list 출력");
