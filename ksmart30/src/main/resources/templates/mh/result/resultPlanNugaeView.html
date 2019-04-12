@@ -103,24 +103,31 @@
 			        		 $('#ngss').append('<tr>');
 			        		 $('#ngss').append('<td>'+ dept_nm+'</td>');
 			        		 $('#ngss').append('<td>'+ item.pjt_CD+svc+'</td>');
-			        		 
-			        		 $('#ngss').append('<td>'+ time_t+' </td>'+'<td>'+ sil_t+' </td>');
-			        		 $('#ngss').append('<td>'+ (time_t-sil_t)+' </td>');
-			        		 $('#ngss').append('<td>'+ time_a+'</td>'+'<td>'+ sil_a+'</td>');
-			        		 $('#ngss').append('<td>'+ (time_a-sil_a)+'</td>');
-			        		 $('#ngss').append('<td>'+ time_b+'</td>'+'<td>'+ sil_b+'</td>');
-			        		 $('#ngss').append('<td>'+ (time_b-sil_b)+'</td>');
-			        		 $('#ngss').append('<td>'+ time_c+'</td>'+'<td>'+ sil_c+'</td>');
-			        		 $('#ngss').append('<td>'+ (time_c-sil_c)+'</td>');
-			        		 $('#ngss').append('<td>'+ time_d+'</td>'+'<td>'+ sil_d+'</td>');
-			        		 $('#ngss').append('<td>'+ (time_d-sil_d)+'</td>');
-			        		 $('#ngss').append('<td>'+ time_e+'</td>'+'<td>'+ sil_e+'</td>');
-			        		 $('#ngss').append('<td>'+ (time_e-sil_e)+'</td>');
-			        		 $('#ngss').append('<td>'+ time_f+'</td>'+'<td>'+ sil_f+'</td>');
-			        		 $('#ngss').append('<td>'+ (time_f-sil_f)+'</td>');
-			        		 $('#ngss').append('<td>'+ time_g+'</td>'+'<td>'+ sil_g+'</td>');
-			        		 $('#ngss').append('<td>'+ (time_g-sil_g)+'</td>');
 			        		 $('#ngss').append('</tr>');
+			        		 
+			        		 $('#ngss2').empty();
+			        		 $('#ngss2').append('<tr>');
+			        		 $('#ngss2').append('<td>'+ time_t+' </td>'+'<td>'+ sil_t+' </td>');
+			        		 $('#ngss2').append('<td>'+ (time_t-sil_t)+' </td>');
+			        		 $('#ngss2').append('<td>'+ time_a+'</td>'+'<td>'+ sil_a+'</td>');
+			        		 $('#ngss2').append('<td>'+ (time_a-sil_a)+'</td>');
+			        		 $('#ngss2').append('<td>'+ time_b+'</td>'+'<td>'+ sil_b+'</td>');
+			        		 $('#ngss2').append('<td>'+ (time_b-sil_b)+'</td>');
+			        		 $('#ngss2').append('<td>'+ time_c+'</td>'+'<td>'+ sil_c+'</td>');
+			        		 $('#ngss2').append('<td>'+ (time_c-sil_c)+'</td>');
+			        		 $('#ngss2').append('</tr>');
+			        		 
+			        		 $('#ngss3').empty();
+			        		 $('#ngss3').append('<tr>');
+			        		 $('#ngss3').append('<td>'+ time_d+'</td>'+'<td>'+ sil_d+'</td>');
+			        		 $('#ngss3').append('<td>'+ (time_d-sil_d)+'</td>');
+			        		 $('#ngss3').append('<td>'+ time_e+'</td>'+'<td>'+ sil_e+'</td>');
+			        		 $('#ngss3').append('<td>'+ (time_e-sil_e)+'</td>');
+			        		 $('#ngss3').append('<td>'+ time_f+'</td>'+'<td>'+ sil_f+'</td>');
+			        		 $('#ngss3').append('<td>'+ (time_f-sil_f)+'</td>');
+			        		 $('#ngss3').append('<td>'+ time_g+'</td>'+'<td>'+ sil_g+'</td>');
+			        		 $('#ngss3').append('<td>'+ (time_g-sil_g)+'</td>');
+			        		 $('#ngss3').append('</tr>');
 			        	 });
 			    
 				}
@@ -322,29 +329,67 @@
               </div>
 		     <!-- 상세보기 modal -->
 		
-		<div class="modal fade bs-example-modal-fullsize" tabindex="-1" role="dialog" aria-hidden="true" id="ok">
-		   <div class="modal-dialog modal-fullsize">
-		     <div class="modal-content modal-fullsize" style="width:1000px;height:500px" >
+		<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="ok">
+		   <div class="modal-dialog modal-lg">
+		     <div class="modal-content modal-lg" >
 		       <div class="modal-header">
 		         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
 		         </button>
 		         <h4 class="modal-title" id="myModalLabel2">프로젝트 단계별 실적,대비표</h4>
 		       </div>
-		       <table id="datatable-responsive" class="table table-striped jambo_table bulk_action" >
-						<thead>
+		       
+		       <table class="table table-striped jambo_table bulk_action" >
+						<thead style="text-align:center">
 							<tr>
 								<th rowspan="2">부서</th>
 								<th rowspan="2">프로젝트코드명</th>
+							</tr>
+						</thead>
+						<tbody id="ngss" >
+					
+						</tbody>
+			
+				
+						
+				</table>
+				<table class="table table-striped table-bordered table-hover" style="text-align:center">	
+					<thead style="text-align:center">
+							<tr >
 								<th colspan="3">합계</th>
 								<th colspan="3">기획</th>
 								<th colspan="3">심의</th>
 								<th colspan="3">허가</th>
+							</tr>	
+					</thead>		
+							<tr>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+								<th>계획</th>
+								<th>실적</th>
+								<th>차이</th>
+							</tr>
+					<tbody id="ngss2" >
+					</tbody>
+				</table>
+				<table class="table table-striped table-bordered table-hover" style="text-align:center">
+							
+						
+						<thead style="text-align:center">	
+							<tr>	
 								<th colspan="3">착공</th>
 								<th colspan="3">실시</th>
 								<th colspan="3">A/S</th>
 								<th colspan="3">준공</th>
 								
 							</tr>
+						</thead>
 							<tr>
 								<th>계획</th>
 								<th>실적</th>
@@ -358,24 +403,10 @@
 								<th>계획</th>
 								<th>실적</th>
 								<th>차이</th>
-								<th>계획</th>
-								<th>실적</th>
-								<th>차이</th>
-								<th>계획</th>
-								<th>실적</th>
-								<th>차이</th>
-								<th>계획</th>
-								<th>실적</th>
-								<th>차이</th>
-								<th>계획</th>
-								<th>실적</th>
-								<th>차이</th>
 							</tr>
+							<tbody id="ngss3" >
 						
-						</thead>
-						<tbody id="ngss" >
-						
-						</tbody>
+							</tbody>
 				</table>
 		      
 		       
