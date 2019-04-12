@@ -18,7 +18,7 @@ public class KuntaeScheduleController {
 	// 10.3.5.1 근태월력표 리스트와 달력 조회
 	@GetMapping("/baseInfo/kuntaeScheduleListView")
 	public String kuntaeScheduleListView(Model model, KuntaeSchedule toDay) {
-		System.out.println("(C) 10.3.5.1~2 근태월력표 리스트(왼쪽)와 달력(오른쪽) kuntaeScheduleListView()");
+		System.out.println("(C) 10.3.5.1 근태월력표 리스트(왼쪽)와 달력(오른쪽) kuntaeScheduleListView()");
 		// 1. Service 실행하여 근태월력표 리스트와 달력 정보 가져오기
 		List<KuntaeSchedule> kuntaeList = kuntaeScheduleService.getKuntaeScheduleList(toDay);
 		// 2. Model에 Setting하기(현재 근태월력표 리스트)
@@ -30,6 +30,7 @@ public class KuntaeScheduleController {
 	// 10.3.5.2 근태월력표 검색
 	@PostMapping("/baseInfo/kuntaeScheduleSearchProcess")
 	public String kuntaeScheduleSearchProcess(Model model, KuntaeSchedule toDay) {
+		System.out.println("(C) 10.3.5.2 근태월력표 검색 kuntaeScheduleSearchProcess()");
 		// 1. Service 실행하여 근태월력표 검색 정보 가져오기
 		List<KuntaeSchedule> kuntaeList = kuntaeScheduleService.getKuntaeScheduleCalendar(toDay);
 		// 2. Model에 Setting하기(검색된 근태월력표 리스트)

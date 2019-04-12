@@ -2,11 +2,177 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<title>4대보험 요율</title>
+		<title>10.기준정보관리 - 4대보험 요율</title>
+
+		<!-- Jquery, Ajax 선언 -->
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<script>
+		$(document).ready(function(){	
+			$('#insureKukminCal').click(function(){
+				let INSURE_PAY = $('#INSURE_PAY').val();
+				console.log(INSURE_PAY+'클릭 시작');
+				$.ajax({
+					url:'/baseInfo/fourInsureKukminProcess', 	//호출할 메소드 호출 
+					type:'GET',															//송신 POST 방식
+					data:{INSURE_PAY:INSURE_PAY},
+					success:function(data){
+						console.log(data);
+/* 						$('#INSURE_TOTAL').val(data.insure_TOTAL);
+						$('#INSURE_EMP_CAL').val(data.insure_EMP_CAL);
+						$('#INSURE_COM_CAL').val(data.insure_COM_CAL); */
+					}
+				});
+			});
+		});
+		</script>
 		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
-		4대보험 요율 리스트
+		<div class="page-title">
+			<div class="col-md-12 col-xs-12" style="color:black;">
+				<div class="page-title">
+					<div class="title_left">
+						<h2><b>4대보험 요율</b></h2>
+						<h5><fontcolor="gray"><b>10.기준정보관리&nbsp;>&nbsp;&nbsp;10.2 회계관리</b></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="x_content" style="text-align: right">
+			<div class="btn-group" >
+					<button class="btn btn-default" type="button">출력</button>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel" style="color: black;">
+					<div class="x_content">
+
+						<!-- Tab 설정 -->
+						<div class="" data-example-id="togglable-tabs">
+							<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+								<li role="presentation" class="active"><a href="#tab_content1" role="tab" data-toggle="tab">국민연금</a></li>
+								<li role="presentation" class=""><a href="#tab_content2" role="tab" data-toggle="tab">건강보험</a></li>	
+								<li role="presentation" class=""><a href="#tab_content3" role="tab" data-toggle="tab">고용보험</a></li>
+								<li role="presentation" class=""><a href="#tab_content4" role="tab" data-toggle="tab">산재보험</a></li>
+							</ul>
+
+							<!-- Tab 내용 -->
+							<div id="myTabContent" class="tab-content">
+								<!-- 1. 국민연금 -->
+								<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+									<div class="col-md-12 col-sm-12 col-xs-12">
+										<div class="x_panel">
+											<div class="x_content">
+											<form>
+												<h3 style="color:black;">⊙ 국민연금</h3>
+												<h5 style="color:black;">2019년 기준 (계산내용은 모의계산이기 때문에 실제와 다를 수 있습니다.)</h5>
+												<br>
+													• 월 급여 
+													<input type="text" name="INSURE_PAY" id="INSURE_PAY">
+													<button type="button" class="btn" style="color:black" name="insureKukminCal" id="insureKukminCal">계산</button>
+													<button type="reset" class="btn" style="color:black" name="clear">초기화</button>
+												<br><br>
+												<table style="width:70%; text-align: center"class="table table-bordered jambo_table bulk_action">
+													<thead>
+														<tr>
+															<td>연금보험료(전체)</td>
+															<td>근로자 부담금</td>
+															<td>사업주 부담금</td>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>
+																<input style="width:80%;" type="text" name="INSURE_TOTAL" id="INSURE_TOTAL" readonly>원
+															</td>
+															<td>
+																<input style="width:80%;" type="text" name="INSURE_EMP_CAL" id="INSURE_EMP_CAL" readonly>원
+															</td>
+															<td>
+																<input style="width:80%;" type="text" name="INSURE_COM_CAL" id="INSURE_COM_CAL" readonly>원
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<br>
+												<table style="width:70%; text-align: center" class="table table-bordered jambo_table bulk_action">
+													<tr>
+														<td></td>
+														<td>연금보험료(전체)</td>
+														<td>근로자</td>
+														<td>사업주</td>
+													</tr>
+													<tr>
+														<td style="width:20%;">
+															기준 소득월액
+														</td>
+														<td style="width:25%;">
+															9%
+														</td>
+														<td style="width:25%;">
+															4.5%
+														</td>
+														<td style="width:25%;">
+															4.5%
+														</td>
+													</tr>
+												</table>
+												<div style="color: red">
+													&nbsp;&nbsp; • 총액 = 기준소득월액 X 9%(연금보험율)
+												</div>
+												<div>
+													&nbsp;&nbsp; • 예) 기준소득월액은 최저 30만원에서 최고금액은 468만원까지의 범위로 결정하게 됩니다.<br>
+													&nbsp;&nbsp;&nbsp;&nbsp; 따라서, 신고한 소득월액이 30만원보다 적으면 30만원을 기준소득월액으로 하고, <br>
+													&nbsp;&nbsp;&nbsp;&nbsp; 468만원보다 많으면 468만원을 기준소득월액으로 합니다. (2018.7.1 기준)
+												</div>
+												<br>
+													&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://www.4insure.or.kr/ins4/ptl/data/calc/InsuFeeMockCalcP.do" onclick="window.open(this.href, '_blanck', 'width=700, height=800'); return false">근로소득 각종 수당의 국민연금 소득 포함 여부</a>
+											</form>																						
+										</div>
+									</div>
+									</div>
+								</div>
+								<!-- 2. 건강보험 -->
+								<div role="tabpanel" class="tab-pane fade in" id="tab_content2" aria-labelledby="tab">				
+									<div class="col-md-12 col-sm-6 col-xs-12">
+										<div class="x_panel">
+											<form>
+												<h5 style="color:black;">⊙ 건강보험</h5>
+											</form>																							
+										</div>
+									</div>
+								</div>
+								<!-- 3. 고용보험 -->
+								<div role="tabpanel" class="tab-pane fade in" id="tab_content3" aria-labelledby="tab">				
+									<div class="col-md-12 col-sm-6 col-xs-12">
+										<div class="x_panel">
+											<form>
+												<h5 style="color:black;">⊙ 고용보험</h5>
+											</form>																							
+										</div>
+									</div>
+								</div>
+								<!-- 4. 산재보험 -->
+								<div role="tabpanel" class="tab-pane fade in" id="tab_content4" aria-labelledby="tab">				
+									<div class="col-md-12 col-sm-6 col-xs-12">
+										<div class="x_panel">
+											<form>
+												<h5 style="color:black;">⊙ 산재보험</h5>
+											</form>																							
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
 	</th:block>
 	<th:block layout:fragment="customJquery">
 		<th:block th:include="layout/customJquery"></th:block>

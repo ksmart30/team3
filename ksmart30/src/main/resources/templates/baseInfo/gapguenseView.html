@@ -2,11 +2,100 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<title>갑근세세액조회</title>
+		<title>10.기준정보관리 - 갑근세 세액 조견표</title>
+
+		<!-- Jquery, Ajax 선언 -->
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 		<th:block th:include="layout/customHead"></th:block>
 	</th:block>
 	<th:block layout:fragment="customBody">
-		갑근세세액 리스트
+		<div class="page-title">
+			<div class="col-md-12 col-xs-12" style="color:black;">
+				<div class="page-title">
+					<div class="title_left">
+						<h2><b>갑근세 세액 조견표</b></h2>
+						<h5><fontcolor="gray"><b>10.기준정보관리&nbsp;>&nbsp;&nbsp;10.2 회계관리</b></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="x_content" style="text-align: right">
+			<div class="btn-group" >
+					<button class="btn btn-default" type="button">출력</button>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel" style="color: black;">
+					<div class="x_content">
+						<!-- 갑근세 세액 조견표 리스트 -->
+						<!-- 테이블 반응형 및 스크롤 기능추가 -->
+						<div class="table-responsive" style="overflow:auto; height: 850px; background-color: white; color:black;">
+								<table style="width:1700px;" class="table table-bordered jambo_table bulk_action" id="gapguenseTable">		
+									<thead>
+										<tr class="headings tr_table_fix_header">
+											<th>
+											</th>
+											<th class="column-title">부터</th>
+											<th class="column-title">까지</th>
+											<th class="column-title">1인</th>
+											<th class="column-title">2인</th>
+											<th class="column-title">3인 일반</th>
+											<th class="column-title">3인 다자녀</th>
+											<th class="column-title">4인 일반</th>
+											<th class="column-title">4인 다자녀</th>
+											<th class="column-title">5인 일반</th>
+											<th class="column-title">5인 다자녀</th>
+											<th class="column-title">6인 일반</th>
+											<th class="column-title">6인 다자녀</th>
+											<th class="column-title">7인 일반</th>
+											<th class="column-title">7인 다자녀</th>
+											<th class="column-title">8인 일반</th>
+											<th class="column-title">8인 다자녀</th>
+											<th class="column-title">9인 일반</th>
+											<th class="column-title">9인 다자녀</th>
+											<th class="column-title">10인 일반</th>
+											<th class="column-title">10인 다자녀</th>
+											<th class="column-title">11인 일반</th>
+											<th class="column-title">11인 다자녀</th>
+										</tr>
+									</thead>
+									<tbody id="gapguenseList">
+										<tr th:each="gapguenseList : ${gapguenseList}">
+											<td></td>
+											<td th:text="${gapguenseList.MORE_THAN}"></td>		<!-- 부터 -->
+											<td th:text="${gapguenseList.LESS_THAN}"></td>		<!-- 까지 -->
+											<td th:text="${gapguenseList.DEP_FAM01}"></td>		<!-- 1인 -->
+											<td th:text="${gapguenseList.DEP_FAM02}"></td>		<!-- 2인 -->
+											<td th:text="${gapguenseList.DEP_FAM03}"></td>		<!-- 3인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM03_2}"></td>	<!-- 3인 다자녀 -->
+											<td th:text="${gapguenseList.DEP_FAM04}"></td>		<!-- 4인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM04_2}"></td>	<!-- 4인 다자녀 -->
+											<td th:text="${gapguenseList.DEP_FAM05}"></td>		<!-- 5인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM05_2}"></td>	<!-- 5인 다자녀 -->
+											<td th:text="${gapguenseList.DEP_FAM06}"></td>		<!-- 6인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM06_2}"></td>	<!-- 6인 다자녀 -->
+											<td th:text="${gapguenseList.DEP_FAM07}"></td>		<!-- 7인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM07_2}"></td>	<!-- 7인 다자녀 -->
+											<td th:text="${gapguenseList.DEP_FAM08}"></td>		<!-- 8인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM08_2}"></td>	<!-- 9인 다자녀 -->
+											<td th:text="${gapguenseList.DEP_FAM09}"></td>		<!-- 9인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM09_2}"></td>	<!-- 9인 다자녀 -->
+											<td th:text="${gapguenseList.DEP_FAM10}"></td>		<!-- 10인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM10_2}"></td>	<!-- 10인 다자녀 -->
+											<td th:text="${gapguenseList.DEP_FAM11}"></td>		<!-- 11인 일반 -->
+											<td th:text="${gapguenseList.DEP_FAM11_2}"></td>	<!-- 11인 다자녀 -->
+										</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</th:block>
 	<th:block layout:fragment="customJquery">
 		<th:block th:include="layout/customJquery"></th:block>
