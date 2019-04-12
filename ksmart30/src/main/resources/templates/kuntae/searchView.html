@@ -25,9 +25,10 @@
 						
 						console.log("나와라"+data);
 						$(data).each(function(index,item){
-								
-													
-							$('#list').append('<tr>');	
+							
+							
+							
+							$('#list').append('<tr >');	
 							$('#list').append('<td>'+item.DEPT_NM+'</td>');
 							$('#list').append('<td>'+item.JIKGUP_NM+'</td>');
 							$('#list').append('<td>'+item.KOR_NM+'</td>');
@@ -38,24 +39,26 @@
 							$('#list').append('<td>'+item.HOLI_WORK+'</td>');
 							$('#list').append('<td>'+item.YEARLY_DAY+'</td>');
 							
-							$('#list').append('<td>'+item.HOLI_1+'</td>');
+							$('#list').append('<td style="background-color:yellow">'+item.HOLI_1+'</td>');
 							$('#list').append('<td>'+item.HOLI_2+'</td>');
 							$('#list').append('<td>'+item.HOLI_3+'</td>');
 							$('#list').append('<td>'+item.HOLI_4+'</td>');
 							$('#list').append('<td>'+item.HOLI_5+'</td>');
 							$('#list').append('<td>'+item.HOLI_6+'</td>');
 							$('#list').append('<td>'+item.HOLI_7+'</td>');
-
+							
 							$('#list').append('<td>'+item.KYUL_TOT+'</td>');
 							$('#list').append('<td>'+item.YEARLY_CHA+'</td>');
 							
 
-							$('#list').append('</tr>');							
+							$('#list').append('</tr>');		
+
 						});
+						
 					}					
 			 }); 				
 		 });
-		
+		 
 
 	});
 	
@@ -138,18 +141,24 @@
                     <!-- <p class="text-muted font-13 m-b-30">
                       DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
                     </p> -->
-                    <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                    <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action" style="text-align:center">
                       <thead>
                         <tr>                         
-                          <th>부서명</th>
-                          <th>직급</th>
-                          <th>성명</th>
-                          <th>지각</th>
-                          <th>사고계제출</th>
+                          <th rowspan="2">부서명</th>
+                          <th rowspan="2">직급</th>
+                          <th rowspan="2">성명</th>
+                          <th rowspan="2">지각</th>
+                          <th colspan="2">결근</th>
+                          <th rowspan="2">결근사유</th>
+                          <th rowspan="2">휴일근무일수</th>
+                          <th rowspan="2">연차휴가발생</th>
+                          <th colspan="7">휴가사용일수</th>
+                          <th rowspan="2">무단결근</th>
+                          <th rowspan="2">잔여 휴가일수</th>
+                        </tr>
+                        <tr>
+                          <th>사고계 제 출</th>
                           <th>무단결근</th>
-                          <th>결근사유</th>
-                          <th>휴일근무일수</th>
-                          <th>연차휴가발생</th>
                           <th>휴가</th>
                           <th>경조</th>
                           <th>철야</th>
@@ -157,8 +166,6 @@
                           <th>포상</th>
                           <th>출산</th>
                           <th>휴직</th>
-                          <th>무단결근</th>
-                          <th>잔여 휴가일수</th>
                         </tr>
                       </thead>
 
