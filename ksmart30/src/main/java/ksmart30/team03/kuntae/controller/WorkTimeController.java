@@ -40,6 +40,15 @@ public class WorkTimeController {
 		System.out.println("C : Total EMP_NO data 정보  =>" +data);
 		return data;
 	}
+ 	
+ 	// 출,퇴근기록부(Total) 전체 검색
+ 	@GetMapping("/kuntae/recordTotalSearch")
+ 	public @ResponseBody List<WorkTimeSingleList> recordTotalSearch(@RequestParam(value="WORK_DT") String WORK_DT, @RequestParam(value="END_DT")String END_DT, @RequestParam(value="EMP_NO")String EMP_NO){
+ 		System.out.println("C : Total 전체 검색");
+ 		List<WorkTimeSingleList> data = workTimeService.getRecordTotalSearch(WORK_DT, END_DT, EMP_NO);
+ 		System.out.println("C : Total data 정보=>"+data);
+ 		return data;
+ 	}
 	
 	
 	/*

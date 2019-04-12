@@ -49,6 +49,10 @@ public class WorkTimeService {
 		return workTimeMapper.getRecordTotalNoSearch(EMP_NO);
 	}
 	
-	// 
+	// 출,퇴근 기록부(Total) 전체 검색
+	public List<WorkTimeSingleList> getRecordTotalSearch(String WORK_DT, String END_DT, String EMP_NO){
+		System.out.println("S : Total 전체 검색 시작날짜 =>"+WORK_DT+"끝난날짜=>"+END_DT+"사원번호=>"+EMP_NO);
+		return workTimeMapper.getRecordTotalSearch(WORK_DT, END_DT, EMP_NO);
+	}
 	
 }

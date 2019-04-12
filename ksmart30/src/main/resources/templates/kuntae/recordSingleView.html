@@ -12,16 +12,17 @@
 	<link href="/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
 	<link href="/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
 	<head>
-	<script>
+<script>
+
+
 
 	/* 사원번호 검색*/
 	$(document).ready(function(){
-		console.log('출,퇴근(개인별) 리스트 출력')
-	     $('#btn_list').click(function(){
+		console.log('출,퇴근(Total) 리스트 출력')
+	     $('#btn_empno').click(function(){
 	    	var EMP_NO = $('#EMP_NO').val();
-	    	/* var KOR_NM = $('#KOR_NM').val(); */
 	    	 $.ajax({
-	            url:'/kuntae/recordSingle',
+	            url:'/kuntae/recordTotal',
 	            type:'GET',
 	            dataType:'json',	           
 	         	data : {EMP_NO : EMP_NO},
@@ -30,200 +31,179 @@
 	                $('#list').empty();
 	                $(data).each(function(index,item){ //each = foreach (반복문)
 	                    $('#list').append('<tr>');
-	                    $('#list').append('<td>'+item.kor_NM+'</td>');
-	                   	/*  $('#list').append('<td>'+item.emp_NO+'</td>'); */
-	                    $('#list').append('<td>'+item.work_DT.substring(0,6)+'</td>');
-	                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');         
-	                    $('#list').append('<td>'+item.start_TIME+'</td>'); 
+	                    $('#list').append('<td>'+item.dept_NM+'</td>');
+	                    $('#list').append('<td>'+item.jikgup_NM+'</td>'); 
+	                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
+	                    $('#list').append('<td>'+item.work_DT.substring(0,4)+'</td>');
+	                    $('#list').append('<td>'+item.work_DT.substring(4,6)+'</td>');
+	                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
+	                    $('#list').append('<td>'+item.start_TIME+'</td>');
 	                    $('#list').append('<td>'+item.end_TIME+'</td>');
+	                    $('#list').append('<td>'+item.end_DT+'</td>');
 	                    $('#list').append('</tr>'); 
 	                });                   
 	            }
 	        });
 	    });
-	 });
+	 });		
 	
-	/* 이름 검색 */
+	/* 날짜 검색 */
 	$(document).ready(function(){
-		console.log('출,퇴근(개인별) 리스트 출력')
-		 $('#btn_name').click(function(){
-		    	var KOR_NM = $('#KOR_NM').val();
-		    	 $.ajax({
-		            url:'/kuntae/recordSingleName',
-		            type:'GET',
-		            dataType:'json',	           
-		         	data : {KOR_NM : KOR_NM},
-		            success:function(data){
-		            	console.log('이름 검색 쿼리 성공!');
-		                $('#list').empty();
-		                $(data).each(function(index,item){ //each = foreach (반복문)
-		                    $('#list').append('<tr>');
-		                    $('#list').append('<td>'+item.kor_NM+'</td>');
-		                   	/*  $('#list').append('<td>'+item.emp_NO+'</td>'); */
-		                    $('#list').append('<td>'+item.work_DT.substring(0,6)+'</td>');
-		                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');         
-		                    $('#list').append('<td>'+item.start_TIME+'</td>'); 
-		                    $('#list').append('<td>'+item.end_TIME+'</td>');
-		                    $('#list').append('</tr>'); 
-		                });                   
-		            }
-		        });
-		    });
-	 	});
-
-/* 날짜 검색 
+		console.log('출,퇴근(Total) 날짜 출력')
+		$("#btn_day").click(function(){
+			let work_dt_format = $('#WORK_DT').val();
+			let end_dt_format = $('#END_DT').val();
+			
+			let WORK_DT = work_dt_format.substr(0,4)+work_dt_format.substr(5,2)+work_dt_format.substr(8,2);
+			let END_DT = end_dt_format.substr(0,4)+end_dt_format.substr(5,2)+end_dt_format.substr(8,2);
+			console.log(WORK_DT +"날짜"+ END_DT);		
+			
+		$.ajax({
+			url:'/kuntae/recordDateSearchProcess',
+            type:'GET',
+            dataType:'json',
+			data:{WORK_DT:WORK_DT,END_DT:END_DT},
+			success : function(data) {
+            	console.log('날짜 검색 쿼리 성공!');
+                $('#list').empty();
+                $(data).each(function(index,item){ //each = foreach (반복문)
+                    $('#list').append('<tr>');
+                    $('#list').append('<td>'+item.dept_NM+'</td>');
+                    $('#list').append('<td>'+item.jikgup_NM+'</td>'); 
+                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
+                    $('#list').append('<td>'+item.work_DT.substring(0,4)+'</td>');
+                    $('#list').append('<td>'+item.work_DT.substring(4,6)+'</td>');
+                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
+                    $('#list').append('<td>'+item.start_TIME+'</td>');
+                    $('#list').append('<td>'+item.end_TIME+'</td>');
+                    $('#list').append('<td>'+item.end_DT+'</td>');
+                    $('#list').append('</tr>'); 
+                });                   			
+			}
+		});
+	});
+});
+	
+	
+	/* 전체 검색 */
 	$(document).ready(function(){
-		console.log('출,퇴근(개인별) 리스트 출력')
-		 $('#btn_day').click(function(){
-		    	var WORK_DT_format = $('#WORK_DT').val();
-		    	var END_DT_format = $('#END_DT').val();
-		    	
-		    	var WORK_DT = WORK_DT_format.substr(0,4)+WORK_DT_format.substr(5,2)+WORK_DT_format.substr(8,2);
-		    	var END_DT = END_DT_format.substr(0,4)+END_DT_format.substr(5,2)+END_DT_format.substr(8,2);
-			    	
-		    	
-		    	 $.ajax({
-		            url:'/kuntae/recordSingleDateSearchProcess',
-		            type:'GET',
-		            dataType:'json',	           
-		         	data : {WORK_DT:WORK_DT, END_DT:END_DT},
-		            success:function(data){
-		            	console.log('날짜 검색 ');
-		                $('#list').empty();
-		                $(data).each(function(index,item){ //each = foreach (반복문)
-		                    $('#list').append('<tr>');
-		                    $('#list').append('<td>'+item.kor_NM+'</td>');
-		                   	/*  $('#list').append('<td>'+item.emp_NO+'</td>'); 
-		                    $('#list').append('<td>'+item.work_DT.substring(0,6)+'</td>');
-		                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');         
-		                    $('#list').append('<td>'+item.end_DT.substring(0,6)+'</td>');
-		                    $('#list').append('<td>'+item.end_DT.substring(6,8)+'</td>');
-		                    $('#list').append('<td>'+item.start_TIME+'</td>'); 
-		                    $('#list').append('<td>'+item.end_TIME+'</td>');
-		                    $('#list').append('</tr>'); 
-		                });                   
-		            }
-		        });
-		    });
-	 	}); 
-	 	  */
+		console.log('전체  검색')
+		$("#btn_search").click(function(){
+			let work_dt_format = $('#WORK_DT').val();
+			let end_dt_format = $('#END_DT').val();
+			let EMP_NO = $('#EMP_NO').val();
+	
+			let WORK_DT = work_dt_format.substr(0,4)+work_dt_format.substr(5,2)+work_dt_format.substr(8,2);
+			let END_DT = end_dt_format.substr(0,4)+end_dt_format.substr(5,2)+end_dt_format.substr(8,2);
+			console.log("날짜=>" + WORK_DT + END_DT +"사원번호=>" + EMP_NO);		
+			
+		$.ajax({
+			url:'/kuntae/recordTotalSearch',
+            type:'GET',
+            dataType:'json',
+			data:{WORK_DT:WORK_DT,END_DT:END_DT,EMP_NO:EMP_NO},
+			success : function(data) {
+            	console.log('날짜 검색 쿼리 성공!');
+                $('#list').empty();
+                $(data).each(function(index,item){ //each = foreach (반복문)
+                    $('#list').append('<tr>');
+                    $('#list').append('<td>'+item.dept_NM+'</td>');
+                    $('#list').append('<td>'+item.jikgup_NM+'</td>'); 
+                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
+                    $('#list').append('<td>'+item.work_DT.substring(0,4)+'</td>');
+                    $('#list').append('<td>'+item.work_DT.substring(4,6)+'</td>');
+                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
+                    $('#list').append('<td>'+item.start_TIME+'</td>');
+                    $('#list').append('<td>'+item.end_TIME+'</td>');
+                    $('#list').append('<td>'+item.end_DT+'</td>');
+                    $('#list').append('</tr>'); 
 
-/* 	 	 function searchResult(WORK_DT, END_DT){
-	 			
-	 			console.log("날짜별 검색 시작");	
-	 			$.ajax({
-	 				url:'/kuntae/recordSingleDateSearchProcess',
-	 				data:{WORK_DT:WORK_DT,END_DT:END_DT},	
-	 			});	
-	 		};
-	 	  
-	 	  $(document).ready(function() {	
-	 		
-	 		$("#btn-search").click(function(){		
-	 			let work_date_format = $('#WORK_DT').val();
-	 			let end_date_format = $('#END_DT').val();
-	 			
-	 			let WORK_DT = work_date_format.substr(0,4)+work_date_format.substr(5,2)+work_date_format.substr(8,2);
-	 			let END_DT = end_date_format.substr(0,4)+end_date_format.substr(5,2)+end_date_format.substr(8,2);
-	 			
-	 			console.log(WORK_DT+"날짜야 나오니?"+END_DT);
-	 			searchResult(WORK_DT,END_DT);		
-	 		});
-	 */
+                });                   			
+			}
+		});
+	});
+});
 	
 	
-</script> 
+	</script> 
 	
 	</head>
 	</th:block>
 	<th:block layout:fragment="customBody">
 
-	          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>근태관리 <small><a href="/kuntae/recordTotal">출퇴근기록부(개인별)</a></small></h3>
-              </div>
+<font color="black">
+	<div class="col-md-9 col-xs-12" style="color:black;">
+        <div class="page-title">
+			<div class="title_left">
+				<h2><b>4. 근태 관리</b></h2>
+				<h5></h5>
+				<h5><font color= "gray"><b>4.3 출퇴근 기록부(개인별)&nbsp;</b></font></h5>
+			</div>
+		</div>
+    </div>
+	<div class="">
 
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
-      
-   
+<div class="x_panel" style=""> 	
+    <div class="x_title">
+        <h2>기본내역 </h2>
+        	<!-- 검색 버튼 -->
+			<div class="x_content" style="text-align: right">
+				<button type="button" id="btn_search" class="btn" style="color:black">전체검색</button>
+			</div>
+	   <!-- 박스내의 상단 -->
+	<div class="clearfix"></div>
+</div>
 
-           
-	
-<div class="clearfix"></div>
+
+
+
+ <div class="clearfix"></div>
+ 	<form action="/kuntae/recordTotalSearch">
 		<div class="col-md-12 col-sm-12 col-xs-12">
-			<form>
+			<form action="/kuntae/recordDateSearchProcess">
 				<table class="table">
 					<tbody>
-
-
+					
+						<tr>
+							<th>시작일</th>
+							<td>
+								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+									<input type="date" id="WORK_DT" name="WORK_DT">
+								</div>
+							</td>
+							
+							<th>끝난일</th>
+							<td>
+								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+									<input type="date" id="END_DT" name="END_DT">
+								</div>
+							</td>
+							
+							
+						</tr>
+					</form>
 						<tr>
 							<th>사원번호</th>
-							
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
 									<input type="text" id="EMP_NO" name="EMP_NO">
-                   						<button type="button" id="btn_list"><i class="fa fa-search"></i></button>
+									<button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
 								</div>
 							</td>
-		
-                   						
-							<th>이름</th>
-							<td>
+
+							<th></th>
+							 <td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" id="KOR_NM" name="KOR_NM">
-									<button type="button" id="btn_name"><i class="fa fa-search"></i></button>	
+									<!-- <input type="text" class="form-control"> -->
 								</div>
-							</td>
+							</td> 
 						</tr>
-					
+
 					</tbody>
 				</table>
-				
-				</form>
 				</div>
 				</div>
-	   <div class="x_panel">
-				
-		<div class="x_content">
-
-			<div class="col-md-12 col-sm-6 col-xs-12" style="width: 100%">
-			
-					<br>
-					<div class="x_content">
-						<form action="/kuntae/recordSingleDateSearchProcess">
-							<table class="table table-bordered">
-								<thead>
-									<tr style="font-size: 15px">
-										
-										<th>시작년월 &emsp;&emsp;&emsp; 
-										<input type="date" id="WORK_DT" name="WORK_DT"> &emsp;&emsp;										
-										</th>
-										<th>마감년월 &emsp;&emsp;&emsp; 
-										<input type="date" id="END_DT" name="END_DT"> &emsp;&emsp;										
-											<button id="btn_day" class="btn" style="color:black">검색</button>
-										</th>
-									</tr>									
-								</thead>
-							</table>
-						</form>
-						
-						
-					</div>
-				
-			</div>        
-              
-              
-            </div>	
+			</form>
 	
 				
 				
@@ -249,22 +229,20 @@
                   </div>
                   <div class="x_content">
 					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
-						<table class="table">
-									<thead>
-										<tr class="headings">
-											<!-- <th class="column-title" rowspan="2">직급</th> -->
-											<th class="column-title" rowspan="2">성명</th>
-											<th class="column-title" rowspan="2">년월</th>
-											<th class="column-title" rowspan="2">일자</th>
-											<th class="column-title" rowspan="2">출근</th>
-											<th class="column-title" rowspan="2">퇴근</th>
-											<!-- <th class="column-title" colspan="1">연차</th>
-											<th class="column-title" colspan="1">PJT</th>	 -->													
-										</tr>
-										<!--  <tr>
-											<th>휴가</th>
-											<th>일자</th>				
-										</tr>  -->
+						 <table class="table table-striped jambo_table bulk_action">
+                      <thead>
+                        <tr>
+                          <th>부서</th>
+                          <th>직급</th>
+                          <th>성명</th>
+                          <th>년</th>
+                          <th>월</th>
+                          <th>일</th>
+                          <th>출근</th>
+                          <th>퇴근</th>  
+                          <th>퇴근날짜</th>                                                  
+
+                        </tr>
 									</thead>
 						
 									<!-- <tbody id="list">

@@ -26,6 +26,9 @@ public interface WorkTimeMapper {
 	// 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력
 	List<WorkTimeSingleList> getRecordTotalList();
 	
+	// 출 퇴근 기록부(Total) 전체 검색 
+ 	List<WorkTimeSingleList> getRecordTotalSearch(String WORK_DT, String END_DT, String EMP_NO);
+
 
 
 
