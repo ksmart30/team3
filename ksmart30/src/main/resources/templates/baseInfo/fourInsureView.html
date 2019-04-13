@@ -54,21 +54,28 @@
 									return false;
 							this.value = number_format(val);
 					});
+					$("input#INSURE_PAY3").on("keyup", function() {
+							let val = String(this.value.replace(/[^0-9]/g, ""));
+							if(val.length < 1)
+									return false;
+							this.value = number_format(val);
+					});
 			});
 			/* 결과값 통화형식 변환 */
 			function numberWithCommas(x) {
     		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			}
-			</script>
+		</script>
 
 		<script>
 		$(document).ready(function(){	
+			// 1. 국민연금 실행
 			$('#insureKukminCal').click(function(){
 				let INSURE_PAY1 = $('#INSURE_PAY1').val();
 				console.log('입력된 월 급여 : ' + INSURE_PAY1);
 				$.ajax({
 					url:'/baseInfo/fourInsureKukminProcess', 	//호출할 메소드 호출 
-					type:'GET',																//송신 POST 방식
+					type:'GET',																//송신 GET 방식
 					data:{INSURE_PAY:INSURE_PAY1},
 					success:function(data){
 						console.log(data);											// 리턴받은 국민연금 계산값
@@ -79,15 +86,16 @@
 					}
 				});
 			});
+			// 2. 건강보험 실행
 			$('#insureKeungangCal').click(function(){
 				let INSURE_PAY2 = $('#INSURE_PAY2').val();
 				console.log('입력된 월 급여 : ' + INSURE_PAY2);
 				$.ajax({
 					url:'/baseInfo/fourInsureKeungangProcess', 	//호출할 메소드 호출 
-					type:'GET',																//송신 POST 방식
+					type:'GET',																	//송신 GET 방식
 					data:{INSURE_PAY:INSURE_PAY2},
 					success:function(data){
-						console.log(data);											// 리턴받은 국민연금 계산값
+						console.log(data);												// 리턴받은 건강보험 계산값
 						// 계산 값을 화면에 보여준다.
 						$('#INSURE_TOTAL2').val(numberWithCommas(data.insure_TOTAL1));
 						$('#INSURE_EMP_CAL2').val(numberWithCommas(data.insure_EMP_CAL1));
@@ -98,6 +106,82 @@
 					}
 				});
 			});
+			// 3. 고용보험 실행
+			$('#insureGoyongCal').click(function(){
+				let INSURE_PAY3 = $('#INSURE_PAY3').val();
+				let INSURE_NO = $("input[type=radio][name=INSURE_NO]:checked").val()
+				console.log('입력된 월 급여 : ' + INSURE_PAY3);
+				console.log('선택된 고용보험 No : ' + INSURE_NO);
+				$.ajax({
+					url:'/baseInfo/fourInsureGoyongProcess', 	//호출할 메소드 호출 
+					type:'GET',																//송신 GET 방식
+					data:{INSURE_PAY:INSURE_PAY3,INSURE_NO:INSURE_NO},
+					success:function(data){
+						console.log(data);											// 리턴받은 고용보험 계산값
+						// 계산 값을 화면에 보여준다.
+						$('#INSURE_TOTAL4').val(numberWithCommas(data.insure_TOTAL1));
+						$('#INSURE_EMP_CAL4').val(numberWithCommas(data.insure_EMP_CAL1));
+						$('#INSURE_COM_CAL4').val(numberWithCommas(data.insure_COM_CAL1));
+					}
+				});
+			});
+			// 4 산재보험 실행
+			// 4.1 산재보험 업종 요율(대분류) 가져오기
+			$('#Sanje').click(function(){
+				console.log('산재보험/업종 요율 (대분류) 가져오기');
+				$.ajax({
+					url:'/baseInfo/fourInsureSanjeListProcess', //호출할 메소드 호출 
+					type:'GET',																	//송신 POST 방식
+					success:function(data){
+						console.log(data);											// 리턴받은 국민연금 계산값
+						$('#list').append('<option>');
+
+						$('#list').append('</option>');	
+					}
+				});
+			});
+			// 4.2 산재보험 라디오체크 확인
+			$('input[name="INSURE_CHECK1"]:radio').change(function(){
+				let radioValue = this.value;
+				console.log("임금채권 부담금비율 체크! :" + radioValue);
+				if(radioValue == 'YES') {
+					$('#INSURE_CHECK1').text('0.6');
+					$('#INSURE_CHECK1').val('0.6');
+					sanjePerCal();
+				}else if(radioValue == 'NO') {
+					$('#INSURE_CHECK1').text('0');
+					$('#INSURE_CHECK1').val('0');
+					sanjePerCal();
+				}
+			});
+			$('input[name="INSURE_CHECK2"]:radio').change(function(){
+				let radioValue = this.value;
+				console.log("석면피해구제분담금 체크! :" + radioValue);
+				if(radioValue == 'YES') {
+					$('#INSURE_CHECK2').text('0.03');
+					$('#INSURE_CHECK2').val('0.03');
+					sanjePerCal();
+				}else if(radioValue == 'NO') {
+					$('#INSURE_CHECK2').text('0');
+					$('#INSURE_CHECK2').val('0');
+					sanjePerCal();
+				}
+			});
+			// 4.3 산재보험 요율 실시간 계산을 위한 함수
+			function sanjePerCal() {
+				let val2 = $('#INSURE_SANJE_RATE1_HIDDEN').text();	// 업종요율
+				console.log("2 : " + val2);
+				let val3 = $('#INSURE_SANJE_RATE2').text();	// 출퇴근재해요율 (1.5)
+				console.log("3 : " + val3);
+				let val4 = $('#INSURE_CHECK1').text();	// 임금채권부담금비율 (해당:0.6 비해당:0)
+				console.log("4 : " + val4);
+				let val5 = $('#INSURE_CHECK2').text();	// 석면피해구제분담금 (해당:0.03 비해당 0)
+				console.log("5 : " + val5);
+				let totalVal = parseFloat(val2) + parseFloat(val3) + parseFloat(val4) + parseFloat(val5);	// 산재보험료율 (합계)
+				console.log("산재보험료율 : " + totalVal);
+				
+				$('#INSURE_SANJE_TOTAL_RATE').val(totalVal);	// 산재보험료율을 값 대입(출력)
+			};
 		});
 		</script>
 		<th:block th:include="layout/customHead"></th:block>
@@ -124,16 +208,16 @@
 				<div class="x_panel" style="color: black;">
 					<div class="x_content">
 
-						<!-- Tab 설정 -->
+						<!-- Tab 설정 시작 -->
 						<div class="" data-example-id="togglable-tabs">
 							<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
 								<li role="presentation" class="active"><a href="#tab_content1" role="tab" data-toggle="tab">국민연금</a></li>
 								<li role="presentation" class=""><a href="#tab_content2" role="tab" data-toggle="tab">건강보험</a></li>	
 								<li role="presentation" class=""><a href="#tab_content3" role="tab" data-toggle="tab">고용보험</a></li>
-								<li role="presentation" class=""><a href="#tab_content4" role="tab" data-toggle="tab">산재보험</a></li>
+								<li role="presentation" class=""><a href="#tab_content4" role="tab" data-toggle="tab" id="Sanje">산재보험</a></li>
 							</ul>
 
-							<!-- Tab 내용 -->
+							<!-- Tab 내용 시작-->
 							<div id="myTabContent" class="tab-content">
 								<!-- 1. 국민연금 -->
 								<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab" style="color:black;">
@@ -269,7 +353,7 @@
 															<tr>
 																<td>구분</td>
 																<td>기준액</td>
-																<td>보험로율</td>
+																<td>보험료율</td>
 																<td>근로자</td>
 																<td>사업주</td>
 															</tr>
@@ -330,25 +414,277 @@
 								<div role="tabpanel" class="tab-pane fade in" id="tab_content3" aria-labelledby="tab">				
 									<div class="col-md-12 col-sm-6 col-xs-12">
 										<div class="x_panel">
-											<form>
-												<h5 style="color:black;">⊙ 고용보험</h5>
-											</form>																							
+											<div class="x_content">
+												<form>
+													<h3 style="color:black;">⊙ 고용보험</h3>
+													<h5 style="color:black;">2019년 기준 (계산내용은 모의계산이기 때문에 실제와 다를 수 있습니다.)</h5>
+													<br>
+														• 월 급여 &nbsp;
+														<input style="text-align: end" type="text" name="INSURE_PAY3" id="INSURE_PAY3">
+														<button type="button" class="btn" style="color:black" name="insureGoyongCal" id="insureGoyongCal">계산</button>
+														<button type="reset" class="btn" style="color:black" name="clear">초기화</button>
+													<br>
+														• 근로자수 &nbsp;
+														<input type="radio" name="INSURE_NO" id="INSURE_NO" value="21" checked>
+															<span class="up">150인 미만</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+														<input type="radio" name="INSURE_NO" id="INSURE_NO" value="22">
+															<span class="up">150이상 (우선지원대상기업)</span>
+													<br> <!-- 여백처리 -->
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+														<input type="radio" name="INSURE_NO" id="INSURE_NO" value="24">
+															<span class="up">1,000인 이상</span>&nbsp;&nbsp;
+														<input type="radio" name="INSURE_NO" id="INSURE_NO" value="23">
+															<span class="up">150인 이상 1,000인 미만</span>
+													<br>
+													<br>
+													<table style="width:70%; text-align: center"class="table table-bordered jambo_table bulk_action">
+														<thead>
+															<tr>
+																<td>총액</td>
+																<td>근로자 부담금<br>(실업급여 부담금)</td>
+																<td>사업주 부담금<br>(실업급여+고용안정직능개발 부담금)</td>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_TOTAL4" id="INSURE_TOTAL4" readonly>원
+																</td>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_EMP_CAL4" id="INSURE_EMP_CAL4" readonly>원
+																</td>
+																<td>
+																	<input style="width:80%; text-align: end" type="text" name="INSURE_COM_CAL4" id="INSURE_COM_CAL4" readonly>원
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<br>
+													<table style="width:70%; text-align: center" class="table table-bordered jambo_table bulk_action">
+														<thead>
+															<tr>
+																<td colspan="2">구분</td>
+																<td>근로자</td>
+																<td>사업주</td>
+															</tr>
+														</thead>
+														<tbody>
+															<tr> <!-- 1행 (body) -->
+																<td style="width:20%;" colspan="2">
+																	실여급여 (2013.7.1 기준)
+																</td>
+																<td style="width:20%;">
+																	0.65%
+																</td>
+																<td style="width:20%;">
+																	0.65%
+																</td>
+															</tr>
+															<tr>
+																<td style="width:25%; text-align: center" rowspan="5">
+																	<br><br>
+																	&nbsp;&nbsp;고용안정,
+																	<br>
+																	&nbsp;직업능력
+																	<br>
+																	개발사업
+																</td>
+																<td style="display: none"></td>
+																<td style="display: none"></td>
+																<td style="display: none"></td>
+															</tr>
+															<tr> <!-- 2행 (body) -->
+																<td style="width:35%;">
+																	150인 미만기업
+																</td>
+																<td style="width:20%;">
+																	-
+																</td>
+																<td style="width:20%;">
+																	0.25%
+																</td>
+															</tr>
+															<tr> <!-- 3행 (body) -->
+																<td style="width:35%;">
+																	150이상 (우선지원대상기업)
+																</td>
+																<td style="width:20%;">
+																	-
+																</td>
+																<td style="width:20%;">
+																	0.45%
+																</td>
+															</tr>
+															<tr> <!-- 4행 (body) -->
+																<td style="width:35%;">
+																	150인 이상 1,000인 미만 기업
+																</td>
+																<td style="width:20%;">
+																	-
+																</td>
+																<td style="width:20%;">
+																	0.65%
+																</td>
+															</tr>
+															<tr> <!-- 5행 (body) -->
+																<td style="width:35%;">
+																	1,000인 이상기업, 국가 지방자치단체
+																</td>
+																<td style="width:20%;">
+																	-
+																</td>
+																<td style="width:20%;">
+																	0.85%
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<div>
+														&nbsp;&nbsp; • 우선지원대상기업이란? <br>
+														&nbsp;&nbsp;&nbsp;&nbsp; 제조업 500인 이하/ 광업 300인 이하/ 건설업 300인 이하/ 운수. 창고. 통신업 300인 이하/ 기타 100인 이하
+													</div>
+													<br>
+														&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://www.nodong.or.kr/sangdam/tax/ei_pop.html" onclick="window.open(this.href, '_blanck', 'width=700, height=800'); return false">월급여(임금) 총액이란?</a>
+												</form>																							
+											</div>
 										</div>
 									</div>
 								</div>
 								<!-- 4. 산재보험 -->
 								<div role="tabpanel" class="tab-pane fade in" id="tab_content4" aria-labelledby="tab">				
-									<div class="col-md-12 col-sm-6 col-xs-12">
+									<div class="col-md-12 col-sm-12 col-xs-12">
 										<div class="x_panel">
-											<form>
-												<h5 style="color:black;">⊙ 산재보험</h5>
-											</form>																							
-										</div>
+											<div class="x_content">
+												<form style="color:black;">
+													<h3 style="color:black;">⊙ 산재보험</h3>
+													<h5 style="color:black;">2019년 기준 (계산내용은 모의계산이기 때문에 실제와 다를 수 있습니다.)</h5>
+														• 월 급여 
+															<input style="text-align: end" type="text" name="INSURE_PAY1" id="INSURE_PAY1">
+															<button type="button" class="btn" style="color:black" name="insureKukminCal" id="insureKukminCal">계산</button>
+															<button type="reset" class="btn" style="color:black" name="clear">초기화</button>
+														<br><br>
+															<table style="width:70%; text-align: center"class="table table-bordered jambo_table bulk_action">
+																<thead>
+																	<tr>
+																		<td colspan="3">구분</td>
+																		<td>요율</td>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td rowspan="5">
+																			<br><br>산업요율
+																		</td>
+																		<td style="display: none"></td>
+																		<td style="display: none"></td>
+																	</tr>
+																	<tr>
+																		<td>업종 요율 (대분류)</td>
+																		<td>
+																			<select id="INSURE_SAN_GUBUN1"></select>
+																		</td>
+																		<td style="display: none" id="INSURE_SANJE_RATE1_HIDDEN" th:text="0"></td>
+																		<td rowspan="3"><br>
+																			<input type="text" style="text-align: center" id="INSURE_SANJE_RATE1" value="0" readonly>
+																		</td>
+																	</tr>
+																	<tr>
+																	</tr>
+																	<tr>
+																		<td>업종 요율 (중분류)</td>
+																		<td>
+																			<select id="INSURE_SAN_GUBUN2"></select>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>출퇴근 재해요율</td>
+																		<td>전업종 동일요율 적용</td>
+																		<td th:text="1.5" id="INSURE_SANJE_RATE2"></td>
+																	</tr>
+																	<tr>
+																		<td colspan="2">
+																			임금채권부담금비율 &nbsp;
+																			<button>
+																				<a href="https://www.kcomwel.or.kr/kcomwel/paym/insu/insuPop1.jsp" onclick="window.open(this.href, '_blanck', 'width=700, height=800'); return false">내용확인</a> 
+																			</button>
+																		</td>
+																		<td>
+																			<input type="radio" value="YES" name="INSURE_CHECK1" checked>해당 &nbsp;
+																			<input type="radio" value="NO" name="INSURE_CHECK1">비해당
+																		</td>
+																		<td th:text="0.6" value="0.6" id="INSURE_CHECK1"></td>
+																	</tr>
+																	<tr>
+																		<td colspan="2">
+																			석면피해구제분담금 &nbsp;
+																			<button>
+																				<a href="https://www.kcomwel.or.kr/kcomwel/paym/insu/insuPop2.jsp" onclick="window.open(this.href, '_blanck', 'width=700, height=800'); return false">내용확인</a> 
+																			</button>
+																		</td>
+																		<td>
+																			<input type="radio" value="YES" name="INSURE_CHECK2" checked>해당 &nbsp;
+																			<input type="radio" value="NO" name="INSURE_CHECK2">비해당
+																		</td>
+																		<td th:text="0.03" value="0.03" id="INSURE_CHECK2"></td>
+																	</tr>
+																	<tr>
+																		<td colspan="3">산재보험료율</td>
+																		<td>
+																			<input type="text" style="text-align: center" name="INSURE_SANJE_TOTAL_RATE" id="INSURE_SANJE_TOTAL_RATE" value="2.13" readonly>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td colspan="3">총 산재보험료</td>
+																		<td>
+																			<input type="text" style="width:80%; text-align: end" id="INSURE_TOTAL5" readonly>원
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														<div>
+																보험료 식: 보수총액(월평균보수) × 보험료율 ÷ 1,000<br>
+																산재보험료율은 천분위로 표시됩니다.
+														</div>
+															<br>
+														<div style="color:red;">
+																※ 산재보험 가입사업장은 "우리회사 보험관리번호조회하기"에서 업종을 확인할 수 있습니다.<br>
+																※ 개별실적요율(예방요율) 혹은 임금채권부담금경감 사업장인 경우 산재보험요율이 달라질 수 있습니다.
+														</div>
+															<br><br>
+														<div>
+															1. 산재보험로율<br>
+															‘사업종류별 산재보험료율 및 사업종류 예시’를 기준으로 적용하고 있으며 이는 매년 6월 30일 현재,<br>
+															과거 3년간의 보수총액에 대한 보험급여 총액의 비율을 기초로 재해 발생의 위험성에 따라 분류된<br>
+															사업종류별 보험료율을 세분화하여 동년 12월 31일 경에 고시하여 다음 년도에 적용하고 있습니다.
+														</div>
+															<br>
+														<div style="color:red;">
+															2. 산재보험료율 결정은 근로복지공단에서 사업장성립신고서가 접수된 후 관할지사 담당자가 사업장실태확인 후 적용하며 처리기한은 5일 정도 소요됩니다.
+														</div>
+															<br>
+														<div>
+															3. 산재보험료율 적용의 기본원칙<br>
+															- 하나의 적용사업장에 대하여는 하나의 보험료율을 적용한다.<br>
+															- 하나의 사업장 안에서 보험료율이 다른 2종이상의 사업이 행해지는 경우에는 다음 순서에 따라 주된 사업을 결정하여 적용한다.<br>
+															① 근로자수가 많은 사업<br>
+															② 근로자수가 같거나 그 수를 파악할 수 없는 경우에는 보수총액이 많은 사업<br>
+															③ 상기 방법에 의하여 주된 사업을 결정할 수 없는 경우에는 매출액이 많은 제품을 제조하거나 서비스를 제공하는 사업
+														</div>
+															<br>
+														<div>
+															4. 산재보험료율 문의: 근로복지공단 1588-0075
+														</div>
+													<br>
+												</form>
+											</div>
+										</div>														
 									</div>
 								</div>
 							</div>
+							<!-- Tab 내용 종료-->
 						</div>
-
+						<!-- Tab 설정 종료 -->
 					</div>
 				</div>
 			</div>

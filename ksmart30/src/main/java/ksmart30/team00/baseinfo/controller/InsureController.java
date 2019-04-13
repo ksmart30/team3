@@ -39,7 +39,7 @@ public class InsureController {
 
 	// 10.2.9.3 4대보험 요율 게산처리 (건강보험)
 	@GetMapping("/baseInfo/fourInsureKeungangProcess")
-	public @ResponseBody Insure fourInsureKeungangProcess(@RequestParam(value="INSURE_PAY") String INSURE_PAY){
+	public @ResponseBody Insure fourInsureKeungangProcess(@RequestParam(value="INSURE_PAY") String INSURE_PAY) {
 		System.out.println("(C) 10.2.9.3 4대보험 요율 계산처리 (건강보험) fourInsureKeungangProcess()");
 		// 1. 월 급여(문자열)을 정수형으로 변환
 		Insure insure = new Insure();
@@ -52,5 +52,25 @@ public class InsureController {
 		Insure Keungang = insureService.getFourInsureKeungang(insure);
 		// 4. 리턴
 		return Keungang;
+	}
+
+	// 10.2.9.4 4대보험 요율 계산처리 (고용보험)
+	@GetMapping("/baseInfo/fourInsureGoyongProcess")
+	public @ResponseBody Insure fourInsureGoyongProcess(@RequestParam(value="INSURE_PAY") String INSURE_PAY, @RequestParam(value="INSURE_NO") String INSURE_NO) {
+		System.out.println("(C) 10.2.9.4 4대보험 요율 계산처리 (고용보험) fourInsureGoyongProcess()");
+		// 1. 월 급여(문자열)을 정수형으로 변환
+		Insure insure = new Insure();
+			// 1.1 문자열 콤마(,)삭제
+			int replaceInsurePay = Integer.parseInt(INSURE_PAY.replace(",",""));
+			System.out.println("입력 받은 월 급여 : " + replaceInsurePay);
+		// 2. domain에 월 급여와 보험 No를 Setting
+			// 2.1 월급여 Setting
+			insure.setINSURE_PAY(replaceInsurePay);
+			// 2.2 보험 No Setting
+			insure.setINSURE_NO(INSURE_NO);
+		// 3. Service 호출 (리턴값 : Service에서 계산처리된 값)
+		Insure Goyong = insureService.getFourInsureGoyong(insure);
+		// 4. 리턴
+		return Goyong;
 	}
 }

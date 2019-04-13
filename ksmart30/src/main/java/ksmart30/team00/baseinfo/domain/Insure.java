@@ -16,12 +16,12 @@ public class Insure {
     private String INSURE_NOTE;         // 기타
     
     private int INSURE_PAY;             // 월 급여
-	private int INSURE_TOTAL1;           // 전체 계산
-	private int INSURE_TOTAL2;           // 전체 계산(부)
-	private int INSURE_EMP_CAL1;         // 근로자 계산
-	private int INSURE_EMP_CAL2;         // 근로자 계산(부)
-	private int INSURE_COM_CAL1;         // 사업주 계산
-	private int INSURE_COM_CAL2;         // 사업주 계산(부)
+	private int INSURE_TOTAL1;          // 전체 계산
+	private int INSURE_TOTAL2;          // 전체 계산(부)
+	private int INSURE_EMP_CAL1;        // 근로자 계산
+	private int INSURE_EMP_CAL2;        // 근로자 계산(부)
+	private int INSURE_COM_CAL1;        // 사업주 계산
+	private int INSURE_COM_CAL2;        // 사업주 계산(부)
      
 	public int getINSURE_PAY() {
 		return INSURE_PAY;
