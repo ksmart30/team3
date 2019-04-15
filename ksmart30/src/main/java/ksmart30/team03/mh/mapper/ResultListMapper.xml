@@ -8,20 +8,20 @@
 		<select id="getresultListView"
 		resultType="ksmart30.team03.mh.domain.ResultPersonList">
 			SELECT TOP 25
-				A.EMP_NO,
-				ISNUlL(B.LEVEL2_NM,'-') AS JIKGUP_CD,
-				ISNULL(C.KOR_NM,'-') AS KOR_NM,
-				ISNULL(D.PJT_NM,'-') AS PJT_CD,
-				A.D_01,D_02,D_03,D_04,D_05,D_06,D_07,D_08,D_09,D_10,
-				D_11,D_12,D_13,D_14,D_15,D_16,D_17,D_18,D_19,D_20,
-				D_21,D_22,D_23,D_24,D_25,D_26,D_27,D_28,D_29,D_30,D_31
+				 A.EMP_NO,
+				 ISNUlL(B.LEVEL2_NM,'-') AS JIKGUP_CD,
+				 ISNULL(C.KOR_NM,'-') AS KOR_NM,
+				 ISNULL(D.PJT_NM,'-') AS PJT_CD,
+				 A.D_01,D_02,D_03,D_04,D_05,D_06,D_07,D_08,D_09,D_10,
+				 D_11,D_12,D_13,D_14,D_15,D_16,D_17,D_18,D_19,D_20,
+				 D_21,D_22,D_23,D_24,D_25,D_26,D_27,D_28,D_29,D_30,D_31
 			FROM T_PM1070 A,
-				T_SC9100 B,
-				T_HM1000 C,
-				T_SM3000_2016 D
-				WHERE((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB= 'H' ))
-				AND(A.PJT_CD *= D.PJT_CD)
-				AND((A.EMP_NO *= C.EMP_NO))
+				 T_SC9100 B,
+				 T_HM1000 C,
+			   	 T_SM3000 D
+				 WHERE((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB= 'H' ))
+				 AND(A.PJT_CD *= D.PJT_CD)
+				 AND((A.EMP_NO *= C.EMP_NO))
 		</select>
 
 </mapper>

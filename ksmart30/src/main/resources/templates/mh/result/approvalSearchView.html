@@ -7,7 +7,7 @@
 	<title>M/H 실적 승인 화면</title>
 	<th:block th:include="layout/customHead"></th:block>
 	<head>
-	<script>
+	<!-- <script>
 	$(document).ready(function(){
 		 console.log('직원list 출력해보자');	
 		//검색버튼 클릭 시 전체 직원조회
@@ -53,7 +53,8 @@
 		
 
 	});
-	</script>
+	</script> -->
+
 	</head>
 </th:block>
 <th:block layout:fragment="customBody">
@@ -120,10 +121,8 @@
 										<div class="x_content" style="text-align: right">
 										<label>	
 																												
-										<input type="date" name="WORK_DT" id="WORK_DT">
-										<!-- ~
-										<input type="date" name="end_date" id="end_date"> -->
-										<button type="button" class="btn" style="color:black" id="btn_resultdate">날짜검색</button>									
+										<input type="date" name="WORK_DT" id="WORK_DT">										
+										<button class="btn" style="color:black" id="btn_resultdate">날짜검색</button>									
 										</label>
 									</div>
 								</div>
