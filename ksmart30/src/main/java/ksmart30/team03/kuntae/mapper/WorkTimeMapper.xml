@@ -21,7 +21,7 @@
 	<select id="getRecordSingleNoSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
-		SELECT 
+		SELECT TOP 100 
 			a.KOR_NM,
 			a.EMP_NO,
 			b.WORK_DT,
@@ -37,7 +37,7 @@
 	<select id="getRecordSingleNameSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
-		SELECT 
+		SELECT TOP 100
 			a.KOR_NM,
 			a.EMP_NO,
 			b.WORK_DT,
@@ -53,6 +53,7 @@
 	<select id="getRecordSingleDateSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
+		<!-- 1 -->
 		<!-- SELECT 
 			a.KOR_NM,
 			a.EMP_NO,
@@ -65,7 +66,9 @@
 		on b.EMP_NO=a.EMP_NO 
 		 WHERE b.WORK_DT ='20120305' AND b.END_DT='20120305'
 		WHERE b.WORK_DT <![CDATA[>=]]> #{WORK_DT} and b.END_DT <![CDATA[<=]]> #{END_DT}; -->
-		SELECT a.EMP_NO,
+		
+		<!-- 2 -->
+		<!-- SELECT TOP 100 a.EMP_NO,
 				 a.KOR_NM,
 				 b.LEVEL2_NM AS JIKGUP_NM,
 				 DEPT_NM,
@@ -78,15 +81,30 @@
 		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
-	 WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.WORK_DT <![CDATA[>=]]> #{WORK_DT} and e.END_DT <![CDATA[<=]]> #{END_DT}
-
+	 WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.WORK_DT <![CDATA[>=]]> #{WORK_DT} and e.END_DT <![CDATA[<=]]> #{END_DT} -->
+	 <!-- 3 -->
+	SELECT TOP 200 a.EMP_NO,
+				 a.KOR_NM,
+				 b.LEVEL2_NM AS JIKGUP_NM,
+				 DEPT_NM,
+				 e.WORK_DT,				 
+				(CASE WHEN e.start_time IS NULL THEN '출근미입력' WHEN e.START_TIME='' THEN '출근미입력' ELSE e.START_TIME END ) START_TIME,
+				(CASE WHEN e.END_TIME IS NULL THEN '출근미입력' WHEN e.END_TIME='' THEN '퇴근미입력' ELSE e.END_TIME END) END_TIME,
+				(CASE WHEN e.END_DT IS NULL THEN '퇴근미입력' when e.END_DT= '' THEN '퇴근미입력' else e.END_DT end) END_DT				
+		FROM T_HM1000 a 
+		JOIN T_SC9100 b ON a.JIKGUP_CD=b.LEVEL2_CD
+		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
+		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
+		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt <![CDATA[>=]]> #{WORK_DT} AND e.end_dt <![CDATA[<=]]> #{END_DT} 
+		<!-- WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt >= '201903' AND e.end_dt <= '201905' -->
 	</select>
 	
 	<!-- 출,퇴근 기록부(Total) 사원번호 검색 -->
 	<select id="getRecordTotalNoSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
-		SELECT a.EMP_NO,
+		SELECT TOP 100 a.EMP_NO,
 				 a.KOR_NM,
 				 b.LEVEL2_NM AS JIKGUP_NM,
 				 DEPT_NM,
@@ -127,7 +145,8 @@
 	<select id="getRecordTotalSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
-					SELECT a.EMP_NO,
+		<!-- 1 -->
+		<!-- SELECT a.EMP_NO,
 				 a.KOR_NM,
 				 b.LEVEL2_NM AS JIKGUP_NM,
 				 DEPT_NM,
@@ -141,8 +160,27 @@
 			JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 			JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
 
-		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120'AND e.WORK_DT<![CDATA[>=]]> #{WORK_DT} AND e.END_DT<![CDATA[<=]]> #{END_DT} AND a.EMP_NO= #{EMP_NO}
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120'AND e.WORK_DT<![CDATA[>=]]> #{WORK_DT} AND e.END_DT<![CDATA[<=]]> #{END_DT} AND a.EMP_NO= #{EMP_NO} -->
+		<!-- 2 -->
+		SELECT TOP 200 a.EMP_NO,
+				 a.KOR_NM,
+				 b.LEVEL2_NM AS JIKGUP_NM,
+				 DEPT_NM,
+				 e.WORK_DT,				 
+				 e.START_TIME,
+				(CASE WHEN e.END_TIME IS NULL THEN '출근미입력' WHEN e.END_TIME='' THEN '퇴근미입력' ELSE e.END_TIME END) END_TIME,
+				(CASE WHEN e.END_DT IS NULL THEN '퇴근미입력' when e.END_DT= '' then '퇴근미입력' else e.END_DT end) END_DT				
+		FROM T_HM1000 a 
+		JOIN T_SC9100 b ON a.JIKGUP_CD=b.LEVEL2_CD
+		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
+		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
+		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt <![CDATA[>=]]> #{WORK_DT} AND e.end_dt <![CDATA[<=]]> #{END_DT} AND a.emp_no= #{EMP_NO} 
+		
 	</select>
+	
+	<!-- 전체검색 2 -->
+	
 	
 
 </mapper>

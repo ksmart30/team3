@@ -212,17 +212,17 @@
 					<tbody>
 					
 						<tr>
-							<th>시작일</th>
+							<th>시작달</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="date" id="WORK_DT" name="WORK_DT">
+									<input type="month" id="WORK_DT" name="WORK_DT">
 								</div>
 							</td>
 							
-							<th>끝난일</th>
+							<th>끝난달</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="date" id="END_DT" name="END_DT">
+									<input type="month" id="END_DT" name="END_DT">
 									<button id="btn_day" type="button" class="btn" style="color:black">검색</button>
 								</div>
 							</td>
@@ -288,7 +288,7 @@
                           <th>퇴근날짜</th>                                                  
                         </tr>
                       </thead>
-                      <!-- <tbody id="list">                   
+                      <tbody id="list">                   
                         <tr th:each=" t : ${data}">
                           <th th:text="${t.DEPT_NM}"></th>
                           <th th:text="${t.JIKGUP_NM}"></th>
@@ -300,7 +300,7 @@
                           <th th:text="${t.END_TIME}"></th>
                           <th th:text="${t.END_DT}"></th>
                         </tr>                        
-                      </tbody> -->
+                      </tbody>
                     </table>
 					</div>
                   </div>

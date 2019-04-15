@@ -1,6 +1,7 @@
 package ksmart30.team03.kuntae.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,8 +29,9 @@ public interface WorkTimeMapper {
 	
 	// 출 퇴근 기록부(Total) 전체 검색 
  	List<WorkTimeSingleList> getRecordTotalSearch(String WORK_DT, String END_DT, String EMP_NO);
-
-
+ 	
+ 	// 전체 검색(검색조건들을 vo로 받음)
+ 	List<Map<String, Object>> getRecordTotal(WorkTimeSingleList vo);
 
 
 
