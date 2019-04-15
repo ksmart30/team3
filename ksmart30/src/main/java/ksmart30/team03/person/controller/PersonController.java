@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,17 +27,26 @@ public class PersonController {
 	@GetMapping("/person/personInsaList")
 	public @ResponseBody List<Map<String, Object>> personInsaList(PersonRequest vo) {
 		System.out.println("CONTROLLER : 직원list 출력");
-		System.out.println("CONTROLLER : "+vo);	
+		System.out.println("CONTROLLER VO: "+vo);	
 		List<Map<String, Object>> data = personService.personListView(vo);			
 		System.out.println("직원 검색 list : "+data);
 		return data;
 	}	
 
 	//6.1.1인사기록카드 입력(리스트) 컨트롤러
+	@PostMapping("/person/personInsaWriteView")
+	public String personInsaWriteView(Person person) {
+		personService.addPersonInsa(person);
+		System.out.println("CONTROLLER VO: "+person);
+		return "person/insa/personWriteView";
+	}
+	//6.1.1인사기록카드 입력(리스트)폼으로 이동하는 컨트롤러
 	@GetMapping("/person/personInsaWriteView")
 	public String personInsaWriteView() {
 		return "person/insa/personWriteView";
-	}	
+	}
+	
+	
 	//6.1.1 인사기록카드 수정 컨트롤러
 	@GetMapping("/person/personInsaModifyView")
 	public String personInsaModifyView() {

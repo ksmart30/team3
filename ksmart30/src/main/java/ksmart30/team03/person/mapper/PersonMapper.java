@@ -16,5 +16,8 @@ public interface PersonMapper {
 	List<Map<String, Object>> personInsaEmployeeSearchView(PersonRequest vo);
 	//6.1.2 직원 디테일 출력
 	List<Person> personInsaEmployeeDetailView(String EMP_NO);
-	
+	//6.1.1 사원번호 자동생성 selet문
+	int empnoSelect();
+	//6.1.1 인사기록카드 등록 insert
+	int addPersonInsa(Person vo);	
 }

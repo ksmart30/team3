@@ -33,6 +33,20 @@ public class PersonService {
 		System.out.println("SERVICE : 직원검색 리스트 출력");
 		return personMapper.personInsaEmployeeDetailView(EMP_NO);		
 	}
+	//6.1.1 직원 인사기록카드 등록
+	public int addPersonInsa(Person vo) {
+		int emp_no = personMapper.empnoSelect();
+		int max_emp_no = 0;
+		String max_emp_no2 = null;
+		if(emp_no != 0) {
+			max_emp_no = emp_no+1;
+			max_emp_no2 = String.valueOf(max_emp_no);
+			System.out.println("자동 생성된 사원번호  : "+ max_emp_no);
+		}		
+		vo.setEMP_NO(max_emp_no2);
+		int result = personMapper.addPersonInsa(vo);
+		return result;
+	}
 
 	
 }
