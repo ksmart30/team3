@@ -130,17 +130,48 @@
 			$('#Sanje').click(function(){
 				console.log('산재보험/업종 요율 (대분류) 가져오기');
 				$.ajax({
-					url:'/baseInfo/fourInsureSanjeListProcess', //호출할 메소드 호출 
-					type:'GET',																	//송신 POST 방식
+					url:'/baseInfo/fourInsureSanjeLargeListProcess', //호출할 메소드 호출 
+					type:'GET',																			//송신 GET 방식
 					success:function(data){
-						console.log(data);											// 리턴받은 국민연금 계산값
-						$('#list').append('<option>');
-
-						$('#list').append('</option>');	
+						let insureSanLargeList = data;
+						console.log(insureSanLargeList);							// 리턴받은 산재보험(대분류) 계산값
+						for(let i=0; i<10; i++){
+							$('#INSURE_SAN_LARGE_LIST').append('<option th:text="'+insureSanLargeList[i].insure_SAN_GUBUN1+'">'+insureSanLargeList[i].insure_SAN_GUBUN1+'</option>');
+						}
 					}
 				});
 			});
-			// 4.2 산재보험 라디오체크 확인
+			// 4.2 대분류 선택시 중분류 가져오기
+			$('#INSURE_SAN_LARGE_LIST').change(function(){
+				console.log('산재보험/업종 요율 (중분류) 가져오기');
+				let insureSan = $('#INSURE_SAN_LARGE_LIST option:selected').text();
+				console.log(insureSan);
+				// 1. 항목 미선택시
+				if($('#INSURE_SAN_LARGE_LIST option:selected').text() == "") {
+					$('#INSURE_SAN_MIDDLE_LIST').empty();
+				// 2. 항목 선택시
+				}else {
+					$.ajax({
+						url:'/baseInfo/fourInsureSanjeMiddleListProcess', //호출할 메소드 호출 
+						type:'GET',																				//송신 GET 방식
+						data:{INSURE_SAN_GUBUN1:insureSan},
+						success:function(data){
+							let insureSanMiddleList = data;
+							console.log(insureSanMiddleList);								// 리턴받은 산재보험(중분류) 계산값
+							$('#INSURE_SAN_MIDDLE_LIST').empty();
+							for(let i=0; i<insureSanMiddleList.length; i++){
+								$('#INSURE_SAN_MIDDLE_LIST').append('<option th:text="'+insureSanMiddleList[i].insure_SAN_GUBUN2+'">'+insureSanMiddleList[i].insure_SAN_GUBUN2+'</option>');
+							}
+						}
+					});
+				}
+				sanjePerCal();	// 중분류 1행 자동 선택시 체크
+			});
+			// 4.3 중분류 선택시 요율 변경
+			$('#INSURE_SAN_MIDDLE_LIST').change(function() {
+
+			});
+			// 4.4 산재보험 라디오체크 확인
 			$('input[name="INSURE_CHECK1"]:radio').change(function(){
 				let radioValue = this.value;
 				console.log("임금채권 부담금비율 체크! :" + radioValue);
@@ -167,7 +198,7 @@
 					sanjePerCal();
 				}
 			});
-			// 4.3 산재보험 요율 실시간 계산을 위한 함수
+			// 4.5 산재보험 요율 실시간 계산을 위한 함수
 			function sanjePerCal() {
 				let val2 = $('#INSURE_SANJE_RATE1_HIDDEN').text();	// 업종요율
 				console.log("2 : " + val2);
@@ -582,11 +613,13 @@
 																	<tr>
 																		<td>업종 요율 (대분류)</td>
 																		<td>
-																			<select id="INSURE_SAN_GUBUN1"></select>
+																			<select style="width:200px" id="INSURE_SAN_LARGE_LIST">
+																				<option id="INSURE_SAN_LARGE_LIST_INDEX" th:value="0"></option>
+																			</select>
 																		</td>
 																		<td style="display: none" id="INSURE_SANJE_RATE1_HIDDEN" th:text="0"></td>
 																		<td rowspan="3"><br>
-																			<input type="text" style="text-align: center" id="INSURE_SANJE_RATE1" value="0" readonly>
+																			<input type="text" style="width:55%; text-align: center" id="INSURE_SANJE_RATE1" value="0" readonly>
 																		</td>
 																	</tr>
 																	<tr>
@@ -594,7 +627,7 @@
 																	<tr>
 																		<td>업종 요율 (중분류)</td>
 																		<td>
-																			<select id="INSURE_SAN_GUBUN2"></select>
+																			<select style="width:200px" id="INSURE_SAN_MIDDLE_LIST"></select>
 																		</td>
 																	</tr>
 																	<tr>
@@ -631,13 +664,13 @@
 																	<tr>
 																		<td colspan="3">산재보험료율</td>
 																		<td>
-																			<input type="text" style="text-align: center" name="INSURE_SANJE_TOTAL_RATE" id="INSURE_SANJE_TOTAL_RATE" value="2.13" readonly>
+																			<input type="text" style="width:55%; text-align: center" name="INSURE_SANJE_TOTAL_RATE" id="INSURE_SANJE_TOTAL_RATE" value="2.13" readonly>
 																		</td>
 																	</tr>
 																	<tr>
 																		<td colspan="3">총 산재보험료</td>
 																		<td>
-																			<input type="text" style="width:80%; text-align: end" id="INSURE_TOTAL5" readonly>원
+																			<input type="text" style="width:50%; text-align: end" id="INSURE_TOTAL5" readonly>원
 																		</td>
 																	</tr>
 																</tbody>

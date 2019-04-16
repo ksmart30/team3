@@ -23,12 +23,13 @@
 				let IN_PHONE_NO2 = $('#User_ID').val();
 				let DEPT_NM2 = $('#User_ID').val();		 
 				let SEX_GB2 = $('#User_ID').val();
+				let OUT_DT3 = $('#User_ID').val();
 				console.log('직원  검색조건 (사원번호) : '+EMP_NO2+'직원  검색조건 (이름) : '+KOR_NM2+"    검색조건(직급) :  "+JIKGUP_NM2+"    검색조건(직책) :  "+JIKCHK_NM2+"  검색조건(입사일) : "+AUDIT_TM2);
 					
 				$.ajax({				
 						url:'/person/personInsaEmployeeView',
 						type:'GET',
-						data:{EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
+						data:{OUT_DT3:OUT_DT3,EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
 						success:(data)=>{
 							$('#list').empty();
 							$(data).each(function(index,item){

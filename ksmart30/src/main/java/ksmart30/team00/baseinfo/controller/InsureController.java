@@ -1,5 +1,7 @@
 package ksmart30.team00.baseinfo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,11 +9,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team00.baseinfo.domain.Insure;
+import ksmart30.team00.baseinfo.domain.InsureSan;
+import ksmart30.team00.baseinfo.service.InsureSanService;
 import ksmart30.team00.baseinfo.service.InsureService;
 
 @Controller
 public class InsureController {
 	@Autowired InsureService insureService;
+	@Autowired InsureSanService insureSanService;
 
 	// 10.2.9.1 4대보험 요율 화면
 	@GetMapping("/baseInfo/fourInsureView")
@@ -72,5 +77,28 @@ public class InsureController {
 		Insure Goyong = insureService.getFourInsureGoyong(insure);
 		// 4. 리턴
 		return Goyong;
+	}
+
+	// 10.2.9.5 산재보험 대분류 리스트 가져오기
+	@GetMapping("/baseInfo/fourInsureSanjeLargeListProcess")
+	public @ResponseBody List<InsureSan> fourInsureSanjeLargeListProcess() {
+		System.out.println("(C) 10.2.9.5 산재보험 대분류 리스트 가져오기 fourInsureSanjeLargeListProcess()");
+		// 1. Service 호출 (리턴값 : 대분류 리스트)
+		List<InsureSan> sanjeLargeList = insureSanService.getInsureSanjeLargeList();
+		// 2. 리턴
+		return sanjeLargeList;
+	}
+
+	// 10.2.9.6 산재보험 중분류 리스트 가져오기
+	@GetMapping("/baseInfo/fourInsureSanjeMiddleListProcess")
+	public @ResponseBody List<InsureSan> fourInsureSanjeMiddleListProcess(@RequestParam(value="INSURE_SAN_GUBUN1") String insureSanGubun1) {
+		System.out.println("(C) 10.2.9.6 산재보험 중분류 리스트 가져오기 fourInsureSanjeMiddleListProcess()");
+		// 1. 문자열로 가져온 입력데이터 -> Domain객체에 Setting
+		InsureSan insureSan = new InsureSan();
+		insureSan.setINSURE_SAN_GUBUN1(insureSanGubun1);
+		// 2. Service 호출 (리턴값 : 중분류 리스트)
+		List<InsureSan> sanjeMiddleList = insureSanService.getInsureSanjeMiddleList(insureSan);
+		// 3. 리턴
+		return sanjeMiddleList;
 	}
 }
