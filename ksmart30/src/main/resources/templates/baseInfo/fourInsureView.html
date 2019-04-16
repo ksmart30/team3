@@ -75,6 +75,7 @@
 
 		<script>
 		$(document).ready(function(){	
+			sanje();	// 산재보험 대분류 목록 함수 자동실행
 			// 1. 국민연금 실행
 			$('#insureKukminCal').click(function(){
 				let INSURE_PAY1 = $('#INSURE_PAY1').val();
@@ -132,8 +133,8 @@
 				});
 			});
 			// 4 산재보험 실행
-			// 4.1 산재보험 업종 요율(대분류) 가져오기
-			$('#SANJE').click(function(){
+			// 4.1 산재보험 업종 요율(대분류) 가져오기 (시작시 바로 실행)
+			function sanje() {
 				console.log('산재보험/업종 요율 (대분류) 가져오기');
 				$.ajax({
 					url:'/baseInfo/fourInsureSanjeLargeListProcess', //호출할 메소드 호출 
@@ -141,12 +142,12 @@
 					success:function(data){
 						let insureSanLargeList = data;
 						console.log(insureSanLargeList);							// 리턴받은 산재보험(대분류) 계산값
-						for(let i=0; i<10; i++){
+						for(let i=0; i<insureSanLargeList.length; i++){
 							$('#INSURE_SAN_LARGE_LIST').append('<option th:text="'+insureSanLargeList[i].insure_SAN_GUBUN1+'">'+insureSanLargeList[i].insure_SAN_GUBUN1+'</option>');
 						}
 					}
 				});
-			});
+			};
 			// 4.2 대분류 선택시 중분류 가져오기
 			$('#INSURE_SAN_LARGE_LIST').change(function(){
 				console.log('산재보험/업종 요율 (중분류) 가져오기');
@@ -249,9 +250,9 @@
 				$('#INSURE_SAN_LARGE_LIST option[id="INSURE_SAN_LARGE_LIST_INDEX"]').attr("selected", "true");	// 중분류 항목 비우기
 				$('#INSURE_SANJE_RATE1').val('0');						// val을 요율 0으로 수정
 				$('#INSURE_SANJE_RATE1').text('0');						// val을 요율 0으로 수정
-				sanjePerCal();																// 산재보험율 2.13(초기값)로 수정
 				$('#INSURE_TOTAL5').empty();									// 산재보험금 0으로 수정
 				$('#INSURE_SAN_MIDDLE_LIST').empty();					// 중분류 비우기
+				sanjePerCal();																// 산재보험율 2.13(초기값)로 수정
 			});
 		});
 		</script>
