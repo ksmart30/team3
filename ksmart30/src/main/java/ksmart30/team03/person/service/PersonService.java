@@ -20,7 +20,7 @@ public class PersonService {
 		List<Map<String, Object>> result = personMapper.personListView(vo);
 		System.out.println("SERVICE(인사기록카드 직원 검색) 결과 : "+result);
 		return result;		
-	}
+	}	
 	//6.1.2 직원 list출력(조건별)
 	public List<Map<String, Object>> personInsaEmployeeSearchView(PersonRequest vo){
 		System.out.println("SERVICE : 직원검색 리스트 출력");	
@@ -47,7 +47,32 @@ public class PersonService {
 		int result = personMapper.addPersonInsa(vo);
 		return result;
 	}
-
+	//6.1.1해당 직원 수정 정보
+	public Person personInsaEmployeeModifyView(String EMP_NO){
+		System.out.println("SERVICE : 직원수정 출력");
+		return  personMapper.personInsaEmployeeModifyView(EMP_NO);		
+	}
+	//6.1.1 직원등록 내의 부서코드 select option
+	public List<Map<String, Object>> deptCdListView(){
+		System.out.println("부서코드 select option");
+		return personMapper.deptCdListView();
+		
+	}
+	//6.1.1 직원등록 내의 구분 등.. select option
+	public List<Map<String, Object>> gbCdListView(){
+		System.out.println("코드별 구분 select option");
+		return personMapper.gbCdListView();	
+	}
+	//6.1.1 직원등록 내의 구분 등.. select option
+	public List<Person> gbCdRelationListView(){
+		System.out.println("가족사항 구분 select option");
+		return personMapper.gbCdRelationListView();	
+	}
+	//6.1.1 인사기록카드 추가기록(가족사항 입력)
+	public int modifyPersonInsaFamily(Person vo){
+		System.out.println("SERVICE : 가족사항 입력");
+		return  personMapper.modifyPersonInsaFamily(vo);		
+	}
 	
 }
 

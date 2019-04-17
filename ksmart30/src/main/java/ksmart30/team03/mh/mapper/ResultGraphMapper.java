@@ -11,7 +11,7 @@ public interface ResultGraphMapper {
 	//5.2.1 M/H 계획/실적 그래프 화면에 프로젝트 리스트(왼쪽) 뿌려주기
 	List<ResultList> getResultGraphList();
 	//5.2.1 M/H 계획/실적 그래프 화면에 프로젝트 리스트(왼쪽) 뿌려주기(날짜 검색 추가)
-	List<ResultList> getResultGraphListDate(String crt_date, String end_date);
+	List<ResultList> getResultGraphListDate(String CONTRACT_PRI1, String CONTRACT_PRI2);
 	//5.2.1 M/H 계획 그래프 뿌려주기
 	List<ResultList> getResultGraph(String pjt_cd);
 	//5.2.1 M/H 실적 그래프 뿌려주기

@@ -40,8 +40,35 @@ public class Person {
 	private String ENG_NM;
 	private String HANJA_NM;
 	private String IN_DT;
+	private String CUR_ZIP_NO;
+	private String LEVEL1_CD;
+	private String LEVEL2_CD;
+	private String LEVEL2_NM;
 	
-	
+	public String getLEVEL1_CD() {
+		return LEVEL1_CD;
+	}
+	public void setLEVEL1_CD(String lEVEL1_CD) {
+		LEVEL1_CD = lEVEL1_CD;
+	}
+	public String getLEVEL2_CD() {
+		return LEVEL2_CD;
+	}
+	public void setLEVEL2_CD(String lEVEL2_CD) {
+		LEVEL2_CD = lEVEL2_CD;
+	}
+	public String getLEVEL2_NM() {
+		return LEVEL2_NM;
+	}
+	public void setLEVEL2_NM(String lEVEL2_NM) {
+		LEVEL2_NM = lEVEL2_NM;
+	}
+	public String getCUR_ZIP_NO() {
+		return CUR_ZIP_NO;
+	}
+	public void setCUR_ZIP_NO(String cUR_ZIP_NO) {
+		CUR_ZIP_NO = cUR_ZIP_NO;
+	}
 	public String getIN_DT() {
 		return IN_DT;
 	}
@@ -272,7 +299,8 @@ public class Person {
 				+ ", BLOOD_TYPE=" + BLOOD_TYPE + ", ARMY_TYPE=" + ARMY_TYPE + ", BRANCHE_GB=" + BRANCHE_GB
 				+ ", GRADE_CD=" + GRADE_CD + ", ARMS_GB=" + ARMS_GB + ", PRO_GB=" + PRO_GB + ", LEVEL_GB=" + LEVEL_GB
 				+ ", OUT_STD_DT=" + OUT_STD_DT + ", OUT_DT=" + OUT_DT + ", ENG_NM=" + ENG_NM + ", HANJA_NM=" + HANJA_NM
-				+ ", IN_DT=" + IN_DT + "]";
+				+ ", IN_DT=" + IN_DT + ", CUR_ZIP_NO=" + CUR_ZIP_NO + ", LEVEL1_CD=" + LEVEL1_CD + ", LEVEL2_CD="
+				+ LEVEL2_CD + ", LEVEL2_NM=" + LEVEL2_NM + "]";
 	}
    
 }

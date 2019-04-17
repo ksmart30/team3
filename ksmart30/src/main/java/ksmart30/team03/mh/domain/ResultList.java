@@ -28,8 +28,26 @@ public class ResultList {
 	private int TOT_PLAN;
 	private String YEA_MD;//계획(예산)MH
 	private String SIL_TM;//실적MH
+	private String CONTRACT_PRI1;//프로젝트 시작일
+	private String CONTRACT_PRI2;//프로젝트 종료일
 	
 	
+	public String getCONTRACT_PRI1() {
+		return CONTRACT_PRI1;
+	}
+
+	public void setCONTRACT_PRI1(String cONTRACT_PRI1) {
+		CONTRACT_PRI1 = cONTRACT_PRI1;
+	}
+
+	public String getCONTRACT_PRI2() {
+		return CONTRACT_PRI2;
+	}
+
+	public void setCONTRACT_PRI2(String cONTRACT_PRI2) {
+		CONTRACT_PRI2 = cONTRACT_PRI2;
+	}
+
 	public String getPJT_NM() {
 		return PJT_NM;
 	}
@@ -234,8 +252,8 @@ public class ResultList {
 				+ ", PLAN_F=" + PLAN_F + ", PLAN_G=" + PLAN_G + ", TOT_MD=" + TOT_MD + ", DEPT_NAME=" + DEPT_NAME
 				+ ", KOR_NM=" + KOR_NM + ", END_DATE=" + END_DATE + ", SVC=" + SVC + ", DEPT_NM=" + DEPT_NM
 				+ ", PJT_NM=" + PJT_NM + ", WORK_TIME=" + WORK_TIME + ", WORK_STEP=" + WORK_STEP + ", WORK_NM="
-				+ WORK_NM + ", TOT_PLAN=" + TOT_PLAN + ", YEA_MD=" + YEA_MD + ", SIL_TM=" + SIL_TM + ", CRT_DATE="
-				+ CRT_DATE + "]";
+				+ WORK_NM + ", TOT_PLAN=" + TOT_PLAN + ", YEA_MD=" + YEA_MD + ", SIL_TM=" + SIL_TM + ", CONTRACT_PRI1="
+				+ CONTRACT_PRI1 + ", CONTRACT_PRI2=" + CONTRACT_PRI2 + ", CRT_DATE=" + CRT_DATE + "]";
 	}
 
 }

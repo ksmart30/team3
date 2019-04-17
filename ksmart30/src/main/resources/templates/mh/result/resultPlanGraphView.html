@@ -8,9 +8,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>M/H 계획/실적(그래프)</title>	
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
@@ -20,26 +18,26 @@
 	<head>
 <script>
 
-function searchResult(crt_date, end_date){
+function searchResult(CONTRACT_PRI1, CONTRACT_PRI2){
 	
 	console.log("날짜별 검색 시작");	
 	$.ajax({
 		url:'/manHour/manHourResultGraphSearchView',
-		data:{CRT_DATE:CRT_DATE,END_DATE:END_DATE},	
+		data:{CONTRACT_PRI1:CONTRACT_PRI1,CONTRACT_PRI2:CONTRACT_PRI2},	
 	});	
 };
 
 $(document).ready(function() {	
 	
 	$("#btn-search").click(function(){		
-		let crt_date_format = $('#crt_date').val();
-		let end_date_format = $('#end_date').val();
+		let CONTRACT_PRI1_FORMAT = $('#crt_date').val();
+		let CONTRACT_PRI2_format = $('#end_date').val();
 		
-		let CRT_DATE = crt_date_format.substr(0,4)+crt_date_format.substr(5,2)+crt_date_format.substr(8,2);
-		let END_DATE = end_date_format.substr(0,4)+end_date_format.substr(5,2)+end_date_format.substr(8,2);
+		let CONTRACT_PRI1 = CONTRACT_PRI1_FORMAT.substr(0,4)+crt_date_format.substr(5,2)+crt_date_format.substr(8,2);
+		let CONTRACT_PRI2 = CONTRACT_PRI2_format.substr(0,4)+end_date_format.substr(5,2)+end_date_format.substr(8,2);
 		
-		console.log("시작날짜 : "+CRT_DATE+"종료 날짜: " + END_DATE);		
-		searchResult(CRT_DATE,END_DATE);		
+		console.log("시작날짜 : "+CONTRACT_PRI1+"종료 날짜: " + CONTRACT_PRI2);		
+		searchResult(CONTRACT_PRI1,CONTRACT_PRI2);		
 	});
 	
 		init_charts();
@@ -98,26 +96,26 @@ $(document).ready(function() {
 						data : {pjt_cd : pjt_cd},
 						//ajax 배열 값을 전역변수로 선언
 						success : function(data) {
-							//테이블의 행 클릭시 해당하는 값 출력
-							$('#chart').empty();
+							//테이블의 행 클릭시 해당하는 값 출력		
 							$(data).each(function(index,item) { //each = foreach (반복문)
-									plan_a = item.plan_A;
-									plan_b = item.plan_B;
-									plan_c = item.plan_C;
-									plan_d = item.plan_D;
-									plan_e = item.plan_E;
-									plan_f = item.plan_F;
-									plan_g = item.plan_G;
-									$('#chart').append('<tr>');
-									$('#chart').append('<td>'+plan_a+ '</td>');
-									$('#chart').append('<td>'+plan_b+ '</td>');
-									$('#chart').append('<td>'+plan_c+ '</td>');
-									$('#chart').append('<td>'+plan_d+ '</td>');
-									$('#chart').append('<td>'+plan_e+ '</td>');
-									$('#chart').append('<td>'+plan_f+ '</td>');
-									$('#chart').append('<td>'+plan_g+ '</td>');
-									$('#chart').append('</tr>');
-									console.log("A : "+plan_a+ " B : "+ plan_b+ " C : "+ plan_c+" D : "+ plan_d+ " E: "+ plan_e+ " F : "+ plan_f+ " G : "+ plan_g);
+								$('#chart').empty();	
+								plan_a = item.plan_A;
+								plan_b = item.plan_B;
+								plan_c = item.plan_C;
+								plan_d = item.plan_D;
+								plan_e = item.plan_E;
+								plan_f = item.plan_F;
+								plan_g = item.plan_G;
+								$('#chart').append('<tr>');
+								$('#chart').append('<td>'+plan_a+ '</td>');
+								$('#chart').append('<td>'+plan_b+ '</td>');
+								$('#chart').append('<td>'+plan_c+ '</td>');
+								$('#chart').append('<td>'+plan_d+ '</td>');
+								$('#chart').append('<td>'+plan_e+ '</td>');
+								$('#chart').append('<td>'+plan_f+ '</td>');
+								$('#chart').append('<td>'+plan_g+ '</td>');
+								$('#chart').append('</tr>');
+								console.log("A : "+plan_a+ " B : "+ plan_b+ " C : "+ plan_c+" D : "+ plan_d+ " E: "+ plan_e+ " F : "+ plan_f+ " G : "+ plan_g);
 						});
 							
 					}
@@ -170,7 +168,6 @@ $(document).ready(function() {
 								time_z = item.work_TIME;
 								console.log("time_z : "+time_z);								
 							}
-							$('#chart2').empty();
 							$('#chart2').append('<tr>');
 							$('#chart2').append('<td>'+time_a+ '</td>');
 							$('#chart2').append('<td>'+time_b+ '</td>');
@@ -382,10 +379,10 @@ $(document).ready(function() {
 									<tr style="font-size: 15px">
 										<th>◎검색조건 &emsp;</th>
 										<th>시작년월 &emsp;&emsp;&emsp; 
-										<input type="date" name="crt_date" id="crt_date"> &emsp;&emsp;										
+										<input type="date" name="CONTRACT_PRI1" id="CONTRACT_PRI1"> &emsp;&emsp;										
 										</th>
 										<th>마감년월 &emsp;&emsp;&emsp; 
-										<input type="date" name="end_date" id="end_date"> &emsp;&emsp;										
+										<input type="date" name="CONTRACT_PRI2" id="CONTRACT_PRI2"> &emsp;&emsp;										
 											<button id="btn-search" class="btn" style="color:black">검색</button>
 										</th>
 									</tr>									
@@ -424,8 +421,8 @@ $(document).ready(function() {
 											<td th:text="${g.DEPT_NM}"></td>
 											<td th:text="${g.PJT_CD}"></td>
 											<td th:text="${g.SVC}"></td>
-											<td th:text="${g.CRT_DATE}"></td>
-											<td th:text="${g.END_DATE}"></td>
+											<td th:text="${g.CONTRACT_PRI1}"></td>
+											<td th:text="${g.CONTRACT_PRI2}"></td>
 										</tr>
 									</tbody>
 							

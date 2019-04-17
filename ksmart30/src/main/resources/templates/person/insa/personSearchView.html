@@ -81,7 +81,7 @@ $(document).ready(function(){
 						console.log(data);						
 						$('#list').append('<tr class="even pointer">');
 						$('#list').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
-						$('#list').append('<td onclick="detail('+item.emp_NO+')">'+item.SORT_VALUE+'</td>');
+						$('#list').append('<td onclick="detail('+item.EMP_NO+')">'+item.SORT_VALUE+'</td>');
 						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.DEPT_NM+'</td>');
 						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.EMP_NO+'</td>');
 						$('#list').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.KOR_NM+'</td>');

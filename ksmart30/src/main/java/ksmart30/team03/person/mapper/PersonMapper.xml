@@ -52,7 +52,7 @@
     	  A.MAIL_ADDRESS    	  
     FROM T_HM1000 A,
       T_SC1010 B
-      WHERE A.DEPT_CD = B.DEPT_CD AND A.EMP_NO=#{EMP_NO};
+      WHERE A.DEPT_CD = B.DEPT_CD AND A.EMP_NO LIKE '%'+#{EMP_NO}+'%';
 	
 	</select>
 
@@ -81,70 +81,76 @@
 	</select>
 	
 	<!--인사기록카드 등록  insert문-->
-	<insert id="addPersonInsa" parameterType="String">
-	
+	<insert id="addPersonInsa" parameterType="String">	
 	INSERT 
 	INTO T_HM1000(
+		EMP_NO,KOR_NM,JUMIN_NO,ENG_NM,HANJA_NM,SEX_GB,DEPT_CD,JIKGUP_CD,JIKCHK_CD,PHONE_NO,H_PHONE_NO,
+		MAIL_ADDRESS,BON_ADDRESS,BORN_AREA_GB,HEIGHT,WEIGHT,BLOOD_TYPE,ARMY_TYPE,BRANCHE_GB,GRADE_CD,
+		ARMS_GB,PRO_GB,LEVEL_GB,IN_DT,OUT_STD_DT,OUT_DT,CUR_ADDRESS,CUR_ZIP_NO)
+	VALUES(
+		#{EMP_NO},#{KOR_NM},#{JUMIN_NO},#{ENG_NM},#{HANJA_NM},#{SEX_GB},#{DEPT_CD},#{JIKGUP_CD},#{JIKCHK_CD},		
+		#{PHONE_NO},#{H_PHONE_NO},#{MAIL_ADDRESS},#{BON_ADDRESS},#{BORN_AREA_GB},#{HEIGHT},
+		#{WEIGHT},#{BLOOD_TYPE},#{ARMY_TYPE},#{BRANCHE_GB},#{GRADE_CD},#{ARMS_GB},#{PRO_GB},
+		#{LEVEL_GB},#{IN_DT},#{OUT_STD_DT},#{OUT_DT},#{CUR_ADDRESS},#{CUR_ZIP_NO}
+		)		
+	</insert>
+	
+	 <!-- 인사기록카드 가족사항 insert문 -->
+	
+	<insert id="modifyPersonInsaFamily" parameterType="String">
+	INSERT 
+	INTO T_HM1100(
 		EMP_NO,
-		KOR_NM,
-		JUMIN_NO,
-		ENG_NM,
-		HANJA_NM,
-		SEX_GB,
-		DEPT_CD,
-		JIKGUP_CD,
-		JIKCHK_CD,		
-		<!-- 우편번호 추가해아함! -->
-		PHONE_NO,
-		H_PHONE_NO,
-		MAIL_ADDRESS,
-		BON_ADDRESS,
-		BORN_AREA_GB,
-		HEIGHT,
-		WEIGHT,
-		BLOOD_TYPE,
-		ARMY_TYPE,
-		BRANCHE_GB,
-		GRADE_CD,
-		ARMS_GB,
-		PRO_GB,
-		LEVEL_GB,
-		IN_DT,
-		OUT_STD_DT,
-		OUT_DT,
-		CUR_ADDRESS)
+		RELATION,
+		NAME,
+		JOB,
+		ADDRESS
+		)
 	VALUES(
 		#{EMP_NO},
-		#{KOR_NM},
-		#{JUMIN_NO},		
-		#{ENG_NM},
-		#{HANJA_NM},
-		#{SEX_GB},
-		#{DEPT_CD},
-		#{JIKGUP_CD},
-		#{JIKCHK_CD},		
-		<!-- 우편번호 추가해아함! -->
-		#{PHONE_NO},
-		#{H_PHONE_NO},
-		#{MAIL_ADDRESS},
-		#{BON_ADDRESS},
-		#{BORN_AREA_GB},
-		#{HEIGHT},
-		#{WEIGHT},
-		#{BLOOD_TYPE},
-		#{ARMY_TYPE},
-		#{BRANCHE_GB},
-		#{GRADE_CD},
-		#{ARMS_GB},
-		#{PRO_GB},
-		#{LEVEL_GB},
-		#{IN_DT},
-		#{OUT_STD_DT},
-		#{OUT_DT},
-		#{CUR_ADDRESS}
-		)
-	
-	
+		#{RELATION},
+		#{NAME},
+		#{JOB},
+		#{ADDRESS}
+	)	
 	</insert>
+	
+	<select id="personInsaEmployeeModifyView" parameterType="String" resultType="ksmart30.team03.person.domain.Person">
+	SELECT 
+		EMP_NO,KOR_NM,JUMIN_NO,ENG_NM,HANJA_NM,SEX_GB,DEPT_CD,JIKGUP_CD,JIKCHK_CD,PHONE_NO,H_PHONE_NO,
+		MAIL_ADDRESS,BON_ADDRESS,BORN_AREA_GB,HEIGHT,WEIGHT,BLOOD_TYPE,ARMY_TYPE,BRANCHE_GB,GRADE_CD,
+		ARMS_GB,PRO_GB,LEVEL_GB,IN_DT,OUT_STD_DT,OUT_DT,CUR_ADDRESS,CUR_ZIP_NO 
+	FROM T_HM1000 
+	WHERE EMP_NO=#{EMP_NO}
+	</select>
+	
+	<select id="deptCdListView" resultType="java.util.Map">
+	SELECT 
+		DEPT_CD, 
+		DEPT_NM 
+	FROM T_SC1010 
+		
+	</select>
+	
+	<select id="gbCdListView" resultType="java.util.Map">
+	SELECT 
+		LEVEL1_CD, 
+		LEVEL2_CD, 
+		LEVEL2_NM 
+	FROM T_SC9100 
+	WHERE BUSI_GB='H'
+	</select>
+	<select id="gbCdRelationListView" resultType="ksmart30.team03.person.domain.Person">
+	SELECT 
+		LEVEL1_CD, 
+		LEVEL2_CD, 
+		LEVEL2_NM 
+	FROM T_SC9100 
+	WHERE BUSI_GB='H' AND LEVEL1_CD='140'
+	</select>
+	
+	
+
+	
 </mapper>  
 

@@ -4,49 +4,215 @@
 	layout:decorator="layout/main">
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
-	<title>인사기록카드 등록</title>
+	<title>인사기록카드 수정</title>
 	<th:block th:include="layout/customHead"></th:block>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<head>
+<script>
+
+function DaumPostcode() {
+	new daum.Postcode({
+		oncomplete: function(data) {
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+			// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+			// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+			var addr = ''; // 주소 변수
+			var extraAddr = ''; // 참고항목 변수
+
+			//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+			if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+				addr = data.roadAddress;
+			} else { // 사용자가 지번 주소를 선택했을 경우(J)
+				addr = data.jibunAddress;
+			}
+
+			// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+			if(data.userSelectedType === 'R'){
+				// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+				// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+				if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+					extraAddr += data.bname;
+				}
+				// 건물명이 있고, 공동주택일 경우 추가한다.
+				if(data.buildingName !== '' && data.apartment === 'Y'){
+					extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+				}
+				// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+				if(extraAddr !== ''){
+					extraAddr = ' (' + extraAddr + ')';
+				}
+				// 조합된 참고항목을 해당 필드에 넣는다.
+				document.getElementById("extraAddress").value = extraAddr;
+			
+			} else {
+				document.getElementById("extraAddress").value = '';
+			}
+
+			// 우편번호와 주소 정보를 해당 필드에 넣는다.
+			document.getElementById('CUR_ZIP_NO').value = data.zonecode;
+			document.getElementById("CUR_ADDRESS").value = addr;
+			// 커서를 상세주소 필드로 이동한다.
+			document.getElementById("detailAddress").focus();
+		}
+	}).open();
+}
+
+$(document).ready(function(){
+	
+	//필수 입력값에 대한 유효성검사 
+	$('#btn_insert').click(function(){
+		if($('#KOR_NM').val() == ""){			
+			$('#KOR_NM').focus();
+			$('#KOR_NM').attr('placeholder','성명을 입력해주세요.');
+			return false;
+		}else if($('#JUMIN_NO').val() == ""){
+			$('#JUMIN_NO').focus();
+			$('#JUMIN_NO').attr('placeholder','주민번호를 입력해주세요.');
+			return false;
+		}else if($('#ENG_NM').val == ""){
+			$('#ENG_NM').focus();
+			$('#ENG_NM').attr('placeholder','영문성명을 입력해주세요');
+			return false;
+		}else{
+			alert('수정 성공');
+		}
+		
+	});
+	//입력버튼 클릭시 입력할 수 있는 창이 나옴
+	$('#btn_family').click(function(){
+		console.log("relation 실행");
+		$.ajax({
+			url:'/person/personRelationView',
+			type:'GET',
+			success:(data)=>{
+				let relationSelect = data;	
+				$('#family_table').append('<tr>');
+				$('#family_table').append('<td></td>');
+				$('#family_table').append('<td><select name="FAMILY" id="FAMILY">');
+				$('#family_table').append('<td><input type="text" id="NAME" name="NAME"></td>');
+				$('#family_table').append('<td><input type="text" id="JOB" name="JOB"></td>');
+				$('#family_table').append('<td><input type="text" id="ADDRESS" name="ADDRESS"></td>');
+				$('#family_table').append('</tr>');
+				//select box값을 db내에서 가져옴
+				for(let i=0; i<relationSelect.length; i++){
+					console.log("text 값"+relationSelect[i].level2_CD+relationSelect[i].level2_NM);
+					$('#FAMILY').append('<option value="'+relationSelect[i].level2_CD+'">'+relationSelect[i].level2_NM+'</option></select></td>');						
+				}
+				console.log("실행 완료!");	
+			}
+		});
+	});	
+
+	
+	$('#btn_family_insert').click(function(){
+		console.log('가족사항 저장');
+		let NAME = $('#NAME').val();
+		let JOB = $('#JOB').val();
+		let ADDRESS = $('#ADDRESS').val();
+		let FAMILY = $('#FAMILY').val();
+		
+		$.ajax({
+			url:'',
+			type:'',
+			data:{NAME:NAME,JOB:JOB,ADDRESS:ADDRESS,FAMILY:FAMILY},
+			success:(data)=>{
+				
+			}
+			
+		});
+		
+		
+		
+	});
+
+	/*
+	function setValuesDeptCd(){
+		 let sh = document.getElementById("DEPT_CD");
+		let a = sh.option[sh.selectedIndex].value(); 
+		/* let tt = document.getElementById("textTime");
+		tt.value = sh.options[sh.selectedIndex].text;
+		console.log("나와야하는데..셀렉트박스?"+tt.ss);
+		let ss = $("#DEPT_CD option:selected").val();
+		le s = document.) 
+		let a = $("#DEPT_CD option:selected");
+		
+	}*/
+	
+});
+
+
+
+</script>
 </th:block>
 <th:block layout:fragment="customBody">
-	<form>
+<font color="black">
+	
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
-				<h3>인사기록카드 등록</h3>
-
-				<table class="table">
+				<h3>인사기록카드 수정</h3>		
+				<form method="post" class="personInsa" id="personInsa">
+					<table class="table">							
+						<div class="x_content" style="text-align: right">								
+							<button type="submit" class="btn" style="color:black" id="btn_insert">인사카드등록</button>				
+						</div> 
+									
 					<tbody>
-
 						<tr>
-							<th>사원번호(자동)</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
-								</div>
-							</td>
 							<th>성명</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<input th:value="${result.KOR_NM}" type="text" class="form-control" id="KOR_NM" name="KOR_NM">
+																										
+								</div>
+							</td>
+							<th>주민등록번호</th>
+							<td>
+								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+									<input th:value="${result.JUMIN_NO}" type="text" class="form-control" id="JUMIN_NO" name="JUMIN_NO">
 								</div>
 							</td>
 						</tr>
 
 						<tr>
-							<th>주민등록번호</th>
+							<th>영문성명</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<input th:value="${result.ENG_NM}" type="text" class="form-control" id="ENG_NM" name="ENG_NM">
 								</div>
 							</td>
-
+							<th>한자성명</th>
+							<td>
+								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
+									<input th:value="${result.HANJA_NM}" type="text" class="form-control" id="HANJA_NM" name="HANJA_NM">
+								</div>
+							</td>
+						</tr>
+						<tr>
 							<th>성별</th>
 							<td>
 								<p>
-									Male <input type="radio" class="flat" name="gender"
-										id="genderM" value="M" checked="" required /> Female <input
-										type="radio" class="flat" name="gender" id="genderF" value="F" />
+									Male <input th:value="${result.SEX_GB}" type="radio" class="flat" name="SEX_GB" id="SEX_GB" value="1" checked="" required /> 
+									Female <input th:value="${result.SEX_GB}" type="radio" class="flat" name="SEX_GB" id="SEX_GB" value="2" />
 								</p>
 							</td>
+
+							<th>부서코드</th>
+							<td>
+								<div class="form-group">
+									<div class="col-md-7 col-sm-9 col-xs-12">
+									<select onchange="setValuesDeptCd();" class="form-control" id="DEPT_CD" name="DEPT_CD">
+										<option></option>
+										<th:block th:each="d : ${deptResult}">
+											<option th:value="${d.DEPT_CD}">[[${d.DEPT_NM}]]</option>									
+											</th:block>
+									</select>
+									
+										<input type="text" id="a">
+									</div>
+								</div>
 						</tr>
 
 						<tr>
@@ -54,91 +220,40 @@
 							<td>
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
-										<select class="form-control">
+										<select class="form-control" id="JIKGUP_CD" name="JIKGUP_CD">				
 											<option></option>
-											<option>회장</option>
-											<option>부회장</option>
-											<option>대표이사</option>
-											<option>사장</option>
-											<option>부사장</option>
-											<option>전무</option>
-											<option>상무</option>
-											<option>이사</option>
-											<option>실장</option>
-											<option>팀장</option>
-											<option>대리</option>
-											<option>사원</option>
-											<option>인턴사원</option>
-											<option>촉탁사원</option>
-											<option>계약직</option>
-										</select>
+												<th:block th:each="gb : ${gbResult}">
+													<th:block th:if="${gb.LEVEL1_CD} == 110">									
+														<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+													</th:block>
+												</th:block>
+										</select>															</select>
+										</div>
 									</div>
-								</div>
-							</td>
+								</td>
 							<th>직책</th>
 							<td>
 								<div class="form-group">
-									<div class="col-md-7 col-sm-9 col-xs-12">
-										<select class="form-control">
+									<div class="col-md-7 col-sm-9 col-xs-12">		
+										<select th:value="${result.JIKCHK_CD}" class="form-control" id="JIKCHK_CD" name="JIKCHK_CD">
 											<option></option>
-											<option value="AK">회장</option>
-											<option value="HI">대표이사</option>
-											<option value="CA">대표</option>
-											<option value="NV">사장</option>
-											<option value="OR">부문장</option>
-											<option value="WA">본부장</option>
-											<option value="AZ">실장</option>
-											<option value="CO">소장</option>
-											<option value="ID">직원</option>
-											<option value="MT">감사</option>
-											<option value="NE">고문</option>
-											<option value="NM">임원</option>
-											<option value="ND">연구원</option>
-											<option value="UT">별정직</option>
-										</select>
+											<th:block th:each="gb : ${gbResult}">
+												<th:block th:if="${gb.LEVEL1_CD} == 120">									
+													<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+												</th:block>
+											</th:block>
+										</select>		
 									</div>
 								</div>
 
 							</td>
-						</tr>
-
-						<tr>
-							<th>부서코드</th>
-							<td>
-								<div class="form-group">
-									<div class="col-md-7 col-sm-9 col-xs-12">
-										<select class="form-control">
-											<option></option>
-											<option value="AK">0010 | 대표이사</option>
-											<option value="HI">0020 | 사장실</option>
-											<option value="CA">1000 | 경영부문</option>
-											<option value="NV">1100 | 경영지원본부</option>
-											<option value="OR">1110 | 경영지원실</option>
-											<option value="WA">1130 | 인사총무실</option>
-											<option value="AZ">1200 | 재무관리실</option>
-											<option value="CO">7000 | 설계사업 1부문</option>
-											<option value="ID">7500 | 설계1본부</option>
-											<option value="MT">7530 | 설계1본부 1소</option>
-											<option value="NE">7540 | 설계1본부 2소</option>
-										</select>
-									</div>
-								</div>
-							<th></th>
-							<td></td>
-
-						</tr>
+						</tr>						
 					</tbody>
 				</table>
-
-			</div>
-		</div>
-
-		<!-- 다음 테이블 시작 -->
-		<div class="col-md-12 col-sm-13 col-xs-12">
+			<div class="col-md-12 col-sm-13 col-xs-12">
 			<div class="x_panel">
-				<div class="x_content">
-					<!-- <table class="table table-striped"> -->
-
+				<div class="x_content">					
+				
 					<!-- 인적사항테이블 -->
 					<table class="table table-striped jambo_table bulk_action">
 						<thead>
@@ -149,44 +264,60 @@
 								<th></th>
 							</tr>
 						</thead>
-
-						<tbody>
-
-							<tr>
+						<tr>
 								<td>현거주지</td>
 								<td>
 									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text" class="form-control">
+										<input th:value="${result.CUR_ADDRESS}" type="text" class="form-control" id="CUR_ADDRESS" name="CUR_ADDRESS">
+										<input type="hidden" class="form-control" id="detailAddress">
+										<input type="hidden" class="form-control" id="extraAddress">
+									
+									</div>
 								</td>
 
-								<td></td>
-								<td><div class="col-md-13 col-sm-14 col-xs-12 form-group">
-										<input type="text" class="form-control"></td>
+								<td>우편번호</td>
+								<td>
+									<div class="col-md-13 col-sm-8 col-xs-12 form-group">
+										<div class="col-md-9 col-sm-9 col-xs-12 input-group" style="width:100%;">
+											<input th:value="${result.CUR_ZIP_NO}" type="text" class="form-control" id="CUR_ZIP_NO" name="CUR_ZIP_NO">
+												<span class="input-group-btn">
+													<button type="button" onclick="DaumPostcode()" class="btn">
+														<i class="fa fa-search"></i>
+													</button> 
+												</span>
+											</div>
+										</div>	
+									</td>
+									
 							</tr>
 							<tr>
 								<td>자택전화</td>
 								<td>
 									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text" class="form-control">
+										<input th:value="${result.PHONE_NO}" type="text" id="PHONE_NO" name="PHONE_NO" class="form-control">
+									</div>	
 								</td>
-								<td>전화번호</td>
+								<td>휴대전화</td>
 								<td>
-									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text" class="form-control">
+									<div class="col-md-13 col-sm-8 col-xs-12 form-group">
+										<input th:value="${result.H_PHONE_NO}" type="text" class="form-control" id="H_PHONE_NO" name="H_PHONE_NO">
+									</div>	
 								</td>
 							</tr>
 
 
 							<tr>
-								<td>휴대전화</td>
-								<td>
-									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text" class="form-control">
-								</td>
 								<td>이메일</td>
 								<td>
 									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text" class="form-control">
+										<input th:value="${result.MAIL_ADDRESS}" type="text" class="form-control" id="MAIL_ADDRESS" name="MAIL_ADDRESS">
+									</div>	
+								</td>
+								<td>본적주소</td>
+								<td>
+									<div class="col-md-13 col-sm-8 col-xs-12 form-group">
+										<input th:value="${result.BON_ADDRESS}" type="text" class="form-control" id="BON_ADDRESS" name="BON_ADDRESS">
+									</div>
 								</td>
 							</tr>
 
@@ -195,33 +326,24 @@
 								<td>
 									<div class="form-group">
 										<div class="col-md-7 col-sm-9 col-xs-12">
-											<select class="form-control">
+											<select th:value="${result.BORN_AREA_GB}" class="form-control" id="BORN_AREA_GB" name="BORN_AREA_GB">
 												<option></option>
-												<option value="AK">서울특별시</option>
-												<option value="HI">경기도</option>
-												<option value="CA">인천광역시</option>
-												<option value="NV">강원도</option>
-												<option value="OR">충청남도</option>
-												<option value="WA">대전광역시</option>
-												<option value="AZ">충청북도</option>
-												<option value="CO">부산광역시</option>
-												<option value="ID">울산광역시</option>
-												<option value="MT">대구광역시</option>
+													<th:block th:each="gb : ${gbResult}">
+														<th:block th:if="${gb.LEVEL1_CD} == 130">									
+															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+														</th:block>
+													</th:block>
 											</select>
 										</div>
 									</div>
 								</td>
-								<td>본적주소</td>
-								<td>
-									<div class="col-md-13 col-sm-12 col-xs-12 form-group">
-										<input type="text" class="form-control">
+								<td></td>
+								<td>										
 								</td>
 							</tr>
 						</tbody>
 					</table>
-
-
-					<!-- 신체사항테이블 -->
+										<!-- 신체사항테이블 -->
 					<table class="table table-striped jambo_table bulk_action">
 						<thead>
 							<tr>
@@ -237,32 +359,31 @@
 								<td>신장(cm)</td>
 								<td>
 									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text" placeholder="cm" class="form-control">
+										<input th:value="${result.HEIGHT}" type="text" placeholder="cm" class="form-control" id="HEIGHT" name="HEIGHT">
+									</div>	
 								</td>
 								<td>체중(kg)</td>
 								<td>
 									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text" placeholder="kg" class="form-control">
+										<input th:value="${result.WEIGHT}" type="text" placeholder="kg" class="form-control" id="WEIGHT" name="WEIGHT">
+									</div>
 								</td>
 							</tr>
 							<tr>
 								<td>혈액형</td>
 								<td>
 									<div class="col-md-7 col-sm-12 col-xs-12">
-										<select class="form-control">
+										<select th:value="${result.BLOOD_TYPE}" class="form-control" id="BLOOD_TYPE" name="BLOOD_TYPE">
 											<option></option>
-											<option>A형</option>
-											<option>B형</option>
-											<option>O형</option>
-											<option>AB형</option>
-										</select>
-									</div>
-									</div>
+											<th:block th:each="gb : ${gbResult}">
+												<th:block th:if="${gb.LEVEL1_CD} == 150">									
+													<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+												</th:block>
+											</th:block>
+										</select>	
+									</div>			
 								<td></td>
-								<td></td>
-
-
-								</td>
+								<td></td>						
 							</tr>
 						</tbody>
 					</table>
@@ -284,12 +405,13 @@
 								<td>
 									<div class="form-group">
 										<div class="col-md-8 col-sm-9 col-xs-12">
-											<select class="form-control">
+											<select th:value="${result.ARMY_TYPE}" class="form-control" id="ARMY_TYPE" name="ARMY_TYPE">
 												<option></option>
-												<option>예 비 역</option>
-												<option>보 충 역</option>
-												<option>미 필</option>
-												<option>면 제</option>
+													<th:block th:each="gb : ${gbResult}">
+														<th:block th:if="${gb.LEVEL1_CD} == 230">									
+															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+														</th:block>
+													</th:block>
 											</select>
 										</div>
 									</div>
@@ -298,15 +420,14 @@
 								<td>
 									<div class="form-group">
 										<div class="col-md-8 col-sm-9 col-xs-12">
-											<select class="form-control">
+											<select  th:value="${result.BRANCHE_GB}" class="form-control" id="BRANCHE_GB" name="BRANCHE_GB">
 												<option></option>
-												<option>육군</option>
-												<option>해군</option>
-												<option>공군</option>
-												<option>해병대</option>
-												<option>카투사</option>
-												<option>의경</option>
-											</select>
+													<th:block th:each="gb : ${gbResult}">
+														<th:block th:if="${gb.LEVEL1_CD} == 240">									
+															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+														</th:block>
+													</th:block>
+											</select>	
 										</div>
 									</div>
 								</td>
@@ -317,14 +438,14 @@
 								<td>
 									<div class="form-group">
 										<div class="col-md-8 col-sm-12 col-xs-12">
-											<select class="form-control">
+											<select th:value="${result.GRADE_CD}" class="form-control" id="GRADE_CD" name="GRADE_CD">
 												<option></option>
-												<option>장성</option>
-												<option>영관급</option>
-												<option>위관급</option>
-												<option>부사관</option>
-												<option>사병</option>
-											</select>
+													<th:block th:each="gb : ${gbResult}">
+														<th:block th:if="${gb.LEVEL1_CD} == 250">									
+															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+														</th:block>
+													</th:block>
+											</select>	
 										</div>
 									</div>
 
@@ -333,22 +454,14 @@
 								<td>
 									<div class="form-group">
 										<div class="col-md-8 col-sm-12 col-xs-12">
-											<select class="form-control">
-												<option></option>
-												<option>공병</option>
-												<option>통신</option>
-												<option>전산</option>
-												<option>보병</option>
-												<option>수송</option>
-												<option>부관</option>
-												<option>항공통제</option>
-												<option>포병</option>
-												<option>행정</option>
-												<option>작전제도</option>
-												<option>관측</option>
-												<option>시설</option>
-												<option>제도병</option>
-											</select>
+											<select th:value="${result.ARMS_GB}" class="form-control" id="ARMS_GB" name="ARMS_GB">
+											<option></option>
+											<th:block th:each="gb : ${gbResult}">
+												<th:block th:if="${gb.LEVEL1_CD} == 260">									
+													<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+												</th:block>
+											</th:block>
+										</select>
 										</div>
 									</div>
 								</td>
@@ -374,18 +487,13 @@
 								<td>
 									<div class="form-group">
 										<div class="col-md-7 col-sm-5 col-xs-5">
-											<select class="form-control">
+											<select th:value="${result.PRO_GB}" class="form-control" id="PRO_GB" name="PRO_GB">
 												<option></option>
-												<option>건축</option>
-												<option>기계</option>
-												<option>토목</option>
-												<option>전기</option>
-												<option>통신</option>
-												<option>조경</option>
-												<option>소방</option>
-												<option>도시계획</option>
-												<option>전산</option>
-
+													<th:block th:each="gb : ${gbResult}">
+														<th:block th:if="${gb.LEVEL1_CD} == 280">									
+															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+														</th:block>
+													</th:block>
 											</select>
 										</div>
 									</div>
@@ -394,19 +502,20 @@
 								<td>
 									<div class="form-group">
 										<div class="col-md-7 col-sm-12 col-xs-12">
-											<select class="form-control">
+											<select th:value="${result.LEVEL_GB}" class="form-control" id="LEVEL_GB" name="LEVEL_GB">
 												<option></option>
-												<option>특 급</option>
-												<option>고 급</option>
-												<option>중 급</option>
-												<option>초 급</option>
+													<th:block th:each="gb : ${gbResult}">
+														<th:block th:if="${gb.LEVEL1_CD} == 290">									
+															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+														</th:block>
+													</th:block>
 											</select>
 										</div>
 									</div>
 
 								</td>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<td>직무</td>
 								<td>
 									<div class="form-group">
@@ -427,7 +536,7 @@
 								</td>
 								<td></td>
 								<td></td>
-							</tr>
+							</tr> -->
 
 						</tbody>
 					</table>
@@ -446,28 +555,28 @@
 						<tbody>
 							<tr>
 								<td>입사일자</td>
-								<td><input type="date"></td>
+								<td><input th:value="${result.IN_DT}" type="date" id="IN_DT" name="IN_DT"></td>
 								<td>퇴직기준</td>
-								<td><input type="date"></td>
+								<td><input th:value="${result.OUT_STD_DT}" type="date" id="OUT_STD_DT" name="OUT_STD_DT"></td>
 							</tr>
 							<tr>
 								<td>퇴사일자</td>
-								<td><input type="date"></td>
+								<td><input th:value="${result.OUT_DT}" type="date" id="OUT_DT" name="OUT_DT"></td>
 								<td></td>
 								<td></td>
-							</tr>
-
-						</tbody>
+							</tr>							
+						</tbody>																			
 					</table>
-					<center>
-						<button type="button" class="btn btn-primary">인사카드 수정</button>
-					</center>
 				</div>
 			</div>
-		</div>
+		</div>			
 	</form>
+		
+</div>
+</div>
 
-
+	<!-- 기본 인사기록카드 등록 끝 -->
+	
 	<!-- 추가 입력할 정보 창 -->
 	<form>
 		<div class="col-md-12 col-sm-13 col-xs-12">
@@ -564,10 +673,12 @@
 									</div>
 									<div class="clearfix"></div>
 									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary">입력</button>
-										<button type="button" class="btn btn-round btn-primary">저장</button>
+										<button type="button" class="btn btn-round btn-primary" id="btn_family">입력</button>
+										<button type="button" class="btn btn-round btn-primary" id="btn_family_insert">저장</button>
 									</div>
+								<form action="" method="POST">
 									<table class="table table-bordered">
+									
 										<thead>
 											<tr>
 												<th>NO</th>
@@ -577,22 +688,11 @@
 												<th>소재지(시/도)</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<th>1</th>
-												<td>배우자</td>
-												<td>김**</td>
-												<td>전업주부</td>
-											</tr>
-											<tr>
-												<th>2</th>
-												<td>자녀</td>
-												<td>김**</td>
-												<td>자영업</td>
-											</tr>
+										<tbody id="family_table">
+											<!-- 화면에서 입력한 값  -->
 										</tbody>
 									</table>
-
+								</form>
 
 
 								</div>
@@ -692,7 +792,7 @@
 	</form>
 
 
-
+</font>
 </th:block>
 <th:block layout:fragment="customJquery">
 	<th:block th:include="layout/customJquery"></th:block>

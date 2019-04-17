@@ -19,17 +19,17 @@ public class ResultGraphService {
 		return resultGraphMapper.getResultGraphList();
 	}
 	//5.2.1 M/H계획 실적 그래프 리스트 출력(날짜검색추가)
-		public List<ResultList> getResultGraphListDate(String crt_date, String end_date) {
+		public List<ResultList> getResultGraphListDate(String CONTRACT_PRI1, String CONTRACT_PRI2) {
 			System.out.println("SERVICE : M/H계획 실적 그래프 리스트 출력");
 			List<ResultList> data2 = resultGraphMapper.getResultGraphList();
 	//crt_date, end_date 중에 하나라도 없으면 전체 리스트를 출력
-			if(crt_date == "" && end_date == "" || 
-				crt_date !="" && end_date == "" ||
-			   	crt_date =="" && end_date != "") {
+			if(CONTRACT_PRI1 == "" && CONTRACT_PRI2 == "" || 
+			   CONTRACT_PRI1 !="" && CONTRACT_PRI2 == "" ||
+			   CONTRACT_PRI1 =="" && CONTRACT_PRI2 != "") {
 				System.out.println("시작,종료날짜 null인경우 출력!");
 				data2 = resultGraphMapper.getResultGraphList();	
 			}else {
-				data2 = resultGraphMapper.getResultGraphListDate(crt_date, end_date);	
+				data2 = resultGraphMapper.getResultGraphListDate(CONTRACT_PRI1, CONTRACT_PRI2);	
 			}			
 			return data2;
 	}		

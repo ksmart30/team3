@@ -32,11 +32,10 @@ public class ResultGraphController {
 	
 	// 5.2.1 M/H 계획/실적(그래프) 리스트 출력 컨트롤러 (날짜검색추가)
 	@GetMapping("/manHour/manHourResultGraphSearchView")
-	public String manHourPlanGraphSearchView(Model model,@RequestParam(value="crt_date") String crt_date, @RequestParam(value="end_date") String end_date) {
+	public String manHourPlanGraphSearchView(Model model,@RequestParam(value="CONTRACT_PRI1") String CONTRACT_PRI1, @RequestParam(value="CONTRACT_PRI2") String CONTRACT_PRI2) {
 		System.out.println("CONTROLLER : M/H계획 실적 검색화면으로 이동");
-		System.out.println("시작날짜 : "+ crt_date+" 마감날짜 : "+end_date);
-		List<ResultList> data2 = resultGraphService.getResultGraphListDate(crt_date, end_date);
-
+		System.out.println("시작날짜 : "+ CONTRACT_PRI1+" 마감날짜 : "+CONTRACT_PRI2);
+		List<ResultList> data2 = resultGraphService.getResultGraphListDate(CONTRACT_PRI1, CONTRACT_PRI2);
 		System.out.println("날짜별 검색 data"+data2);
 		model.addAttribute("graphList", data2);
 		return "mh/result/resultPlanGraphView";

@@ -10,6 +10,22 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <head>
 <script>
+function updateInsa(EMP_NO){
+	console.log('수정 할 직원번호 : '+EMP_NO);
+	$.ajax({
+		url:'/person/personInsaModifyView',
+		data:{EMP_NO:EMP_NO},
+		type:'GET',
+		success:function(data){
+			location.href="/person/personInsaModifyView?EMP_NO="+EMP_NO;
+			console.log(data);
+		}
+				
+	}); 
+	
+	
+	
+}
 	$(document).ready(function(){
 		console.log('인사기록카드 등록 시작');
 		
@@ -29,7 +45,7 @@
 						$('#list').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
 						$('#list').append('<td>'+item.SORT_VALUE+'</td>');
 						$('#list').append('<td>'+item.DEPT_NM+'</td>');
-						$('#list').append('<td>'+item.EMP_NO+'</td>');
+						$('#list').append('<td id="EMP_NO" onclick="updateInsa('+item.EMP_NO+')">'+item.EMP_NO+'</td>');
 						$('#list').append('<td>'+item.KOR_NM+'</td>');						
 						$('#list').append('<td>'+item.OUT_DT+'</td>');	
 						$('#list').append('</tr>');	
@@ -61,7 +77,8 @@
 	<div class="x_content" style="text-align: right">
 		<div class="btn-group" >
 				<a href="/person/personInsaWriteView"><button class="btn btn-default" id ="btnWrite"type="reset">입력</button></a>
-				<button class="btn btn-default" type="button">수정</button>
+				<a href="/person/personInsaModifyView"><button class="btn btn-default" type="button" id="btn_up">수정</button></a>
+				
 				<button class="btn btn-default" type="button">삭제</button>				
 		</div>
 	</div>		
