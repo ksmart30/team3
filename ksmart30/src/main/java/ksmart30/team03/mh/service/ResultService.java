@@ -1,6 +1,7 @@
 package ksmart30.team03.mh.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,24 @@ public class ResultService {
 		System.out.println("받아온 값 : "+result.getWORK_DT());
 		return resultMapper.resultWriteView(result);
 	}
-	//M/H 실적 리스트
+	//M/H 입력 실적 리스트
 	public List<Result> getListView(){
 		return resultMapper.getListView();
+		
+	}
+	//M/H 입력 실적 리스트 검색
+	public List<Map<String,Object>> getListSearchView(Result result){
+		System.out.println("입력리스트getListSearchView 날짜검색요청");
+		List<Map<String,Object>> vo = resultMapper.getListSearch(result);
+		if(result.getWORK_DT() =="" && result.getWORK_DT2()=="" || 
+		   result.getWORK_DT()!= "" && result.getWORK_DT2()=="" ||
+		   result.getWORK_DT() =="" && result.getWORK_DT2()!= "" ) {
+		   vo = resultMapper.getListSearch2(result);
+		}else {
+		   vo = resultMapper.getListSearch(result); 
+		}
+		
+		return vo;
 		
 	}
 }

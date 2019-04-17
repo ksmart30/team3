@@ -18,4 +18,6 @@ public class ResultListService {
 		return resultListMapper.getresultListView();
 		
 	}
+	
+	// M/H실적(월별) 날짜검색
 }

@@ -23,5 +23,10 @@
 				 AND(A.PJT_CD *= D.PJT_CD)
 				 AND((A.EMP_NO *= C.EMP_NO))
 		</select>
-
+		<!-- 5.3 M/H실적(월별) 날짜검색 쿼리-->
+		<select id="getApprovalSearchDate" 
+				resultType="ksmart30.team03.mh.domain.Result" 
+				parameterType="String">
+			
+		</select>
 </mapper>

@@ -5,7 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Result {
 	private String EMP_NO;    //1.사원번호
-	private String WORK_DT;   //2.작업일자
+	private String WORK_DT;   //2.작업일자1
+	private String WORK_DT2;  //2.작업일자2
 	private String PJT_CD;    //3.프로젝트코드
 	private String WORK_STEP; //4.작업단계
 	private String WORK_SPEC; //5.작업내용
@@ -25,6 +26,12 @@ public class Result {
 	}
 	public void setWORK_DT(String wORK_DT) {
 		WORK_DT = wORK_DT;
+	}
+	public String getWORK_DT2() {
+		return WORK_DT2;
+	}
+	public void setWORK_DT2(String wORK_DT2) {
+		WORK_DT2 = wORK_DT2;
 	}
 	public String getPJT_CD() {
 		return PJT_CD;
@@ -76,9 +83,10 @@ public class Result {
 	}
 	@Override
 	public String toString() {
-		return "Result [EMP_NO=" + EMP_NO + ", WORK_DT=" + WORK_DT + ", PJT_CD=" + PJT_CD + ", WORK_STEP=" + WORK_STEP
-				+ ", WORK_SPEC=" + WORK_SPEC + ", DEPT_CD=" + DEPT_CD + ", WORK_TIME=" + WORK_TIME + ", ETC_SPEC="
-				+ ETC_SPEC + ", JIKGUP_CD=" + JIKGUP_CD + ", A_DEPT_CD=" + A_DEPT_CD + "]";
+		return "Result [EMP_NO=" + EMP_NO + ", WORK_DT=" + WORK_DT + ", WORK_DT2=" + WORK_DT2 + ", PJT_CD=" + PJT_CD
+				+ ", WORK_STEP=" + WORK_STEP + ", WORK_SPEC=" + WORK_SPEC + ", DEPT_CD=" + DEPT_CD + ", WORK_TIME="
+				+ WORK_TIME + ", ETC_SPEC=" + ETC_SPEC + ", JIKGUP_CD=" + JIKGUP_CD + ", A_DEPT_CD=" + A_DEPT_CD + "]";
 	}
+	
 	
 }

@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team03.mh.domain.Result;
+import ksmart30.team03.mh.domain.ResultPersonList;
 import ksmart30.team03.mh.service.ResultListService;
 
 @Controller
@@ -22,6 +25,8 @@ public class ResultListController {
 		model.addAttribute("ListView", ListView);
 		return "mh/result/resultListView";
 	}
+	//M/H실적(월별) 개인 리스트 검색				
+	
 	
 	// M/H실적(프로젝트별 누계) a
 	@GetMapping("/manHour/result/nugae")

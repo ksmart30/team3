@@ -1,12 +1,13 @@
 package ksmart30.team03.mh.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team03.mh.domain.Result;
 import ksmart30.team03.mh.service.ApprovalService;
@@ -25,14 +26,13 @@ public class ApprovalController {
 		return "mh/result/approvalSearchView";
 	}
 	
-	  //5.2 실적승인(날짜 검색)
-	  
-	  @GetMapping("/manHour/approvalDateSearchView") public String
-	  approvalDateSearchView(Model model,@RequestParam(value="WORK_DT") String
-	  WORK_DT) { System.out.println("approvalDateSearchView 날짜검색요청"); List<Result>
-	  resultdate = approvalService.getApprovalSearchDate(WORK_DT);
-	  model.addAttribute("resultdate", resultdate); return
-	  "mh/result/approvalSearchView";
+	  //5.2 실적승인(날짜 검색)	  
+	  @GetMapping("/manHour/approvalDateSearchView") 
+	  public @ResponseBody List<Map<String,Object>> approvalDateSearchView(Result result){ 
+	  System.out.println("approvalDateSearchView 날짜검색요청"); 
+	  List<Map<String,Object>> resultdate = approvalService.getApprovalSearchDate(result);	  
+
+	  return resultdate;
 	  
 	  }
 }

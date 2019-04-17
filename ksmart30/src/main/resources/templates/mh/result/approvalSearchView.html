@@ -5,55 +5,47 @@
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
 	<title>M/H 실적 승인 화면</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<th:block th:include="layout/customHead"></th:block>
 	<head>
-	<!-- <script>
-	$(document).ready(function(){
-		 console.log('직원list 출력해보자');	
-		//검색버튼 클릭 시 전체 직원조회
-		 $("#btn_resultdate").click(function(){	
-			 
-			 let EMP_NO = $('#EMP_NO').val();
-			 let let WORK_DT = WORK_DT.substring(0,4)+WORK_DT.substring(5,7)+WORK_DT.substring(8, 10);
-			 let PJT_CD = $('#PJT_CD').val();			 
-			 let WORK_STEP	=$('#WORK_STEP').val();
-			 let WORK_SPEC = $('#WORK_SPEC').val();
-			 let DEPT_CD = $('#DEPT_CD').val();
-			 let WORK_TIME = $('#WORK_TIME').val();
-			 let ETC_SPEC = $('#ETC_SPEC').val();		 
-			 let JIKGUP_CD = $('#JIKGUP_CD').val();
-			 console.log(' 검색조건 (사원번호) : '+EMP_NO+' 검색조건 (작업일자) : '+WORK_DT+"  검색조건 (프로젝트코드) :  "+PJT_CD+"    검색조건(작업단계) :  "+WORK_STEP+"  검색조건(작업내용) : "+WORK_SPEC+"검색조건(부서코드) :"+부서코드+"검색조건(작업시간) :"+ WORK_TIME+"검색조건(상세내용) :"+ETC_SPEC+"검색조건(직급코드) :"+JIKGUP_CD);
-				
-			 $.ajax({				
-					url:'/manHour/approvalDateSearchView',
-					type:'GET',
-					data:{EMP_NO:EMP_NO,WORK_DT:WORK_DT,PJT_CD:PJT_CD,WORK_STEP:WORK_STEP,WORK_SPEC:WORK_SPEC,DEPT_CD:DEPT_CD,WORK_TIME:WORK_TIME,ETC_SPEC:ETC_SPEC,JIKGUP_CD:JIKGUP_CD},
-					success:(data)=>{
-						$('#resultdate').empty();
-						$(data).each(function(index,item){
-							//한 행을 클릭시 사원번호	
-							console.log(data);						
-							$('#resultdate').append('<tr class="even pointer">');
-							$('#resultdate').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
-							$('#resultdate').append('<td onclick="detail('+item.emp_NO+')">'+item.SORT_VALUE+'</td>');
-							$('#resultdate').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.DEPT_NM+'</td>');
-							$('#resultdate').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.EMP_NO+'</td>');
-							$('#resultdate').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.KOR_NM+'</td>');
-							$('#resultdate').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td>');
-							$('#resultdate').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td>');
-							$('#resultdate').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.IN_PHONE_NO+'</td>');
-							$('#resultdate').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.SEX_GB+'</td>');
-							$('#resultdate').append('<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.AUDIT_TM+'</td>');						
-							
-							$('#list').append('</tr>');							
-						});
-					}					
-			 }); 				
-		 });
-		
-
+<script>
+$(document).ready(function(){
+	console.log('날짜 출력');
+	$("#btn_day").click(function(){
+		let work_dt_format = $('#WORK_DT').val();
+		let end_dt_format = $('#WORK_DT2').val();	
+		let WORK_DT = work_dt_format.substr(0,4)+work_dt_format.substr(5,2)+work_dt_format.substr(8,2);
+		let WORK_DT2 = end_dt_format.substr(0,4)+end_dt_format.substr(5,2)+end_dt_format.substr(8,2); 
+		console.log(WORK_DT +"첫번째날짜"+WORK_DT2 +"마지막날짜");		
+		 
+	$.ajax({
+		url:'/manHour/approvalDateSearchView',			 
+        type:'GET',
+		data:{WORK_DT:WORK_DT,WORK_DT2:WORK_DT2},
+		success:(data)=>{        	
+            $('#list').empty();
+            console.log('리스트 출력');
+            console.log(data);
+            $(data).each(function(index,item){ //each = foreach (반복문)
+                $('#list').append('<tr>');
+                $('#list').append('<td></td>');
+                $('#list').append('<td>'+item.EMP_NO+'</td>');
+                $('#list').append('<td>'+item.WORK_DT+'</td>'); 
+                $('#list').append('<td>'+item.PJT_CD+'</td>'); 
+                $('#list').append('<td>'+item.WORK_STEP+'</td>');
+                $('#list').append('<td>'+item.WORK_SPEC+'</td>');
+                $('#list').append('<td>'+item.DEPT_CD+'</td>');
+                $('#list').append('<td>'+item.WORK_TIME+'</td>');
+                $('#list').append('<td>'+item.ETC_SPEC+'</td>');
+                $('#list').append('<td>'+item.JIKGUP_CD+'</td>');
+                $('#list').append('<td></td>');
+                $('#list').append('</tr>'); 
+            });                   			
+		}
 	});
-	</script> -->
+});
+});
+</script>
 
 	</head>
 </th:block>
@@ -95,7 +87,7 @@
 		<div class="clearfix"></div>
 
 		<div class="row">
-			<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="col-md-12 col-sm-12 col-xs-12" style="color:black;">
 				
 				<div class="x_panel">
 					<div class="x_title">
@@ -118,13 +110,16 @@
 									</div>
 								</div>
 								<div class="col-sm-6">
-										<div class="x_content" style="text-align: right">
+									<form action="/manHour/approvalDateSearchView">	
+										<div class="x_content" style="text-align: right">							
 										<label>	
 																												
-										<input type="date" name="WORK_DT" id="WORK_DT">										
-										<button class="btn" style="color:black" id="btn_resultdate">날짜검색</button>									
-										</label>
+										<input type="date" name="WORK_DT" id="WORK_DT">
+										<input type="date" name="WORK_DT2" id="WORK_DT2">																				
+										<button type="button" style="color:black" id="btn_day">날짜검색</button>																			
+										</label>									
 									</div>
+									</form>
 								</div>
 							</div>
 							<table class="table table-striped jambo_table bulk_action">
@@ -151,7 +146,7 @@
                           </tr>
                         </thead>
 
-                        <tbody>       
+                        <tbody id = "list">       
                         <tr th:each="l : ${approval}" style="color:black;">
                         <td><div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"></div></td>
                         <td th:text="${l.EMP_NO}"></td>
