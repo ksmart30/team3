@@ -197,8 +197,8 @@
 				let radioValue = this.value;
 				console.log("임금채권 부담금비율 체크! :" + radioValue);
 				if(radioValue == 'YES') {
-					$('#INSURE_CHECK1').text('0.6');
-					$('#INSURE_CHECK1').val('0.6');
+					$('#INSURE_CHECK1').text('0.0006');
+					$('#INSURE_CHECK1').val('0.0006');
 					sanjePerCal();
 				}else if(radioValue == 'NO') {
 					$('#INSURE_CHECK1').text('0');
@@ -210,8 +210,8 @@
 				let radioValue = this.value;
 				console.log("석면피해구제분담금 체크! :" + radioValue);
 				if(radioValue == 'YES') {
-					$('#INSURE_CHECK2').text('0.03');
-					$('#INSURE_CHECK2').val('0.03');
+					$('#INSURE_CHECK2').text('0.00003');
+					$('#INSURE_CHECK2').val('0.00003');
 					sanjePerCal();
 				}else if(radioValue == 'NO') {
 					$('#INSURE_CHECK2').text('0');
@@ -229,7 +229,7 @@
 				console.log("4 : " + val4);
 				let val5 = $('#INSURE_CHECK2').text();	// 석면피해구제분담금 (해당:0.03 비해당 0)
 				console.log("5 : " + val5);
-				let totalVal = (parseFloat(val2) + parseFloat(val3) + parseFloat(val4) + parseFloat(val5)).toFixed(4);	// 산재보험료율 (합계 / 소수점 4자리까지 표기, 반올림)
+				let totalVal = (parseFloat(val2) + parseFloat(val3) + parseFloat(val4) + parseFloat(val5)).toFixed(5);	// 산재보험료율 (합계 / 소수점 4자리까지 표기, 반올림)
 				
 				console.log("산재보험료율 : " + totalVal);
 				$('#INSURE_SANJE_TOTAL_RATE').val(totalVal);	// 산재보험료율을 값 대입(출력)
@@ -241,7 +241,7 @@
 				console.log("입력받은 월 급여 : "+$('#INSURE_PAY4').val());
 				let totalPay = (($('#INSURE_PAY4').val()).replace(/,/gi,""));	// 정규식 사용(문자열 제거)
 				console.log("산재보험금 : "+ totalPay);
-				let sanjeTotal = (parseInt((totalPay * totalRate)/100)) - ((parseInt((totalPay * totalRate)/100))%10);
+				let sanjeTotal = Math.round((parseInt(totalPay * totalRate))/10)*10;
 				console.log("계산된 산재보험금 : "+ sanjeTotal);
 				$('#INSURE_TOTAL5').val(numberWithCommas(sanjeTotal));
 			});
@@ -640,7 +640,7 @@
 																<thead>
 																	<tr>
 																		<td colspan="3">구분</td>
-																		<td>요율</td>
+																		<td>요율 (%)</td>
 																	</tr>
 																</thead>
 																<tbody>
@@ -672,7 +672,7 @@
 																	<tr>
 																		<td>출퇴근 재해요율</td>
 																		<td>전업종 동일요율 적용</td>
-																		<td th:text="1.5" id="INSURE_SANJE_RATE2"></td>
+																		<td th:text="0.0015" id="INSURE_SANJE_RATE2"></td>
 																	</tr>
 																	<tr>
 																		<td colspan="2">
@@ -685,7 +685,7 @@
 																			<input type="radio" value="YES" name="INSURE_CHECK1" checked>해당 &nbsp;
 																			<input type="radio" value="NO" name="INSURE_CHECK1">비해당
 																		</td>
-																		<td th:text="0.6" value="0.6" id="INSURE_CHECK1"></td>
+																		<td th:text="0.0006" value="0.0006" id="INSURE_CHECK1"></td>
 																	</tr>
 																	<tr>
 																		<td colspan="2">
@@ -698,12 +698,12 @@
 																			<input type="radio" value="YES" name="INSURE_CHECK2" checked>해당 &nbsp;
 																			<input type="radio" value="NO" name="INSURE_CHECK2">비해당
 																		</td>
-																		<td th:text="0.03" value="0.03" id="INSURE_CHECK2"></td>
+																		<td th:text="0.00003" value="0.00003" id="INSURE_CHECK2"></td>
 																	</tr>
 																	<tr>
 																		<td colspan="3">산재보험료율</td>
 																		<td>
-																			<input type="text" style="width:55%; text-align: center" name="INSURE_SANJE_TOTAL_RATE" id="INSURE_SANJE_TOTAL_RATE" value="2.1300" readonly>
+																			<input type="text" style="width:55%; text-align: center" name="INSURE_SANJE_TOTAL_RATE" id="INSURE_SANJE_TOTAL_RATE" value="0.00213" readonly>
 																		</td>
 																	</tr>
 																	<tr>
@@ -715,8 +715,8 @@
 																</tbody>
 															</table>
 														<div>
-																보험료 식: 보수총액(월평균보수) × 보험료율 ÷ 1,000<br>
-																산재보험료율은 천분위로 표시됩니다.
+																보험료 식: 보수총액(월평균보수) × 보험료율<br>
+																산재보험료율은 (%)로 표시됩니다.
 														</div>
 															<br>
 														<div style="color:red;">
