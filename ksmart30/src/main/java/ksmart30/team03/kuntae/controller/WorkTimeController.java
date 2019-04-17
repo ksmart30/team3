@@ -23,7 +23,7 @@ public class WorkTimeController {
 		return "/kuntae/daySearchView";
 	}
 	
-	// 출, 퇴근 기록부 (Total)
+	// 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력
 	@GetMapping("/kuntae/recordTotalView")
 	public String recordTotalView(Model model) {
 		System.out.println("C : Total 기록부 화면 먼저 호출");

@@ -109,18 +109,18 @@
 				 b.LEVEL2_NM AS JIKGUP_NM,
 				 DEPT_NM,
 				 e.WORK_DT,
-				 e.START_TIME,
-				(CASE WHEN e.END_TIME=e.END_TIME THEN e.END_TIME else '퇴근미입력' END) END_TIME,
+				(CASE WHEN e.START_TIME IS NULL THEN '퇴근미입력' WHEN e.START_TIME='' THEN '출근미입력' ELSE e.START_TIME END ) START_TIME,
+				(CASE WHEN e.END_TIME IS NULL THEN '퇴근미입력' when e.END_TIME= '' then '퇴근미입력' else e.END_TIME end) END_TIME,
 				(CASE WHEN e.END_DT IS NULL THEN '퇴근미입력' when e.END_DT= '' then '퇴근미입력' else e.END_DT end) END_DT
 		FROM T_HM1000 a 
 		JOIN T_SC9100 b ON a.JIKGUP_CD=b.LEVEL2_CD
 		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
-		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO=#{EMP_NO}
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%%'
 	</select>
 	
-	<!-- 출퇴근(Total) 당일출근 List -->
+	<!-- 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력 -->
 	<select id="getRecordTotalList"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList">
 		SELECT 
@@ -129,7 +129,7 @@
 				 a.EMP_NO,
 				 a.KOR_NM,
 				 e.WORK_DT,
-				 e.START_TIME,
+				(CASE WHEN e.START_TIME IS NULL THEN '퇴근미입력' WHEN e.START_TIME='' THEN '출근미입력' ELSE e.START_TIME END ) START_TIME,
 				(CASE WHEN e.END_TIME IS NULL THEN '퇴근전' when e.END_TIME= '' then '퇴근전' else e.END_TIME end) END_TIME,
 				(CASE WHEN e.END_DT IS NULL THEN '퇴근전' when e.END_DT= '' then '퇴근전' else e.END_DT end) END_DT
 		FROM T_HM1000 a 
@@ -162,21 +162,21 @@
 
 		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120'AND e.WORK_DT<![CDATA[>=]]> #{WORK_DT} AND e.END_DT<![CDATA[<=]]> #{END_DT} AND a.EMP_NO= #{EMP_NO} -->
 		<!-- 2 -->
-		SELECT TOP 200 a.EMP_NO,
+
+		SELECT  a.EMP_NO,
 				 a.KOR_NM,
 				 b.LEVEL2_NM AS JIKGUP_NM,
 				 DEPT_NM,
-				 e.WORK_DT,				 
-				 e.START_TIME,
-				(CASE WHEN e.END_TIME IS NULL THEN '출근미입력' WHEN e.END_TIME='' THEN '퇴근미입력' ELSE e.END_TIME END) END_TIME,
-				(CASE WHEN e.END_DT IS NULL THEN '퇴근미입력' when e.END_DT= '' then '퇴근미입력' else e.END_DT end) END_DT				
+				 e.WORK_DT,
+				(CASE WHEN e.START_TIME IS NULL THEN '퇴근미입력' WHEN e.START_TIME='' THEN '출근미입력' ELSE e.START_TIME END ) START_TIME,
+				(CASE WHEN e.END_TIME IS NULL THEN '퇴근미입력' WHEN e.END_TIME= '' then '퇴근미입력' else e.END_TIME end) END_TIME,
+				(CASE WHEN e.END_DT IS NULL THEN '퇴근미입력' when e.END_DT= '' then '퇴근미입력' else e.END_DT end) END_DT
 		FROM T_HM1000 a 
 		JOIN T_SC9100 b ON a.JIKGUP_CD=b.LEVEL2_CD
 		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
-		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt <![CDATA[>=]]> #{WORK_DT} AND e.end_dt <![CDATA[<=]]> #{END_DT} AND a.emp_no= #{EMP_NO} 
-		
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%%' AND e.WORK_DT <![CDATA[>=]]> #{WORK_DT} AND e.END_DT <![CDATA[<=]]> #{END_DT}
 	</select>
 	
 	<!-- 전체검색 2 -->

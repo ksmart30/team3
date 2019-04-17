@@ -36,7 +36,7 @@ public class WorkTimeService {
 		return workTimeMapper.getRecordSingleDateSearch(WORK_DT, END_DT);
 	}
 	
-	// 출,퇴근 기록부(Total) 당일 출퇴근 명단 
+	// 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력
 	public List<WorkTimeSingleList> getRecordTotalList(){
 		System.out.println("S : Total 당일 출퇴근 명단 화면");
 		return workTimeMapper.getRecordTotalList();
