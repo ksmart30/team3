@@ -10,7 +10,7 @@
 	parameterType="String" resultType="java.util.Map">
 	SELECT SYS_COD,GUBUN,DEPT_NM,JIKGUP_CD,KOR_NM,EMP_NO, 
 
-	JIGAK,KYULGUN1,KYULGUN2,SAYU_NM,JIKGUP_NM,DEPT_CD,HOLI_1, 
+	ISNULL(JIGAK,0) JIGAK,ISNULL(KYULGUN1,0) KYULGUN1 ,ISNULL(KYULGUN2,0) KYULGUN2,SAYU_NM,JIKGUP_NM,DEPT_CD,HOLI_1, 
 	 
 	 
 	 
@@ -29,4 +29,8 @@
 	ORDER BY SYS_COD, GUBUN, JIKGUP_CD, EMP_NO 
 
 	</select>
+	<select id="deptCd" resultType="java.util.Map">
+	SELECT DEPT_CD,DEPT_NM FROM T_SC1010
+	</select>
+	
 	</mapper>  

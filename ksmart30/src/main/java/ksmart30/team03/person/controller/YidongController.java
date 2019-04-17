@@ -33,7 +33,19 @@ public class YidongController {
 		return result;
 	}
 	
-	//
+	//직원 검색, 검색 list 출력
+	
+	@GetMapping("/person/personYidongListSearch")
+	public String personYidongListSearch(Model model,@RequestParam(value="KOR_NM")String KOR_NM) {
+		System.out.println("personYidongListSearch 메서드 호출 컨트롤러 ");
+		List<Yidong> result2 = yidongService.searchYidongList(KOR_NM);
+		System.out.println("직원 검색 리스트 : "+result2);
+		model.addAttribute("yidongList", result2);
+		return "person/yidong/yidongListView";
+		
+	}
+	
+	
 	@GetMapping("/person/yidong/updateForm")
 	public String yidongUpdateForm() {
 		return "person/yidong/yidongModifyView";

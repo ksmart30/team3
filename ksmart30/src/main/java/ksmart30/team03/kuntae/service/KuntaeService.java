@@ -19,4 +19,8 @@ public class KuntaeService {
 		System.out.println("근태현황 검색 결과 : "+result);
 		return result;
 	}
+	public List<Map<String,Object>> deptCd(){
+		List<Map<String,Object>> result = kuntaeMapper.deptCd();
+		return result;
+	}
 }

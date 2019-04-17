@@ -24,5 +24,12 @@
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO=#{EMP_NO}
 	</select>
 
+	<select id="searchYidongList" resultType="ksmart30.team03.person.domain.Yidong"  parameterType="String">
+		SELECT EMP_NO, KOR_NM 
+		FROM T_HM1000 WHERE KOR_NM LIKE '%'+#{KOR_NM}+'%'
+		
+	</select>
+
+
 </mapper>
 
