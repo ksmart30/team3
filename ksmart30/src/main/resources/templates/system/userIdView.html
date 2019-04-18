@@ -13,40 +13,40 @@
 		<script>
 		$(document).ready(function(){
 			//검색버튼 클릭 시 전체 직원조회
-			$("#btn_list").click(function(){		
+			$("#PERSON_LIST").click(function(){		
 				let KOR_NM2 = $('#KOR_NM').val();
-				let AUDIT_TM_FORMAT = $('#User_ID').val();
-				let AUDIT_TM2 = $('#User_ID').val();
-				let JIKGUP_NM2	=$('#User_ID').val();
-				let JIKCHK_NM2 = $('#User_ID').val();
-				let EMP_NO2 = $('#User_ID').val();
-				let IN_PHONE_NO2 = $('#User_ID').val();
-				let DEPT_NM2 = $('#User_ID').val();		 
-				let SEX_GB2 = $('#User_ID').val();
-				let OUT_DT3 = $('#User_ID').val();
-				console.log('직원  검색조건 (사원번호) : '+EMP_NO2+'직원  검색조건 (이름) : '+KOR_NM2+"    검색조건(직급) :  "+JIKGUP_NM2+"    검색조건(직책) :  "+JIKCHK_NM2+"  검색조건(입사일) : "+AUDIT_TM2);
-					
+				let AUDIT_TM_FORMAT = "";
+				let AUDIT_TM2 = "";
+				let JIKGUP_NM2	= "";
+				let JIKCHK_NM2 = "";
+				let EMP_NO2 = "";
+				let IN_PHONE_NO2 = "";
+				let DEPT_NM2 = "";		 
+				let SEX_GB2 = "";
+				let OUT_DT3 = "";
+				console.log('직원  검색조건 (이름) : '+ KOR_NM2);
+
 				$.ajax({				
 						url:'/person/personInsaEmployeeView',
 						type:'GET',
 						data:{OUT_DT3:OUT_DT3,EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
 						success:(data)=>{
-							$('#list').empty();
+							$('#LIST').empty();
 							$(data).each(function(index,item){
 								//한 행을 클릭시 사원번호	
 								console.log(data);						
-								$('#list').append('<tr>');
-								$('#list').append('<td style="width:2%;"></td>');
+								$('#LIST').append('<tr>');
+								$('#LIST').append('<td style="width:2%;"></td>');
 								//$('#list').append('<td>'+item.DEPT_NM+'</td>');			// 부서이름
-								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
-								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
-								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td>');		// 직급명
-								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td>');		// 직책명
-								$('#list').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.DEPT_NM+'</td>');			// 부서이름
+								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
+								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
+								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td>');		// 직급명
+								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td>');		// 직책명
+								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.DEPT_NM+'</td>');			// 부서이름
 								//$('#list').append('<td>'+item.IN_PHONE_NO+'</td>');	// 전화번호
 								//$('#list').append('<td>'+item.SEX_GB+'</td>');			// 성별
 								//$('#list').append('<td>'+item.AUDIT_TM+'</td>');		// 입사일	
-								$('#list').append('</tr>');					
+								$('#LIST').append('</tr>');					
 							});
 						}					
 				}); 				
@@ -61,9 +61,9 @@
 				success:function(data){
 					$(data).each(function(index,item){
 						console.log(data);
-						$('#Up_EMP_NO').val(item.emp_NO);	// User-ID
-						$('#Up_KOR_NM').val(item.kor_NM);	// 사용자명
-						$('#Up_AUDIT_TM').val(item.audit_TM);	// 등록일자					
+						$('#UP_EMP_NO').val(item.emp_NO);	// User-ID
+						$('#UP_KOR_NM').val(item.kor_NM);	// 사용자명
+						$('#UP_AUDIT_TM').val(item.audit_TM);	// 등록일자					
 					});			
 				}	
 			});
@@ -106,7 +106,7 @@
 								• 사원명
 								<input type="hidden" id="User_ID">
 								<input type="text" name="KOR_NM" id="KOR_NM">
-								<button type="button" class="btn" style="color:black" name="btn_list" id="btn_list">검색</button>
+								<button type="button" class="btn" style="color:black" name="PERSON_LIST" id="PERSON_LIST">검색</button>
 								<br>
 							</form>
 							<form>
@@ -132,7 +132,7 @@
 										<td style="text-align: center">부서명</td>
 									</tr>
 								</thead>
-								<tbody id="list">
+								<tbody id="LIST">
 								</tbody>
 							</table>
 						</div>
@@ -148,35 +148,35 @@
 								<tr>
 									<td style="width:20%; text-align: center">User ID</td>
 									<td>
-										<input type="text" name="Up_EMP_NO" id="Up_EMP_NO" readonly>
+										<input type="text" name="UP_EMP_NO" id="UP_EMP_NO" readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">사용자명</td>
 									<td>
-										<input type="text" name="Up_KOR_NM" id="Up_KOR_NM"readonly>
+										<input type="text" name="UP_KOR_NM" id="UP_KOR_NM"readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">새 비밀번호</td>
 									<td>
-										<input type="password" name="Up_EMP_PW" id="Up_EMP_PW">
+										<input type="password" name="UP_EMP_PW" id="UP_EMP_PW">
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">새 비밀번호 확인</td>
 									<td>
-										<input type="password" name="Up_EMP_PW2" id="Up_EMP_PW2">
+										<input type="password" name="UP_EMP_PW2" id="UP_EMP_PW2">
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">등록자</td>
 									<td>
-										<input type="text" name="Up_AUDIT_NM" id="Up_AUDIT_NM" readonly>
+										<input type="text" name="UP_AUDIT_NM" id="UP_AUDIT_NM" readonly>
 									</td>
 									<td style="width:20%; text-align: center">등록일자</td>
 									<td>
-										<input type="text" name="Up_AUDIT_TM" id="Up_AUDIT_TM" readonly>
+										<input type="text" name="UP_AUDIT_TM" id="UP_AUDIT_TM" readonly>
 									</td>
 								</tr>
 								<tr>
@@ -184,7 +184,7 @@
 									<td></td>
 									<td style="width:20%; text-align: center">수정일자</td>
 									<td>
-										<input type="text" name="Up_AUDIT_TM" id="Up_AUDIT_TM" readonly>
+										<input type="text" name="UP_AUDIT_TM" id="UP_AUDIT_TM" readonly>
 									</td>
 								</tr>
 						</table>

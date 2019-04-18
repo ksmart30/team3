@@ -1,116 +1,383 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/main">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
 	<title>급여대장 폼</title>
+
+	<!-- Jquery, Ajax 선언 -->
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script>
+	$(document).ready(function(){
+		// 1. 사원 검색(리스트 조회)
+		$("#PERSON_LIST_BUTTON").click(function(){		
+			let KOR_NM2 = $('#KOR_NM').val();
+			let AUDIT_TM_FORMAT = "";
+			let AUDIT_TM2 = "";
+			let JIKGUP_NM2	= "";
+			let JIKCHK_NM2 = "";
+			let EMP_NO2 = "";
+			let IN_PHONE_NO2 = "";
+			let DEPT_NM2 = "";		 
+			let SEX_GB2 = "";
+			let OUT_DT3 = "";
+				
+			$.ajax({				
+					url:'/person/personInsaEmployeeView',
+					type:'GET',
+					data:{OUT_DT3:OUT_DT3,EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
+					success:(data)=>{
+						$('#PERSON_LIST').empty();
+						$(data).each(function(index,item){						
+							$('#PERSON_LIST').append('<tr>');
+							$('#PERSON_LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
+							$('#PERSON_LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
+							$('#PERSON_LIST').append('</tr>');					
+						});
+					}					
+			});				
+		}); 
+	});
+		// (함수) 사원 클릭시 오른쪽 사원번호 입력
+		function click2(empNO){
+		console.log('직원번호 '+empNO);
+		$.ajax({
+			url:'/person/personInsaEmployeeDetailView',
+			type:'GET',
+			data:{EMP_NO:empNO},
+			success:function(data){
+				$(data).each(function(index,item){
+					console.log(data);
+					$('#PAY_PERSON_EMP_NO_INPUT').val(item.kor_NM);	// 사용자명			
+				});			
+			}	
+		});
+	}
+	</script>
 	<th:block th:include="layout/customHead"></th:block>
 </th:block>
 <th:block layout:fragment="customBody">
-	<h1>급여등록</h1>
-	<div class="x_panel" style="">
-    <div class="x_title">
-        <h2><font style="vertical-align: inherit;"><small><font style="vertical-align: inherit;"></font></small><font style="vertical-align: inherit;"> 작업조건</font></font><small><font style="vertical-align: inherit;"></font></small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                </ul>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
-    </div>
-    <div class="form-inline">
-    	<P>필수입력사항</P>
-    </div>
-    <div class="form-inline">
-	                  <div class="form-group">
-	                    <label for="ex3">지급일자 : </label>
-	                    <input type="date">
-	                  </div>
-	                  <div class="form-group">
-	                  <label for="ex3">급여 구분 </label>
-	                  <select>
-	                    	<option>급여</option>
-	                    	<option>상여</option>
-	                  </select>	              
-	                  </div>	                 
-	                  <div class="ln_solid"></div>	
-	                  <P>선택사항</P>
-	                  <div class="form-group">
-	                    <label>처리부서:</label>	                   	                   
-	                    <select>
-	                    	<option>경영부문</option>
-	                    	<option>경영지원본부</option>
-	                    	<option>경영지원실</option>
-	                    	<option>인사총무실</option>
-	                    	<option>품질관리실</option>
-	                    	<option>재무관리실</option>
-	                    	<option>수주부문</option>
-	                    	<option>수주전략본부</option>
-	                    	<option>수주부문_부</option>
-	                    	<option>수주부문Ⅱ</option>	                    	
-	                    </select>
-	                    ~
-	                     <select>
-	                    	<option>경영부문</option>
-	                    	<option>경영지원본부</option>
-	                    	<option>경영지원실</option>
-	                    	<option>인사총무실</option>
-	                    	<option>품질관리실</option>
-	                    	<option>재무관리실</option>
-	                    	<option>수주부문</option>
-	                    	<option>수주전략본부</option>
-	                    	<option>수주부문_부</option>
-	                    	<option>수주부문Ⅱ</option>	                    	
-	                    </select>
-	                  </div>
-	                  <br>
-	                  <div class="form-group">
-	                  <label for="ex3">사원번호 : </label>	                 
-	                  <select>
-	                    	<option>7500</option>
-	                    	<option>7530</option>
-	                    	<option>7540</option>
-	                    	<option>7600</option>
-	                    	<option>7630</option>
-	                    	<option>7640</option>
-	                    	<option>7670</option>
-	                  </select>
-	                  <p>[!]사원번호를 입려갛면 사원 1명의 급여를 계산한다.</p>
-	                  <div class="x_content" style="text-align: right" >			                       				                      	
-	                  <button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">급여 계산</font></font></button>
-	                  </div>	                  	            
-	                  </div>	                  
-	             </div>	
-	             <br>           	        
-	             <div class="ln_solid"></div>	           
-	             <h5>처리결과</h5>
-	          	<label>인원 :</label>
-	          	<input type="text" name="">
-	          	<label>급여총액 :</label>
-	          	<input type="text" name="">
-	          	<button type="button" class="btn btn-success btn-xs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">급여 등록</font></font></button>
-</div>
-		<!-- <div class="selectbox"> 
-		<label for="ex_select">국적선택</label> 
-		<select id="ex_select"> 
-		<option selected>국적선택</option> 
-		<option>한국</option>
-		<option>일본</option>
-		<option>중국</option>
-		</select> 
-		</div>  -->
-
+	<div class="page-title">
+		<div class="col-md-12 col-xs-12" style="color:black;">
+			<div class="page-title">
+				<div class="title_left">
+					<h2><b>급여 계산 및 등록</b></h2>
+					<h5><fontcolor="gray"><b>6.인사 / 급여 &nbsp;>&nbsp;&nbsp;6.4 급여관리</b></h5>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="x_content" style="text-align: right">
+		<div class="btn-group" >
+				<button class="btn btn-default" type="button">출력</button>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<!-- 사원 정보 (왼쪽) -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="x_panel" style="color: black;">
+				<h4>사원 정보</h4>
+				<div class="x_title">
+					<div class="clearfix"></div>
+				</div>
+					• 사원명 :	
+					<input type="text" style="width: 50%" name="KOR_NM" id="KOR_NM">
+					<button type="button" id="PERSON_LIST_BUTTON"><i class="fa fa-search"></i></button>
+				<div class="x_content">
+					<div class="table-responsive" style="overflow: scroll; height: 600px; padding: 10px; color:black;">
+						<table class="table table-bordered jambo_table bulk_action">
+							<thead>
+								<tr>
+									<td style="width:55px; text-align: center">사원번호</td>
+									<td style="width:56px; text-align: center">성명</td>
+								</tr>
+							</thead>
+							<tbody id="PERSON_LIST">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 항목 계산 (중앙) -->
+		<div class="col-md-5 col-sm-12 col-xs-12">
+			<div class="x_panel" style="color: black;">
+				<h4>항목 정보</h4>
+				<div class="x_title">
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<!-- 지급항목 (왼쪽) -->
+					<div class="col-md-6 col-sm-12 col-xs-12">
+						<table class="table table-bordered jambo_table bulk_action">
+							⊙ 지급항목
+							<thead>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>지급항목</td>
+									<td>지급액</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="width: 2%"></td>
+									<td id="JIGEUM"></td>
+									<td></td>
+								</tr>
+								<tr style="background-color:gold">
+									<td style="width: 2%"></td>
+									<td>합계</td>
+									<td id="JIGEUM_TOTAL"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- 공제항목 (오른쪽) -->
+					<div class="col-md-6 col-sm-12 col-xs-12">
+						<table class="table table-bordered jambo_table bulk_action">
+							⊙ 공제항목
+							<thead>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>공제항목</td>
+									<td>공제액</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="width: 2%"></td>
+									<td id="GONGJE"></td>
+									<td></td>
+								</tr>
+								<tr style="background-color:gold">
+									<td style="width: 2%"></td>
+									<td>합계</td>
+									<td id="GONGJE_TOTAL"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- 4대보험 계산(국민, 고용, 건강) -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<table class="table table-bordered jambo_table bulk_action">
+							⊙ 국민보험/고용보험/건강보험 
+							<tbody>
+								<tr>
+									<td style="text-align: center">국민보험</td>
+									<td>
+										<input type="text">
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center">고용보험</td>
+									<td>
+										<input type="text">
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center">건강보험</td>
+									<td>
+										<input type="text">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<table class="table table-bordered jambo_table bulk_action">
+							⊙ 급여 이체 / 회계 정보
+							<tbody>
+								<tr>
+									<td style="width: 20%; text-align: center">이체여부(1)</td>
+									<td>
+										<input type="text" style="width: 60%" name="">
+									</td>
+									<td style="width: 20%; text-align: center">이체여부(2)</td>
+									<td>
+										<input type="text" style="width: 100%" name="" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 20%; text-align: center">은행코드(1)</td>
+									<td>
+										<input type="text" style="width: 60%" name="">
+									</td>
+									<td style="width: 20%; text-align: center">은행코드(2)</td>
+									<td>
+										<input type="text" style="width: 100%" name="" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 20%; text-align: center">계좌번호(1)</td>
+									<td>
+										<input type="text" style="width: 60%" name="">
+									</td>
+									<td style="width: 20%; text-align: center">계좌번호(2)</td>
+									<td>
+										<input type="text" style="width: 100%" name="" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 20%; text-align: center">예금주(1)</td>
+									<td>
+										<input type="text" style="width: 60%" name="">
+									</td>
+									<td style="width: 20%; text-align: center">예금주(2)</td>
+									<td>
+										<input type="text" style="width: 100%" name="" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 20%; text-align: center">금액(1)</td>
+									<td>
+										<input type="text" style="width: 60%" name="">
+									</td>
+									<td style="width: 20%; text-align: center">이체순번</td>
+									<td>
+										<input type="text" style="width: 100%" name="" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 20%; text-align: center">해외근무</td>
+									<td>
+										<input type="text" style="width: 60%" name="">
+									</td>
+									<td style="width: 20%; text-align: center">계정과목</td>
+									<td>
+										<input type="text" style="width: 100%" name="" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center" colspan="2">중소기업소득세 감년 시작월일</td>
+									<td style="text-align: center" colspan="2">
+										<input type="date" name="">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 급여 등록 (오른쪽) -->
+		<div class="col-md-4 col-sm-12 col-xs-12">
+			<div class="x_panel" style="color:black;">
+				<h4>급여 계산 처리</h4>
+				<div class="x_title">
+					<div class="clearfix"></div>
+				</div>
+					<h5>⊙ 작업 조건</h5>
+				<div class="form-inline">
+					<table class="table table-bordered jambo_table bulk_action">
+						<thead>
+							<tr>
+								<td colspan="2">• 필수 입력 사항</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="text-align: center">
+									지급년월
+								</td>
+								<td>
+									<input type="month" style="width: 130px">
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: center">
+									급여구분
+								</td>
+								<td>
+									<select>
+										<option>급여</option>
+										<option>상여</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: center">
+									지급일자
+								</td>
+								<td>
+									<input type="date">
+								</td>
+							</tr>
+						</tbody>
+						<thead>
+							<tr>
+								<td colspan="2">• 선택 사항</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="text-align: center">
+									처리부서
+								</td>
+								<td>
+									<select>
+										<option>경영부문</option>
+										<option>경영지원본부</option>
+										<option>경영지원실</option>
+										<option>인사총무실</option>
+										<option>품질관리실</option>
+										<option>재무관리실</option>
+										<option>수주부문</option>
+										<option>수주전략본부</option>
+										<option>수주부문_부</option>
+										<option>수주부문Ⅱ</option>	                    	
+									</select>
+										~
+									<select>
+										<option>경영부문</option>
+										<option>경영지원본부</option>
+										<option>경영지원실</option>
+										<option>인사총무실</option>
+										<option>품질관리실</option>
+										<option>재무관리실</option>
+										<option>수주부문</option>
+										<option>수주전략본부</option>
+										<option>수주부문_부</option>
+										<option>수주부문Ⅱ</option>	                    	
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: center">
+									사원번호
+								</td>
+								<td>
+									<input type="text" id="PAY_PERSON_EMP_NO_INPUT" readonly>
+									<h5>• 사원번호를 입력하면 사원 1명의 급여를 계산한다.</h5>
+								</td>
+							</tr>
+						</tbody>
+					</table>		                       				                      	
+					<div class="x_content" style="text-align: right">
+						<button class="btn" style="color:black">급여 계산</button>
+					</div>
+					<br><br><br>						
+				</div>	
+				<div class="x_title"></div>
+				<div class="form-inline">
+					<h5>⊙ 처리결과</h5>
+					<table class="table table-bordered jambo_table bulk_action">
+						<tbody>
+							<tr>
+								<td style="width: 20%; text-align: center">인원</td>
+								<td>
+									<input type="text" style="width: 60%" name="">
+								</td>
+								<td style="width: 20%; text-align: center">급여총액</td>
+								<td>
+									<input type="text" style="width: 100%" name="" readonly>
+								</td>
+							</tr>
+						</tbody>
+					</table>  
+				</div>                  
+			</div>
+		</div>
 
 </th:block>
 <th:block layout:fragment="customJquery">
