@@ -1,1 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team03.person.mapper.PayMapper">
+    <select id="getPersonPayCalList"
+            parameterType="ksmart30.team03.person.domain.PayGiveTake"
+            resultType="ksmart30.team03.person.domain.PayGiveTake">
+            SELECT EMP_NO,
+                GIVE01, GIVE02, GIVE03, GIVE04, GIVE05,
+                GIVE06, GIVE07, GIVE08, GIVE09, GIVE10,
+                GIVE11, GIVE12, GIVE13, GIVE14, GIVE15,
+                GIVE16, GIVE17,
+                TAKE01, TAKE02, TAKE03, TAKE04, TAKE05,
+                TAKE06, TAKE07, TAKE08,
+                AUDIT_ID
+            FROM T_HC5300
+            WHERE EMP_NO = #{EMP_NO}
+    </select>
+</mapper>
