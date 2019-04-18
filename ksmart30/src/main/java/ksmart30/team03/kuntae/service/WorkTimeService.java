@@ -4,20 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import ksmart30.team03.kuntae.domain.WorkTimeDay;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 import ksmart30.team03.kuntae.mapper.WorkTimeMapper;
 
 @Service
 public class WorkTimeService {
 	@Autowired private WorkTimeMapper workTimeMapper;
-	/*
-	 * // 출퇴근(개인별) 리스트 출력 
-	 * public List<WorkTimeSingleList> getRecordSingleList(){
-	 * System.out.println("S : 출, 퇴근 기록부 (개인별)"); 
-	 * return workTimeMapper.getRecordSingleList(); }
-	 */
 	
 	// 출,퇴근 기록부(개인별) 사원번호 검색
 	public List<WorkTimeSingleList> getRecordSingle(String EMP_NO){
@@ -56,5 +48,10 @@ public class WorkTimeService {
 		return workTimeMapper.getRecordTotalSearch(WORK_DT, END_DT, EMP_NO);
 	}
 	
+	// 출퇴근 정정 신청 List
+	public List<WorkTimeSingleList> getWorkTimeView(){
+		System.out.println("S : 출퇴근 정정 신청 List");
+		return workTimeMapper.getWorkTimeView();
+	}
 
 }

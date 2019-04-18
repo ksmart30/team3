@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import ksmart30.team03.kuntae.domain.WorkTimeDay;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 import ksmart30.team03.kuntae.service.WorkTimeService;
 
@@ -45,7 +42,6 @@ public class WorkTimeController {
  		System.out.println("C : Total data 정보=>"+data);
  		return data;
  	}
-	
 	
 	/*
 	 * // 출, 퇴근 기록부 (개인별)
@@ -105,22 +101,16 @@ public class WorkTimeController {
 	}
 	
 	
-	// 출, 퇴근 정정 신청
+	// 출, 퇴근 정정 신청 
 	@GetMapping("/kuntae/workTimeView")
-	public String workTimeView() {
+	public String workTimeView(Model model) {
+		System.out.println("C : workTimeView 화면먼저호출");
+		List<WorkTimeSingleList> data = workTimeService.getWorkTimeView();
+		model.addAttribute("data", data);
 		return "/kuntae/workTimeView";
 	}
 	
-	// 출, 퇴근 정정 신청 처리
-	@PostMapping("/kuntae/workTimeIn")
-	public String workTimeInsertAction() {
-		return "";
-	}
 	
-	// 출, 퇴근 기록부 (검색 처리)
-	@PostMapping("/kuntae/workTimeRecord")
-	public String workTimeRecordSearch() {
-		return "kuntae/worktime_record_search";
-	}	
+	
 	
 }

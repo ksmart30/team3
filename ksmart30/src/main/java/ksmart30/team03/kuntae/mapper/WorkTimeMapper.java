@@ -33,14 +33,8 @@ public interface WorkTimeMapper {
  	
  	// 전체 검색(검색조건들을 vo로 받음)
  	List<Map<String, Object>> getRecordTotal(WorkTimeSingleList vo);
-
- 	// 일일근무현황
- 	List<WorkTimeDay> getDayList(String DATA);
- 	
- 	// 일일 근무 현황 그냥 리스트 출력
- 	List<WorkTimeDay> getDayList1();
- 		
-
 	
+ 	// 출퇴근 정정신청 List가져오
+ 	List<WorkTimeSingleList> getWorkTimeView();
 }
 
