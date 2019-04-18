@@ -8,67 +8,35 @@
 		<!-- Jquery, Ajax 선언 -->
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<!-- 직원 검색 
-		<script>
-		$(document).ready(function(){
-			//검색버튼 클릭 시 전체 직원조회
-			$("#PERSON_LIST").click(function(){		
-				let KOR_NM2 = $('#KOR_NM').val();
-				let AUDIT_TM_FORMAT = "";
-				let AUDIT_TM2 = "";
-				let JIKGUP_NM2	= "";
-				let JIKCHK_NM2 = "";
-				let EMP_NO2 = "";
-				let IN_PHONE_NO2 = "";
-				let DEPT_NM2 = "";		 
-				let SEX_GB2 = "";
-				let OUT_DT3 = "";
-				console.log('직원  검색조건 (이름) : '+ KOR_NM2);
-
-				$.ajax({				
-						url:'/person/personInsaEmployeeView',
-						type:'GET',
-						data:{OUT_DT3:OUT_DT3,EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
-						success:(data)=>{
-							$('#LIST').empty();
-							$(data).each(function(index,item){
-								//한 행을 클릭시 사원번호	
-								console.log(data);						
-								$('#LIST').append('<tr>');
-								/* $('#LIST').append('<td style="width:2%;"></td>'); */
-								//$('#list').append('<td>'+item.DEPT_NM+'</td>');			// 부서이름
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td>');		// 직급명
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td>');		// 직책명
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.DEPT_NM+'</td>');			// 부서이름
-								//$('#list').append('<td>'+item.IN_PHONE_NO+'</td>');	// 전화번호
-								//$('#list').append('<td>'+item.SEX_GB+'</td>');			// 성별
-								//$('#list').append('<td>'+item.AUDIT_TM+'</td>');		// 입사일	
-								$('#LIST').append('</tr>');					
-							});
-						}					
-				}); 				
-			});
-		});
-		function click2(emp_NO){
-		console.log('직원번호 '+emp_NO);
-			$.ajax({
-				url:'/person/personInsaEmployeeDetailView',
-				type:'GET',
-				data:{EMP_NO:emp_NO},
-				success:function(data){
-					$(data).each(function(index,item){
-						console.log(data);
-						$('#UP_EMP_NO').val(item.emp_NO);	// User-ID
-						$('#UP_KOR_NM').val(item.kor_NM);	// 사용자명
-						$('#UP_AUDIT_TM').val(item.audit_TM);	// 등록일자					
-					});			
-				}	
-			});
-		}
-		</script> -->
+		
 	<script>
+	/* 사원번호 검색*/
+	$(document).ready(function(){
+		console.log('정정 리스트 이름 검색 ')
+	     $('#btn_KORNM').click(function(){
+	    	var KOR_NM = $('#KOR_NM').val();
+	    	 $.ajax({
+	            url:'/kuntae/workTimeNameSearch',
+	            type:'GET',
+	            dataType:'json',	           
+	         	data : {KOR_NM : KOR_NM},
+	            success:function(data){
+	            	console.log('사원 번호 쿼리 성공!'+KOR_NM);
+	                $('#list').empty();
+	                $(data).each(function(index,item){ //each = foreach (반복문)
+	                    $('#list').append('<tr>');
+	                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
+	                    $('#list').append('<td>'+item.start_TIME+'</td>');
+	                    $('#list').append('<td>'+item.end_TIME+'</td>');
+	                    $('#list').append('<td>'+item.end_DT+'</td>');
+	                    $('#list').append('</tr>'); 
+	                });                   
+	            }
+	        });
+	    });
+	 });
+	
+	
 	$(document).ready(function(){
 		 console.log('정정신청 list 출력해보자');	
 		 let KOR_NM = $('#KOR_NM').val();
@@ -97,102 +65,6 @@
 		</div>
     </div>
 
-      
-<!-- 근태정정신청 start
-                  <div class="x_content">
-                  	<!-- 나란히 놓아줌 
-                    <div class="col-md-3 col-sm-3 col-xs-12">
-					  <!-- 박스  panel은 경계선 없음
-                      <section class="x_panel">
-                        <div class="x_title">
-                          <h2>출근일자</h2>                         
-                          <div class="clearfix"></div>
-                        </div>
-                        
-                        
-                   <div class="x_content">
-                    <article class="media event">
-                      <a class="pull-left date">
-                        <p class="month">3월</p>
-                        <p class="day">20</p>
-                      </a>
-                      <div class="media-body">                     
-                        <a class="title" href="#">2019/03/20</a>
-                        <p>백승한</p>
-                        <p> <small>어제</small></p>
-                      </div>
-                    </article>
-                    <article class="media event">
-                      <a class="pull-left date">
-                        <p class="month">3월</p>
-                        <p class="day">19</p>
-                      </a>
-                      <div class="media-body">
-                        <a class="title" href="#">2019/03/19</a>
-                        <p>백승한</p>
-                        <p> <small>2일 전</small></p>
-                      </div>
-                    </article>
-                    <article class="media event">
-                      <a class="pull-left date">
-                        <p class="month">3월</p>
-                        <p class="day">18</p>
-                      </a>
-                      <div class="media-body">
-                        <a class="title" href="#">2019/03/18</a>
-                        <p>백승한</p>
-                        <p> <small>3일 전</small></p>
-                      </div>
-                    </article>
-                    <article class="media event">
-                      <a class="pull-left date">
-                        <p class="month">3월</p>
-                        <p class="day">17</p>
-                      </a>
-                      <div class="media-body">
-                        <a class="title" href="#">2019/03/17</a>
-                        <p>백승한</p>
-                        <p> <small>4일 전</small></p>
-                      </div>
-                    </article>
-                    <article class="media event">
-                      <a class="pull-left date">
-                        <p class="month">3월</p>
-                        <p class="day">16</p>
-                      </a>
-                      <div class="media-body">
-                        <a class="title" href="#">2019/03/16</a>
-                        <p>백승한</p>
-                        <p> <small>5일 전</small></p>
-                      </div>
-                    </article>
-                    <article class="media event">
-                      <a class="pu	ll-left date">
-                        <p class="month">3월</p>
-                        <p class="day">15</p>
-                      </a>
-                      <div class="media-body">
-                        <a class="title" href="#">2019/03/15</a>
-                        <p>백승한</p>
-                        <p> <small>6일 전</small></p>
-                      </div>
-                    </article>
-                    <article class="media event">
-                      <a class="pull-left date">
-                        <p class="month">3월</p>
-                        <p class="day">14</p>
-                      </a>
-                      <div class="media-body">
-                        <a class="title" href="#">2019/03/14</a>
-                        <p>백승한</p>
-                        <p> <small>7일 전</small></p>
-                      </div>
-                    </article>
-                  	</div>
-                   </section>
-                  </div>
- 근태정정신청 end -->
-
                     
 
 		<div class="x_content" style="text-align: right">
@@ -209,20 +81,20 @@
 		<div class="clearfix"></div>
 		<div class="row">
 			<div class="col-md-3 col-sm-3 col-xs-12">
-				<!-- <div class="x_panel" style="color: black;">
+				<div class="x_panel" style="color: black;">
 					<div class="x_content">
 						<form>
 							<form>
 								• 사원명
 								<input type="hidden" id="User_ID">
 								<input type="text" name="KOR_NM" id="KOR_NM">
-								<button type="button" class="btn" style="color:black" name="PERSON_LIST" id="PERSON_LIST"><i class="fa fa-search"></i></button>
+								<button type="button" class="btn" style="color:black" name="PERSON_LIST" id="btn_KORNM"><i class="fa fa-search"></i></button>
 
 								<br>
 							</form>
 						</form>
 					</div>
-				</div> -->
+				</div> 
 				<div class="x_panel" style="color: black;">
 					<div class="x_content">
 						<div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="overflow: scroll; height: 600px; padding: 10px; color:black;">
@@ -235,11 +107,11 @@
 										<td style="text-align: center">구분</td>
 									</tr>
 								</thead>
-								<tbody id="LIST">
+								<tbody id="list">
 									<tr th:each="t : ${data}">
 									<td style="text-align: center" th:text="${t.KOR_NM}"></td>
-									<td style="text-align: center" th:text="${t.START_TIME}"></td>
 									<td style="text-align: center" th:text="${t.WORK_DT}"></td>
+									<td style="text-align: center" th:text="${t.START_TIME}"></td>
 									<td style="text-align: center" th:text="${t.END_DT}"></td>
 									</tr>
 								</tbody>

@@ -164,7 +164,29 @@
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO,
 		(Select Convert(varchar(10),DATEADD(week,-1,GETDATE()),112) o) o 
-		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt>=o.o AND E.END_DT=''	
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt>=o.o AND E.END_DT=''
+	</select>
+	
+	<!-- 근태정정 신청 List 이름 검색 -->
+	<select id="getWorkTimeNameSearchView"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
+			parameterType="String">
+			SELECT 
+				 DEPT_NM,
+				 b.LEVEL2_NM AS JIKGUP_NM,
+				 a.EMP_NO,
+				 a.KOR_NM,
+				 e.WORK_DT,
+				(CASE WHEN e.START_TIME IS NULL THEN '출근미입력' WHEN e.START_TIME='' THEN '출근미입력' ELSE e.START_TIME END ) START_TIME,
+				(CASE WHEN e.END_TIME IS NULL THEN '퇴근미입력' when e.END_TIME= '' then '퇴근미입력' else e.END_TIME end) END_TIME,
+				(CASE WHEN e.END_DT IS NULL THEN '퇴근미입력' when e.END_DT= '' then '퇴근미입력' else e.END_DT end) END_DT
+		FROM T_HM1000 a 
+		JOIN T_SC9100 b ON a.JIKGUP_CD=b.LEVEL2_CD
+		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
+		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
+		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO,
+		(Select Convert(varchar(10),DATEADD(week,-1,GETDATE()),112) o) o 
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt>=o.o AND E.END_DT='' AND a.KOR_NM LIKE '%'+#{KOR_NM}+'%'		
 	</select>
 
 

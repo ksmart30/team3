@@ -110,7 +110,14 @@ public class WorkTimeController {
 		return "/kuntae/workTimeView";
 	}
 	
-	
-	
+	// 출퇴근 정정 신청 List 이름 검색
+	@GetMapping("/kuntae/workTimeNameSearch")
+	public @ResponseBody List<WorkTimeSingleList> workTimeNameSearchView(@RequestParam(value="KOR_NM")String KOR_NM){
+		System.out.println("C : workTimeView List 검색");
+		List<WorkTimeSingleList> data = workTimeService.getWorkTimeNameSearchView(KOR_NM);
+		System.out.println("C : 이름 검색 data =>"+ data);
+		return data;
+	}
+
 	
 }

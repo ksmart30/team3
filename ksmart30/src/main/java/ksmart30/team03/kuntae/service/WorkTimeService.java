@@ -53,5 +53,11 @@ public class WorkTimeService {
 		System.out.println("S : 출퇴근 정정 신청 List");
 		return workTimeMapper.getWorkTimeView();
 	}
+	
+	// 출퇴근 정정 신청 List 이름 검색
+	public List<WorkTimeSingleList> getWorkTimeNameSearchView(String KOR_NM){
+		System.out.println("S : 출퇴근 정정 신청 List 이름 검색");
+		return workTimeMapper.getWorkTimeNameSearchView(KOR_NM);
+	}
 
 }
