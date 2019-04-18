@@ -9,6 +9,153 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<script>
+	// 입력시 콤마(,) 자동수정
+	function number_format(data) {
+		let tmp = '';
+		let number = '';
+		let cutlen = 3;
+		let comma = ',';
+		let i;
+		let sign = data.match(/^[\+\-]/);
+		if(sign) {
+				data = data.replace(/^[\+\-]/, "");
+		}
+		len = data.length;
+		mod = (len % cutlen);
+		k = cutlen - mod;
+		for (i=0; i<data.length; i++)
+		{
+				number = number + data.charAt(i);
+				if (i < data.length - 1)
+				{
+						k++;
+						if ((k % cutlen) == 0)
+						{
+								number = number + comma;
+								k = 0;
+						}
+				}
+		}
+		if(sign != null)
+			number = sign+number;
+			return number;
+		}
+	// 입력시 통화형식 자동변환
+	function keyUp() {
+		let val = String(this.value.replace(/[^0-9]/g, ""));
+		if(val.length < 1)
+				return false;
+		this.value = number_format(val);
+	};
+	// 사원 클릭시 사원 항목조회(지급, 공제)
+	function list(empNO, korNm){
+		console.log('직원번호 '+empNO);
+		// 1. 사원명 급여계산란에 자동기입
+		$('#PAY_PERSON_EMP_NO_INPUT').val(korNm);	// 사원명
+		$.ajax({
+			url:'/person/personPayCalListView',
+			type:'GET',
+			data:{EMP_NO:empNO},
+			success:function(data){
+				let personPayList = data;
+				console.log("사원 지급,공제 항목 수정시작");
+				// 2.1 사원의 지급항목 입력
+				$('#GIVE01').val(numberWithCommas(personPayList[0].give01));
+				$('#GIVE02').val(numberWithCommas(personPayList[0].give02));
+				$('#GIVE03').val(numberWithCommas(personPayList[0].give03));
+				$('#GIVE04').val(numberWithCommas(personPayList[0].give04));
+				$('#GIVE05').val(numberWithCommas(personPayList[0].give05));
+				$('#GIVE06').val(numberWithCommas(personPayList[0].give06));
+				$('#GIVE07').val(numberWithCommas(personPayList[0].give07));
+				$('#GIVE08').val(numberWithCommas(personPayList[0].give08));
+				$('#GIVE09').val(numberWithCommas(personPayList[0].give09));
+				$('#GIVE10').val(numberWithCommas(personPayList[0].give10));
+				$('#GIVE11').val(numberWithCommas(personPayList[0].give11));
+				$('#GIVE12').val(numberWithCommas(personPayList[0].give12));
+				$('#GIVE13').val(numberWithCommas(personPayList[0].give13));
+				$('#GIVE14').val(numberWithCommas(personPayList[0].give14));
+				$('#GIVE15').val(numberWithCommas(personPayList[0].give15));
+				$('#GIVE16').val(numberWithCommas(personPayList[0].give16));
+				$('#GIVE17').val(numberWithCommas(personPayList[0].give17));
+				// 2.2 사원의 지급항목 계산
+				let JIGEUM_TOTAL = personPayList[0].give01 + personPayList[0].give02 + personPayList[0].give03 + personPayList[0].give04
+											+	personPayList[0].give05 + personPayList[0].give06 + personPayList[0].give07 + personPayList[0].give08
+											+	personPayList[0].give09 + personPayList[0].give10 + personPayList[0].give11 + personPayList[0].give12
+											+	personPayList[0].give13 + personPayList[0].give14 + personPayList[0].give15 + personPayList[0].give16 + personPayList[0].give17;
+				$('#JIGEUM_TOTAL').val(numberWithCommas(JIGEUM_TOTAL));
+				// 2.3 사원의 공제항목 입력
+				$('#TAKE01').val(numberWithCommas(personPayList[0].take01));
+				$('#TAKE02').val(numberWithCommas(personPayList[0].take02));
+				$('#TAKE03').val(numberWithCommas(personPayList[0].take03));
+				$('#TAKE04').val(numberWithCommas(personPayList[0].take04));
+				$('#TAKE05').val(numberWithCommas(personPayList[0].take05));
+				$('#TAKE06').val(numberWithCommas(personPayList[0].take06));
+				$('#TAKE07').val(numberWithCommas(personPayList[0].take07));
+				$('#TAKE08').val(numberWithCommas(personPayList[0].take08));
+				// 2.4 사원의 공제항목 계산
+				let GONGJE_TOTAL = personPayList[0].take01 + personPayList[0].take02 + personPayList[0].take03 
+													+ personPayList[0].take04 + personPayList[0].take05 + personPayList[0].take06
+													+ personPayList[0].take07 + personPayList[0].take08;
+				$('#GONGJE_TOTAL').val(numberWithCommas(GONGJE_TOTAL));
+				// 2.5 사원번호 급여계산란에 자동입력
+				$('#PAY_PERSON_EMP_NO_INPUT').val(personPayList[0].emp_NO);		
+				console.log("사원 지급,공제 항목 수정완료");
+				// 3 국민,건강,고용보험 계산실행 및 입력처리
+				insureKukminCal(JIGEUM_TOTAL);
+				insureKeungangCal(JIGEUM_TOTAL);
+				insureGoyongCal(JIGEUM_TOTAL);
+				console.log("국민,건강,고용보험 계산 입력처리 완료");
+			}	
+		});
+	}
+	// 1. 국민연금 계산 실행
+	function insureKukminCal(JIGEUM_TOTAL){
+		console.log('입력된 월 급여 : ' + JIGEUM_TOTAL);
+		$.ajax({
+			url:'/baseInfo/fourInsureKukminProcess', 	//호출할 메소드 호출 
+			type:'GET',																//송신 GET 방식
+			data:{INSURE_PAY:JIGEUM_TOTAL},
+			success:function(data){
+				console.log(data);											// 리턴받은 국민연금 계산값
+				// 계산 값을 화면에 보여준다.
+				$('#INSURE_KUKMIN').val(numberWithCommas(data.insure_EMP_CAL1));
+			}
+		});
+	};
+	// 2. 건강보험 실행
+	function insureKeungangCal(JIGEUM_TOTAL){
+		$.ajax({
+			url:'/baseInfo/fourInsureKeungangProcess', 	//호출할 메소드 호출 
+			type:'GET',																	//송신 GET 방식
+			data:{INSURE_PAY:JIGEUM_TOTAL},
+			success:function(data){
+				console.log(data);												// 리턴받은 건강보험 계산값
+				// 계산 값을 화면에 보여준다.
+				$('#INSURE_KEUNGANG').val(numberWithCommas(data.insure_EMP_CAL1));
+			}
+		});
+	};
+	// 3. 고용보험 실행
+	function insureGoyongCal(JIGEUM_TOTAL){
+		let INSURE_NO = "21"
+		console.log('선택된 고용보험 No : ' + INSURE_NO);
+		$.ajax({
+			url:'/baseInfo/fourInsureGoyongProcess', 	//호출할 메소드 호출 
+			type:'GET',																//송신 GET 방식
+			data:{INSURE_PAY:JIGEUM_TOTAL,INSURE_NO:INSURE_NO},
+			success:function(data){
+				console.log(data);											// 리턴받은 고용보험 계산값
+				// 계산 값을 화면에 보여준다.
+				$('#INSURE_GOYONG').val(numberWithCommas(data.insure_EMP_CAL1));
+			}
+		});
+	};
+	/* 결과값 통화형식 변환 */
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+
 	$(document).ready(function(){
 		// 1. 사원 검색(리스트 조회)
 		$("#PERSON_LIST_BUTTON").click(function(){		
@@ -31,33 +178,19 @@
 						$('#PERSON_LIST').empty();
 						$(data).each(function(index,item){						
 							$('#PERSON_LIST').append('<tr>');
-							$('#PERSON_LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
-							$('#PERSON_LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
+							$('#PERSON_LIST').append('<td style="text-align: center" onclick="list('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
+							$('#PERSON_LIST').append('<td style="text-align: center" onclick="list('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
 							$('#PERSON_LIST').append('</tr>');					
 						});
 					}					
 			});				
-		}); 
-	});
-		// (함수) 사원 클릭시 오른쪽 사원번호 입력
-		function click2(empNO){
-		console.log('직원번호 '+empNO);
-		$.ajax({
-			url:'/person/personInsaEmployeeDetailView',
-			type:'GET',
-			data:{EMP_NO:empNO},
-			success:function(data){
-				$(data).each(function(index,item){
-					console.log(data);
-					$('#PAY_PERSON_EMP_NO_INPUT').val(item.kor_NM);	// 사용자명			
-				});			
-			}	
 		});
-	}
+	});
 	</script>
 	<th:block th:include="layout/customHead"></th:block>
 </th:block>
 <th:block layout:fragment="customBody">
+	<div class="col-md-12 col-sm-12 col-xs-12" style="height: 100%;">
 	<div class="page-title">
 		<div class="col-md-12 col-xs-12" style="color:black;">
 			<div class="page-title">
@@ -73,7 +206,6 @@
 				<button class="btn btn-default" type="button">출력</button>
 		</div>
 	</div>
-	<div class="clearfix"></div>
 	<!-- 사원 정보 (왼쪽) -->
 		<div class="col-md-3 col-sm-12 col-xs-12">
 			<div class="x_panel" style="color: black;">
@@ -85,7 +217,7 @@
 					<input type="text" style="width: 50%" name="KOR_NM" id="KOR_NM">
 					<button type="button" id="PERSON_LIST_BUTTON"><i class="fa fa-search"></i></button>
 				<div class="x_content">
-					<div class="table-responsive" style="overflow: scroll; height: 600px; padding: 10px; color:black;">
+					<div class="table-responsive" style="overflow: scroll; height: 1200px; padding: 10px; color:black;">
 						<table class="table table-bordered jambo_table bulk_action">
 							<thead>
 								<tr>
@@ -105,30 +237,145 @@
 			<div class="x_panel" style="color: black;">
 				<h4>항목 정보</h4>
 				<div class="x_title">
-					<div class="clearfix"></div>
 				</div>
 				<div class="x_content">
 					<!-- 지급항목 (왼쪽) -->
 					<div class="col-md-6 col-sm-12 col-xs-12">
 						<table class="table table-bordered jambo_table bulk_action">
-							⊙ 지급항목
+							<h5>⊙ 지급항목</h5>
 							<thead>
-								<tr>
+								<tr style="text-align: center">
 									<td style="width: 2%"></td>
-									<td>지급항목</td>
-									<td>지급액</td>
+									<td style="width: 47%">지급항목</td>
+									<td style="width: 51%">지급액</td>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="JIGEUM">
 								<tr>
 									<td style="width: 2%"></td>
-									<td id="JIGEUM"></td>
-									<td></td>
+									<td>기본급</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id ="GIVE01">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>능률수당</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE02">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>현금식대</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE03">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>O/D지원비(비)</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE04">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>연월차 수당</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE05">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>연장근로수당</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE06">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>휴일근로수당</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE07">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>야간근로수당</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE08">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>O/T 2</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE09">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>자녀 학자금</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE10">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>특별 상여금</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE11">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>파견수당</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE12">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>기타지급(1)</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE13">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>O/D지원금(과)</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE14">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>작품상</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE15">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>우수사원</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE16">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>당선시상금</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE17">
+									</td>
 								</tr>
 								<tr style="background-color:gold">
 									<td style="width: 2%"></td>
 									<td>합계</td>
-									<td id="JIGEUM_TOTAL"></td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="JIGEUM_TOTAL" readonly>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -136,24 +383,82 @@
 					<!-- 공제항목 (오른쪽) -->
 					<div class="col-md-6 col-sm-12 col-xs-12">
 						<table class="table table-bordered jambo_table bulk_action">
-							⊙ 공제항목
+							<h5>⊙ 공제항목</h5>
 							<thead>
-								<tr>
+								<tr style="text-align: center">
 									<td style="width: 2%"></td>
-									<td>공제항목</td>
-									<td>공제액</td>
+									<td style="width: 47%">공제항목</td>
+									<td style="width: 51%">공제액</td>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="GONGJE">
 								<tr>
 									<td style="width: 2%"></td>
-									<td id="GONGJE"></td>
+									<td>상조회</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE01">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>동호회</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE02">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>기타공제</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE03">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>건강보험정산</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE04">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>연말정산소득</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE05">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>연말지방소득</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE06">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>학자금상환</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE07">
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 2%"></td>
+									<td>농특세</td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE08">
+									</td>
+								</tr>
+								<tr style="height: 335px; padding: 10px">
+									<td style="width: 2%"></td>
+									<td></td>
 									<td></td>
 								</tr>
 								<tr style="background-color:gold">
 									<td style="width: 2%"></td>
 									<td>합계</td>
-									<td id="GONGJE_TOTAL"></td>
+									<td style="text-align: right">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GONGJE_TOTAL" readonly>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -161,24 +466,24 @@
 					<!-- 4대보험 계산(국민, 고용, 건강) -->
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<table class="table table-bordered jambo_table bulk_action">
-							⊙ 국민보험/고용보험/건강보험 
+							<h5>⊙ 국민보험/고용보험/건강보험</h5>
 							<tbody>
 								<tr>
 									<td style="text-align: center">국민보험</td>
 									<td>
-										<input type="text">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="INSURE_KUKMIN" readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="text-align: center">고용보험</td>
 									<td>
-										<input type="text">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="INSURE_GOYONG" readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="text-align: center">건강보험</td>
 									<td>
-										<input type="text">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="INSURE_KEUNGANG" readonly>
 									</td>
 								</tr>
 							</tbody>
@@ -186,7 +491,7 @@
 					</div>
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<table class="table table-bordered jambo_table bulk_action">
-							⊙ 급여 이체 / 회계 정보
+							<h5>⊙ 급여 이체 / 회계 정보</h5>
 							<tbody>
 								<tr>
 									<td style="width: 20%; text-align: center">이체여부(1)</td>
@@ -257,6 +562,57 @@
 							</tbody>
 						</table>
 					</div>
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<h5>⊙ 지급 및 공제항목 (기간별)</h5>
+						<div class="form-inline">
+							<table class="table table-bordered jambo_table bulk_action">
+								<thead>
+									<tr>
+										<td colspan="5">• 지급항목</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="text-align: center">
+										<td style="width: 2%"></td>
+										<td>
+											지급항목
+										</td>
+										<td>
+											시작일
+										</td>
+										<td>
+											종료일
+										</td>
+										<td>
+											지급액
+										</td>
+									</tr>
+								</tbody>
+								<thead>
+									<tr>
+										<td colspan="5">• 공제항목</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="text-align: center">
+										<td style="width: 2%"></td>
+										<td>
+											공제항목
+										</td>
+										<td>
+											시작일
+										</td>
+										<td>
+											종료일
+										</td>
+										<td>
+											지급액
+										</td>
+									</tr>
+								</tbody>
+							</table>		                       				                      						
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -265,7 +621,6 @@
 			<div class="x_panel" style="color:black;">
 				<h4>급여 계산 처리</h4>
 				<div class="x_title">
-					<div class="clearfix"></div>
 				</div>
 					<h5>⊙ 작업 조건</h5>
 				<div class="form-inline">
@@ -378,6 +733,7 @@
 				</div>                  
 			</div>
 		</div>
+	</div>
 
 </th:block>
 <th:block layout:fragment="customJquery">
