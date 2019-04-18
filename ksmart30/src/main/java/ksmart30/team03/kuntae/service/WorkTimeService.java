@@ -56,15 +56,5 @@ public class WorkTimeService {
 		return workTimeMapper.getRecordTotalSearch(WORK_DT, END_DT, EMP_NO);
 	}
 	
-	// 일일근무현황 List
-	public List<WorkTimeDay> getDayList(String DATA){
-		System.out.println("S : 일일근무현황 List");
-		return workTimeMapper.getDayList(DATA);
-	}
-	
-	// 일일근무현황 List 1
-	public List<WorkTimeDay> getDayList1(){
-		System.out.println("S : 일일근무현황 1");
-		return workTimeMapper.getDayList1();
-	}
+
 }

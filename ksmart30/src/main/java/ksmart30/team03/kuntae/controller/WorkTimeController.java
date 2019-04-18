@@ -18,31 +18,6 @@ import ksmart30.team03.kuntae.service.WorkTimeService;
 public class WorkTimeController {
 	@Autowired private WorkTimeService workTimeService;
 	
-	// 일일 근무 현황 (조회) 화면
-	@GetMapping("/kuntae/daySearchView2")
-	public String daySearchView() {
-		System.out.println("C : 일일근무현황 화면 먼저!");
-		return "/kuntae/daySearchView2";
-	}
-	
-	// 일일 근무 현황 List
-	@GetMapping("/kuntae/daySearch1")
-	public @ResponseBody List<WorkTimeDay> daySearchView(@RequestParam(value="DATA")String DATA) {
-		System.out.println("C : 일일근무현황 조회");
-		List<WorkTimeDay> data1 = workTimeService.getDayList(DATA);
-		System.out.println("C : 일일근무현황 data1 =>"+data1);
-		return data1;
-	}
-	
-	// 일일 근무 현황 LIST출력!!!!!!!!!!
-	@GetMapping("/kuntae/daySearchView")
-	public String dayList(Model model) {
-		System.out.println("C : 일일근무현황");
-		List<WorkTimeDay> data = workTimeService.getDayList1();
-		model.addAttribute("data", data);
-		System.out.println("data =>" + data);		
-		return "/kuntae/daySearchView";
-	}
 	
 	// 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력
 	@GetMapping("/kuntae/recordTotalView")
