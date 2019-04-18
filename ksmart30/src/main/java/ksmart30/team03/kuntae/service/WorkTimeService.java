@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ksmart30.team03.kuntae.domain.WorkTimeDay;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 import ksmart30.team03.kuntae.mapper.WorkTimeMapper;
 
@@ -55,4 +56,15 @@ public class WorkTimeService {
 		return workTimeMapper.getRecordTotalSearch(WORK_DT, END_DT, EMP_NO);
 	}
 	
+	// 일일근무현황 List
+	public List<WorkTimeDay> getDayList(String DATA){
+		System.out.println("S : 일일근무현황 List");
+		return workTimeMapper.getDayList(DATA);
+	}
+	
+	// 일일근무현황 List 1
+	public List<WorkTimeDay> getDayList1(){
+		System.out.println("S : 일일근무현황 1");
+		return workTimeMapper.getDayList1();
+	}
 }

@@ -176,10 +176,63 @@
 		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
-		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%%' AND e.WORK_DT <![CDATA[>=]]> #{WORK_DT} AND e.END_DT <![CDATA[<=]]> #{END_DT}
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%'+#{EMP_NO}+'%' AND e.WORK_DT <![CDATA[>=]]> #{WORK_DT} AND e.END_DT <![CDATA[<=]]> #{END_DT}
 	</select>
 	
-	<!-- 전체검색 2 -->
+	<!-- 일일근무 현황 -->
+	<select id="getDayList"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeDay"
+			parameterType="String">
+			SELECT SYS_COD,
+			      SORT_DEPT,
+			      GUBUN,
+			      DEPT_CD,
+			      DEPT_NM,
+			      DEPT_TITLE,
+			      TOT_INWON,
+			      CHUL_INWON,
+			      JIGAK_INWON,
+			      SAGO_INWON,
+			      SAGO_01, SAGO_02, SAGO_03, SAGO_04, SAGO_05,
+			      SAGO_06, SAGO_07, SAGO_08, SAGO_09, SAGO_10,
+			      T_TOT_INWON,
+			      T_CHUL_INWON,
+			      T_JIGAK_INWON,
+			      T_SAGO_INWON,
+			      T_SAGO_01, T_SAGO_02, T_SAGO_03, T_SAGO_04, T_SAGO_05,
+			      T_SAGO_06, T_SAGO_07, T_SAGO_08, T_SAGO_09, T_SAGO_10,
+				 '20170102' DATA,
+			      CONVERT(VARCHAR(12), GETDATE(),102)   YYYYMMDD 
+			 FROM DBO.SF_KUNTAE_TODAY_PJT(#{DATA},'','')
+			 ORDER BY SORT_DEPT, GUBUN
+	</select>
+	
+		<select id="getDayList1"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeDay"
+			parameterType="String">
+SELECT SYS_COD,
+       SORT_DEPT,
+       GUBUN,
+       DEPT_CD,
+       DEPT_NM,
+       DEPT_TITLE,
+       TOT_INWON,
+       CHUL_INWON,
+       JIGAK_INWON,
+       SAGO_INWON,
+       SAGO_01, SAGO_02, SAGO_03, SAGO_04, SAGO_05,
+       SAGO_06, SAGO_07, SAGO_08, SAGO_09, SAGO_10,
+       T_TOT_INWON,
+       T_CHUL_INWON,
+       T_JIGAK_INWON,
+       T_SAGO_INWON,
+       T_SAGO_01, T_SAGO_02, T_SAGO_03, T_SAGO_04, T_SAGO_05,
+       T_SAGO_06, T_SAGO_07, T_SAGO_08, T_SAGO_09, T_SAGO_10,
+		 '20170102' DATA,
+       CONVERT(VARCHAR(12), GETDATE(),102)   YYYYMMDD 
+  FROM DBO.SF_KUNTAE_TODAY_PJT('20190417','','')
+ ORDER BY SORT_DEPT, GUBUN
+	</select>
 	
 	
 
