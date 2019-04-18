@@ -43,7 +43,9 @@ public class ResultService {
 		   vo = resultMapper.getListSearch(result); 
 		}
 		
-		return vo;
-		
+		return vo;		
 	}
-}
+	public List<Result> getSelectListView() {
+		return resultMapper.getSelectListView();
+	}
+}	

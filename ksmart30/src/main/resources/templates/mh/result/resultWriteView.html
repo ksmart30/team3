@@ -9,8 +9,25 @@
 	<th:block th:include="layout/customHead"></th:block>
 	<head>
 	<script>
+	//프로젝트명 
+	function pjt(){
 	$(document).ready(function(){
-		console.log('날짜 출력')
+		console.log('프로젝트명 가져오기');
+		$.ajax({
+			url:'/manHour/resultWritePjtView',
+			type:'GET',
+			success:function(data){
+				let resultWritePjtView =data;
+				for(let i=0; i<resultWritePjtView.length; i++){
+					$('#PJT_NM').append('<option th:text="'+resultWritePjtView[i].PJT_NM+'">'+resultWritePjtView[i].PJT_NM+'</option>')
+				}
+			}
+		});
+	});
+	};
+	//M/H 날짜 출력 ajax
+	$(document).ready(function(){
+		console.log('날짜 출력');
 		$("#btn_day").click(function(){
 			let work_dt_format = $('#WORK_DT').val();
 			let end_dt_format = $('#WORK_DT2').val();
@@ -130,7 +147,7 @@
 									rowspan="1" colspan="1" aria-sort="ascending"
 									aria-label="Name: activate to sort column descending"
 									style="width: 86px;"><font
-										style="vertical-align: inherit;">PJT코드</font>
+										style="vertical-align: inherit;">PJT명</font>
 								</th>								
 								<th class="sorting" tabindex="0" aria-controls="datatable"
 									rowspan="1" colspan="1"
@@ -147,7 +164,8 @@
 										style="vertical-align: inherit;">작업내용</font></font>
 								</th>
 							</tr>
-							<tr>						
+							<tr>
+												
 								<td><!-- 사원번호 -->
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
@@ -156,7 +174,27 @@
 								</div>
 								</td>	
 								
-								<td><!-- 프로젝트 코드 -->
+								<td> <!-- 프로젝트 코드 -->
+								<div class="form-group">
+									<div class="col-md-7 col-sm-12 col-xs-12">
+										<select class="form-control" id="PJT_CD" name="PJT_CD">
+											<option value="17001">남양지구 주택 설계용역</option>
+											<option value="17002">역삼동 현상 설계 프로젝트</option>
+											<option value="17003">논현동 A1 현상 프로젝트</option>
+											<option value="17004">쌍용플래티넘 임대주택 공급촉진지구</option>
+											<option value="17005">에스케이매직 물류센터 지구 계획</option>
+											<option value="17006">아티스 사옥 신축 설계 용역</option>
+											<option value="17007">역삼동 K9 근린생활 시설 기본 설계</option>
+											<option value="17008">현대건설 기업형임대주택 공급촉진지구</option>																						
+											<option value="17009">우리나라 임대형 주택 공급촉진지구</option>
+											<option value="18001">차량관리센타신축공사</option>
+											<option value="18002">원주시 아이스하키 경기장 건축설계</option>
+											
+										</select>	
+									</div>
+								</div>
+								</td>	
+								<!-- <td>프로젝트 코드
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
 										<select>
@@ -165,15 +203,31 @@
 										<input type="text" name="PJT_CD">
 									</div>
 								</div>
-								</td>				
-												
+								</td>	 -->	
+										
 								<td> <!-- 작업단계 -->
+								<div class="form-group">
+									<div class="col-md-7 col-sm-12 col-xs-12">
+										<select class="form-control" id="WORK_STEP" name="WORK_STEP">
+											<option value="A">기획</option>
+											<option value="B">심의</option>
+											<option value="C">허가</option>
+											<option value="D">착공</option>
+											<option value="E">실시</option>
+											<option value="F">A/S</option>
+											<option value="G">준공</option>
+											<option value="Z">기타</option>																						
+										</select>	
+									</div>
+								</div>
+								</td>			
+								<!-- <td> 작업단계
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
 										<input type="text" name="WORK_STEP">
 									</div>
 								</div>
-								</td>
+								</td> -->
 								
 								<td> <!-- 작업내용 -->
 								<div class="form-group">
@@ -191,7 +245,7 @@
 									aria-label="Start date: activate to sort column ascending"
 									style="width: 30px;"><font
 									style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">부서코드</font></font>
+										style="vertical-align: inherit;">부서</font></font>
 								</th>
 								<th class="sorting" tabindex="0" aria-controls="datatable"
 									rowspan="1" colspan="1"
@@ -212,17 +266,32 @@
 									aria-label="Start date: activate to sort column ascending"
 									style="width: 30px;"><font
 									style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">직급 코드</font></font>
+										style="vertical-align: inherit;">직급</font></font>
 								</th>
 							</tr>
-							<tr>						
+							<tr>
 								<td> <!-- 부서코드 -->
+								<div class="form-group">
+									<div class="col-md-7 col-sm-12 col-xs-12">
+										<select class="form-control" id="DEPT_CD" name="DEPT_CD">
+											<option value="1000">경영부문</option>
+											<option value="1100">경영지원본부</option>
+											<option value="1110">경영지원실</option>
+											<option value="9200">기술연구소</option>
+											<option value="10">대표이사</option>
+											<option value="20">사장실</option>
+											<option value="7500">설계1본부</option>
+										</select>
+									</div>
+								</div>
+								</td>								
+								<!-- <td> 부서코드
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
 										<input type="text" name="DEPT_CD">
 									</div>
 								</div>
-								</td>								
+								</td>		 -->						
 								<td> <!-- 작업시간 -->
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
@@ -237,13 +306,53 @@
 									</div>
 								</div>
 								</td>
+								
 								<td> <!-- 직급코드 -->
+								<div class="form-group">
+									<div class="col-md-7 col-sm-12 col-xs-12">
+										<select class="form-control" id="JIKGUP_CD" name="JIKGUP_CD">
+											<option value="100">회장</option>
+											<option value="105">부회장</option>
+											<option value="110">대표이사</option>
+											<option value="111">사장</option>
+											<option value="115">부사장</option>
+											<option value="140">전무</option>
+											<option value="150">상무</option>
+											<option value="260">이사</option>
+											<option value="410">실장</option>
+											<option value="510">팀장</option>
+											<option value="610">대리</option>
+											<option value="710">사원</option>
+											<option value="810">인턴사원</option>
+											<option value="820">촉탁사원</option>
+											<option value="910">계약직</option>
+											<option value="21">대표</option>
+											<option value="30">부문장</option>
+											<option value="40">본부장</option>
+											<option value="41">본부장(직무대행)</option>
+											<option value="50">실장</option>
+											<option value="51">소장</option>
+											<option value="52">소장(직무대행)</option>
+											<option value="60">직원</option>
+											<option value="70">감사</option>
+											<option value="75">고문</option>
+											<option value="80">임원</option>
+											<option value="90">연구원</option>
+											<option value="95">별정직</option>
+											
+											
+																																	
+										</select>	
+									</div>
+								</div>
+								</td>	
+								<!-- <td> 직급코드
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
 										<input type="text" name="JIKGUP_CD">
 									</div>
 								</div>
-								</td>
+								</td> -->
 							</tr>							
 						</thead>		
 								<!-- <td class=""><font style="vertical-align: inherit;">ㅇㅇ</font></td> -->
@@ -324,7 +433,7 @@
 </div>
 	
 	<div class="row">
-			<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="col-md-12 col-sm-12 col-xs-12 " style="color:black;">
 				<div class="x_panel">
 					<div class="x_title">
 						<h2>
@@ -376,10 +485,10 @@
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PJT명</font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작업단계 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작업내용</font></font></th>
-                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">부서코드 </font></font></th>
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">부서 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작업시간 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">상세내용</font></font></th>
-                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">직급코드 </font></font></th>                                                                              
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">직급 </font></font></th>                                                                              
                             <th class="bulk-actions" colspan="7">
                               <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                             </th>
@@ -410,16 +519,3 @@
 		<th:block th:include="layout/customJquery"></th:block>
     </th:block>
 </html>
-
-<!--  <td th:text="${l.A_DEPT_CD}"></td> -->  
-                          <!-- <tr class="even pointer">                            
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">임홍근</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ksmart</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전주</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">26</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018/11/05</font></font></td>                            
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4시간</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>
-                            <td class=" "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">$4000000</font></font></td>                                                                             
-                          </tr>  -->

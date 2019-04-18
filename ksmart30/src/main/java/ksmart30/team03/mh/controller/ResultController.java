@@ -43,5 +43,10 @@ public class ResultController {
 	  return resultdate;
 	  
 	  }
+	  @GetMapping("/manHour/resultWritePjtView")
+	  public List<Result> resultWritePjtView(){
+		  List<Result> list = resultService.getSelectListView();  
+		  return list; 
+	  }
 	 
 }

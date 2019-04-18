@@ -7,7 +7,26 @@
 	<!-- 5.2  실적 승인(List)쿼리  -->
 	<select id="getApprovalSearchView"
 			 resultType="ksmart30.team03.mh.domain.Result">
-			SELECT TOP 25
+			 SELECT  TOP 25
+				A.EMP_NO,
+				A.WORK_DT,	
+				ISNULL(E.PJT_NM,'-') AS PJT_CD,
+				A.WORK_SPEC,	
+				ISNULL(D.DEPT_NM,'-') AS DEPT_CD,
+				A.WORK_TIME,
+				A.ETC_SPEC,		
+				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
+				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD
+	
+			FROM T_PM1020 A, 
+				 T_SC9100 B,
+				 T_SC9100 C,
+				 T_SC1010 D,
+				 T_SM3000 E
+				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+			<!-- SELECT TOP 25
 				A.EMP_NO,
 				A.WORK_DT AS WORK_DT,	
 				ISNULL(E.PJT_NM,'-') AS PJT_CD,
@@ -26,13 +45,33 @@
 				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
 				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 				 AND((A.DEPT_CD *= D.LEVEL2_CD) AND (D.LEVEL1_CD='390' AND D.BUSI_GB='H'))
-				 AND((A.PJT_CD *= E.PJT_CD) AND(E.PJT_CD='13036' AND E.PJT_TYPE=''))
+				 AND((A.PJT_CD *= E.PJT_CD) AND(E.PJT_CD='13036' AND E.PJT_TYPE='')) -->
 	</select>
 	<!--5.2 M/H실적승인(List) 날짜 검색 -->
 	<select id="getApprovalSearchDate"  
 			parameterType="String"
 			resultType="java.util.Map">	
-		SELECT TOP 25
+			 SELECT  TOP 25
+				A.EMP_NO,
+				A.WORK_DT,	
+				ISNULL(E.PJT_NM,'-') AS PJT_CD,
+				A.WORK_SPEC,	
+				ISNULL(D.DEPT_NM,'-') AS DEPT_CD,
+				A.WORK_TIME,
+				A.ETC_SPEC,		
+				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
+				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD
+	
+			FROM T_PM1020 A, 
+				 T_SC9100 B,
+				 T_SC9100 C,
+				 T_SC1010 D,
+				 T_SM3000 E
+				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+	 			 AND A.WORK_DT <![CDATA[>=]]> #{WORK_DT} AND A.WORK_DT <![CDATA[<=]]> #{WORK_DT2}
+		<!-- SELECT TOP 25
 	A.EMP_NO,
 	A.WORK_DT,	
 	ISNULL(E.PJT_NM,'-') AS PJT_CD,
@@ -52,8 +91,8 @@ FROM T_PM1020 A,
 	 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 	 AND((A.DEPT_CD *= D.LEVEL2_CD) AND (D.LEVEL1_CD='390' AND D.BUSI_GB='H'))
 	 AND(A.PJT_CD *= E.PJT_CD)
-	 <!-- AND A.WORK_DT = #{WORK_DT}  -->
-	 AND A.WORK_DT <![CDATA[>=]]> #{WORK_DT} AND A.WORK_DT <![CDATA[<=]]> #{WORK_DT2}
+	 AND A.WORK_DT = #{WORK_DT}  -->
+	
 	 	
 	</select>
 	

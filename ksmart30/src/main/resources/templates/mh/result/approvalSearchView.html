@@ -27,8 +27,8 @@ $(document).ready(function(){
             console.log('리스트 출력');
             console.log(data);
             $(data).each(function(index,item){ //each = foreach (반복문)
-                $('#list').append('<tr>');
-                $('#list').append('<td></td>');
+                $('#list').append('<tr>');              
+                $('#list').append('<td class"><input type="checkbox" id="check-all: relative style="width:50px;height:50px;"></td>');
                 $('#list').append('<td>'+item.EMP_NO+'</td>');
                 $('#list').append('<td>'+item.WORK_DT+'</td>'); 
                 $('#list').append('<td>'+item.PJT_CD+'</td>'); 
@@ -38,7 +38,7 @@ $(document).ready(function(){
                 $('#list').append('<td>'+item.WORK_TIME+'</td>');
                 $('#list').append('<td>'+item.ETC_SPEC+'</td>');
                 $('#list').append('<td>'+item.JIKGUP_CD+'</td>');
-                $('#list').append('<td></td>');
+                $('#list').append('<td "column-title no-link last" ><button id="send" type="submit" class="btn btn-success">승인</td>');
                 $('#list').append('</tr>'); 
             });                   			
 		}
@@ -133,11 +133,10 @@ $(document).ready(function(){
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PJT명</font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작업단계 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작업내용</font></font></th>
-                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">부서코드 </font></font></th>
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">부서 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작업시간 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">상세내용</font></font></th>
-                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">직급코드 </font></font></th>
-                            <!-- <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">전문가 </font></font></th> -->        
+                            <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">직급 </font></font></th>                                    
                             <th class="column-title no-link last"><span class="nobr"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></span>
                             </th>
                             <th class="bulk-actions" colspan="7">

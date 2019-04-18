@@ -14,7 +14,15 @@ public class Result {
 	private String WORK_TIME; //7.작업시간
 	private String ETC_SPEC;  //8.상세내용
 	private String JIKGUP_CD; //9.직급코드
-	private String A_DEPT_CD;  //10.부서코드
+	private String A_DEPT_CD; //10.부서코드
+	private String PJT_NM ;   //11.프로젝트 이름
+	
+	public String getPJT_NM() {
+		return PJT_NM;
+	}
+	public void setPJT_NM(String pJT_NM) {
+		PJT_NM = pJT_NM;
+	}
 	public String getEMP_NO() {
 		return EMP_NO;
 	}
@@ -85,7 +93,8 @@ public class Result {
 	public String toString() {
 		return "Result [EMP_NO=" + EMP_NO + ", WORK_DT=" + WORK_DT + ", WORK_DT2=" + WORK_DT2 + ", PJT_CD=" + PJT_CD
 				+ ", WORK_STEP=" + WORK_STEP + ", WORK_SPEC=" + WORK_SPEC + ", DEPT_CD=" + DEPT_CD + ", WORK_TIME="
-				+ WORK_TIME + ", ETC_SPEC=" + ETC_SPEC + ", JIKGUP_CD=" + JIKGUP_CD + ", A_DEPT_CD=" + A_DEPT_CD + "]";
+				+ WORK_TIME + ", ETC_SPEC=" + ETC_SPEC + ", JIKGUP_CD=" + JIKGUP_CD + ", A_DEPT_CD=" + A_DEPT_CD
+				+ ", PJT_NM=" + PJT_NM + "]";
 	}
 	
 	

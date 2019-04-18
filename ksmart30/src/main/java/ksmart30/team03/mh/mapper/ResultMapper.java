@@ -20,4 +20,7 @@ public interface ResultMapper {
 	List<Map<String,Object>> getListSearch(Result result);
 	//검색이 없을때
 	List<Map<String,Object>> getListSearch2(Result result);
+	
+	//입력 할때 프로젝트 선택
+	List<Result> getSelectListView();
 }
