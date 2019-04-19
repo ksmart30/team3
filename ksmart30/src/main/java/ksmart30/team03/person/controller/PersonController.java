@@ -56,7 +56,8 @@ public class PersonController {
 	@GetMapping("/person/personInsaModifyView")
 	public String personInsaModifyView(Model model, @RequestParam(value="EMP_NO") String EMP_NO) {
 		System.out.println("CONTROLLER : 직원수정  , 사원번호 : "+ EMP_NO);
-		Person data = personService.personInsaEmployeeModifyView(EMP_NO); 
+		Person data = personService.personInsaEmployeeModifyView(EMP_NO);
+		model.addAttribute("EMP_NO", EMP_NO);
 		model.addAttribute("result", data);
 		//부서코드별 부서명 select option
 		List<Map<String, Object>> data2 = personService.deptCdListView();		
@@ -76,8 +77,14 @@ public class PersonController {
 	}	
 	//6.1.2직원검색폼 이동 컨트롤러
 	@GetMapping("/person/personInsaEmployeeSearchView")
-	public String getPersonInsaEmployeeView() {
-		System.out.println("CONTROLLER : 직원검색 폼 이동");		
+	public String getPersonInsaEmployeeView(Model model) {
+		System.out.println("CONTROLLER : 직원검색 폼 이동");	
+		//부서코드별 부서명 select option
+		List<Map<String, Object>> data2 = personService.deptCdListView();		
+		model.addAttribute("deptResult",data2);
+		//구분별 이름 select option
+		List<Map<String, Object>> data3 = personService.gbCdListView();	
+		model.addAttribute("gbResult",data3);
 		return "person/insa/personSearchView";
 	}
 	
@@ -98,7 +105,7 @@ public class PersonController {
 		System.out.println("직원 list 디테일 : "+data);
 		return data;
 	}
-	
+	//6.1.1직원 인사기록카드 추가사항 입력(가족사항)
 	@PostMapping("/person/personInsaFamiltModifyView")
 	public String personInsaFamilyModifyProcess(Person vo) {
 		System.out.println("CONTROLLER : 인사기록카드 가족사항 입력 : "+vo);

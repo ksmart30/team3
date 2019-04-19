@@ -1,40 +1,74 @@
 <!-- 일일근무현황 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
-	<th:block layout:fragment="customHead">
-		<meta charset="UTF-8">
-		<title>kuntae</title>
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		
-	<th:block th:include="layout/customHead"></th:block>
-	<head>
-	<script>
-	$(document).ready(function(){
-			console.log('일일근무 현황 List');
-			var DATA = $('#DATA').val();
-			$.ajax({
-				url:'/kuntae/daySearch',
-				type:'GET',
-				data:{DATA:DATA},
-				success:function(data){
-					console.log('날짜를 가져오겠다!');
-					$('#list').empty();
-					$('#list').each(function(index,item){
-						$('#list').append('<tr>');
-						$('#list').append('<td>'+item.dATA+'</td>');
-					});
-				}
-			});
+<th:block layout:fragment="customHead">
+<meta charset="UTF-8">
+<title>kuntae</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<th:block th:include="layout/customHead"></th:block>
+<head>
+<script>
+$(document).ready(function(){
+	
+	//검색버튼 클릭 했을 때 실행되는 것
+	$('#btn_search').click(function(){
+		let DATE_FORMAT = $('#date').val();
+		let DATE = DATE_FORMAT.substr(0,4)+DATE_FORMAT.substr(5,2)+DATE_FORMAT.substr(8,2);
+		let DEPT_CD = $('#DEPT_CD').val();
+		console.log('일일근무 현황 List data : '+DATE);
+		//입력한 날짜의 값을 컨트롤러로 넘겨줌
+		$.ajax({
+			url:'/kuntae/daySearch',
+			data:{DATE:DATE,DEPT_CD:DEPT_CD},
+			type:'GET',
+			success:(data)=>{
+				$('#list').empty();
+				console.log('일일근무현황 list 출력');
+				$(data).each(function(index,item){
+					console.log(data+'일일근무현황');
+					
+					$('#list').append('<tr>');
+					$('#list').append('<td>'+item.DEPT_NM+'</td>');
+					$('#list').append('<td>'+item.TOT_INWON+'</td>');
+					$('#list').append('<td>'+item.CHUL_INWON+'</td>');
+					$('#list').append('<td>'+item.JIGAK_INWON+'</td>');
+					$('#list').append('<td>'+item.SAGO_INWON+'</td>');
+					$('#list').append('<td>'+item.SAGO_01+'</td>');
+					$('#list').append('<td>'+item.SAGO_02+'</td>');
+					$('#list').append('<td>'+item.SAGO_03+'</td>');
+					$('#list').append('<td>'+item.SAGO_04+'</td>');
+					$('#list').append('<td>'+item.SAGO_05+'</td>');
+					$('#list').append('<td>'+item.SAGO_06+'</td>');
+					$('#list').append('<td>'+item.SAGO_07+'</td>');
+					$('#list').append('</tr>');
+					
+					
+					
+					/* <td th:text="${t.DEPT_NM}"></td>
+					<td th:text="${t.TOT_INWON}"></td>
+					<td th:text="${t.SAGO_INWON}"></td>
+					<td th:text="${t.JIGAK_INWON}"></td> */
+					
+				})
+				
+			} 
+			
 		});
-	
-	
-	</script>
-	</head>	
-	</th:block>
-	<th:block layout:fragment="customBody">
+		
+	});
+		
+		
+		
+});
 
+
+</script>
+</head>	
+</th:block>
+<th:block layout:fragment="customBody">
 <font color="black">
-	<div class="col-md-9 col-xs-12" style="color:black;">
+<div>
+	<div class="col-md-12 col-sm-6 col-xs-12">
         <div class="page-title">
 			<div class="title_left">
 				<h2><b>4. 근태 관리</b></h2>
@@ -42,39 +76,42 @@
 				<h5><font color= "gray"><b>4.1 일일근무 현황&nbsp;</b></font></h5>
 			</div>
 		</div>
-    </div>
+   <div class="x_content"> 
+	<div class="col-md-12 col-sm-6 col-xs-12">
+				<div class="x_panel">
+					<br>
+					<div class="x_content">
+						
+							<table class="table table-bordered">
+								<thead>
+									<tr style="font-size: 15px">
+										<th>◎검색조건 &emsp;</th>
+										
+										<th style="width:330px;height:30px;" >조회 일자   &emsp;&emsp;&emsp; 
+										<input type="date" id="date" name="date"> &emsp;&emsp;										
+										</th>
+										<th>부서명 &emsp;&emsp;&emsp; 
+										<select name="DEPT_CD" id="DEPT_CD" style="width:200px;height:25px;">
+												<option></option>
+													<th:block th:each="d : ${deptResult}">
+														<option th:value="${d.DEPT_CD}">[[${d.DEPT_NM}]]</option>									
+													</th:block>
+											</select>
+											<button id="btn_search" class="btn" style="color:black">검색</button>
+										</th>
+									</tr>									
+								</thead>
+							</table>
+						
+					</div>
+				</div>
+			</div>
+
 	
-	<div class="">
-  	
-<div class="clearfix"></div>
-<div class="col-md-12 col-sm-12 col-xs-12">
-<div class="x_panel" style="">
-    <div class="x_title">
-       
-       
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4">
-                    	조회일자
-                    <div class="form-group">
-                        <div class="input-group date">
-                            <input type="date" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-7 col-sm-6 col-xs-12" style="width:50%">
+		<div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h3>목록</h3>
+                    <h3>일일근무현황</h3>
                    
                     <div class="clearfix"></div>
                   </div>
@@ -83,41 +120,64 @@
                     <table class="table table-striped jambo_table bulk_action">
                     
 					<thead>
-						<tr>
-							<td>부서명</td>
-							<td>총원</td>
-							<td>정상출근</td>
-							<td>지각</td>
-						</tr>
+						<tr style="text-align:center">
+							<td rowspan="2">부서명</td>
+							<td rowspan="2">총원</td>
+							<td rowspan="2">정상출근</td>
+							<td rowspan="2">지각</td>
+							<td colspan="8">사고</td>
+						</tr>		
+							<tr>
+								<td>계</td>
+								<td>출장</td>
+								<td>교육훈련</td>
+								<td>휴가</td>
+								<td>휴직</td>
+								<td>격중휴무</td>
+								<td>기타</td>
+								<td>무단결근</td>
+							</tr>
+							
+						
 					</thead>
 					
-					<tbody id="list">
-					
-						<tr th:each="t : ${data}">
+					<tbody id="list" style="text-align:center">
+						<!-- <tr th:each="t : ${data}">
 							<td th:text="${t.DEPT_NM}"></td>
 							<td th:text="${t.TOT_INWON}"></td>
 							<td th:text="${t.SAGO_INWON}"></td>
 							<td th:text="${t.JIGAK_INWON}"></td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
                </div>
              </div>
-           </div>
+          </div>
+	</div>
 
+		<!-- <div class="col-md-5 col-sm-6 col-xs-12">
+	                <div class="x_panel">
+	                  <div class="x_title">
+	                  	<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<h3>그래프</h3>
+						<div class="table-responsive">
+	                    
+	                   </div>
+	                   
+	               </div>
+	             </div>
+		
+			</div> -->
+		</div>
+	</div>
 </div>
-<div class="col-md-5 col-sm-6 col-xs-12" style="width:50%">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h3>그래프</h3>
-               </div>
-             </div>
+</font>
 
-</div>
-</div>
 
-	</th:block>
-	<th:block layout:fragment="customJquery">
-		<th:block th:include="layout/customJquery"></th:block>
-    </th:block>	
+</th:block>
+<th:block layout:fragment="customJquery">
+<th:block th:include="layout/customJquery"></th:block>
+ </th:block>	
 </html>

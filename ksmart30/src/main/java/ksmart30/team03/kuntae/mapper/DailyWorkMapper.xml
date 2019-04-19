@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="ksmart30.team03.kuntae.mapper.DailyWorkMapper">
+	<!-- 4.1 일일근무현황 LIST출력 -->
+	<select id="getDayList1" resultType="java.util.Map" parameterType="String">
+	SELECT SYS_COD,
+	       SORT_DEPT,
+	       GUBUN,
+	       DEPT_CD,
+	       DEPT_NM,
+	       DEPT_TITLE,
+	       TOT_INWON,
+	       CHUL_INWON,
+	       JIGAK_INWON,
+	       SAGO_INWON,
+	       SAGO_01, SAGO_02, SAGO_03, SAGO_04, SAGO_05,
+	       SAGO_06, SAGO_07, SAGO_08, SAGO_09, SAGO_10,
+	       T_TOT_INWON,
+	       T_CHUL_INWON,
+	       T_JIGAK_INWON,
+	       T_SAGO_INWON,
+	       T_SAGO_01, T_SAGO_02, T_SAGO_03, T_SAGO_04, T_SAGO_05,
+	       T_SAGO_06, T_SAGO_07, T_SAGO_08, T_SAGO_09, T_SAGO_10,
+			 '20170102' DATA,
+	       CONVERT(VARCHAR(12), GETDATE(),102)   YYYYMMDD 
+	  FROM DBO.SF_KUNTAE_TODAY_PJT(#{DATE},'',#{DEPT_CD})
+	 ORDER BY SORT_DEPT, GUBUN
+	</select>
+	
+</mapper>	
+	
+	

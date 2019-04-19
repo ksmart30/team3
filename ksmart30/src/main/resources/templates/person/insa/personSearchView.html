@@ -158,57 +158,32 @@ $(document).ready(function(){
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									직급
 								</th>											
-								<th>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<select style="width:230px;height:25px;" id="JIKGUP_NM2">
-											<option></option>
-											<option value="회장">회장</option>
-											<option value="부회장">부 회 장</option>
-											<option value="대표이사">대표이사</option>
-											<option value="사장">사     장</option>
-											<option value="부사장">부 사 장</option>
-											<option value="전무">전     무</option>
-											<option value="상무">상     무</option>
-											<option value="이사">이     사</option>
-											<option value="실장">실     장</option>
-											<option value="팀장">팀     장</option>
-											<option value="대리">대     리</option>
-											<option value="사원">사     원</option>
-											<option value="인턴사원">인턴사원</option>
-											<option value="촉탁사원">촉탁사원</option>
-											<option value="계약직">계 약 직</option>
-										</select>
-									</div>
+								<th>		
+									<select style="width:230px;height:25px;" id="JIKGUP_NM2" name="JIKGUP_NM2">
+										<option></option>
+										<th:block th:each="gb : ${gbResult}">
+											<th:block th:if="${gb.LEVEL1_CD} == 110">									
+												<option th:vlaue="${gb.LEVEL2_NM}">[[${gb.LEVEL2_NM}]]</option>
+											</th:block>
+										</th:block>
+									</select>	
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									직책
 								</th>
-								<th>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-											<select style="width:230px;height:25px;" id="JIKCHK_NM2">
-												<option></option>
-												<option value="회장">회      장</option>
-												<option value="대표이사">대표이사</option>
-												<option value="대표">대      표</option>
-												<option value="사장">사      장</option>
-												<option value="부문장">부 문 장</option>
-												<option value="본부장">본 부 장</option>
-												<option value="본부장(직무대행)">본 부 장(직무대행)</option>
-												<option value="실장">실     장</option>
-												<option value="소장">소     장</option>
-												<option value="소장(직무대행)">소     장(직무대행)</option>
-												<option value="직원">직     원</option>
-												<option value="감사">감     사</option>
-												<option value="고문">고     문</option>
-												<option value="임원">임     원</option>
-												<option value="연구원">연 구 원</option>
-												<option value="별정직">별 정 직</option>
-											</select>
-										</div>						
-									</th>
-									<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+								<th>									
+									<select style="width:230px;height:25px;" id="JIKCHK_NM2">
+										<option></option>
+										<th:block th:each="gb : ${gbResult}">
+											<th:block th:if="${gb.LEVEL1_CD} == 120">									
+												<option th:vlaue="${gb.LEVEL2_NM}">[[${gb.LEVEL2_NM}]]</option>
+											</th:block>
+										</th:block>
+									</select>							
+								</th>
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									&nbsp;사내번호
-									</th>
+								</th>
 									<th class="sorting" aria-controls="datatable-responsive">
 										<input type="text" name="IN_PHONE_NO2" id="IN_PHONE_NO2" style="width:50%;">
 									</th>
@@ -219,31 +194,32 @@ $(document).ready(function(){
 									&nbsp;부서
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="text" name="DEPT_NM2" id="DEPT_NM2" style="width:50%;">
+									<select name="DEPT_NM2" id="DEPT_NM2"  style="width:230px;height:25px;">
+										<option></option>
+										<th:block th:each="d : ${deptResult}">
+											<option th:value="${d.DEPT_NM}">[[${d.DEPT_NM}]]</option>									
+										</th:block>
+									</select>
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									&nbsp;성별
 								</th>
-								<th>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<select style="width:230px;height:25px;" id="SEX_GB2">
-											<option></option>
-											<option value="2">여     자</option>
-											<option value="1">남     자</option>												
-										</select>
-									</div>						
+								<th>									
+									<select style="width:230px;height:25px;" id="SEX_GB2">
+										<option></option>
+										<option value="2">여     자</option>
+										<option value="1">남     자</option>												
+									</select>					
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									&nbsp;구분
 								</th>
-								<th>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<select style="width:230px;height:25px;" id="OUT_DT3">
-											<option value=''></option>
-											<option value="재직자">재직자</option>
-											<option value="퇴직자">퇴직자</option>												
-										</select>
-									</div>						
+								<th>									
+									<select style="width:230px;height:25px;" id="OUT_DT3">
+										<option value=''></option>
+										<option value="재직자">재직자</option>
+										<option value="퇴직자">퇴직자</option>												
+									</select>						
 								</th>				
 							</tr> 			
 							<tr>
