@@ -12,6 +12,22 @@ import ksmart30.team03.kuntae.mapper.KuntaeMapper;
 @Service
 public class KuntaeService {
 	@Autowired KuntaeMapper kuntaeMapper;
+	//근태승인처리 검색
+	public List<Map<String,Object>> getOkSearch(KuntaeSearch vo){
+		System.out.println("getOkSearch 메서드 호출(Service)");
+		List<Map<String,Object>> result = kuntaeMapper.getOkSearch(vo);
+		if(vo.getFRDATE() =="" && vo.getTODATE()==""||
+				vo.getFRDATE() !="" && vo.getTODATE()==""||
+				vo.getFRDATE() =="" && vo.getTODATE()!="") {
+				System.out.println("날짜값 null인 경우 나머지 입력값으로 출력");
+				result = kuntaeMapper.getOkSearch2(vo);
+			}else {
+				result = kuntaeMapper.getOkSearch(vo);
+			}
+		System.out.println("근태승인처리 검색 list 결과 : "+result);
+		return result;
+		
+	}
 	//근태현황(월) list 검색 후 출력
 	public List<Map<String,Object>> getSearch(KuntaeSearch vo){
 		System.out.println("getSearch 메서드 호출(Service)");
@@ -21,6 +37,10 @@ public class KuntaeService {
 	}
 	public List<Map<String,Object>> deptCd(){
 		List<Map<String,Object>> result = kuntaeMapper.deptCd();
+		return result;
+	}
+	public List<Map<String,Object>> appGb(){
+		List<Map<String,Object>> result = kuntaeMapper.appGb();
 		return result;
 	}
 }

@@ -16,11 +16,27 @@ import ksmart30.team03.kuntae.service.KuntaeService;
 public class KuntaeController {
 	@Autowired KuntaeService kuntaeService;
 	
-	// 근태승인처리 (조회)
+	// 근태승인처리 (화면이동)
 	@GetMapping("/kuntae/okView")
-	public String okView() {
-		return "/kuntae/okView";
+	public String okView(Model model) {
+		System.out.println("근태승인처리 화면 이동");
+		List<Map<String,Object>> data2 = kuntaeService.deptCd();
+		List<Map<String,Object>> data3 = kuntaeService.appGb();
+		model.addAttribute("result",data2);
+		model.addAttribute("result2",data3);
+		System.out.println("app_gb 출력 확인 : "+data3);
+		return "kuntae/okView";
 	}
+	// 근태승인처리 (검색)
+	@GetMapping("/kuntae/okSearchView")
+	public @ResponseBody List<Map<String,Object>> okSearchView(KuntaeSearch vo) {
+		System.out.println("근태승인처리 검색 (Controller)");
+		System.out.println("Controller 입력값 : "+vo);
+		List<Map<String,Object>> data = kuntaeService.getOkSearch(vo);
+		
+		return data;
+	}
+	
 	
 	// 근태현황(일, 월) 화면 이동
 	@GetMapping("/kuntae/searchView")
@@ -28,7 +44,7 @@ public class KuntaeController {
 		System.out.println("근태현황 화면 이동");
 		List<Map<String,Object>> data2 = kuntaeService.deptCd();
 		model.addAttribute("result",data2);
-		return "/kuntae/searchView";
+		return "kuntae/searchView";
 	}
 	
 	// 근태현황(월) list 검색 후 출력
