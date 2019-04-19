@@ -2,10 +2,70 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
-		<title>M/H 실적 조회</title>		
+		<title>M/H 실적 조회</title>	
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>	
 		<th:block th:include="layout/customHead"></th:block>
 	<link href="/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
 	<link href="/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+	<head>
+		<script>
+			$(document).ready(function(){
+				$("#btn_name").click(function(){
+					let EMP_NO = $('#EMP_NO').val();
+					console.log("사원 번호 :"+EMP_NO);					
+					$.ajax({
+						url:'/manHour/resultNameSearchView',
+						type:'GET',
+						data:{EMP_NO:EMP_NO},
+						success:(data)=>{
+							$('#list').empty();
+							console.log('리스트 출력');
+							console.log(data);
+							$(data).each(function(index,item){
+								$('#list').append('<tr>');
+								$('#list').append('<td>'+item.EMP_NO+'</td>');
+								$('#list').append('<td>'+item.JIKGUP_CD+'</td>');
+								$('#list').append('<td>'+item.KOR_NM+'</td>');
+								$('#list').append('<td>'+item.PJT_CD+'</td>');
+								$('#list').append('<td></td>');
+								$('#list').append('<td>'+item.D_01+'</td>');
+								$('#list').append('<td>'+item.D_02+'</td>');
+								$('#list').append('<td>'+item.D_03+'</td>');
+								$('#list').append('<td>'+item.D_04+'</td>');
+								$('#list').append('<td>'+item.D_05+'</td>');
+								$('#list').append('<td>'+item.D_06+'</td>');
+								$('#list').append('<td>'+item.D_07+'</td>');
+								$('#list').append('<td>'+item.D_08+'</td>');
+								$('#list').append('<td>'+item.D_09+'</td>');
+								$('#list').append('<td>'+item.D_10+'</td>');
+								$('#list').append('<td>'+item.D_11+'</td>');
+								$('#list').append('<td>'+item.D_12+'</td>');
+								$('#list').append('<td>'+item.D_13+'</td>');
+								$('#list').append('<td>'+item.D_14+'</td>');
+								$('#list').append('<td>'+item.D_15+'</td>');
+								$('#list').append('<td>'+item.D_16+'</td>');
+								$('#list').append('<td>'+item.D_17+'</td>');
+								$('#list').append('<td>'+item.D_18+'</td>');
+								$('#list').append('<td>'+item.D_19+'</td>');
+								$('#list').append('<td>'+item.D_21+'</td>');
+								$('#list').append('<td>'+item.D_22+'</td>');
+								$('#list').append('<td>'+item.D_23+'</td>');
+								$('#list').append('<td>'+item.D_24+'</td>');
+								$('#list').append('<td>'+item.D_25+'</td>');
+								$('#list').append('<td>'+item.D_26+'</td>');
+								$('#list').append('<td>'+item.D_27+'</td>');
+								$('#list').append('<td>'+item.D_28+'</td>');
+								$('#list').append('<td>'+item.D_29+'</td>');
+								$('#list').append('<td>'+item.D_30+'</td>');
+								$('#list').append('<td>'+item.D_31+'</td>');							
+								$('#list').append('</tr>');
+							});
+						}
+					});
+				});
+			});
+		</script>
+	</head>
 	</th:block>
 	<th:block layout:fragment="customBody">
 		<div class="col-md-9 col-xs-12" style="color:black;">
@@ -27,38 +87,21 @@
 					<button class="btn btn-default" type="button">출력</button>
 				</div>
 		
-			</div>
-		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h1></h1>                
-                    <div class="clearfix"></div>
-                  </div>
+			</div>		            
+		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%" >									
+                <div class="x_panel">  
+                	<form action="/manHour/resultNameSearchView">
+							<label>
+                    		◎사원번호검색　
+                    		<input type="text" id="EMP_NO" name="EMP_NO">
+                          	<button type="button" style="color:black" id="btn_name">검색</button>
+                          	</label>
+                          	</form>                 
                   <div class="x_content">
-
-                    <table class="table table-bordered" style="color:black;">
-                      <thead>
-                        <tr>
-                          <th>
-                          	◎검색조건　　                          	
-                          	<input type="date" name="">
-                          	<!-- <button class="btn" style="color:black">조회</button>
-                          	<button class="btn" style="color:black">마감처리</button>
-                          	<button class="btn" style="color:black">마감취소</button> -->
-                          </th>                          
-                        </tr>
-                      </thead>                     
-                    </table>					
-                  </div>
-                </div>
-              </div>
-		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%" >
-                <div class="x_panel">                  
-                  <div class="x_content">
-					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
-                    <table class="table table-bordered" style="color:black;">
-                      <thead>
-                        <tr>
+					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">									
+                    <table class="table table-bordered" style="color:black;">                    		                    		                         	
+                      <thead> 
+                      	 <tr>                     	                                       	                                                
                           <th bgcolor="#EAEAEA">사원번호</th>
                           <th bgcolor="#EAEAEA">직급</th>
                           <th bgcolor="#EAEAEA">성명</th>
@@ -98,6 +141,7 @@
                         </tr>
                       </thead>   
                       
+                      <tbody id = "list">
                       <tr th:each="l : ${ListView}">
   						<td th:text="${l.EMP_NO}"></td>
   						<td th:text="${l.JIKGUP_CD}"></td>

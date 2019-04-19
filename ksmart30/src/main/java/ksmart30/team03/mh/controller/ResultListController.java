@@ -1,15 +1,14 @@
 package ksmart30.team03.mh.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ksmart30.team03.mh.domain.Result;
 import ksmart30.team03.mh.domain.ResultPersonList;
 import ksmart30.team03.mh.service.ResultListService;
 
@@ -21,12 +20,19 @@ public class ResultListController {
 	@GetMapping("/manHour/resultListView")
 	public String resultListView(Model model) {
 		System.out.println("controller resultListView 요청");
-		List<Result> ListView = resultListService.getresultListView();
+		List<ResultPersonList> ListView = resultListService.getresultListView();
 		model.addAttribute("ListView", ListView);
 		return "mh/result/resultListView";
 	}
-	//M/H실적(월별) 개인 리스트 검색				
 	
+	  //M/H실적(월별) 사원번호 검색
+	  @GetMapping("/manHour/resultNameSearchView") 
+	  public @ResponseBody List<Map<String,Object>> resultNameSearchView(ResultPersonList resultPersonList){
+	  System.out.println("resultNameSearchView 이름 검색 요청");
+	  List<Map<String,Object>> resultname = resultListService.getApprovalSearchName(resultPersonList); 
+	  return resultname;	  
+	  }
+	 
 	
 	// M/H실적(프로젝트별 누계) a
 	@GetMapping("/manHour/result/nugae")

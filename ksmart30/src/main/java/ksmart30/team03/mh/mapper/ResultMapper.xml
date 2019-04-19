@@ -34,7 +34,7 @@
 	<!-- M/H실적 리스트 -->
 	<select id="getListView"
 			resultType="ksmart30.team03.mh.domain.Result">
-			SELECT  TOP 25
+			SELECT  TOP 20
 				A.EMP_NO,
 				A.WORK_DT,	
 				ISNULL(E.PJT_NM,'-') AS PJT_CD,
@@ -49,7 +49,7 @@
 				 T_SC9100 B,
 				 T_SC9100 C,
 				 T_SC1010 D,
-				 T_SM3000 E
+				 T_SM3000_2016 E
 				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
 				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
@@ -74,7 +74,7 @@
 				 T_SC9100 B,
 				 T_SC9100 C,
 				 T_SC1010 D,
-				 T_SM3000 E
+				 T_SM3000_2016 E
 				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
 				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
@@ -100,7 +100,7 @@
 				 T_SC9100 B,
 				 T_SC9100 C,
 				 T_SC1010 D,
-				 T_SM3000 E
+				 T_SM3000_2016 E
 				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
 				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)	 

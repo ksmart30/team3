@@ -6,10 +6,37 @@
 	<meta charset="UTF-8">
 	<title>M/H 실적 입력 폼</title>
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<th:block th:include="layout/customHead"></th:block>
 	<head>
 	<script>
-	//프로젝트명 
+	//필수 입력값 유효성검사
+	//WORK_DT : 작업일자,WORK_SPEC :작업내용,WORK_TIME : 작업시간, ETC_SPEC:상세내용
+	$(document).ready(function(){		
+		$('#btn_name').click(function(){
+			 if($('#WORK_DT').val()==""){
+				$('#WORK_DT').focus();
+				$('#span').text('날짜입력하세요');
+				return false;
+			}else if($('#EMP_NO').val()==""){
+				$('#EMP_NO').focus();
+				$('#EMP_NO').attr('placeholder','사원번호를 입력해주세요');
+				return false;
+			}else if($('#WORK_TIME').val()==''){
+				$('#WORK_TIME').focus();
+				$('#WORK_TIME').attr('placeholder','작업시간을 입력하세요');
+				return false;
+			}else if($('#ETC_SPEC').val().length > 2){
+				$('#ETC_SPEC').focus();
+				$('#ETC_SPEC').attr('placeholder','상세내용을 입력하세요');
+				return false;
+			}else{
+				alert('등록 성공');
+			}
+		});
+	});
+	//프로젝트명 	
 	function pjt(){
 	$(document).ready(function(){
 		console.log('프로젝트명 가져오기');
@@ -123,7 +150,7 @@
 							<p>작업일</p>
 							<div style="width:330px;height:30px;" class="sorting" aria-controls="datatable-responsive" >				
 								
-								<input type="date" name="WORK_DT" id="AUDIT_TM2" style="width:50%;">
+								<input type="date" name="WORK_DT" id="WORK_DT" style="width:50%;"><span id="span"></span>
 							</div>							
 						</div>
 					</div>
@@ -169,7 +196,7 @@
 								<td><!-- 사원번호 -->
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
-										<input type="text" name="EMP_NO">
+										<input type="text" name="EMP_NO" id="EMP_NO">
 									</div>
 								</div>
 								</td>	
@@ -295,14 +322,14 @@
 								<td> <!-- 작업시간 -->
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
-										<input type="text" name="WORK_TIME">
+										<input type="text" name="WORK_TIME" id="WORK_TIME">
 									</div>
 								</div>
 								</td>
 								<td> <!-- 상세내용 -->
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
-										<input type="text" name="ETC_SPEC">
+										<input type="text" name="ETC_SPEC" id="ETC_SPEC">
 									</div>
 								</div>
 								</td>
@@ -422,7 +449,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-md-6 col-md-offset-3">					
-					<button type="submit" class="btn btn-success">
+					<button type="submit" class="btn btn-success" id="btn_name">
 						<font style="vertical-align: inherit;">제출</font>
 					</button>
 				</div>
