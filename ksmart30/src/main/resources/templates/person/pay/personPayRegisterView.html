@@ -3,14 +3,38 @@
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
 	<title>급여 대장</title>
+
+	<!-- Jquery, Ajax 선언 -->
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script>
+	$(document).ready(function(){
+		// 1. 오늘날짜 넣기
+		let date = new Date();
+		let year = date.getFullYear();	//년도
+		let month = date.getMonth()+1;	//월
+		//let day = date.getDate();		//일
+		if((month+"").length<2) {
+			month = "0" + month;
+		}
+		/* if((day+"").length<2) {
+			day = "0" + day;
+		} */
+		let getToday = year+"-"+month;// +"-"+day;	// 오늘 날짜 (0000-00-00)
+
+		// 검색날짜에 대입
+		$('#SEARCH_DATE').val(getToday);
+	});
+	</script>
 	<th:block th:include="layout/customHead"></th:block>
 </th:block>
 <th:block layout:fragment="customBody">
 	<div class="page-title">
-		<div class="col-md-12 col-xs-12" style="color:black;">
+		<div class="col-md-12 col-xs-12">
 			<div class="page-title">
 				<div class="title_left">
-					<h2><b>급여 대장</b></h2>
+					<h2><b style="color:black;">급여 대장</b></h2>
 					<h5><fontcolor="gray"><b>6.인사 / 급여 &nbsp;>&nbsp;&nbsp;6.4 급여관리 &nbsp;>&nbsp;&nbsp;6.4.2 급여 대장</b></h5>
 				</div>
 			</div>
@@ -31,7 +55,7 @@
 					<h5>⊙ 검색 조건</h5>
 						<div class="col-md-12 col-sm-12 col-xs-12">
 						• 지급년도 &nbsp;&nbsp;
-							<input type="month" name="SEARCH_DATE" style="width: 12%">
+							<input type="month" name="SEARCH_DATE" id="SEARCH_DATE" style="width: 12%">
 							&nbsp;&nbsp;&nbsp;
 						• 부서코드 &nbsp;&nbsp;
 							<input type="text" name="DEPT_CD_SEARCH">

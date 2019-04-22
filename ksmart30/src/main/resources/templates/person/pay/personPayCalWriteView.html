@@ -41,12 +41,20 @@
 			return number;
 		}
 	// 입력시 통화형식 자동변환
-	function keyUp() {
-		let val = String(this.value.replace(/[^0-9]/g, ""));
-		if(val.length < 1)
-				return false;
-		this.value = number_format(val);
-	};
+	$(function() {
+		$("input[name='keyup']").on("keyup", function() {
+			let val = String(this.value.replace(/[^0-9]/g, ""));
+			if(val.length < 1)
+					return false;
+			this.value = number_format(val);
+			// 합계 자동계산
+			addTotal();
+			// 4대보험 자동계산
+			insureKukminCal($('#JIGEUM_TOTAL').val());
+			insureKeungangCal($('#JIGEUM_TOTAL').val());
+			insureGoyongCal($('#JIGEUM_TOTAL').val());
+		});
+	});
 	// 사원 클릭시 사원 항목조회(지급, 공제)
 	function list(empNO, korNm){
 		console.log('직원번호 '+empNO);
@@ -110,13 +118,11 @@
 	}
 	// 1. 국민연금 계산 실행
 	function insureKukminCal(JIGEUM_TOTAL){
-		console.log('입력된 월 급여 : ' + JIGEUM_TOTAL);
 		$.ajax({
 			url:'/baseInfo/fourInsureKukminProcess', 	//호출할 메소드 호출 
 			type:'GET',																//송신 GET 방식
 			data:{INSURE_PAY:JIGEUM_TOTAL},
 			success:function(data){
-				console.log(data);											// 리턴받은 국민연금 계산값
 				// 계산 값을 화면에 보여준다.
 				$('#INSURE_KUKMIN').val(numberWithCommas(data.insure_EMP_CAL1));
 			}
@@ -129,7 +135,6 @@
 			type:'GET',																	//송신 GET 방식
 			data:{INSURE_PAY:JIGEUM_TOTAL},
 			success:function(data){
-				console.log(data);												// 리턴받은 건강보험 계산값
 				// 계산 값을 화면에 보여준다.
 				$('#INSURE_KEUNGANG').val(numberWithCommas(data.insure_EMP_CAL1));
 			}
@@ -138,13 +143,11 @@
 	// 3. 고용보험 실행
 	function insureGoyongCal(JIGEUM_TOTAL){
 		let INSURE_NO = "21"
-		console.log('선택된 고용보험 No : ' + INSURE_NO);
 		$.ajax({
 			url:'/baseInfo/fourInsureGoyongProcess', 	//호출할 메소드 호출 
 			type:'GET',																//송신 GET 방식
 			data:{INSURE_PAY:JIGEUM_TOTAL,INSURE_NO:INSURE_NO},
 			success:function(data){
-				console.log(data);											// 리턴받은 고용보험 계산값
 				// 계산 값을 화면에 보여준다.
 				$('#INSURE_GOYONG').val(numberWithCommas(data.insure_EMP_CAL1));
 			}
@@ -154,33 +157,47 @@
 	function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
-
-
+	// 입력시 지급항목 및 공제항목 합계 자동계산
+	function addTotal() {
+		// 1. 지급항목
+		let jigeumTotal = parseInt($('#GIVE01').val().replace(/,/gi,"")) + parseInt($('#GIVE02').val().replace(/,/gi,"")) + parseInt($('#GIVE03').val().replace(/,/gi,"")) + parseInt($('#GIVE04').val().replace(/,/gi,"")) +
+										parseInt($('#GIVE05').val().replace(/,/gi,"")) + parseInt($('#GIVE06').val().replace(/,/gi,"")) + parseInt($('#GIVE07').val().replace(/,/gi,"")) + parseInt($('#GIVE08').val().replace(/,/gi,"")) +
+										parseInt($('#GIVE09').val().replace(/,/gi,"")) + parseInt($('#GIVE10').val().replace(/,/gi,"")) + parseInt($('#GIVE11').val().replace(/,/gi,"")) + parseInt($('#GIVE12').val().replace(/,/gi,"")) +
+										parseInt($('#GIVE13').val().replace(/,/gi,"")) + parseInt($('#GIVE14').val().replace(/,/gi,"")) + parseInt($('#GIVE15').val().replace(/,/gi,"")) + parseInt($('#GIVE16').val().replace(/,/gi,"")) + parseInt($('#GIVE17').val().replace(/,/gi,""));
+		$('#JIGEUM_TOTAL').val(numberWithCommas(jigeumTotal));
+		// 2. 공제항목
+		let gongjeTotal = parseInt($('#TAKE01').val().replace(/,/gi,"")) + parseInt($('#TAKE02').val().replace(/,/gi,"")) + parseInt($('#TAKE03').val().replace(/,/gi,"")) + parseInt($('#TAKE04').val().replace(/,/gi,"")) +
+										parseInt($('#TAKE05').val().replace(/,/gi,"")) + parseInt($('#TAKE06').val().replace(/,/gi,"")) + parseInt($('#TAKE07').val().replace(/,/gi,"")) + parseInt($('#TAKE08').val().replace(/,/gi,""));
+		$('#GONGJE_TOTAL').val(numberWithCommas(gongjeTotal));
+	}
 	$(document).ready(function(){
+		// 1. 오늘날짜 넣기
+		let date = new Date();
+		let year = date.getFullYear();	//년도
+		let month = date.getMonth()+1;	//월
+		//let day = date.getDate();		//일
+		if((month+"").length<2) {
+			month = "0" + month;
+		}
+		let getToday = year+"-"+month;// +"-"+day;	// 오늘 날짜 (0000-00-00)
+
+		// 검색날짜에 대입
+		$('#GIVE_DATE').val(getToday);
+
+
 		// 1. 사원 검색(리스트 조회)
 		$("#PERSON_LIST_BUTTON").click(function(){		
-			let KOR_NM2 = $('#KOR_NM').val();
-			let AUDIT_TM_FORMAT = "";
-			let AUDIT_TM2 = "";
-			let JIKGUP_NM2	= "";
-			let JIKCHK_NM2 = "";
-			let EMP_NO2 = "";
-			let IN_PHONE_NO2 = "";
-			let DEPT_NM2 = "";		 
-			let SEX_GB2 = "";
-			let OUT_DT3 = "";
-				
+			let KOR_NM2 = $('#KOR_NM').val();		 
 			$.ajax({				
 					url:'/person/personInsaEmployeeView',
 					type:'GET',
-					data:{OUT_DT3:OUT_DT3,EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
+					data:{OUT_DT3:"",EMP_NO:"",KOR_NM:KOR_NM2,AUDIT_TM:"",JIKGUP_NM:"",JIKCHK_NM:"",IN_PHONE_NO:"",DEPT_NM:"",SEX_GB:""},
 					success:(data)=>{
 						$('#PERSON_LIST').empty();
 						$(data).each(function(index,item){						
-							$('#PERSON_LIST').append('<tr>');
-							$('#PERSON_LIST').append('<td style="text-align: center" onclick="list('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
-							$('#PERSON_LIST').append('<td style="text-align: center" onclick="list('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
-							$('#PERSON_LIST').append('</tr>');					
+							$('#PERSON_LIST').append('<tr>'+
+							'<td style="text-align: center" onclick="list('+item.EMP_NO+')">'+item.EMP_NO+'</td>'+				// 사원번호
+							'<td style="text-align: center" onclick="list('+item.EMP_NO+')">'+item.KOR_NM+'</td></tr>');	// 사원명			
 						});
 					}					
 			});				
@@ -192,10 +209,10 @@
 <th:block layout:fragment="customBody">
 	<div class="col-md-12 col-sm-12 col-xs-12" style="height: 100%;">
 	<div class="page-title">
-		<div class="col-md-12 col-xs-12" style="color:black;">
+		<div class="col-md-12 col-xs-12">
 			<div class="page-title">
 				<div class="title_left">
-					<h2><b>급여 계산 및 등록</b></h2>
+					<h2><b style="color:black;">급여 계산 및 등록</b></h2>
 					<h5><fontcolor="gray"><b>6.인사 / 급여 &nbsp;>&nbsp;&nbsp;6.4 급여관리 &nbsp;>&nbsp;&nbsp;6.4.1 급여 계산 및 등록</b></h5>
 				</div>
 			</div>
@@ -258,126 +275,126 @@
 									<td style="width: 2%"></td>
 									<td>기본급</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id ="GIVE01">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id ="GIVE01">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>능률수당</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE02">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE02">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>현금식대</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE03">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE03">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>O/D지원비(비)</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE04">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE04">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>연월차 수당</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE05">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE05">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>연장근로수당</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE06">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE06">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>휴일근로수당</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE07">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE07">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>야간근로수당</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE08">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE08">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>O/T 2</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE09">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE09">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>자녀 학자금</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE10">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE10">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>특별 상여금</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE11">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE11">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>파견수당</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE12">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE12">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>기타지급(1)</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE13">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE13">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>O/D지원금(과)</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE14">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE14">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>작품상</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE15">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE15">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>우수사원</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE16">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE16">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>당선시상금</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="GIVE17">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="GIVE17">
 									</td>
 								</tr>
 								<tr style="background-color:gold">
 									<td style="width: 2%"></td>
 									<td>합계</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="JIGEUM_TOTAL" readonly>
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="JIGEUM_TOTAL" readonly>
 									</td>
 								</tr>
 							</tbody>
@@ -399,56 +416,56 @@
 									<td style="width: 2%"></td>
 									<td>상조회</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE01">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="TAKE01">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>동호회</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE02">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="TAKE02">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>기타공제</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE03">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="TAKE03">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>건강보험정산</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE04">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="TAKE04">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>연말정산소득</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE05">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="TAKE05">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>연말지방소득</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE06">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="TAKE06">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>학자금상환</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE07">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="TAKE07">
 									</td>
 								</tr>
 								<tr>
 									<td style="width: 2%"></td>
 									<td>농특세</td>
 									<td style="text-align: right">
-										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" id="TAKE08">
+										<input type="text" style="width:100%; text-align: end; border: none; background: transparent;" name="keyup" id="TAKE08">
 									</td>
 								</tr>
 								<tr style="height: 37px">
@@ -679,7 +696,7 @@
 									지급년월
 								</td>
 								<td>
-									<input type="month" style="width: 130px">
+									<input type="month" style="width: 130px" id="GIVE_DATE">
 								</td>
 							</tr>
 							<tr>

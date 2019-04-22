@@ -14,39 +14,24 @@
 		$(document).ready(function(){
 			//검색버튼 클릭 시 전체 직원조회
 			$("#PERSON_LIST").click(function(){		
-				let KOR_NM2 = $('#KOR_NM').val();
-				let AUDIT_TM_FORMAT = "";
-				let AUDIT_TM2 = "";
-				let JIKGUP_NM2	= "";
-				let JIKCHK_NM2 = "";
-				let EMP_NO2 = "";
-				let IN_PHONE_NO2 = "";
-				let DEPT_NM2 = "";		 
-				let SEX_GB2 = "";
-				let OUT_DT3 = "";
+				let KOR_NM2 = $('#KOR_NM').val(); 
 				console.log('직원  검색조건 (이름) : '+ KOR_NM2);
 
 				$.ajax({				
 						url:'/person/personInsaEmployeeView',
 						type:'GET',
-						data:{OUT_DT3:OUT_DT3,EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
+						data:{OUT_DT3:"",EMP_NO:"",KOR_NM:KOR_NM2,AUDIT_TM:"",JIKGUP_NM:"",JIKCHK_NM:"",IN_PHONE_NO:"",DEPT_NM:"",SEX_GB:""},
 						success:(data)=>{
 							$('#LIST').empty();
 							$(data).each(function(index,item){
 								//한 행을 클릭시 사원번호	
 								console.log(data);						
-								$('#LIST').append('<tr>');
-								$('#LIST').append('<td style="width:2%;"></td>');
-								//$('#list').append('<td>'+item.DEPT_NM+'</td>');			// 부서이름
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.EMP_NO+'</td>');			// 사원번호
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.KOR_NM+'</td>');			// 사원명
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td>');		// 직급명
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td>');		// 직책명
-								$('#LIST').append('<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.DEPT_NM+'</td>');			// 부서이름
-								//$('#list').append('<td>'+item.IN_PHONE_NO+'</td>');	// 전화번호
-								//$('#list').append('<td>'+item.SEX_GB+'</td>');			// 성별
-								//$('#list').append('<td>'+item.AUDIT_TM+'</td>');		// 입사일	
-								$('#LIST').append('</tr>');					
+								$('#LIST').append('<tr><td style="width:2%;"></td>'+
+								'<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.EMP_NO+'</td>'+				// 사원번호
+								'<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.KOR_NM+'</td>'+				// 사원명
+								'<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td>'+ 		// 직급명
+								'<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td>'+			// 직책명
+								'<td style="text-align: center" onclick="click2('+item.EMP_NO+')">'+item.DEPT_NM+'</td></tr>');	// 부서이름				
 							});
 						}					
 				}); 				
@@ -72,10 +57,10 @@
 	</th:block>
 	<th:block layout:fragment="customBody">
 		<div class="page-title">
-			<div class="col-md-12 col-xs-12" style="color:black;">
+			<div class="col-md-12 col-xs-12">
 				<div class="page-title">
 					<div class="title_left">
-						<h2><b>User-ID등록</b></h2>
+						<h2><b style="color:black;">User-ID등록</b></h2>
 						<h5><fontcolor="gray"><b>11.시스템 관리&nbsp;>&nbsp;&nbsp;11.1 User_ID관리 &nbsp;>&nbsp;&nbsp;11.1.1 User_ID등록</b></h5>
 					</div>
 				</div>
