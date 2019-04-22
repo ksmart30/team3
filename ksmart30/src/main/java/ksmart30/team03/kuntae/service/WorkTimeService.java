@@ -1,9 +1,12 @@
 package ksmart30.team03.kuntae.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import ksmart30.team03.kuntae.domain.WorkTime;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 import ksmart30.team03.kuntae.mapper.WorkTimeMapper;
 
@@ -58,6 +61,12 @@ public class WorkTimeService {
 	public List<WorkTimeSingleList> getWorkTimeNameSearchView(String KOR_NM){
 		System.out.println("S : 출퇴근 정정 신청 List 이름 검색");
 		return workTimeMapper.getWorkTimeNameSearchView(KOR_NM);
+	}
+	
+	// 지각 횟수, 지각 누계
+	public List<WorkTime> getWorkTimeJigakSearch(String EMP_NO){
+		System.out.println("S : 지각 횟수 ");
+		return workTimeMapper.getWorkTimeJigakSearch(EMP_NO);
 	}
 
 }

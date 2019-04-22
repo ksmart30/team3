@@ -3,6 +3,8 @@ package ksmart30.team03.kuntae.mapper;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
+
+import ksmart30.team03.kuntae.domain.WorkTime;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 
 @Mapper
@@ -36,5 +38,10 @@ public interface WorkTimeMapper {
  	
  	// 출퇴근 정정신청  List 이름 검색
  	List<WorkTimeSingleList> getWorkTimeNameSearchView(String KOR_NM);
+ 	
+ 	// 출퇴근 정정 신청 한 행의 지각 횟수와 지각 누계 정보 가져오기
+ 	List<WorkTime> getWorkTimeJigakSearch(String EMP_NO);
+ 	
+ 	
 }
 

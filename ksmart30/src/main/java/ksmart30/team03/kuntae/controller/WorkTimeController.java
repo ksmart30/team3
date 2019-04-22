@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import ksmart30.team03.kuntae.domain.WorkTime;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 import ksmart30.team03.kuntae.service.WorkTimeService;
 
@@ -119,5 +121,13 @@ public class WorkTimeController {
 		return data;
 	}
 
+	// 지각 횟수, 누계
+	@GetMapping("/kuntae/workTimeJigakSearch")
+	public @ResponseBody List<WorkTime> workTimeJigakSearch(@RequestParam(value="EMP_NO")String EMP_NO){
+		System.out.println("C : 지각 횟수, 누계 ");
+		List<WorkTime> data = workTimeService.getWorkTimeJigakSearch(EMP_NO);
+		System.out.println("C : 사원 번호 검색 data =>"+ data);
+		return data;
+	}
 	
 }

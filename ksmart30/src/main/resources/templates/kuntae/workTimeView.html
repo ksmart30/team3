@@ -1,3 +1,4 @@
+
 <!-- 출퇴근 정정신청 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
@@ -11,33 +12,62 @@
 		
 	<script>
 	/* 사원번호 검색*/
+	function jigak (empNo) {	
+		$.ajax({
+            url:'/kuntae/workTimeJigakSearch',
+            type:'GET',
+            dataType:'json',	           
+         	data : {EMP_NO : empNo},
+            success:function(data){  
+            	console.log(data);
+            	$('#LATE_CNT').val(data[0].late_CNT);
+            	$('#LATE_TIME').val(data[0].late_TIME);
+            }
+        });
+	}
 	$(document).ready(function(){
-		console.log('정정 리스트 이름 검색 ')
+		console.log('정정 리스트 이름 검색 ');
+		$("#list").delegate('tr', 'click', function(){
+			// 행과 각각의 값들을 담아옴
+			let tr = $(this);
+			let td = tr.children();
+			console.log(td);
+			let empNo = td.eq(0).text();
+			console.log(td.eq(0).text());
+			$('#KOR_NM').val(td.eq(2).text());	// 이름
+			$('#DEPT_NM').val(td.eq(1).text());
+			$('#JIKGUP_NM').val(td.eq(4).text());			
+			$('#START_TIME').val(td.eq(6).text());
+			$('#END_DT').val(td.eq(7).text());
+				
+			console.log("클릭된 행의 값 :" + tr.text());
+			
+			jigak(empNo);	// 지각 정보 
+		});
+		
 	     $('#btn_KORNM').click(function(){
-	    	var KOR_NM = $('#KOR_NM').val();
+	    	var KOR_NM = $('#INPUT_KOR_NM').val();
 	    	 $.ajax({
 	            url:'/kuntae/workTimeNameSearch',
 	            type:'GET',
 	            dataType:'json',	           
 	         	data : {KOR_NM : KOR_NM},
 	            success:function(data){
-	            	console.log('사원 번호 쿼리 성공!'+KOR_NM);
+	            	console.log('사원 번호 쿼리 성공! :' + data[0].kor_NM);
 	                $('#list').empty();
 	                $(data).each(function(index,item){ //each = foreach (반복문)
-	                    $('#list').append('<tr>');
-	                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
-	                    $('#list').append('<td>'+item.start_TIME+'</td>');
-	                    $('#list').append('<td>'+item.end_TIME+'</td>');
-	                    $('#list').append('<td>'+item.end_DT+'</td>');
-	                    $('#list').append('</tr>'); 
-	                });                   
-	            }
+	                    $('#list').append('<tr><td style="display : none">'+item.emp_NO+'</td><td>'+item.kor_NM+'</td><td style="display : none">'+item.dept_NM+'</td><td style="display : none">'+item.jikgup_NM+'</td><td>'+item.work_DT+'</td><td>'+item.start_TIME.substr(0,2)+':'+item.start_TIME.substr(2,4)+'</td><td>'+item.end_DT+'</td></tr>');
+											
+									});                   
+	            }/* error:function(request,status,error){
+	                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	            } */
 	        });
 	    });
 	 });
 	
 	
-	$(document).ready(function(){
+/* 	$(document).ready(function(){
 		 console.log('정정신청 list 출력해보자');	
 		 let KOR_NM = $('#KOR_NM').val();
 		$.ajax({
@@ -47,8 +77,50 @@
 			success:(data)=>{				
 			}
 		});
-});
-		 
+}); */
+	
+	/* function click2(kor_NM){
+		let KOR_NM2 = $('#KOR_NM').val();
+		let AUDIT_TM_FORMAT = "";
+		let AUDIT_TM2 = "";
+		let JIKGUP_NM2	= "";
+		let JIKCHK_NM2 = "";
+		let EMP_NO2 = "";
+		let IN_PHONE_NO2 = "";
+		let DEPT_NM2 = "";		 
+		let SEX_GB2 = "";
+		let OUT_DT3 = "";
+		console.log('직원  검색조건 (이름) : '+ KOR_NM2);
+			$.ajax({
+				url:'/person/personInsaEmployeeView',
+				type:'GET',
+				data:{OUT_DT3:OUT_DT3,EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
+				success:function(data){
+					$(data).each(function(index,item){
+						console.log("KOR_NM =>"+KOR_NM);
+						$('#UP_EMP_NO').val(item.emp_NO);	// User-ID
+						
+						$('#DEPT_NM').val(item.DEPT_NM);	// 사용자명
+						$('#JIKGUP_NM').val(item.JIKGUP_NM);	
+											
+					});			
+				}	
+			});
+		} */
+/* 		function click3(emp_NO) {
+			// 행과 각각의 값들을 담아옴
+			let tr = $(this);
+			let td = tr.children();
+			console.log(tr);
+			$('#KOR_NM').val(td.eq(0).text());	// 이름
+			$('#DEPT_NM').val(td.eq(1).text());
+			$('#JIKGUP_NM').val(td.eq(2).text());
+			
+			$('#START_TIME').val(td.eq(4).text());
+			$('#END_DT').val(td.eq(5).text());
+				
+			} */
+	
 	</script>
 	</th:block>
 	<th:block layout:fragment="customBody">
@@ -85,9 +157,9 @@
 					<div class="x_content">
 						<form>
 							<form>
-								• 사원명
+								사원명
 								<input type="hidden" id="User_ID">
-								<input type="text" name="KOR_NM" id="KOR_NM">
+								<input type="text" id="INPUT_KOR_NM">
 								<button type="button" class="btn" style="color:black" name="PERSON_LIST" id="btn_KORNM"><i class="fa fa-search"></i></button>
 
 								<br>
@@ -109,9 +181,13 @@
 								</thead>
 								<tbody id="list">
 									<tr th:each="t : ${data}">
+									<td style="display: none" th:text="${t.EMP_NO}"></td>
+									<td style="display: none" th:text="${t.DEPT_NM}"></td>
 									<td style="text-align: center" th:text="${t.KOR_NM}"></td>
+									<td style="display: none" th:text="${t.DEPT_NM}"></td>
+									<td style="display: none" th:text="${t.JIKGUP_NM}"></td>
 									<td style="text-align: center" th:text="${t.WORK_DT}"></td>
-									<td style="text-align: center" th:text="${t.START_TIME}"></td>
+									<td style="text-align: center" th:text="${t.START_TIME.substring(0,2)+':'+t.START_TIME.substring(2,4)}"></td>
 									<td style="text-align: center" th:text="${t.END_DT}"></td>
 									</tr>
 								</tbody>
@@ -133,36 +209,39 @@
         <div class="container">
 	        <ul class="stats-overview">
 	          <li>
-	            <span class="name"> 부서 </span>
-	           <span class="value text-success">경영지원본부</span>
+	          	<span class="name"> 성명 </span>
+	            <input type="text" id="KOR_NM" name="KOR_NM" readonly> 
+	           
 	          </li>
-	          <!-- <input type="text" name="grade" value="경영지원본부 "> -->
+	           
 	          <li>
 	            <span class="name"> 직급 </span>
-	            <span class="value text-success"> 이사 </span>
+	            <input type="text" id="JIKGUP_NM" name="JIKGUP_NM" readonly>
 	          </li>
 	          <li class="hidden-phone">
-	            <span class="name"> 성명 </span>
-	            <span class="value text-success"> 임홍근 </span>
+	             <span class="name"> 부서 </span>
+	           <input type="text" id="DEPT_NM" name="DEPT_NM" >
 	          </li>
 	          
 	        </ul>
 	        <ul class="stats-overview">
 	          <li>
 	            <span class="name"> 지각횟수 </span>
-	            <span class="value text-success"> 0 </span>
+	            <input type="text" id="LATE_CNT" name="LATE_CNT">
 	          </li>
 	          <li>
 	            <span class="name"> 지각누계 </span>
-	            <span class="value text-success"> 0분 </span>
+	           <input type="text"  id="LATE_TIME" name="LATE_TIME"> 
 	          </li>
 	          <li class="hidden-phone">
-	            <span class="name"> 년차차감일수 </span>
-	            <span class="value text-success"> 0 </span>
+	            <span class="name"> </span>
+	            <span class="value text-success"></span>
 	          </li> 
 	        </ul>
-			<br>       
+			<br> 
+	      
         </div>
+        
     </div>	     
 </div>
 
@@ -180,7 +259,7 @@
        
        <div class="col-sm-4">
                
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<div class="radio">
 					<label>
 					  <input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">승인
@@ -193,17 +272,8 @@
 					</label>
 					</div>   
 				</div>
-			</div>
-       <div class="col-md-4" style="text-align: right">
-                    <div class="form-group">
-                        <div class="input-group date" id="myDatepicker4">
-                            <input type="text" class="form-control" readonly="readonly">
-                            <span class="input-group-addon">
-                               <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+			</div> -->
+
 	</div>	
 	
 					
@@ -214,13 +284,14 @@
 	                        <th>출근일시</th>
 	                        <td>  
 	                        <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-							<input type="date">
+							<input type="text" id="START_TIME" name="START_TIME" readonly>
 							</td>
 							
-		                    <th>출근일시</th>
+		                    <th></th>
 		                    <td>
 		                    <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-		                    <input type="date">
+		                    <!-- <input type="date"> -->
+		                    <span class="name"> 수정할 시각↓ </span>
 		                    </td>
                         </tr>
                         
@@ -228,17 +299,17 @@
                           <th>퇴근일시</th>
                           <td>
                           <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-                          <input type="date">
+                          <input type="text" id="END_DT" name="END_DT" readonly>
                           </td>
                         
 						  <th>퇴근일시</th>
                           <td>
                           <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-                          <input type="date">
+                          <input type="date" max="2020-12-31">
 						  </td>
                         </tr>
 
-						<tr>
+						<!-- <tr>
 							<th>직급</th>
 							<td>
 								<div class="form-group">
@@ -255,14 +326,14 @@
 									</div>
 								</div>
 							</td>
-						</tr>
+						</tr> -->
 
 						<tr>
 							<th>정정 사유</th>
 							<td>
 								<div class="form-group">
 									<div class="col-md-7 col-sm-9 col-xs-12">
-										
+										<th colspan="10"><textarea id="RMK_1"> </textarea></th>
 									</div>
 								</div>
 								
@@ -321,12 +392,12 @@
 
                       <tbody>
                         <tr>
-                          <td>0000</td>
-                          <td>어마어마한 3팀의 프로젝트</td>
-                          <td>진행중</td>
-                          <td>어마어마함</td>
-                          <td>365시간</td>
-                          <td>어마어마하게 진행중</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
                         </tr>
                       </tbody>
                     </table>

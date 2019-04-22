@@ -163,9 +163,10 @@
 		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO,
-		(Select Convert(varchar(10),DATEADD(week,-1,GETDATE()),112) o) o 
+		(Select Convert(varchar(10),DATEADD(month,-1,GETDATE()),112) o) o 
 		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt>=o.o AND E.END_DT=''
 	</select>
+	
 	
 	<!-- 근태정정 신청 List 이름 검색 -->
 	<select id="getWorkTimeNameSearchView"
@@ -185,8 +186,20 @@
 		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO,
-		(Select Convert(varchar(10),DATEADD(week,-1,GETDATE()),112) o) o 
+		(Select Convert(varchar(10),DATEADD(month,-1,GETDATE()),112) o) o 
 		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt>=o.o AND E.END_DT='' AND a.KOR_NM LIKE '%'+#{KOR_NM}+'%'		
+	</select>
+	
+	<!-- 지각 횟수 누계 -->
+	<select id="getWorkTimeJigakSearch"
+			resultType="ksmart30.team03.kuntae.domain.WorkTime"
+			parameterType="String">
+	
+	SELECT ISNULL(SUM(LATE_YN),0) LATE_CNT ,
+ISNULL(SUM(LATE_TIME),0) LATE_TIME
+  FROM T_PM1010,
+  (Select Convert(varchar(10),DATEADD(year,-1,GETDATE()),112) o) o 
+ WHERE EMP_NO  = #{EMP_NO} AND WORK_DT >=o.o
 	</select>
 
 
