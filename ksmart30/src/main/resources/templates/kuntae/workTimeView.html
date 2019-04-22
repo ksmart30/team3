@@ -34,11 +34,11 @@
 			console.log(td);
 			let empNo = td.eq(0).text();
 			console.log(td.eq(0).text());
-			$('#KOR_NM').val(td.eq(2).text());	// 이름
-			$('#DEPT_NM').val(td.eq(1).text());
-			$('#JIKGUP_NM').val(td.eq(4).text());			
-			$('#START_TIME').val(td.eq(6).text());
-			$('#END_DT').val(td.eq(7).text());
+			$('#KOR_NM').val(td.eq(1).text());	// 이름
+			$('#DEPT_NM').val(td.eq(2).text());
+			$('#JIKGUP_NM').val(td.eq(3).text());			
+			$('#START_TIME').val(td.eq(5).text());
+			$('#END_DT').val(td.eq(6).text());
 				
 			console.log("클릭된 행의 값 :" + tr.text());
 			
@@ -47,16 +47,24 @@
 		
 	     $('#btn_KORNM').click(function(){
 	    	var KOR_NM = $('#INPUT_KOR_NM').val();
+	    	console.log(KOR_NM);
+			let work_dt_format = $('#WORK_DT').val();
+			console.log(work_dt_format);
+			let work_dt1_format = $('#WORK_DT1').val();	
+			console.log(work_dt1_format);
+			let WORK_DT = work_dt_format.substr(0,4)+work_dt_format.substr(5,2)+work_dt_format.substr(8,2);
+			let WORK_DT1 = work_dt1_format.substr(0,4)+work_dt1_format.substr(5,2)+work_dt1_format.substr(8,2); 
 	    	 $.ajax({
-	            url:'/kuntae/workTimeNameSearch',
+	            url:'/kuntae/workTimeSearch',
 	            type:'GET',
 	            dataType:'json',	           
-	         	data : {KOR_NM : KOR_NM},
+	         	data : {KOR_NM:KOR_NM,WORK_DT:WORK_DT,WORK_DT1:WORK_DT1},
 	            success:function(data){
-	            	console.log('사원 번호 쿼리 성공! :' + data[0].kor_NM);
+	            	console.log('사원 번호 쿼리 성공!');
+	            	
 	                $('#list').empty();
 	                $(data).each(function(index,item){ //each = foreach (반복문)
-	                    $('#list').append('<tr><td style="display : none">'+item.emp_NO+'</td><td>'+item.kor_NM+'</td><td style="display : none">'+item.dept_NM+'</td><td style="display : none">'+item.jikgup_NM+'</td><td>'+item.work_DT+'</td><td>'+item.start_TIME.substr(0,2)+':'+item.start_TIME.substr(2,4)+'</td><td>'+item.end_DT+'</td></tr>');
+	                    $('#list').append('<tr><td style="display : none">'+item.emp_NO+'</td><td>'+item.kor_NM+'</td><td style="display : none">'+item.dept_NM+'</td><td style="display : none">'+item.jikgup_NM+'</td><td>'+item.work_DT+'</td><td>'+item.start_TIME+'</td><td>'+item.end_DT+'</td></tr>');
 											
 									});                   
 	            }/* error:function(request,status,error){
@@ -64,6 +72,23 @@
 	            } */
 	        });
 	    });
+	     
+			// 1. 오늘날짜 넣기
+			let date = new Date();
+			let year = date.getFullYear();	//년도
+			let month = date.getMonth()+1;	//월
+			let day = date.getDate();		//일
+			if((month+"").length<2) {
+				month = "0" + month;
+			}
+			if((day+"").length<2) {
+				day = "0" + day;
+			} 
+			let getToday = year+"-"+month +"-"+day;	// 오늘 날짜 (0000-00-00)
+
+			// 검색날짜에 대입
+			$('#WORK_DT1').val(getToday);   
+	     
 	 });
 	
 	
@@ -155,16 +180,25 @@
 			<div class="col-md-3 col-sm-3 col-xs-12">
 				<div class="x_panel" style="color: black;">
 					<div class="x_content">
-						<form>
-							<form>
-								사원명
-								<input type="hidden" id="User_ID">
-								<input type="text" id="INPUT_KOR_NM">
-								<button type="button" class="btn" style="color:black" name="PERSON_LIST" id="btn_KORNM"><i class="fa fa-search"></i></button>
-
-								<br>
-							</form>
-						</form>
+						
+						<form action="/kuntae/workTimeSearch">
+						<tbody>
+						<tr>
+			                <th style="width:10%">기간</th>
+			                <td style="width:15%">
+				                <input type="date" size="5" id="WORK_DT" name="WORK_DT" >	
+	                 	 	</td>
+			                <td style="width:15%">
+								<input type="date" size="5" id="WORK_DT1" name="WORK_DT1">
+							</td>
+						 </tr>
+							사원명
+							<input type="hidden" id="User_ID">
+							<input type="text" id="INPUT_KOR_NM">
+							<button type="button" class="btn" style="color:black" name="PERSON_LIST" id="btn_KORNM"><i class="fa fa-search"></i></button>
+							<br>
+						</tbody>
+						</form> 			
 					</div>
 				</div> 
 				<div class="x_panel" style="color: black;">
@@ -182,12 +216,11 @@
 								<tbody id="list">
 									<tr th:each="t : ${data}">
 									<td style="display: none" th:text="${t.EMP_NO}"></td>
-									<td style="display: none" th:text="${t.DEPT_NM}"></td>
 									<td style="text-align: center" th:text="${t.KOR_NM}"></td>
 									<td style="display: none" th:text="${t.DEPT_NM}"></td>
 									<td style="display: none" th:text="${t.JIKGUP_NM}"></td>
 									<td style="text-align: center" th:text="${t.WORK_DT}"></td>
-									<td style="text-align: center" th:text="${t.START_TIME.substring(0,2)+':'+t.START_TIME.substring(2,4)}"></td>
+									<td style="text-align: center" th:text="${t.START_TIME}"></td>
 									<td style="text-align: center" th:text="${t.END_DT}"></td>
 									</tr>
 								</tbody>

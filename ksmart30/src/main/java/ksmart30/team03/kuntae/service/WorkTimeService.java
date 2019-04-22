@@ -52,15 +52,16 @@ public class WorkTimeService {
 	}
 	
 	// 출퇴근 정정 신청 List
-	public List<WorkTimeSingleList> getWorkTimeView(){
+	
+	public List<WorkTime> getWorkTimeView(){
 		System.out.println("S : 출퇴근 정정 신청 List");
 		return workTimeMapper.getWorkTimeView();
 	}
 	
-	// 출퇴근 정정 신청 List 이름 검색
-	public List<WorkTimeSingleList> getWorkTimeNameSearchView(String KOR_NM){
+	// 출퇴근 정정 신청 List 기간,이름 검색
+	public List<WorkTimeSingleList> getWorkTimeSearchView(String KOR_NM, String WORK_DT, String WORK_DT1){
 		System.out.println("S : 출퇴근 정정 신청 List 이름 검색");
-		return workTimeMapper.getWorkTimeNameSearchView(KOR_NM);
+		return workTimeMapper.getWorkTimeSearchView(KOR_NM, WORK_DT, WORK_DT1);
 	}
 	
 	// 지각 횟수, 지각 누계

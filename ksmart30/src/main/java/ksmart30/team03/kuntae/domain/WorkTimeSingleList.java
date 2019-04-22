@@ -3,7 +3,8 @@ package ksmart30.team03.kuntae.domain;
 public class WorkTimeSingleList {
 	private String KOR_NM;	// 한글 이름 
 	private String EMP_NO;	// 사원번호
-	private String WORK_DT;	// 시작 날짜
+	private String WORK_DT;	// 기간 시작 날짜
+	private String WROK_DT1;// 기간 끝 날짜 
 	private String END_DT;	// 끝난 날짜
 	private String START_TIME;	// 시작 시각
 	private String END_TIME; // 끝난 시각
@@ -28,6 +29,12 @@ public class WorkTimeSingleList {
 	}
 	public void setWORK_DT(String wORK_DT) {
 		WORK_DT = wORK_DT;
+	}
+	public String getWROK_DT1() {
+		return WROK_DT1;
+	}
+	public void setWROK_DT1(String wROK_DT1) {
+		WROK_DT1 = wROK_DT1;
 	}
 	public String getEND_DT() {
 		return END_DT;
@@ -73,14 +80,11 @@ public class WorkTimeSingleList {
 	}
 	@Override
 	public String toString() {
-		return "WorkTimeSingleList [KOR_NM=" + KOR_NM + ", EMP_NO=" + EMP_NO + ", WORK_DT=" + WORK_DT + ", END_DT="
-				+ END_DT + ", START_TIME=" + START_TIME + ", END_TIME=" + END_TIME + ", DEPT_NM=" + DEPT_NM
-				+ ", DEPT_CD=" + DEPT_CD + ", JIKGUP_NM=" + JIKGUP_NM + ", JIKCHK_NM=" + JIKCHK_NM + "]";
+		return "WorkTimeSingleList [KOR_NM=" + KOR_NM + ", EMP_NO=" + EMP_NO + ", WORK_DT=" + WORK_DT + ", WROK_DT1="
+				+ WROK_DT1 + ", END_DT=" + END_DT + ", START_TIME=" + START_TIME + ", END_TIME=" + END_TIME
+				+ ", DEPT_NM=" + DEPT_NM + ", DEPT_CD=" + DEPT_CD + ", JIKGUP_NM=" + JIKGUP_NM + ", JIKCHK_NM="
+				+ JIKCHK_NM + "]";
 	}
-	
-	
-	
-	
-	
+
 	
 }

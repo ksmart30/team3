@@ -34,10 +34,10 @@ public interface WorkTimeMapper {
  	List<Map<String, Object>> getRecordTotal(WorkTimeSingleList vo);
 	
  	// 출퇴근 정정신청 List가져오기
- 	List<WorkTimeSingleList> getWorkTimeView();
+ 	List<WorkTime> getWorkTimeView();
  	
  	// 출퇴근 정정신청  List 이름 검색
- 	List<WorkTimeSingleList> getWorkTimeNameSearchView(String KOR_NM);
+ 	List<WorkTimeSingleList> getWorkTimeSearchView(String KOR_NM, String WORK_DT, String WORK_DT1);
  	
  	// 출퇴근 정정 신청 한 행의 지각 횟수와 지각 누계 정보 가져오기
  	List<WorkTime> getWorkTimeJigakSearch(String EMP_NO);

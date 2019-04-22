@@ -107,16 +107,16 @@ public class WorkTimeController {
 	@GetMapping("/kuntae/workTimeView")
 	public String workTimeView(Model model) {
 		System.out.println("C : workTimeView 화면먼저호출");
-		List<WorkTimeSingleList> data = workTimeService.getWorkTimeView();
+		List<WorkTime> data = workTimeService.getWorkTimeView();
 		model.addAttribute("data", data);
 		return "/kuntae/workTimeView";
 	}
 	
 	// 출퇴근 정정 신청 List 이름 검색
-	@GetMapping("/kuntae/workTimeNameSearch")
-	public @ResponseBody List<WorkTimeSingleList> workTimeNameSearchView(@RequestParam(value="KOR_NM")String KOR_NM){
+	@GetMapping("/kuntae/workTimeSearch")
+	public @ResponseBody List<WorkTimeSingleList> workTimeSearchView(@RequestParam(value="KOR_NM")String KOR_NM, @RequestParam(value="WORK_DT")String WORK_DT, @RequestParam(value="WORK_DT1")String WORK_DT1){
 		System.out.println("C : workTimeView List 검색");
-		List<WorkTimeSingleList> data = workTimeService.getWorkTimeNameSearchView(KOR_NM);
+		List<WorkTimeSingleList> data = workTimeService.getWorkTimeSearchView(KOR_NM, WORK_DT, WORK_DT1);
 		System.out.println("C : 이름 검색 data =>"+ data);
 		return data;
 	}

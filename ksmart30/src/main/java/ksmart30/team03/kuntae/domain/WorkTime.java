@@ -6,6 +6,7 @@ public class WorkTime {
 	private String EMP_NO;		// 사원번호
 	private String WORK_DT;		// 동일 컬럼 근무 날짜 기간 설정 1
 	private String WORK_DT1;	// 동일 컬럼 근무 날짜 기간 설정 2
+	private String KOR_NM;
 	public String getLATE_CNT() {
 		return LATE_CNT;
 	}
@@ -36,11 +37,19 @@ public class WorkTime {
 	public void setWORK_DT1(String wORK_DT1) {
 		WORK_DT1 = wORK_DT1;
 	}
+	public String getKOR_NM() {
+		return KOR_NM;
+	}
+	public void setKOR_NM(String kOR_NM) {
+		KOR_NM = kOR_NM;
+	}
 	@Override
 	public String toString() {
 		return "WorkTime [LATE_CNT=" + LATE_CNT + ", LATE_TIME=" + LATE_TIME + ", EMP_NO=" + EMP_NO + ", WORK_DT="
-				+ WORK_DT + ", WORK_DT1=" + WORK_DT1 + "]";
+				+ WORK_DT + ", WORK_DT1=" + WORK_DT1 + ", KOR_NM=" + KOR_NM + "]";
 	}
+	
+	
 	
 	
 	
