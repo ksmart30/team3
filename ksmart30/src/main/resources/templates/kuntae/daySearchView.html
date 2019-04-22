@@ -30,9 +30,29 @@ function detail(DEPT_CD,DATE){
 
 $(document).ready(function(){
 	
+	//오늘 날짜 DATE에 넣기
+	let date = new Date();
+	//년도 출력
+	let year = date.getFullYear();
+	//월 출력
+	let month = date.getMonth()+1;
+	//일 출력
+	let day = date.getDate();
+	if((month+"").length<2 ){
+		month = "0" + month
+		
+	}
+	if((day+"").length<2 ){
+		day ="0" + day;
+	}
+	let getToday = year+"-"+month+"-"+day;
+	$('#DATE').val(getToday);
+	console.log("오늘 날짜" + getToday);
+	
+	
 	//검색버튼 클릭 했을 때 실행되는 것
 	$('#btn_search').click(function(){
-		let DATE_FORMAT = $('#date').val();
+		let DATE_FORMAT = $('#DATE').val();
 		let DATE = DATE_FORMAT.substr(0,4)+DATE_FORMAT.substr(5,2)+DATE_FORMAT.substr(8,2);
 		let DEPT_CD = $('#DEPT_CD').val();
 		console.log('일일근무 현황 List data : '+DATE);
@@ -81,7 +101,7 @@ $(document).ready(function(){
 										<th>◎검색조건 &emsp;</th>
 										
 										<th style="width:330px;height:30px;" >조회 일자   &emsp;&emsp;&emsp; 
-										<input type="date" id="date" name="date" max="2020-12-31"> &emsp;&emsp;										
+										<input type="date" id="DATE" name="DATE" max="2020-12-31"> &emsp;&emsp;										
 										</th>
 										<th>부서명 &emsp;&emsp;&emsp; 
 										<select name="DEPT_CD" id="DEPT_CD" style="width:200px;height:25px;">

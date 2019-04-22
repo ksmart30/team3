@@ -95,25 +95,41 @@
 		)		
 	</insert>
 	
-	 <!-- 인사기록카드 가족사항 insert문 -->
-	
-	<insert id="modifyPersonInsaFamily" parameterType="String">
-	INSERT 
-	INTO T_HM1100(
-		EMP_NO,
+	<!-- 인사기록카드 가족사항 list 출력 문 -->
+	<select id="getPersonInsaInfoFamily" parameterType="String" resultType="ksmart30.team03.person.domain.Family">
+	SELECT 
+		SEQ,
 		RELATION,
 		NAME,
 		JOB,
-		ADDRESS
-		)
+		ADDRESS 
+	FROM T_HM1100 
+	WHERE EMP_NO=#{EMO_NO}
+	
+	</select>
+	 <!-- 인사기록카드 가족사항 insert문 -->	
+	<insert id="modifyPersonInsaFamily" parameterType="String">
+	INSERT INTO T_HM1100(
+		EMP_NO,
+		SEQ,
+		RELATION,
+		NAME,
+		JOB,
+		ADDRESS,
+		AUDIT_TM,
+		AUDIT_ID) 
 	VALUES(
 		#{EMP_NO},
+		#{SEQ},
 		#{RELATION},
 		#{NAME},
 		#{JOB},
-		#{ADDRESS}
-	)	
+		#{ADDRESS},
+		GETDATE(),
+		#{AUDIT_ID})
 	</insert>
+	
+	
 	
 	<select id="personInsaEmployeeModifyView" parameterType="String" resultType="ksmart30.team03.person.domain.Person">
 	SELECT 
@@ -149,7 +165,20 @@
 	WHERE BUSI_GB='H' AND LEVEL1_CD='140'
 	</select>
 	
-	
+	<!-- 자격사항 SELECT문 -->
+	<select id="getPersonInsaInfoLicense" parameterType="String" resultType="ksmart30.team03.person.domain.License" >
+	SELECT 
+		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '390' AND LEVEL2_CD = A.LICENSE_CD) LICENSE_NM,
+		(SELECT REF1_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '390' AND LEVEL2_CD = A.LICENSE_CD) ORGAN2_NM,
+		A.ACQUIRE_DT,
+		A.LICENSE_NO,
+		ISNULL(A.VALID_DT,'') VALID_DT
+	FROM T_HM1500 A,
+		 T_SC9100 B	  		
+	WHERE A.EMP_NO=#{EMP_NO} 
+		AND B.LEVEL2_CD = A.LICENSE_CD
+
+	</select>
 
 	
 </mapper>  

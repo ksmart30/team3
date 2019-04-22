@@ -89,57 +89,81 @@ $(document).ready(function(){
 			type:'GET',
 			success:(data)=>{
 				let relationSelect = data;	
+				console.log(data+"data");
 				$('#family_table').append('<tr>');
-				$('#family_table').append('<td></td>');
-				$('#family_table').append('<td><select name="FAMILY" id="FAMILY">');
-				$('#family_table').append('<td><input type="text" value="EMP_NO" id="EMP_NO2" name="EMP_NO2"></td>');			
-				$('#family_table').append('<td><input type="text" id="NAME" name="NAME" style="border : none; background : transparent" ></td>');
-				$('#family_table').append('<td><input type="text" th:value="${EMP_NO.EMP_NO}" id="EMP_NO2" name="EMP_NO2" style="border : none; background : transparent"></td>')
-				$('#family_table').append('<td><input type="text" id="JOB" name="JOB" style="border : none; background : transparent"></td>');
-				$('#family_table').append('<td><input type="text" id="ADDRESS" name="ADDRESS" style="border : none; background : transparent"></td>');
+				$('#family_table').append('<td><input type="text" value="" id="SEQ" name="SEQ" class="SEQ"></td>');
+				$('#family_table').append('<td><select name="RELATION" id="RELATION"></td>');
+				$('#family_table').append('<td><input type="text" id="NAME" name="NAME"></td>');
+				$('#family_table').append('<td><input type="text" id="JOB" name="JOB" ></td>');
+				$('#family_table').append('<td><input type="text" id="ADDRESS" name="ADDRESS"></td>');
 				$('#family_table').append('</tr>');
 				//select box값을 db내에서 가져옴
+				
 				for(let i=0; i<relationSelect.length; i++){
 					console.log("text 값"+relationSelect[i].level2_CD+relationSelect[i].level2_NM);
-					$('#FAMILY').append('<option value="'+relationSelect[i].level2_CD+'">'+relationSelect[i].level2_NM+'</option></select></td>');						
+					$('#RELATION').append('<option value="'+relationSelect[i].level2_CD+'">'+relationSelect[i].level2_NM+'</option></select></td>');						
 				}
 				console.log("실행 완료!");	
 			}
 		});
 	});	
 
+	//get방식으로 보낸 값을 가져오는 방법
+	$.urlParam = function(name){
+		let results = new RegExp('[\?&amp;]'+name+'=([^&amp;#]*)').exec(window.location.href); 
+		if(results == null){
+			return null
+		}else{
+			return results[1] || 0;
+		}		
+	}
 	
 	$('#btn_family_insert').click(function(){
+
 		console.log('가족사항 저장');
+		console.log("사원번호 나와라!"+$.urlParam('EMP_NO'));		
+		//세션에 담긴 EMP_NO
+		let AUDIT_ID = '[[${session.EMP_NO}]]';
+		console.log('세션에 담긴 EMP_NO : '+AUDIT_ID);		
+		/* let no = $('#btn_family_insert').index(this);
+		
+		console.log("숫자 : "+no+"seq : "+SEQ); */
+			
+		let EMP_NO = $.urlParam('EMP_NO');
 		let NAME = $('#NAME').val();
 		let JOB = $('#JOB').val();
 		let ADDRESS = $('#ADDRESS').val();
-		let FAMILY = $('#FAMILY').val();
+		let RELATION = $('#RELATION').val();
+		let SEQ = $('#SEQ').val();
 		
-		$.ajax({
-			url:'',
-			type:'',
-			data:{NAME:NAME,JOB:JOB,ADDRESS:ADDRESS,FAMILY:FAMILY},
+		/* $.ajax({
+			url:'/person/personInsaFamilyList',
+			type:'GET',
+			data:{EMP_MO:EMP_NO},
 			success:(data)=>{
+				console.log("가족사항 list 출력 시작");
 				
+			}
+			
+		}) */
+	
+		$.ajax({
+			url:'/person/personInsaFamiltModify',
+			type:'GET',
+			data:{NAME:NAME,JOB:JOB,ADDRESS:ADDRESS,RELATION:RELATION,EMP_NO:EMP_NO,AUDIT_ID:AUDIT_ID,SEQ:SEQ},
+			//INSERT 후 경로 처리 하려고 했지만 아직 미완성
+			success:(data)=>{
+				$('#family_table').empty();
+				$(data).each(function(index,item){
+					$('#family_table').append('<tr><td>'+item.seq+'</td><td>'+item.relation+'</td><td>'+item.relation+'</td><td>'+item.job+'</td><td>'+item.address+'</td></tr>');				
+				});		 
 			}
 			
 		});			
 		
-	});
-
-	/*
-	function setValuesDeptCd(){
-		 let sh = document.getElementById("DEPT_CD");
-		let a = sh.option[sh.selectedIndex].value(); 
-		/* let tt = document.getElementById("textTime");
-		tt.value = sh.options[sh.selectedIndex].text;
-		console.log("나와야하는데..셀렉트박스?"+tt.ss);
-		let ss = $("#DEPT_CD option:selected").val();
-		le s = document.) 
-		let a = $("#DEPT_CD option:selected");
-		
-	}*/
+	});	
+	
+	
 	
 });
 
@@ -691,6 +715,12 @@ $(document).ready(function(){
 										<tbody id="family_table">
 										<!-- <td><input type="text" th:value="${EMP_NO.EMP_NO}" id="EMP_NO2" name="EMP_NO2"></td>  -->
 											<!-- 화면에서 입력한 값  -->
+											<tr th:each = "f: ${familyList}">
+												<td th:text="${f.SEQ}"></td>
+												<td th:text="${f.RELATION}"></td>
+												<td th:text="${f.NAME}"></td>
+												<td th:text="${f.JOB}"></td>
+												<td th:text="${f.ADDRESS}"></td>
 										</tbody>
 									</table>
 								</form>
@@ -717,24 +747,21 @@ $(document).ready(function(){
 										<thead>
 											<tr>
 												<th>NO</th>
-												<th>자격증</th>
-												<th>Last Name</th>
-												<th>Username</th>
+												<th>자격면허</th>
+												<th>발행기관</th>
+												<th>취득일자</th>
+												<th>유효일자</th>
+												<th>자격증번호</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<th scope="row">1</th>
-												<td>Mark</td>
-												<td>Otto</td>
-												<td>@mdo</td>
-											</tr>
-											<tr>
-												<th scope="row">2</th>
-												<td>Jacob</td>
-												<td>Thornton</td>
-												<td>@fat</td>
-											</tr>
+											<tr th:each="li, index :${licenseList}">
+												<td th:text="${index.index+1}"></td>
+												<td th:text="${li.LICENSE_NM}"></td>
+												<td th:text="${li.ORGAN2_NM}"></td>
+												<td th:text="${li.ACQUIRE_DT}"></td>
+												<td th:text="${li.VALID_DT}"></td>	
+												<td th:text="${li.LICENSE_NO}"></td>										
 										</tbody>
 									</table>
 

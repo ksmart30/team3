@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import ksmart30.team03.person.domain.Family;
+import ksmart30.team03.person.domain.License;
 import ksmart30.team03.person.domain.Person;
 import ksmart30.team03.person.domain.PersonRequest;
 
@@ -29,5 +31,10 @@ public interface PersonMapper {
 	//6.1.1인사기록카드 등록 (가족사항 select option)
 	List<Person> gbCdRelationListView();
 	//6.1.1 인사기록카드 추가등록 가족사항 insert
-	int modifyPersonInsaFamily(Person vo);
+	int modifyPersonInsaFamily(Family family);
+	//6.1.1인사기록카드 추가등록 가족사항 list 출력
+	List<Family> getPersonInsaInfoFamily(String EMP_NO);
+	//6.1.1인사기록카드 추가등록 자격,면허 list 출력
+	List<License> getPersonInsaInfoLicense(String EMP_NO);
+
 }
