@@ -289,7 +289,7 @@ $(document).ready(function() {
 			
 				//차트 시작
 				let ctx = document.getElementById("mybarChart3");
-				let mybarChart = new Chart(ctx,{						
+				let mybarChart3 = new Chart(ctx,{						
 						type : 'bar',
 						data : {
 						labels : [ "기획", "심의", "허가","착공", "실시", "A/S", "준공" ], //X축의 제목
@@ -315,7 +315,7 @@ $(document).ready(function() {
 				
 				//인건비 차트 시작
 				let ctx2 = document.getElementById("mybarChart4");
-				let mybarChart2 = new Chart(ctx2,{						
+				let mybarChart4 = new Chart(ctx2,{						
 						type : 'bar',
 						data : {
 						labels : [ "기획", "심의", "허가","착공", "실시", "A/S", "준공" ], //X축의 제목
@@ -360,10 +360,24 @@ $(document).ready(function() {
 				<div class="title_left">
 					
 					<h2><b>M/H 계획,실적(그래프)</b></h2>
-					<h5><font color="gray"><b>5.M/H 실적관리&nbsp;>&nbsp;&nbsp;5.2프로젝트진행관리</b></font></h5>
+					<h5><font color="gray"><b>5.M/H 실적관리&nbsp;>&nbsp;&nbsp;5.2 프로젝트진행관리&nbsp;>&nbsp;&nbsp;5.2.1 M/H 계획,실적(그래프)</b></font></h5>
 					
 				</div>
 			</div>
+			
+	<!-- <div class="x_content" style="text-align: right">
+		<div class="btn-group" >
+		<form action="/manHour/manHourResultGraphSearchView">
+			<button class="btn btn-default" type="button" id="btn-search">조회</button>
+		
+			<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
+			<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+			<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+			<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+			<button class="btn btn-default" type="button"  disabled="disabled">출력</button>	
+		</form>				
+		</div>
+	</div> -->			
 			
 	<div class="x_panel">
 				
@@ -379,10 +393,10 @@ $(document).ready(function() {
 									<tr style="font-size: 15px">
 										<th>◎검색조건 &emsp;</th>
 										<th>시작년월 &emsp;&emsp;&emsp; 
-										<input type="date" name="CONTRACT_PRI1" id="CONTRACT_PRI1"> &emsp;&emsp;										
+										<input type="date" name="CONTRACT_PRI1" id="CONTRACT_PRI1"  max="2020-12-31"> &emsp;&emsp;										
 										</th>
 										<th>마감년월 &emsp;&emsp;&emsp; 
-										<input type="date" name="CONTRACT_PRI2" id="CONTRACT_PRI2"> &emsp;&emsp;										
+										<input type="date" name="CONTRACT_PRI2" id="CONTRACT_PRI2"  max="2020-12-31"> &emsp;&emsp;										
 											<button id="btn-search" class="btn" style="color:black">검색</button>
 										</th>
 									</tr>									

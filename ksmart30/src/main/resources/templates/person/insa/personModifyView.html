@@ -93,10 +93,10 @@ $(document).ready(function(){
 				$('#family_table').append('<td></td>');
 				$('#family_table').append('<td><select name="FAMILY" id="FAMILY">');
 				$('#family_table').append('<td><input type="text" value="EMP_NO" id="EMP_NO2" name="EMP_NO2"></td>');			
-				$('#family_table').append('<td><input type="text" id="NAME" name="NAME"></td>');
-				$('#family_table').append('<td><input type="text" th:value="${EMP_NO.EMP_NO}" id="EMP_NO2" name="EMP_NO2"></td>')
-				$('#family_table').append('<td><input type="text" id="JOB" name="JOB"></td>');
-				$('#family_table').append('<td><input type="text" id="ADDRESS" name="ADDRESS"></td>');
+				$('#family_table').append('<td><input type="text" id="NAME" name="NAME" style="border : none; background : transparent" ></td>');
+				$('#family_table').append('<td><input type="text" th:value="${EMP_NO.EMP_NO}" id="EMP_NO2" name="EMP_NO2" style="border : none; background : transparent"></td>')
+				$('#family_table').append('<td><input type="text" id="JOB" name="JOB" style="border : none; background : transparent"></td>');
+				$('#family_table').append('<td><input type="text" id="ADDRESS" name="ADDRESS" style="border : none; background : transparent"></td>');
 				$('#family_table').append('</tr>');
 				//select box값을 db내에서 가져옴
 				for(let i=0; i<relationSelect.length; i++){

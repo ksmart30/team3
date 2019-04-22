@@ -17,5 +17,10 @@ public class DailyWorkService {
 		System.out.println("SERVICE : 일일근무현황 검색LIST");
 		return dailyWorkMapper.getDayList1(vo);
 	}
+	
+	public List<Map<String,Object>> getEmployeeDetailList(DailyWorkRequest vo){
+		System.out.println("SERVICE : 일일근무현황 검색LIST");
+		return dailyWorkMapper.getEmployeeDetailList(vo);	
+	}
 
 }

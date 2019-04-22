@@ -36,7 +36,13 @@ public class DailyWorkController {
 		return data;	
 	}	
 	
-	
+	@GetMapping("/kuntae/dayEmployeeDetailView")
+	public @ResponseBody List<Map<String, Object>> dayEmployeeDetailView(DailyWorkRequest vo){
+		System.out.println("CONTROLLER : 일일근무현황  date,detp_cd 컨트롤러 : "+vo);
+		List<Map<String, Object>> data = dailyWorkService.getEmployeeDetailList(vo);
+		System.out.println("CONTROLLER : 일일근무현황 부서원 상세 조회 : "+data);
+		return data;	
+	}
 	
 	
 }

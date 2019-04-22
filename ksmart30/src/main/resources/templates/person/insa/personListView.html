@@ -41,14 +41,8 @@ function updateInsa(EMP_NO){
 					$('#list').empty();
 					console.log("직원리스트 출력: "+data);
 					$(data).each(function(index,item){
-						$('#list').append('<tr class="even pointer">');
-						$('#list').append('<td class="a-center "><input type="checkbox" class="flat" name="table_records"></td>');
-						$('#list').append('<td>'+item.SORT_VALUE+'</td>');
-						$('#list').append('<td>'+item.DEPT_NM+'</td>');
-						$('#list').append('<td id="EMP_NO" onclick="updateInsa('+item.EMP_NO+')">'+item.EMP_NO+'</td>');
-						$('#list').append('<td>'+item.KOR_NM+'</td>');						
-						$('#list').append('<td>'+item.OUT_DT+'</td>');	
-						$('#list').append('</tr>');	
+						$('#list').append('<tr class="even pointer"><td class="a-center "><input type="checkbox" class="flat" name="table_records"></td><td>'+item.SORT_VALUE+'</td><td>'+item.DEPT_NM+'</td><td id="EMP_NO" onclick="updateInsa('+item.EMP_NO+')">'+item.EMP_NO+'</td><td>'+item.KOR_NM+'</td><td>'+item.OUT_DT+'</td></tr>');
+						
 					});	
 					
 				}
@@ -69,17 +63,19 @@ function updateInsa(EMP_NO){
 		<div class="title_left">
 			
 			<h2><b>인사기록카드 등록</b></h2>
-			<h5><font color="gray"><b>6. 인사/급여&nbsp;>&nbsp;&nbsp;6.1 인력관리</b></font></h5>
+			<h5><font color="gray"><b>6.인사/급여&nbsp;>&nbsp;&nbsp;6.1 인력관리&nbsp;>&nbsp;&nbsp;6.1.1 인사기록카드 등록</b></font></h5>
 			
 			</div>
 		</div>
 	</div>
 	<div class="x_content" style="text-align: right">
 		<div class="btn-group" >
-				<a href="/person/personInsaWriteView"><button class="btn btn-default" id ="btnWrite"type="reset">입력</button></a>
-				<a href="/person/personInsaModifyView"><button class="btn btn-default" type="button" id="btn_up">수정</button></a>
-				
-				<button class="btn btn-default" type="button">삭제</button>				
+			<button class="btn btn-default" type="button" id="btn_list">조회</button>
+			<a href="/person/personInsaWriteView"><button class="btn btn-default" type="reset" >입력</button></a>
+			<a href="/person/personInsaModifyView"><button class="btn btn-default" type="button" disabled="disabled">수정</button></a>
+			<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+			<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+			<button class="btn btn-default" type="button"  disabled="disabled">출력</button>					
 		</div>
 	</div>		
 	
@@ -91,13 +87,8 @@ function updateInsa(EMP_NO){
 				<!-- 검색 -->
 				<div class="col-md-13 col-xs-14">
 							<div class="x_panel">
-				<div class="x_title">
-					<form>
-						<h4 style="color:black;">⊙ 검색 조건</h4>		
-							 <div class="x_content" style="text-align: right">
-								 <button type="button" class="btn" style="color:black" id="btn_list">검색</button>
-							</div>	 
-					</form>
+				<div class="x_title">					
+					<h4 style="color:black;">⊙ 검색 조건</h4>								  				
 				</div>
 				<div class="x_content">
 					<!-- 입력 폼 -->

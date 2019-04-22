@@ -39,7 +39,22 @@ public class DailyWork {
 	private String T_SAGO_08;
 	private String T_SAGO_09;
 	private String T_SAGO_10;
+	private String SAYOU_NM;
+	private String ETC_TIME;
 	
+	
+	public String getSAYOU_NM() {
+		return SAYOU_NM;
+	}
+	public void setSAYOU_NM(String sAYOU_NM) {
+		SAYOU_NM = sAYOU_NM;
+	}
+	public String getETC_TIME() {
+		return ETC_TIME;
+	}
+	public void setETC_TIME(String eTC_TIME) {
+		ETC_TIME = eTC_TIME;
+	}
 	public String getSYS_COD() {
 		return SYS_COD;
 	}
@@ -247,7 +262,7 @@ public class DailyWork {
 	
 	@Override
 	public String toString() {
-		return "WorkTimeDay [SYS_COD=" + SYS_COD + ", SORT_DEPT=" + SORT_DEPT + ", GUBUN=" + GUBUN + ", DEPT_CD="
+		return "DailyWork [SYS_COD=" + SYS_COD + ", SORT_DEPT=" + SORT_DEPT + ", GUBUN=" + GUBUN + ", DEPT_CD="
 				+ DEPT_CD + ", DEPT_NM=" + DEPT_NM + ", DEPT_TITLE=" + DEPT_TITLE + ", TOT_INWON=" + TOT_INWON
 				+ ", CHUL_INWON=" + CHUL_INWON + ", JIGAK_INWON=" + JIGAK_INWON + ", SAGO_INWON=" + SAGO_INWON
 				+ ", SAGO_01=" + SAGO_01 + ", SAGO_02=" + SAGO_02 + ", SAGO_03=" + SAGO_03 + ", SAGO_04=" + SAGO_04
@@ -256,7 +271,8 @@ public class DailyWork {
 				+ T_CHUL_INWON + ", T_JIGAK_INWON=" + T_JIGAK_INWON + ", T_SAGO_INWON=" + T_SAGO_INWON + ", T_SAGO_01="
 				+ T_SAGO_01 + ", T_SAGO_02=" + T_SAGO_02 + ", T_SAGO_03=" + T_SAGO_03 + ", T_SAGO_04=" + T_SAGO_04
 				+ ", T_SAGO_05=" + T_SAGO_05 + ", T_SAGO_06=" + T_SAGO_06 + ", T_SAGO_07=" + T_SAGO_07 + ", T_SAGO_08="
-				+ T_SAGO_08 + ", T_SAGO_09=" + T_SAGO_09 + ", T_SAGO_10=" + T_SAGO_10 +"]";
+				+ T_SAGO_08 + ", T_SAGO_09=" + T_SAGO_09 + ", T_SAGO_10=" + T_SAGO_10 + ", SAYOU_NM=" + SAYOU_NM
+				+ ", ETC_TIME=" + ETC_TIME + "]";
 	}
 	
 }

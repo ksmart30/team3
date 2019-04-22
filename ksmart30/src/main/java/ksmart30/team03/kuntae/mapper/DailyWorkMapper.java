@@ -12,6 +12,7 @@ import ksmart30.team03.kuntae.domain.DailyWorkRequest;
 public interface DailyWorkMapper {	
 	//4.1 일일 근무 현황 리스트 출력
 	 List<Map<String,Object>> getDayList1(DailyWorkRequest vo);
-	
+	//4.1 일일 근무 현황 부서원 상세 조회 출력
+	 List<Map<String,Object>> getEmployeeDetailList(DailyWorkRequest vo);
 
 }
