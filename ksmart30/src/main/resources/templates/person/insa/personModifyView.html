@@ -81,9 +81,9 @@ $(document).ready(function(){
 		}
 		
 	});
-	//입력버튼 클릭시 입력할 수 있는 창이 나옴
+	//입력버튼 클릭시 가족사항 입력할 수 있는 창이 추가 됨
 	$('#btn_family').click(function(){
-		console.log("relation 실행");
+		console.log("가족사항 입력 창 추가");
 		$.ajax({
 			url:'/person/personRelationView',
 			type:'GET',
@@ -107,6 +107,60 @@ $(document).ready(function(){
 			}
 		});
 	});	
+	//입력버튼 클릭시 부양가족 입력할 수 있는 창이 추가 됨
+	$('#btn_family_care').click(function(){
+		console.log("부양가족 입력 창 추가");
+		$.ajax({
+			url:'/person/personRelationView',
+			type:'GET',
+			success:(data)=>{
+				let relationSelect = data;	
+				console.log(data+"data");
+				$('#family_care_table').append('<tr>');
+				$('#family_care_table').append('<td></td>');
+				$('#family_care_table').append('<td><select name="RELATION" id="RELATION"></td>');
+				$('#family_care_table').append('<td><input type="text" id="NAME" name="NAME" style="width:100px;"></td>');
+				$('#family_care_table').append('<td><input type="text" id="JUMIN_NO" name="JUMIN_NO" ></td>');
+				$('#family_care_table').append('<td><input type="text" id="PARTNER_YN" name="PARTNER_YN" style="width:100px;"></td>');
+				$('#family_care_table').append('<td><input type="text" id="BUYANG_YN" name="BUYANG_YN" style="width:100px;"></td>');
+				$('#family_care_table').append('<td><input type="text" id="OLDMAN_YN" name="OLDMAN_YN" style="width:100px;"></td>');
+				$('#family_care_table').append('<td><input type="text" id="JANGAE_YN" name="JANGAE_YN" style="width:100px;"></td>');
+				$('#family_care_table').append('<td><input type="text" id="CHILD6_YN" name="CHILD6_YN" style="width:100px;"></td>');
+				$('#family_care_table').append('</tr>');
+				
+				//select box값을 db내에서 가져옴
+				for(let i=0; i<relationSelect.length; i++){
+					console.log("text 값"+relationSelect[i].level2_CD+relationSelect[i].level2_NM);
+					$('#RELATION').append('<option value="'+relationSelect[i].level2_CD+'">'+relationSelect[i].level2_NM+'</option></select></td>');						
+				}
+				console.log("실행 완료!");	
+			}
+		});
+	});
+	//입력버튼 클릭시 자격,면허사항 입력할 수 있는 창이 추가 됨
+	$('#btn_license').click(function(){
+		console.log("자격,면허사항 입력 창 추가");
+		$.ajax({
+			url:'/person/personInsaLicenseView',
+			type:'GET',
+			success:(data)=>{
+				let relationSelect = data;
+				$('#license_table').append('<tr>');
+				$('#license_table').append('<td></td>');
+				$('#license_table').append('<td><select id="LICENSE_NM" name="LICENSE_NM" style="width:100px;"></td>');
+				$('#license_table').append('<td style="width:100px;"></td>');
+				$('#license_table').append('<td><input type="text" id="ACQUIRE_DT" name="ACQUIRE_DT" style="width:100px;"></td>');
+				$('#license_table').append('<td><input type="text" id="LICENSE_NO" name="LICENSE_NO" style="width:100px;"></td>');
+				$('#license_table').append('<td><input type="text" id="VALID_DT" name="VALID_DT" style="width:100px;"></td>');
+				$('#license_table').append('</tr>');
+				for(let i=0; i<relationSelect.length; i++){
+					$('#LICENSE_NM').append('<option value="'+relationSelect[i].LEVEL2_CD+'">'+relationSelect[i].LEVEL2_NM+'</option></select><td>')					
+				}
+			}
+			
+		});
+		
+	});
 
 	//get방식으로 보낸 값을 가져오는 방법
 	$.urlParam = function(name){
@@ -117,41 +171,27 @@ $(document).ready(function(){
 			return results[1] || 0;
 		}		
 	}
-	
+	//가족사항 INSERT
 	$('#btn_family_insert').click(function(){
-
 		console.log('가족사항 저장');
 		console.log("사원번호 나와라!"+$.urlParam('EMP_NO'));		
 		//세션에 담긴 EMP_NO
 		let AUDIT_ID = '[[${session.EMP_NO}]]';
-		console.log('세션에 담긴 EMP_NO : '+AUDIT_ID);		
-		/* let no = $('#btn_family_insert').index(this);
+		console.log('세션에 담긴 EMP_NO : '+AUDIT_ID);	
 		
-		console.log("숫자 : "+no+"seq : "+SEQ); */
-			
+		/* let no = $('#btn_family_insert').index(this);	
+		console.log("숫자 : "+no+"seq : "+SEQ); */			
 		let EMP_NO = $.urlParam('EMP_NO');
 		let NAME = $('#NAME').val();
 		let JOB = $('#JOB').val();
 		let ADDRESS = $('#ADDRESS').val();
 		let RELATION = $('#RELATION').val();
 		let SEQ = $('#SEQ').val();
-		
-		/* $.ajax({
-			url:'/person/personInsaFamilyList',
-			type:'GET',
-			data:{EMP_MO:EMP_NO},
-			success:(data)=>{
-				console.log("가족사항 list 출력 시작");
-				
-			}
-			
-		}) */
-	
+		//가족사항 insert 후 ajax로 family_table에 list 뿌려주는 코드
 		$.ajax({
-			url:'/person/personInsaFamiltModify',
+			url:'/person/personInsaFamilyModifyView',
 			type:'GET',
-			data:{NAME:NAME,JOB:JOB,ADDRESS:ADDRESS,RELATION:RELATION,EMP_NO:EMP_NO,AUDIT_ID:AUDIT_ID,SEQ:SEQ},
-			//INSERT 후 경로 처리 하려고 했지만 아직 미완성
+			data:{NAME:NAME,JOB:JOB,ADDRESS:ADDRESS,RELATION:RELATION,EMP_NO:EMP_NO,AUDIT_ID:AUDIT_ID,SEQ:SEQ},			
 			success:(data)=>{
 				$('#family_table').empty();
 				$(data).each(function(index,item){
@@ -159,12 +199,69 @@ $(document).ready(function(){
 				});		 
 			}
 			
-		});			
-		
+		});		
+			
 	});	
+	//부양가족 INSERT
+	$('#btn_family_care_insert').click(function(){
+		console.log('부양가족 저장');
+		console.log("사원번호 나와라!"+$.urlParam('EMP_NO'));		
+		//세션에 담긴 EMP_NO
+		let AUDIT_ID = '[[${session.EMP_NO}]]';
+		console.log('세션에 담긴 EMP_NO : '+AUDIT_ID);			
+		let EMP_NO = $.urlParam('EMP_NO');
+		let NAME = $('#NAME').val();
+		let RELATION = $('#RELATION').val();
+		let JUMIN_NO = $('#JUMIN_NO').val();
+		let PARTNER_YN = parseInt($('#PARTNER_YN').val());
+		let BUYANG_YN = parseInt($('#BUYANG_YN').val());
+		let OLDMAN_YN2 = parseInt($('#OLDMAN_YN').val());
+		let JANGAE_YN = parseInt($('#JANGAE_YN').val());
+		let CHILD6_YN = parseInt($('#CHILD6_YN').val());		
+		
+		//부양가족 insert 후 ajax로 familyCare_table에 list 뿌려주는 코드
+		$.ajax({
+			url:'/person/personInsaFamilyCareModifyView',
+			type:'GET',
+			data:{AUDIT_ID:AUDIT_ID,EMP_NO:EMP_NO,RELATION:RELATION,NAME:NAME,JUMIN_NO:JUMIN_NO,PARTNER_YN:PARTNER_YN,BUYANG_YN:BUYANG_YN,OLDMAN_YN2:OLDMAN_YN2,JANGAE_YN:JANGAE_YN,CHILD6_YN:CHILD6_YN},			
+			success:(data)=>{
+				$('#family_care_table').empty();
+				$(data).each(function(index,item){
+					index +=1;
+				$('#family_care_table').append('<tr><td>'+index+'</td><td>'+item.relation+'</td><td>'+item.name+'</td><td>'+item.jumin_NO+'</td><td>'+item.partner_YN+'</td><td>'+item.buyang_YN+'</td><td>'+item.oldman_YN+'</td><td>'+item.jangae_YN+'</td><td>'+item.child6_YN+'</td></tr>');				
+				});		 
+			}
+			
+		});	
+	});
 	
-	
-	
+	//자격,면허사항 INSERT
+	$('#btn_license_insert').click(function(){
+		console.log('부양가족 저장');
+		console.log("사원번호 나와라!"+$.urlParam('EMP_NO'));		
+		//세션에 담긴 EMP_NO
+		let AUDIT_ID = '[[${session.EMP_NO}]]';
+		console.log('세션에 담긴 EMP_NO : '+AUDIT_ID);			
+		let EMP_NO = $.urlParam('EMP_NO');
+		let LICENSE_CD = $('#LICENSE_NM').val();
+		let ACQUIRE_DT = $('#ACQUIRE_DT').val();
+		let LICENSE_NO = $('#LICENSE_NO').val();
+		let VALID_DT = $('#VALID_DT').val();
+		//자격,면허사항 insert 후 ajax로 familyCare_table에 list 뿌려주는 코드
+		$.ajax({
+			url:'/person/personInsaLicenseModifyView',
+			type:'GET',
+			data:{AUDIT_ID:AUDIT_ID,EMP_NO:EMP_NO,LICENSE_CD:LICENSE_CD,ACQUIRE_DT:ACQUIRE_DT,LICENSE_NO:LICENSE_NO,VALID_DT:VALID_DT},
+			success:(data)=>{
+				$('#license_table').empty();
+				$(data).each(function(index,item){
+					index +=1;
+					$('#license_table').append('<tr><td>'+index+'</td><td>'+item.license_NM+'</td><td>'+item.organ2_NM+'</td><td>'+item.acquire_DT+'</td><td>'+item.valid_DT+'</td><td>'+item.license_NO+'</td></tr>')	
+
+				});
+			}
+		})
+	});		
 });
 
 
@@ -248,7 +345,7 @@ $(document).ready(function(){
 											<option></option>
 												<th:block th:each="gb : ${gbResult}">
 													<th:block th:if="${gb.LEVEL1_CD} == 110">									
-														<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+														<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 													</th:block>
 												</th:block>
 										</select>															</select>
@@ -263,7 +360,7 @@ $(document).ready(function(){
 											<option></option>
 											<th:block th:each="gb : ${gbResult}">
 												<th:block th:if="${gb.LEVEL1_CD} == 120">									
-													<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+													<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 												</th:block>
 											</th:block>
 										</select>		
@@ -354,7 +451,7 @@ $(document).ready(function(){
 												<option></option>
 													<th:block th:each="gb : ${gbResult}">
 														<th:block th:if="${gb.LEVEL1_CD} == 130">									
-															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+															<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 														</th:block>
 													</th:block>
 											</select>
@@ -401,7 +498,7 @@ $(document).ready(function(){
 											<option></option>
 											<th:block th:each="gb : ${gbResult}">
 												<th:block th:if="${gb.LEVEL1_CD} == 150">									
-													<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+													<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 												</th:block>
 											</th:block>
 										</select>	
@@ -433,7 +530,7 @@ $(document).ready(function(){
 												<option></option>
 													<th:block th:each="gb : ${gbResult}">
 														<th:block th:if="${gb.LEVEL1_CD} == 230">									
-															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+															<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 														</th:block>
 													</th:block>
 											</select>
@@ -448,7 +545,7 @@ $(document).ready(function(){
 												<option></option>
 													<th:block th:each="gb : ${gbResult}">
 														<th:block th:if="${gb.LEVEL1_CD} == 240">									
-															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+															<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 														</th:block>
 													</th:block>
 											</select>	
@@ -466,7 +563,7 @@ $(document).ready(function(){
 												<option></option>
 													<th:block th:each="gb : ${gbResult}">
 														<th:block th:if="${gb.LEVEL1_CD} == 250">									
-															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+															<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 														</th:block>
 													</th:block>
 											</select>	
@@ -482,7 +579,7 @@ $(document).ready(function(){
 											<option></option>
 											<th:block th:each="gb : ${gbResult}">
 												<th:block th:if="${gb.LEVEL1_CD} == 260">									
-													<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+													<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 												</th:block>
 											</th:block>
 										</select>
@@ -515,7 +612,7 @@ $(document).ready(function(){
 												<option></option>
 													<th:block th:each="gb : ${gbResult}">
 														<th:block th:if="${gb.LEVEL1_CD} == 280">									
-															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+															<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 														</th:block>
 													</th:block>
 											</select>
@@ -530,7 +627,7 @@ $(document).ready(function(){
 												<option></option>
 													<th:block th:each="gb : ${gbResult}">
 														<th:block th:if="${gb.LEVEL1_CD} == 290">									
-															<option th:vlaue="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+															<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
 														</th:block>
 													</th:block>
 											</select>
@@ -619,88 +716,36 @@ $(document).ready(function(){
 					<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
 						<li role="presentation" class="active"><a
 							href="#tab_content1" id="home-tab" role="tab" data-toggle="tab"
-							aria-expanded="true">학력사항</a></li>
+							aria-expanded="true">가족사항</a></li>
 						<li role="presentation" class=""><a href="#tab_content2"
 							role="tab" id="profile-tab" data-toggle="tab"
-							aria-expanded="false">가족사항</a></li>
+							aria-expanded="false">부양가족</a></li>
 						<li role="presentation" class=""><a href="#tab_content3"
 							role="tab" id="profile-tab2" data-toggle="tab"
 							aria-expanded="false">자격,면허</a></li>
 						<li role="presentation" class=""><a href="#tab_content4"
 							role="tab" id="profile-tab4" data-toggle="tab"
-							aria-expanded="false">외국어</a></li>
+							aria-expanded="false">학력사항</a></li>
 					</ul>
 
 
 					<div id="myTabContent" class="tab-content">
-						<!-- 학력사항 -->
+					
+					
+						<!-- 가족사항 -->
 						<div role="tabpanel" class="tab-pane fade active in"
 							id="tab_content1" aria-labelledby="home-tab">
-							<div class="col-md-12 col-sm-6 col-xs-12">
-								<div class="x_panel">
-									<div class="x_title">
-										<h4>학력사항</h4>
-									</div>
-									<div class="clearfix"></div>
-									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary">입력</button>
-										<button type="button" class="btn btn-round btn-primary">저장</button>
-									</div>
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th>NO</th>
-												<th>구분</th>
-												<th>입학일자</th>
-												<th>졸업일자</th>
-												<th>학교명</th>
-												<th>전공</th>
-												<th>학위</th>
-												<th>이수</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>1</th>
-												<td>고등학교</td>
-												<td>1994/03</td>
-												<td>1997/02</td>
-												<td>장훈고등학교</td>
-												<td>건축공학</td>
-												<td>건축디자인</td>
-												<td>졸업</td>
-											</tr>
-											<tr>
-												<th>2</th>
-												<td>대학교</td>
-												<td>1994/03</td>
-												<td>1997/02</td>
-												<td>장훈고등학교</td>
-												<td>건축공학</td>
-												<td>건축디자인</td>
-												<td>졸업</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-
-
-						<!-- 가족사항 -->
-						<div role="tabpanel" class="tab-pane fade in" id="tab_content2"
-							aria-labelledby="tab">
-							<div class="col-md-12 col-sm-6 col-xs-12">
+							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<h4>가족사항</h4>
 									</div>
 									<div class="clearfix"></div>
 									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary" id="btn_family">입력</button>
-										<button type="button" class="btn btn-round btn-primary" id="btn_family_insert">저장</button>
+										<button type="button" class="btn" style="color:black" id="btn_family">입력</button>
+										<button type="button" class="btn" style="color:black" id="btn_family_insert">저장</button>
 									</div>
-								<form action="" method="POST">
+								<form>
 									<table class="table table-bordered">
 									
 										<thead>
@@ -729,19 +774,68 @@ $(document).ready(function(){
 								</div>
 							</div>
 						</div>
+					
+						<!-- 부양가족 -->
+						<div role="tabpanel" class="tab-pane fade in" id="tab_content2"
+							aria-labelledby="tab">
+						
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="x_panel">
+									<div class="x_title">
+										<h4>부양가족</h4>
+									</div>
+									<div class="clearfix"></div>
+									<div class="x_content" style="text-align: right">
+										<button type="button" class="btn" style="color:black" id="btn_family_care">입력</button>
+										<button type="button" class="btn" style="color:black" id="btn_family_care_insert">저장</button>
+									</div>
+									<table class="table table-bordered">
+										<thead>
+											<tr style="text-align:center">
+												<th rowspan="2">NO</th>
+												<th rowspan="2">관계</th>
+												<th rowspan="2">성명</th>
+												<th rowspan="2">주민등록번호</th>
+												<th colspan="5">인적공제 해당여부 &nbsp;&nbsp;&nbsp;<span style="color:gray; font-size:10px">해당하는 경우 : 1 아닌 경우 0 입력</span></th>
+											</tr>
+											<tr style="text-align:center">
+												<th>배우자</th>
+												<th>부양</th>
+												<th>경로</th>
+												<th>장애</th>
+												<th>6세이하</th>
+											</tr>
+										</thead>
+										<tbody id="family_care_table">
+											<tr th:each="fc,index : ${familyCare}">
+												<td th:text="${index.index+1}"></td>
+												<td th:text="${fc.RELATION}"></td>
+												<td th:text="${fc.NAME}"></td>
+												<td th:text="${fc.JUMIN_NO}"></td>
+												<td th:text="${fc.PARTNER_YN}"></td>
+												<td th:text="${fc.BUYANG_YN}"></td>
+												<td th:text="${fc.OLDMAN_YN}"></td>
+												<td th:text="${fc.JANGAE_YN}"></td>
+												<td th:text="${fc.CHILD6_YN}"></td>	 
+											</tr>
 
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
 						<!-- 자격,면허사항 -->
 						<div role="tabpanel" class="tab-pane fade in" id="tab_content3"
 							aria-labelledby="tab">
-							<div class="col-md-12 col-sm-6 col-xs-12">
+							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<h4>자격,면허</h4>
 									</div>
 									<div class="clearfix"></div>
 									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary">입력</button>
-										<button type="button" class="btn btn-round btn-primary">저장</button>
+										<button type="button" class="btn" style="color:black" id="btn_license">입력</button>
+										<button type="button" class="btn" style="color:black" id="btn_license_insert">저장</button>
 									</div>
 									<table class="table table-bordered">
 										<thead>
@@ -754,14 +848,15 @@ $(document).ready(function(){
 												<th>자격증번호</th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody id="license_table">
 											<tr th:each="li, index :${licenseList}">
 												<td th:text="${index.index+1}"></td>
 												<td th:text="${li.LICENSE_NM}"></td>
 												<td th:text="${li.ORGAN2_NM}"></td>
 												<td th:text="${li.ACQUIRE_DT}"></td>
 												<td th:text="${li.VALID_DT}"></td>	
-												<td th:text="${li.LICENSE_NO}"></td>										
+												<td th:text="${li.LICENSE_NO}"></td>	
+											</tr>									
 										</tbody>
 									</table>
 
@@ -772,44 +867,48 @@ $(document).ready(function(){
 						</div>
 
 
-						<!-- 외국어사항 -->
+						<!-- 학력사항 -->
 						<div role="tabpanel" class="tab-pane fade in" id="tab_content4"
 							aria-labelledby="tab">
-							<div class="col-md-12 col-sm-6 col-xs-12">
+							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
-										<h4>외국어</h4>
+										<h4>학력사항</h4>
 									</div>
 									<div class="clearfix"></div>
 									<div class="x_content" style="text-align: right">
-										<button type="button" class="btn btn-round btn-primary">입력</button>
-										<button type="button" class="btn btn-round btn-primary">저장</button>
+										<button type="button" class="btn" style="color:black">입력</button>
+										<button type="button" class="btn" style="color:black">저장</button>
 									</div>
 									<table class="table table-bordered">
 										<thead>
 											<tr>
 												<th>NO</th>
-												<th>외국어</th>
-												<th>Last Name</th>
-												<th>Username</th>
+												<th>구분</th>
+												<th>입학날짜</th>
+												<th>졸업일자</th>
+												<th>학교명</th>
+												<th>전공</th>
+												<th>학위</th>
+												<th>이수</th>
+												<th>최종</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<th scope="row">1</th>
-												<td>Mark</td>
-												<td>Otto</td>
-												<td>@mdo</td>
+											<tr th:each="e,index : ${educationList}">
+												<td th:text="${index.index+1}"></td>
+												<td th:text="${e.SCHOOL_GB}"></td>
+												<td th:text="${e.ENTRY_DT}"></td>
+												<td th:text="${e.FINISH_DT}"></td>
+												<td th:text="${e.SCHOOL_NM}"></td>
+												<td th:text="${e.MAJOR_NM}"></td>
+												<td th:text="${e.DEGREE_NM}"></td>
+												<td th:text="${e.COMPLETE_NM}"></td>
+												<td th:text="${e.F_SCHOOL_YN}"></td>
 											</tr>
-											<tr>
-												<th scope="row">2</th>
-												<td>Jacob</td>
-												<td>Thornton</td>
-												<td>@fat</td>
-											</tr>
+											
 										</tbody>
 									</table>
-
 								</div>
 							</div>
 						</div>
@@ -818,7 +917,6 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</form>
-
 
 </font>
 </th:block>

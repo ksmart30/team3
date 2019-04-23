@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import ksmart30.team03.person.domain.Education;
 import ksmart30.team03.person.domain.Family;
+import ksmart30.team03.person.domain.FamilyCare;
 import ksmart30.team03.person.domain.License;
 import ksmart30.team03.person.domain.Person;
 import ksmart30.team03.person.domain.PersonRequest;
@@ -70,16 +73,23 @@ public class PersonController {
 		List<Map<String, Object>> data3 = personService.gbCdListView();
 		model.addAttribute("gbResult", data3);
 		System.out.println("직원수정정보 : " + data);
-		//emp_no에 해당하는 가족사항 list를 model로 보냄
+		//EMP_NO에 해당하는 가족사항 list를 model로 보냄
 		List<Family> data4 = personService.getPersonInsaInfoFamily(EMP_NO); 
 		model.addAttribute("familyList", data4);
 		System.out.println("가족사항 LIST : " + data4);
+		//EMP_NO에 해당하는 자격,면허 list를 model로 보냄
 		List<License> data5 = personService.getPersonInsaInfoLicense(EMP_NO);
 		System.out.println("자격,면허  LIST : " + data5);
 		model.addAttribute("licenseList", data5);
+		//EMP_NO에 해당하는 부양가족 list를 model로 보냄
+		List<FamilyCare> data6 = personService.getPersonInsaInfoFamilyCare(EMP_NO);
+		model.addAttribute("familyCare", data6);
+		System.out.println("부양가족 List : "+data6);
+		List<Education> data7 = personService.getPersonInsaInfoEducation(EMP_NO);
+		model.addAttribute("educationList", data7);
+		System.out.println("학력사항 List : "+data7);
 		return "person/insa/personModifyView";
 	}
-
 	// 6.1.1 인사기록카드 수정화면에서 가족사항 구분 select option
 	@GetMapping("/person/personRelationView")
 	public @ResponseBody List<Person> personRelationView() {
@@ -87,7 +97,7 @@ public class PersonController {
 		System.out.println("가족사항 추가 select option" + data);
 		return data;
 	}
-
+	
 	// 6.1.2직원검색폼 이동 컨트롤러
 	@GetMapping("/person/personInsaEmployeeSearchView")
 	public String getPersonInsaEmployeeView(Model model) {
@@ -100,7 +110,6 @@ public class PersonController {
 		model.addAttribute("gbResult", data3);
 		return "person/insa/personSearchView";
 	}
-
 	// 6.1.2직원검색 list 출력 컨트롤러
 	@GetMapping("/person/personInsaEmployeeView")
 	public @ResponseBody List<Map<String, Object>> getPersonInsaEmployeeList(PersonRequest vo) {
@@ -110,7 +119,6 @@ public class PersonController {
 		System.out.println("직원 검색 list : " + data);
 		return data;
 	}
-
 	// 6.1.2직원 디테일 컨트롤러
 	@GetMapping("/person/personInsaEmployeeDetailView")
 	public @ResponseBody List<Person> getPersonInsaEmployeeDetail(@RequestParam(value = "EMP_NO") String EMP_NO) {
@@ -118,21 +126,9 @@ public class PersonController {
 		List<Person> data = personService.personInsaEmployeeDetailView(EMP_NO);
 		System.out.println("직원 list 디테일 : " + data);
 		return data;
-	}
-
-	/*
-	 * // 6.1.1 직원 인사기록카드 추가사항 list 출력 컨트롤러
-	 * 
-	 * @GetMapping("/person/personInsaFamilyList") public String
-	 * personInsaFamilyList(Model model,@RequestParam(value="EMP_NO") String
-	 * EMP_NO){
-	 * System.out.println("CONTROLLER : 인사기록카드 가족사항 list 출력 / emp_no"+EMP_NO);
-	 * List<Family> data = personService.getPersonInsaFamilyList(EMP_NO);
-	 * model.addAttribute("familyList", data); return data; }
-	 */
-		
+	}		
 	// 6.1.1직원 인사기록카드 추가사항 입력 액션(가족사항)
-	@GetMapping("/person/personInsaFamiltModify")
+	@GetMapping("/person/personInsaFamilyModifyView")
 	public @ResponseBody List<Family> personInsaFamilyProcess(Family family) {
 		System.out.println("CONTROLLER : 인사기록카드 가족사항 입력 액션 : " + family);
 		personService.modifyPersonInsaFamily(family);
@@ -140,5 +136,31 @@ public class PersonController {
 		List<Family> data = personService.getPersonInsaInfoFamily(EMP_NO); 
 		return data;
 	}
-
+	// 6.1.1직원 인사기록카드 추가사항 입력 액션(부양가족)
+	@GetMapping("/person/personInsaFamilyCareModifyView")
+	public @ResponseBody List<FamilyCare> personInsaFamilyCareModifyProcess(FamilyCare familyCare){
+		System.out.println("CONTROLLER : 인사기록카드 부양가족 입력 액션 : " + familyCare);
+		//부양가족 insert 메서드
+		personService.modifyPersonInsaFamilyCare(familyCare);
+		String EMP_NO = familyCare.getEMP_NO();
+		List<FamilyCare> data = personService.getPersonInsaInfoFamilyCare(EMP_NO);		
+		return data;
+	}
+	// 6.1.1직원 인사기록카드 추가사항 입력 액션(자격,면허사항)
+	@GetMapping("/person/personInsaLicenseModifyView")
+	public @ResponseBody List<License> personInsaLicenseModifyProcess(License license){
+		System.out.println("CONTROLLER : 인사기록카드 면허,자격 입력 액션 : " + license);
+		//부양가족 insert 메서드
+		personService.modifyPersonInsaLicense(license);
+		String EMP_NO = license.getEMP_NO();
+		List<License> data = personService.getPersonInsaInfoLicense(EMP_NO);		
+		return data;
+	}		
+	//6.1.1직원 인사기록카드 추가사항(자격,면허) 입력 select box
+	@GetMapping("/person/personInsaLicenseView")
+	public @ResponseBody List<Map<String, Object>> getPersonInsaLicenseList() {
+		List<Map<String, Object>> data = personService.licenseListView();
+		System.out.println("CONTROLLER : 자격,면허 select box 출력" + data);
+		return data;
+	}	
 }
