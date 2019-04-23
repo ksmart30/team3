@@ -69,11 +69,18 @@ SELECT TOP 100
       , T_SC1010 C
  WHERE A.EMP_NO           = B.EMP_NO
    AND B.DEPT_CD          = C.DEPT_CD
-
+	AND CONFIRM_YN=#{CONFIRM_YN}
+	AND A.APP_GB LIKE '%'+#{APP_GB}+'%'
+	AND B.DEPT_CD LIKE '%'+#{DEPT_CD}+'%'
+	AND B.KOR_NM LIKE '%'+#{EMP_NM}+'%'
+	AND A.APP_DATE <![CDATA[>=]]> #{FRDATE} AND APP_DATE <![CDATA[<=]]> #{TODATE}
 
  ORDER BY A.APP_DATE, A.APP_DATE1, C.SYS_COD, B.JIKGUP_CD, A.EMP_NO
 
 	</select>
+		
+		
+		
 		<!--근태승인처리 검색기간이 NULL이면 나머지로 검색
 	 -->
 	<select id="getOkSearch2" 
@@ -106,7 +113,10 @@ SELECT TOP 100
       , T_SC1010 C
  WHERE A.EMP_NO           = B.EMP_NO
    AND B.DEPT_CD          = C.DEPT_CD
-
+	AND CONFIRM_YN=#{CONFIRM_YN}
+	AND A.APP_GB LIKE '%'+#{APP_GB}+'%'
+	AND B.DEPT_CD LIKE '%'+#{DEPT_CD}+'%'
+	AND B.KOR_NM LIKE '%'+#{EMP_NM}+'%'
 
  ORDER BY A.APP_DATE, A.APP_DATE1, C.SYS_COD, B.JIKGUP_CD, A.EMP_NO
 

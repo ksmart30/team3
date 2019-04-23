@@ -154,10 +154,22 @@
 	<div class="title_left">
 					
 		<h2><b>근태현황</b></h2>
-		<h5><font color="gray"><b>4.근태 관리</b></font></h5>
+		<h5><font color="gray"><b>4.근태 관리</b><b> > 4.7근태현황</b></font></h5>
 		
 	</div>
 	</div>
+		<div class="x_content" style="text-align: right">
+			<div class="btn-group" >
+				<br>
+				<button class="btn btn-default" type="button" id="btn_list">조회</button>
+				<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
+				<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+				<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+				<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+				<button class="btn btn-default" type="button">출력</button>
+				<br>
+			</div>
+		</div>
 	
 
           
@@ -165,14 +177,18 @@
             
             <div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
-			
+		<div class="x_title">
+	        <h4 style="color:black">⊙ 검색조건 </h4>
+		   <!-- 박스내의 상단 -->
+		   <div class="clearfix"></div>
+	    </div>
 				
 				
 
-				<table class="table" >
+				<table style="width:80%" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" id="personSearch_table"role="grid" aria-describedby="datatable-responsive_info" >
 					
 
-						<div class="form-group">
+						<th class="sorting" aria-controls="datatable-responsive" >
 							<label>년월</label>
 							
 								
@@ -182,11 +198,8 @@
 							
 								
 									<input type="month" name="TODATE" id="TODATE">
-								
-							
-						</div>
-						
-						<div class="form-group">
+						</th>	
+						<th class="sorting" aria-controls="datatable-responsive" >	
 							<label>부서코드</label>
 							<select id="DEPT_CD">
 							<option></option>
@@ -200,11 +213,11 @@
 							</th:block>
 							
 							</select>
-						</div>
+
+						</th>
 						
 					
 				</table>
-				<button type="button" class="btn" style="color:black" id="btn_list">검색</button>
 			</div>
 			</div>
             

@@ -18,11 +18,64 @@ public class Yidong {
 	private String APPOINT_SUMMARY; //명령내역
 	private String REMARK; //비고
 	private String APPROVE_YN; //승인여부
+	
+	private String DEPT_NM2; //발령 후 부서명
+	private String JIKGUP_NM2; // 발령 후 직급명
+	private String JIKCHK_NM2; // 발령 후 직책명
+	
+	private String O_DEPT_NM; //발령 전 부서명
+	private String O_JIKGUP_NM; //발령 전 직급명
+	private String O_JIKCHK_NM; //발령 전 직책명
+	private String APPOINT_NM; //발령 종류 한글명
+	
+	
+	public String getAPPOINT_NM() {
+		return APPOINT_NM;
+	}
+	public void setAPPOINT_NM(String aPPOINT_NM) {
+		APPOINT_NM = aPPOINT_NM;
+	}
 	public String getEMP_NO() {
 		return EMP_NO;
 	}
 	public int getDEPT_CD() {
 		return DEPT_CD;
+	}
+	public String getO_DEPT_NM() {
+		return O_DEPT_NM;
+	}
+	public void setO_DEPT_NM(String o_DEPT_NM) {
+		O_DEPT_NM = o_DEPT_NM;
+	}
+	public String getO_JIKGUP_NM() {
+		return O_JIKGUP_NM;
+	}
+	public void setO_JIKGUP_NM(String o_JIKGUP_NM) {
+		O_JIKGUP_NM = o_JIKGUP_NM;
+	}
+	public String getO_JIKCHK_NM() {
+		return O_JIKCHK_NM;
+	}
+	public void setO_JIKCHK_NM(String o_JIKCHK_NM) {
+		O_JIKCHK_NM = o_JIKCHK_NM;
+	}
+	public String getDEPT_NM2() {
+		return DEPT_NM2;
+	}
+	public void setDEPT_NM2(String dEPT_NM2) {
+		DEPT_NM2 = dEPT_NM2;
+	}
+	public String getJIKGUP_NM2() {
+		return JIKGUP_NM2;
+	}
+	public void setJIKGUP_NM2(String jIKGUP_NM2) {
+		JIKGUP_NM2 = jIKGUP_NM2;
+	}
+	public String getJIKCHK_NM2() {
+		return JIKCHK_NM2;
+	}
+	public void setJIKCHK_NM2(String jIKCHK_NM2) {
+		JIKCHK_NM2 = jIKCHK_NM2;
 	}
 	public String getAPPOINT_NO() {
 		return APPOINT_NO;
@@ -107,6 +160,9 @@ public class Yidong {
 		return "Yidong [EMP_NO=" + EMP_NO + ", KOR_NM=" + KOR_NM + ", DEPT_CD=" + DEPT_CD + ", JIKGUP_CD=" + JIKGUP_CD
 				+ ", JIKCHK_CD=" + JIKCHK_CD + ", DEPT_NM=" + DEPT_NM + ", JIKGUP_NM=" + JIKGUP_NM + ", JIKCHK_NM="
 				+ JIKCHK_NM + ", APPOINT_NO=" + APPOINT_NO + ", APPOINT_GB=" + APPOINT_GB + ", APPOINT_DT=" + APPOINT_DT
-				+ ", APPOINT_SUMMARY=" + APPOINT_SUMMARY + ", REMARK=" + REMARK + ", APPROVE_YN=" + APPROVE_YN + "]";
+				+ ", APPOINT_SUMMARY=" + APPOINT_SUMMARY + ", REMARK=" + REMARK + ", APPROVE_YN=" + APPROVE_YN
+				+ ", DEPT_NM2=" + DEPT_NM2 + ", JIKGUP_NM2=" + JIKGUP_NM2 + ", JIKCHK_NM2=" + JIKCHK_NM2
+				+ ", O_DEPT_NM=" + O_DEPT_NM + ", O_JIKGUP_NM=" + O_JIKGUP_NM + ", O_JIKCHK_NM=" + O_JIKCHK_NM
+				+ ", APPOINT_NM=" + APPOINT_NM + "]";
 	}
 }
