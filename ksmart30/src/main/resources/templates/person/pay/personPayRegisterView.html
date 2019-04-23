@@ -47,16 +47,16 @@
 							}else if(item.pay_GB == '1'){		
 							$('#personPayMonthList').append('<tr><td></td><td>'+item.emp_NO+'</td>'+
 							'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>급여</td>'+
-							'<td>'+item.paytot+'</td><td>'+item.bikwat+'</td><td>'+item.kwaset+'</td><td>'+item.soduk_TAX+'</td>'+
-							'<td>'+item.jumin_TAX+'</td><td>'+item.h_INSURE+'</td><td>'+item.pension+'</td><td>'+item.e_INSURE+'</td>'+
-							'<td>'+item.chagam+'</td><td>'+item.pay_DT+'</td></tr>');
+							'<td>'+numberWithCommas(item.paytot)+'</td><td>'+numberWithCommas(item.bikwat)+'</td><td>'+numberWithCommas(item.kwaset)+'</td><td>'+numberWithCommas(item.soduk_TAX)+'</td>'+
+							'<td>'+numberWithCommas(item.jumin_TAX)+'</td><td>'+numberWithCommas(item.h_INSURE)+'</td><td>'+numberWithCommas(item.pension)+'</td><td>'+numberWithCommas(item.e_INSURE)+'</td>'+
+							'<td>'+numberWithCommas(item.chagam)+'</td><td>'+item.pay_DT.substring(0,4)+'.'+item.pay_DT.substring(4,6)+'.'+item.pay_DT.substring(6,8)+'</td></tr>');
 							// 구분 2인 경우 (상여)	
 							}else if(item.pay_GB == '2'){		
 							$('#personPayMonthList').append('<tr><td></td><td>'+item.emp_NO+'</td>'+
 							'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>상여</td>'+
-							'<td>'+item.paytot+'</td><td>'+item.bikwat+'</td><td>'+item.kwaset+'</td><td>'+item.soduk_TAX+'</td>'+
-							'<td>'+item.jumin_TAX+'</td><td>'+item.h_INSURE+'</td><td>'+item.pension+'</td><td>'+item.e_INSURE+'</td>'+
-							'<td>'+item.chagam+'</td><td>'+item.pay_DT+'</td></tr>');
+							'<td>'+numberWithCommas(item.paytot)+'</td><td>'+numberWithCommas(item.bikwat)+'</td><td>'+numberWithCommas(item.kwaset)+'</td><td>'+numberWithCommas(item.soduk_TAX)+'</td>'+
+							'<td>'+numberWithCommas(item.jumin_TAX)+'</td><td>'+numberWithCommas(item.h_INSURE)+'</td><td>'+numberWithCommas(item.pension)+'</td><td>'+numberWithCommas(item.e_INSURE)+'</td>'+
+							'<td>'+numberWithCommas(item.chagam)+'</td><td>'+item.pay_DT.substring(0,4)+'.'+item.pay_DT.substring(4,6)+'.'+item.pay_DT.substring(6,8)+'</td></tr>');
 							}		
 						});
 					}
@@ -70,18 +70,24 @@
 						$('#personPayYearList').empty();
 						$(data).each(function(index,item){
 							// 합계 출력시
-							if(item.emp_NO == '99999999') {
+							if(item.emp_NO == '99999999' && item.dept_CD != 'zzzzzzz') {
 								$('#personPayYearList').append('<tr style="background-color:gold"><td></td><td></td>'+
 								'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td></td>'+
-								'<td>'+item.pay_01+'</td><td>'+item.pay_02+'</td><td>'+item.pay_03+'</td><td>'+item.pay_04+'</td>'+
-								'<td>'+item.pay_05+'</td><td>'+item.pay_06+'</td><td>'+item.pay_07+'</td><td>'+item.pay_08+'</td>'+
-								'<td>'+item.pay_09+'</td><td>'+item.pay_10+'</td><td>'+item.pay_11+'</td><td>'+item.pay_12+'</td><td>'+item.pay_TOT+'</td></tr>');	
+								'<td>'+numberWithCommas(item.pay_01)+'</td><td>'+numberWithCommas(item.pay_02)+'</td><td>'+numberWithCommas(item.pay_03)+'</td><td>'+numberWithCommas(item.pay_04)+'</td>'+
+								'<td>'+numberWithCommas(item.pay_05)+'</td><td>'+numberWithCommas(item.pay_06)+'</td><td>'+numberWithCommas(item.pay_07)+'</td><td>'+numberWithCommas(item.pay_08)+'</td>'+
+								'<td>'+numberWithCommas(item.pay_09)+'</td><td>'+numberWithCommas(item.pay_10)+'</td><td>'+numberWithCommas(item.pay_11)+'</td><td>'+numberWithCommas(item.pay_12)+'</td><td>'+numberWithCommas(item.pay_TOT)+'</td></tr>');	
+							}else if(item.emp_NO == '99999999' && item.dept_CD == 'zzzzzzz') {
+								$('#personPayYearList').append('<tr style="background-color:palegreen"><td></td><td></td>'+
+								'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td></td>'+
+								'<td>'+numberWithCommas(item.pay_01)+'</td><td>'+numberWithCommas(item.pay_02)+'</td><td>'+numberWithCommas(item.pay_03)+'</td><td>'+numberWithCommas(item.pay_04)+'</td>'+
+								'<td>'+numberWithCommas(item.pay_05)+'</td><td>'+numberWithCommas(item.pay_06)+'</td><td>'+numberWithCommas(item.pay_07)+'</td><td>'+numberWithCommas(item.pay_08)+'</td>'+
+								'<td>'+numberWithCommas(item.pay_09)+'</td><td>'+numberWithCommas(item.pay_10)+'</td><td>'+numberWithCommas(item.pay_11)+'</td><td>'+numberWithCommas(item.pay_12)+'</td><td>'+numberWithCommas(item.pay_TOT)+'</td></tr>');
 							}else {
 								$('#personPayYearList').append('<tr><td></td><td>'+item.emp_NO+'</td>'+
 								'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>급여</td>'+
-								'<td>'+item.pay_01+'</td><td>'+item.pay_02+'</td><td>'+item.pay_03+'</td><td>'+item.pay_04+'</td>'+
-								'<td>'+item.pay_05+'</td><td>'+item.pay_06+'</td><td>'+item.pay_07+'</td><td>'+item.pay_08+'</td>'+
-								'<td>'+item.pay_09+'</td><td>'+item.pay_10+'</td><td>'+item.pay_11+'</td><td>'+item.pay_12+'</td><td>'+item.pay_TOT+'</td></tr>');	
+								'<td>'+numberWithCommas(item.pay_01)+'</td><td>'+numberWithCommas(item.pay_02)+'</td><td>'+numberWithCommas(item.pay_03)+'</td><td>'+numberWithCommas(item.pay_04)+'</td>'+
+								'<td>'+numberWithCommas(item.pay_05)+'</td><td>'+numberWithCommas(item.pay_06)+'</td><td>'+numberWithCommas(item.pay_07)+'</td><td>'+numberWithCommas(item.pay_08)+'</td>'+
+								'<td>'+numberWithCommas(item.pay_09)+'</td><td>'+numberWithCommas(item.pay_10)+'</td><td>'+numberWithCommas(item.pay_11)+'</td><td>'+numberWithCommas(item.pay_12)+'</td><td>'+numberWithCommas(item.pay_TOT)+'</td></tr>');	
 							}								
 						});
 					}
@@ -215,7 +221,34 @@
 						<tbody id="personPayYearList">
 							<tr th:each="personPayYearList : ${personPayYearList}">
 								<!-- 사원번호 (총계 일경우)-->
-								<th:block th:if="${personPayYearList.EMP_NO == '99999999'}" style="background-color:gold">
+								<th:block th:if="${personPayYearList.EMP_NO == '99999999' AND personPayYearList.DEPT_CD == 'zzzzzzz'}" style="background-color:palegreen">
+									<td style="background-color:palegreen"></td>
+									<td style="background-color:palegreen" th:if="${personPayYearList.EMP_NO == '99999999'}"></td>
+									
+									<td style="background-color:palegreen" th:text="${personPayYearList.DEPT_NM}"></td>	<!-- 부서 -->
+									<td style="background-color:palegreen" th:text="${personPayYearList.JIKGUP_NM}"></td>	<!-- 직급 -->
+									<td style="background-color:palegreen" th:text="${personPayYearList.KOR_NM}"></td>		<!-- 성명 -->
+									<!-- 급여구분 (1일때) -->
+									<td style="background-color:palegreen" th:if="${personPayYearList.GUBUN == '1'}">급여</td>
+									<!-- 급여구분 (1이 아닐때(총계))-->
+									<td style="background-color:palegreen" th:unless="${personPayYearList.GUBUN == '1'}"></td>
+									
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_01}"></td>		<!-- 1월 -->
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_02}"></td>		<!-- 2월 --> 
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_03}"></td>		<!-- 3월 -->
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_04}"></td>		<!-- 4월 --> 
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_05}"></td>		<!-- 5월 -->
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_06}"></td>		<!-- 6월 --> 
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_07}"></td>		<!-- 7월 -->
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_08}"></td>		<!-- 8월 --> 
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_09}"></td>		<!-- 9월 -->
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_10}"></td>		<!-- 10월 --> 
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_11}"></td>		<!-- 11월 -->
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_12}"></td>		<!-- 12월 --> 
+									<td style="background-color:palegreen" th:text="${personPayYearList.PAY_TOT}"></td>	<!-- 급여총액 -->
+								</th:block>
+
+								<th:block th:if="${personPayYearList.EMP_NO == '99999999' AND personPayYearList.DEPT_CD != 'zzzzzzz'}" style="background-color:gold">
 									<td style="background-color:gold"></td>
 									<td style="background-color:gold" th:if="${personPayYearList.EMP_NO == '99999999'}"></td>
 									
