@@ -25,7 +25,73 @@
 
 		// 검색날짜에 대입
 		$('#SEARCH_DATE').val(getToday);
+
+		// 2. 검색 버튼 클릭시 (월간, 연간 가져오기)
+		$('#PAY_SEARCH').click(function() {
+			console.log("PAY_SEARCH 시작!");
+
+			let searchDate = $('#SEARCH_DATE').val();
+			let searchDeptNm = $('#DEPT_NM_SEARCH').val();
+			let searchKorNm = $('#KOR_NM_SEARCH').val();
+				// 1. 급여대장 월간
+				$.ajax({				
+					url:'/person/personPayRegisterMonthSearchProcess',
+					type:'GET',
+					data:{PAY_YYMM:searchDate,DEPT_NM:searchDeptNm,KOR_NM:searchKorNm},
+					success:(data)=>{
+						$('#personPayMonthList').empty();
+						$(data).each(function(index,item){
+							// 사원명과 부서명이 null이면 생략
+							if(item.kor_NM == null || item.dept_NM == null) {
+							// 구분 1인 경우 (급여)
+							}else if(item.pay_GB == '1'){		
+							$('#personPayMonthList').append('<tr><td></td><td>'+item.emp_NO+'</td>'+
+							'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>급여</td>'+
+							'<td>'+item.paytot+'</td><td>'+item.bikwat+'</td><td>'+item.kwaset+'</td><td>'+item.soduk_TAX+'</td>'+
+							'<td>'+item.jumin_TAX+'</td><td>'+item.h_INSURE+'</td><td>'+item.pension+'</td><td>'+item.e_INSURE+'</td>'+
+							'<td>'+item.chagam+'</td><td>'+item.pay_DT+'</td></tr>');
+							// 구분 2인 경우 (상여)	
+							}else if(item.pay_GB == '2'){		
+							$('#personPayMonthList').append('<tr><td></td><td>'+item.emp_NO+'</td>'+
+							'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>상여</td>'+
+							'<td>'+item.paytot+'</td><td>'+item.bikwat+'</td><td>'+item.kwaset+'</td><td>'+item.soduk_TAX+'</td>'+
+							'<td>'+item.jumin_TAX+'</td><td>'+item.h_INSURE+'</td><td>'+item.pension+'</td><td>'+item.e_INSURE+'</td>'+
+							'<td>'+item.chagam+'</td><td>'+item.pay_DT+'</td></tr>');
+							}		
+						});
+					}
+				});
+				// 2. 급여대장 연간
+				$.ajax({				
+					url:'/person/personPayRegisterYearSearchProcess',
+					type:'GET',
+					data:{PAY_YYMM:searchDate,DEPT_NM:searchDeptNm,KOR_NM:searchKorNm},
+					success:(data)=>{
+						$('#personPayYearList').empty();
+						$(data).each(function(index,item){
+							// 합계 출력시
+							if(item.emp_NO == '99999999') {
+								$('#personPayYearList').append('<tr style="background-color:gold"><td></td><td></td>'+
+								'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td></td>'+
+								'<td>'+item.pay_01+'</td><td>'+item.pay_02+'</td><td>'+item.pay_03+'</td><td>'+item.pay_04+'</td>'+
+								'<td>'+item.pay_05+'</td><td>'+item.pay_06+'</td><td>'+item.pay_07+'</td><td>'+item.pay_08+'</td>'+
+								'<td>'+item.pay_09+'</td><td>'+item.pay_10+'</td><td>'+item.pay_11+'</td><td>'+item.pay_12+'</td><td>'+item.pay_TOT+'</td></tr>');	
+							}else {
+								$('#personPayYearList').append('<tr><td></td><td>'+item.emp_NO+'</td>'+
+								'<td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>급여</td>'+
+								'<td>'+item.pay_01+'</td><td>'+item.pay_02+'</td><td>'+item.pay_03+'</td><td>'+item.pay_04+'</td>'+
+								'<td>'+item.pay_05+'</td><td>'+item.pay_06+'</td><td>'+item.pay_07+'</td><td>'+item.pay_08+'</td>'+
+								'<td>'+item.pay_09+'</td><td>'+item.pay_10+'</td><td>'+item.pay_11+'</td><td>'+item.pay_12+'</td><td>'+item.pay_TOT+'</td></tr>');	
+							}								
+						});
+					}
+				});
+		});
 	});
+	/* 결과값 통화형식 변환 */
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 	</script>
 	<th:block th:include="layout/customHead"></th:block>
 </th:block>
@@ -55,29 +121,30 @@
 					<h5>⊙ 검색 조건</h5>
 						<div class="col-md-12 col-sm-12 col-xs-12">
 						• 지급년도 &nbsp;&nbsp;
-							<input type="month" name="SEARCH_DATE" id="SEARCH_DATE" style="width: 12%">
+							<input type="month" name="SEARCH_DATE" id="SEARCH_DATE" style="width: 12%" max="2999-12">
 							&nbsp;&nbsp;&nbsp;
-						• 부서코드 &nbsp;&nbsp;
-							<input type="text" name="DEPT_CD_SEARCH">
+						• 부서명 &nbsp;&nbsp;
+							<input type="text" name="DEPT_NM_SEARCH" id="DEPT_NM_SEARCH">
 							&nbsp;&nbsp;&nbsp;
-						• 사원번호 &nbsp;&nbsp;
-							<input type="text" name="EMP_NO_SEARCH">
+						• 사원명 &nbsp;&nbsp;
+							<input type="text" name="KOR_NM_SEARCH" id="KOR_NM_SEARCH">
 							&nbsp;&nbsp;&nbsp;
-							<button type="submit" class="btn" style="color:black" name="companyButton">검색</button>
+							<button type="button" class="btn" style="color:black" id="PAY_SEARCH">검색</button>
 						</div>
 				</form>
 			</div>
 		</div>
 		<div class="x_panel">
 			<div class="x_content">
-				<h5>⊙ 부서별, 월간 급여내역</h5>
+				<h5>⊙ 월간 급여내역</h5>
 				<div class="table-responsive" style="overflow: scroll; width: 100%; height: 450px; padding: 10px; background-color: white; color:black;">
 						<table class="table table-bordered jambo_table bulk_action">
 							<thead>
 							<tr class="headings">
 								<th></th>
-								<th class="column-title">부서</th>
 								<th class="column-title">사원번호</th>
+								<th class="column-title">부서</th>
+								<th class="column-title">직급</th>
 								<th class="column-title">성명</th>
 								<th class="column-title">급여구분</th>
 								<th class="column-title">급여총액</th>
@@ -89,25 +156,120 @@
 								<th class="column-title">국민보험</th>
 								<th class="column-title">고용보험</th>               
 								<th class="column-title">차감지급액</th>
-								</tr>
+								<th class="column-title">지급일자</th>
+							</tr>
 						</thead>		
-							<tbody id="personPayList">
-								<tr th:each="personPayList : ${personPayList}">
+						<tbody id="personPayMonthList">
+							<tr th:each="personPayMonthList : ${personPayMonthList}">
+								<td></td>
+								<td th:text="${personPayMonthList.EMP_NO}"></td>	<!-- 사원번호 -->
+								<td th:text="${personPayMonthList.DEPT_NM}"></td>	<!-- 부서 --> 
+								<td th:text="${personPayMonthList.JIKGUP_NM}"></td>	<!-- 직급 -->
+								<td th:text="${personPayMonthList.KOR_NM}"></td>	<!-- 성명 -->
+								<td th:if="${personPayMonthList.PAY_GB == '1'}">급여</td><!-- 급여구분 (1일때) -->
+								<td th:unless="${personPayMonthList.PAY_GB == '1'}">상여</td><!-- 급여구분 (1이 아닐때)-->
+								<td th:text="${personPayMonthList.PAYTOT}"></td>	<!-- 급여총액 -->
+								<td th:text="${personPayMonthList.BIKWAT}"></td>	<!-- 비과세급여 -->
+								<td th:text="${personPayMonthList.KWASET}"></td>	<!-- 과세급여 --> 
+								<td th:text="${personPayMonthList.SODUK_TAX}"></td>	<!-- 소득세 -->
+								<td th:text="${personPayMonthList.JUMIN_TAX}"></td>	<!-- 주민세 --> 
+								<td th:text="${personPayMonthList.H_INSURE}"></td>	<!-- 건강보험 -->
+								<td th:text="${personPayMonthList.PENSION}"></td>	<!-- 국민보험 --> 
+								<td th:text="${personPayMonthList.E_INSURE}"></td>	<!-- 고용보험 -->
+								<td th:text="${personPayMonthList.CHAGAM}"></td>	<!-- 차감지급액 --> 
+								<td th:text="${personPayMonthList.PAY_DT}"></td>	<!-- 지급일자 -->
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="x_panel">
+			<div class="x_content">
+				<h5>⊙ 연간 급여내역</h5>
+				<div class="table-responsive" style="overflow: auto; height: 450px; background-color: white; color:black;">
+						<table style="width:1700px;" class="table table-bordered jambo_table bulk_action">
+							<thead>
+							<tr class="headings">
+								<th></th>
+								<th class="column-title">사원번호</th>
+								<th class="column-title">부서</th>
+								<th class="column-title">직급</th>
+								<th class="column-title">성명</th>
+								<th class="column-title">급여구분</th>
+								<th class="column-title">1월</th>
+								<th class="column-title">2월</th>
+								<th class="column-title">3월</th>
+								<th class="column-title">4월</th>
+								<th class="column-title">5월</th>
+								<th class="column-title">6월</th>
+								<th class="column-title">7월</th>
+								<th class="column-title">8월</th>
+								<th class="column-title">9월</th>
+								<th class="column-title">10월</th>
+								<th class="column-title">11월</th>
+								<th class="column-title">12월</th>
+								<th class="column-title">급여총액</th>
+							</tr>
+						</thead>		
+						<tbody id="personPayYearList">
+							<tr th:each="personPayYearList : ${personPayYearList}">
+								<!-- 사원번호 (총계 일경우)-->
+								<th:block th:if="${personPayYearList.EMP_NO == '99999999'}" style="background-color:gold">
+									<td style="background-color:gold"></td>
+									<td style="background-color:gold" th:if="${personPayYearList.EMP_NO == '99999999'}"></td>
+									
+									<td style="background-color:gold" th:text="${personPayYearList.DEPT_NM}"></td>	<!-- 부서 -->
+									<td style="background-color:gold" th:text="${personPayYearList.JIKGUP_NM}"></td>	<!-- 직급 -->
+									<td style="background-color:gold" th:text="${personPayYearList.KOR_NM}"></td>		<!-- 성명 -->
+									<!-- 급여구분 (1일때) -->
+									<td style="background-color:gold" th:if="${personPayYearList.GUBUN == '1'}">급여</td>
+									<!-- 급여구분 (1이 아닐때(총계))-->
+									<td style="background-color:gold" th:unless="${personPayYearList.GUBUN == '1'}"></td>
+									
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_01}"></td>		<!-- 1월 -->
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_02}"></td>		<!-- 2월 --> 
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_03}"></td>		<!-- 3월 -->
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_04}"></td>		<!-- 4월 --> 
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_05}"></td>		<!-- 5월 -->
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_06}"></td>		<!-- 6월 --> 
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_07}"></td>		<!-- 7월 -->
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_08}"></td>		<!-- 8월 --> 
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_09}"></td>		<!-- 9월 -->
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_10}"></td>		<!-- 10월 --> 
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_11}"></td>		<!-- 11월 -->
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_12}"></td>		<!-- 12월 --> 
+									<td style="background-color:gold" th:text="${personPayYearList.PAY_TOT}"></td>	<!-- 급여총액 -->
+								</th:block>
+								<!-- 사원번호 (총계가 아닐경우)-->
+								<th:block th:unless="${personPayYearList.EMP_NO == '99999999'}">
 									<td></td>
-									<td th:text="${departmentList.DEPT_CD}"></td><!-- 부서 -->
-									<td th:text="${departmentList.SYS_COD}"></td><!-- 사원번호 -->
-									<td th:text="${departmentList.SYS_COD2}"></td><!-- 성명 -->
-									<td th:text="${departmentList.DEPT_NM}"></td><!-- 급여구분 -->
-									<td th:text="${departmentList.SHORT_NM}"></td><!-- 급여총액 -->
-									<td th:text="${departmentList.SHORT_NM1}"></td><!-- 비과세급여 -->
-									<td th:text="${departmentList.LEVEL_GB}"></td><!-- 과세급여 --> 
-									<td th:text="${departmentList.DIV_TYPE}"></td><!-- 소득세 -->
-									<td th:text="${departmentList.LEVEL_GB}"></td><!-- 주민세 --> 
-									<td th:text="${departmentList.DIV_TYPE}"></td><!-- 건강보험 -->
-									<td th:text="${departmentList.LEVEL_GB}"></td><!-- 국민보험 --> 
-									<td th:text="${departmentList.DIV_TYPE}"></td><!-- 고용보험 -->
-									<td th:text="${departmentList.LEVEL_GB}"></td><!-- 차감지급액 --> 
-								</tr>
+									<!-- 사원번호 (총계가 아닐경우)-->
+									<td th:unless="${personPayYearList.EMP_NO == '99999999'}" th:text="${personPayYearList.EMP_NO}"></td>
+									
+									<td th:text="${personPayYearList.DEPT_NM}"></td>	<!-- 부서 -->
+									<td th:text="${personPayYearList.JIKGUP_NM}"></td>	<!-- 직급 -->
+									<td th:text="${personPayYearList.KOR_NM}"></td>		<!-- 성명 -->
+									<!-- 급여구분 (1일때) -->
+									<td th:if="${personPayYearList.GUBUN == '1'}">급여</td>
+									<!-- 급여구분 (1이 아닐때(총계))-->
+									<td th:unless="${personPayYearList.GUBUN == '1'}"></td>
+									
+									<td th:text="${personPayYearList.PAY_01}"></td>		<!-- 1월 -->
+									<td th:text="${personPayYearList.PAY_02}"></td>		<!-- 2월 --> 
+									<td th:text="${personPayYearList.PAY_03}"></td>		<!-- 3월 -->
+									<td th:text="${personPayYearList.PAY_04}"></td>		<!-- 4월 --> 
+									<td th:text="${personPayYearList.PAY_05}"></td>		<!-- 5월 -->
+									<td th:text="${personPayYearList.PAY_06}"></td>		<!-- 6월 --> 
+									<td th:text="${personPayYearList.PAY_07}"></td>		<!-- 7월 -->
+									<td th:text="${personPayYearList.PAY_08}"></td>		<!-- 8월 --> 
+									<td th:text="${personPayYearList.PAY_09}"></td>		<!-- 9월 -->
+									<td th:text="${personPayYearList.PAY_10}"></td>		<!-- 10월 --> 
+									<td th:text="${personPayYearList.PAY_11}"></td>		<!-- 11월 -->
+									<td th:text="${personPayYearList.PAY_12}"></td>		<!-- 12월 --> 
+									<td th:text="${personPayYearList.PAY_TOT}"></td>	<!-- 급여총액 -->
+								</th:block>
+							</tr>
 						</tbody>
 					</table>
 				</div>

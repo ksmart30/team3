@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team03.person.mapper.PayMapper">
+    <!-- 급여 계산 -->
     <select id="getPersonPayCalList"
             parameterType="ksmart30.team03.person.domain.PayGiveTake"
             resultType="ksmart30.team03.person.domain.PayGiveTake">
@@ -16,5 +17,49 @@
                 AUDIT_ID
             FROM T_HC5300
             WHERE EMP_NO = #{EMP_NO}
+    </select>
+    <!-- 급여 대장 (월간) -->
+    <select id="getPersionPayMonthList"
+            parameterType="ksmart30.team03.person.domain.PayMonth"
+            resultType="ksmart30.team03.person.domain.PayMonth">
+            SELECT  MAX(A.EMP_NO) EMP_NO,
+                    MAX(A.DEPT_NM) DEPT_NM,
+                    MAX(A.JIKGUP_NM) JIKGUP_NM,
+                    MAX(ISNULL(B.KOR_NM,C.KOR_NM)) KOR_NM,
+                    MAX(A.PAY_GB) PAY_GB,
+                    SUM(A.PAYTOT) PAYTOT,
+                    SUM(A.BIKWAT) BIKWAT,
+                    SUM(A.KWASET) KWASET,
+                    SUM(A.SODUK_TAX) SODUK_TAX,
+                    SUM(A.JUMIN_TAX) JUMIN_TAX,
+                    SUM(A.H_INSURE) H_INSURE,
+                    SUM(A.PENSION) PENSION,
+                    SUM(A.E_INSURE) E_INSURE,
+                    SUM(A.CHAGAM) CHAGAM,
+                    MAX(A.PAY_DT) PAY_DT
+            FROM  T_HM5000   A, 
+                  T_HM1000   B,
+                  T_HM1000_T C
+            WHERE A.EMP_NO *= B.EMP_NO
+              AND A.EMP_NO *= C.EMP_NO   
+              AND (A.PAY_YYMM = #{PAY_YYMM}
+              AND A.DEPT_NM LIKE '%'+#{DEPT_NM}+'%'
+              AND (B.KOR_NM LIKE '%'+#{KOR_NM}+'%' AND C.KOR_NM LIKE '%'+#{KOR_NM}+'%'))
+            GROUP BY A.EMP_NO, A.PAY_YYMM, A.DEPT_CD
+            ORDER BY A.DEPT_CD ASC
+    </select>
+    <!-- 급여 대장 (연간) -->
+    <select id="getPersionPayYearList"
+            parameterType="ksmart30.team03.person.domain.PayYear"
+            resultType="ksmart30.team03.person.domain.PayYear">
+            SELECT DEPT_CD, DEPT_NM, JIKGUP_CD, JIKGUP_NM, EMP_NO, KOR_NM,
+              PAY_01, PAY_02, PAY_03, PAY_04, PAY_05, PAY_06,
+              PAY_07, PAY_08, PAY_09, PAY_10, PAY_11, PAY_12,
+              COLOR , GUBUN,
+              (PAY_01 + PAY_02 + PAY_03 + PAY_04 + PAY_05 + PAY_06 
+              + PAY_07 + PAY_08 + PAY_09 + PAY_10 + PAY_11 + PAY_12) AS PAY_TOT
+            FROM SF_H51_0280_SL1 (#{PAY_YYMM},'000010', 'Z20000')
+            WHERE DEPT_NM LIKE '%'+#{DEPT_NM}+'%' AND KOR_NM LIKE '%'+#{KOR_NM}+'%'
+            ORDER BY DEPT_CD, JIKGUP_CD, EMP_NO
     </select>
 </mapper>
