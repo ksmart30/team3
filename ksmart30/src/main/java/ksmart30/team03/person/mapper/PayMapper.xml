@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team03.person.mapper.PayMapper">
-    <!-- 급여 계산 -->
+    <!-- 급여 계산 (지급, 공제항목)-->
     <select id="getPersonPayCalList"
             parameterType="ksmart30.team03.person.domain.PayGiveTake"
             resultType="ksmart30.team03.person.domain.PayGiveTake">
@@ -17,6 +17,24 @@
                 AUDIT_ID
             FROM T_HC5300
             WHERE EMP_NO = #{EMP_NO}
+    </select>
+    <!-- 급여 계산 (기간적용항목 / 지급 및 공제) -->
+    <select id="getPersonPayCalPeriodList"
+            parameterType="ksmart30.team03.person.domain.PayPeriod"
+            resultType="ksmart30.team03.person.domain.PayPeriod">
+            SELECT A.EMP_NO AS EMP_NO,
+		   A.ITEM_GB AS ITEM_GB,
+		   A.ITEM_CD AS ITEM_CD,
+                   A.STA_DATE AS STA_DATE,
+                   A.END_DATE AS END_DATE,
+                   A.GIVETAKE_AMT AS GIVETAKE_AMT,
+                   A.AUDIT_ID AS AUDIT_ID,
+                   B.ITEM_NM AS ITEM_NM
+            FROM  T_HC5500 A,
+                  T_HC5200 B
+            WHERE A.EMP_NO = #{EMP_NO}
+                AND A.ITEM_GB = B.ITEM_GB
+                AND A.ITEM_CD = B.ITEM_CD
     </select>
     <!-- 급여 대장 (월간) -->
     <select id="getPersionPayMonthList"

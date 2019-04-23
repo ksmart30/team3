@@ -115,6 +115,32 @@
 				console.log("국민,건강,고용보험 계산 입력처리 완료");
 			}	
 		});
+		// 2. 기간적용항목 입력
+		$.ajax({
+			url:'/person/personPayCalPeriodListView',
+			type:'GET',
+			data:{EMP_NO:empNO},
+			success:function(data) {
+				$('#JIGEUM_PERIOD').empty();
+				$('#GONGJE_PERIOD').empty();
+				$(data).each(function(index,personPayPeriodList) {
+					// 지급항목
+					if(personPayPeriodList.item_GB == '1') {
+						$('#JIGEUM_PERIOD').append('<tr><td></td><td style="text-align : center">'+personPayPeriodList.item_NM+'</td>'+
+						'<td style="text-align : center">'+personPayPeriodList.sta_DATE.substring(0,4)+'.'+personPayPeriodList.sta_DATE.substring(4,6)+'.'+personPayPeriodList.sta_DATE.substring(6,8)+'</td>'+
+						'<td style="text-align : center">'+personPayPeriodList.end_DATE.substring(0,4)+'.'+personPayPeriodList.end_DATE.substring(4,6)+'.'+personPayPeriodList.end_DATE.substring(6,8)+'</td>'+
+						'<td style="text-align : right">'+numberWithCommas(personPayPeriodList.givetake_AMT)+'</td></tr>');
+					}
+					// 공제항목 
+					if(personPayPeriodList.item_GB == '7') {
+						$('#GONGJE_PERIOD').append('<tr><td></td><td style="text-align : center">'+personPayPeriodList.item_NM+'</td>'+
+						'<td style="text-align : center">'+personPayPeriodList.sta_DATE.substring(0,4)+'.'+personPayPeriodList.sta_DATE.substring(4,6)+'.'+personPayPeriodList.sta_DATE.substring(6,8)+'</td>'+
+						'<td style="text-align : center">'+personPayPeriodList.end_DATE.substring(0,4)+'.'+personPayPeriodList.end_DATE.substring(4,6)+'.'+personPayPeriodList.end_DATE.substring(6,8)+'</td>'+
+						'<td style="text-align : right">'+numberWithCommas(personPayPeriodList.givetake_AMT)+'</td></tr>');
+					}
+				});
+			}
+		});
 	}
 	// 1. 국민연금 계산 실행
 	function insureKukminCal(JIGEUM_TOTAL){
@@ -220,9 +246,9 @@
 	</div>
 	<div class="x_content" style="text-align: right">
 		<div class="btn-group" >
-			<button class="btn btn-default" id ="btnWrite"type="reset">입력</button>
+			<button class="btn btn-default" id ="btnWrite"type="reset" disabled="disabled">입력</button>
 			<button class="btn btn-default" type="button">수정</button>
-			<button class="btn btn-default" type="button">삭제</button>
+			<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
 			<button class="btn btn-default" type="button">출력</button>
 		</div>
 	</div>
@@ -549,6 +575,7 @@
 							</tbody>
 						</table>
 					</div>
+					<!-- 					
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<table class="table table-bordered jambo_table bulk_action">
 							<h5>⊙ 급여 이체 / 회계 정보</h5>
@@ -621,7 +648,8 @@
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</div> 
+					-->
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<h5>⊙ 지급 및 공제항목 (기간별)</h5>
 						<div class="form-inline">
@@ -648,6 +676,8 @@
 										</td>
 									</tr>
 								</tbody>
+								<tbody id="JIGEUM_PERIOD">
+								</tbody>
 								<thead>
 									<tr>
 										<td colspan="5">• 공제항목</td>
@@ -669,6 +699,8 @@
 											지급액
 										</td>
 									</tr>
+								<tbody id="GONGJE_PERIOD">
+								</tbody>
 								</tbody>
 							</table>		                       				                      						
 						</div>
