@@ -1,4 +1,3 @@
-
 <!-- 출퇴근 정정신청 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
@@ -28,18 +27,25 @@
 	$(document).ready(function(){
 		console.log('정정 리스트 이름 검색 ');
 		$("#list").delegate('tr', 'click', function(){
+			$('#test').val('6:00');
 			// 행과 각각의 값들을 담아옴
 			let tr = $(this);
 			let td = tr.children();
+		
 			console.log(td);
 			let empNo = td.eq(0).text();
 			console.log(td.eq(0).text());
-			$('#KOR_NM').val(td.eq(1).text());	// 이름
-			$('#DEPT_NM').val(td.eq(2).text());
-			$('#JIKGUP_NM').val(td.eq(3).text());			
+			$('#KOR_NM').val(td.eq(1).text());		// 이름
+			$('#DEPT_NM').val(td.eq(2).text());		// 부서 이름
+			$('#JIKGUP_NM').val(td.eq(3).text());	// 직급
+			$('#WORK_DT3').val(td.eq(4).text());	// 작업 날짜 다른 폼에서 쓰기 위해 아이디 값을 다르게 지정.
+			$('#WORK_DT4').val(td.eq(4).text());	// 작업 날짜 1
+			$('#WORK_DT5').val(td.eq(4).text());	// 작업 날짜 2
 			$('#START_TIME').val(td.eq(5).text());
-			$('#END_DT').val(td.eq(6).text());
-				
+			$('#START_TIME1').val(td.eq(5).text());	// 시작 시각
+			$('#END_DT').val(td.eq(6).text());		// 끝난 날짜
+			$('#END_TIME').val(td.eq(7).text());	// 끝난 시각
+
 			console.log("클릭된 행의 값 :" + tr.text());
 			
 			jigak(empNo);	// 지각 정보 
@@ -61,15 +67,15 @@
 	         	data : {KOR_NM:KOR_NM,WORK_DT:WORK_DT,WORK_DT1:WORK_DT1},
 	            success:function(data){
 	            	console.log('사원 번호 쿼리 성공!');
-	            	
 	                $('#list').empty();
 	                $(data).each(function(index,item){ //each = foreach (반복문)
-	                    $('#list').append('<tr><td style="display : none">'+item.emp_NO+'</td><td>'+item.kor_NM+'</td><td style="display : none">'+item.dept_NM+'</td><td style="display : none">'+item.jikgup_NM+'</td><td>'+item.work_DT+'</td><td>'+item.start_TIME+'</td><td>'+item.end_DT+'</td></tr>');
+	                    $('#list').append('<tr><td style="display : none">'+item.emp_NO+'</td><td>'+item.kor_NM+'</td><td style="display : none">'+item.dept_NM+'</td><td style="display : none">'+item.jikgup_NM+'</td><td>'+item.work_DT+'</td><td>'+item.start_TIME+'</td><td>'+item.end_DT+'</td><td style="display : none">'+item.end_TIME+'</td></tr>');
 											
 									});                   
-	            }/* error:function(request,status,error){
-	                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	            } */
+	            }/*error:function(request,status,error){
+	                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); 
+	            }  */
+
 	        });
 	    });
 	     
@@ -88,63 +94,13 @@
 
 			// 검색날짜에 대입
 			$('#WORK_DT1').val(getToday);   
+			$('#WORK_DT2').val(getToday);
+			
+	
 	     
 	 });
 	
-	
-/* 	$(document).ready(function(){
-		 console.log('정정신청 list 출력해보자');	
-		 let KOR_NM = $('#KOR_NM').val();
-		$.ajax({
-			url:'/kuntae/workTimeView',
-			type:'GET',
-			dtat:{KOR_NM:KOR_NM},
-			success:(data)=>{				
-			}
-		});
-}); */
-	
-	/* function click2(kor_NM){
-		let KOR_NM2 = $('#KOR_NM').val();
-		let AUDIT_TM_FORMAT = "";
-		let AUDIT_TM2 = "";
-		let JIKGUP_NM2	= "";
-		let JIKCHK_NM2 = "";
-		let EMP_NO2 = "";
-		let IN_PHONE_NO2 = "";
-		let DEPT_NM2 = "";		 
-		let SEX_GB2 = "";
-		let OUT_DT3 = "";
-		console.log('직원  검색조건 (이름) : '+ KOR_NM2);
-			$.ajax({
-				url:'/person/personInsaEmployeeView',
-				type:'GET',
-				data:{OUT_DT3:OUT_DT3,EMP_NO:EMP_NO2,KOR_NM:KOR_NM2,AUDIT_TM:AUDIT_TM2,JIKGUP_NM:JIKGUP_NM2,JIKCHK_NM:JIKCHK_NM2,IN_PHONE_NO:IN_PHONE_NO2,DEPT_NM:DEPT_NM2,SEX_GB:SEX_GB2},
-				success:function(data){
-					$(data).each(function(index,item){
-						console.log("KOR_NM =>"+KOR_NM);
-						$('#UP_EMP_NO').val(item.emp_NO);	// User-ID
-						
-						$('#DEPT_NM').val(item.DEPT_NM);	// 사용자명
-						$('#JIKGUP_NM').val(item.JIKGUP_NM);	
-											
-					});			
-				}	
-			});
-		} */
-/* 		function click3(emp_NO) {
-			// 행과 각각의 값들을 담아옴
-			let tr = $(this);
-			let td = tr.children();
-			console.log(tr);
-			$('#KOR_NM').val(td.eq(0).text());	// 이름
-			$('#DEPT_NM').val(td.eq(1).text());
-			$('#JIKGUP_NM').val(td.eq(2).text());
-			
-			$('#START_TIME').val(td.eq(4).text());
-			$('#END_DT').val(td.eq(5).text());
-				
-			} */
+
 	
 	</script>
 	</th:block>
@@ -155,17 +111,13 @@
 	<div class="col-md-9 col-xs-12" style="color:black;">
         <div class="page-title">
 			<div class="title_left">
-				<h2><b>4. 근태 관리</b></h2>
+				<h2><b>근태 정정 신청</b></h2>
 				<h5></h5>
-				<h5><font color= "gray"><b>4.4 출퇴근 정정신청&nbsp;</b></font></h5>
+				<h5><font color= "gray"><b>4.근태 관리 &nbsp;&gt;&nbsp;&nbsp;6.4 근태정정신청</b></font></h5>
 			</div>
 		</div>
     </div>
-
-                    
-
 		<div class="x_content" style="text-align: right">
-		
 				<div class="btn-group" >
 						<button class="btn btn-default" id ="btnWrite"type="reset">입력</button>
 						<button class="btn btn-default" type="button">수정</button>
@@ -173,34 +125,53 @@
 						<button class="btn btn-default" type="button">출력</button>
 				</div>
 		</div>
-		
-		
+
+
 		<div class="clearfix"></div>
-		<div class="row">
 			<div class="col-md-3 col-sm-3 col-xs-12">
-				<div class="x_panel" style="color: black;">
-					<div class="x_content">
-						
-						<form action="/kuntae/workTimeSearch">
+				<div class="x_panel" style="color:black;" >
+					<div class="form-inline">
+					
+					<table class="table table-bordered jambo_table bulk_action">	
+						<thead>
+							<tr>
+								<td colspan="2">검색조건</td>
+							</tr>
+						</thead>
 						<tbody>
-						<tr>
-			                <th style="width:10%">기간</th>
-			                <td style="width:15%">
-				                <input type="date" size="5" id="WORK_DT" name="WORK_DT" >	
-	                 	 	</td>
-			                <td style="width:15%">
-								<input type="date" size="5" id="WORK_DT1" name="WORK_DT1">
-							</td>
-						 </tr>
-							사원명
-							<input type="hidden" id="User_ID">
-							<input type="text" id="INPUT_KOR_NM">
-							<button type="button" class="btn" style="color:black" name="PERSON_LIST" id="btn_KORNM"><i class="fa fa-search"></i></button>
-							<br>
-						</tbody>
-						</form> 			
-					</div>
-				</div> 
+							<form action="/kuntae/workTimeSearch">
+							<tr>
+								<td style="text-align: center">
+									사원명
+								</td>
+								<td>
+									<input type="hidden" id="User_ID">
+									<input type="text" id="INPUT_KOR_NM">
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: center">
+									기간
+								</td>
+								<td>
+									<input type="date" style="width: 130px" id="WORK_DT" name="WORK_DT">
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: center" >
+								</td>
+								<td>
+									<input type="date" id="WORK_DT1" name="WORK_DT1">
+								</td>
+							</tr>						
+						</tbody>				
+					</form> 
+				</table>	
+				<div class="x_content" style="text-align: right">
+				<button type="button" class="btn" style="color:black" id="btn_KORNM" >검색</button>			
+				</div>
+			</div>
+		</div> 
 				<div class="x_panel" style="color: black;">
 					<div class="x_content">
 						<div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="overflow: scroll; height: 600px; padding: 10px; color:black;">
@@ -222,6 +193,7 @@
 									<td style="text-align: center" th:text="${t.WORK_DT}"></td>
 									<td style="text-align: center" th:text="${t.START_TIME}"></td>
 									<td style="text-align: center" th:text="${t.END_DT}"></td>
+									<td style="display: none" th:text="${t.END_TIME}"></td>
 									</tr>
 								</tbody>
 							</table>
@@ -233,38 +205,34 @@
 
 <div class="col-md-9 col-sm-9 col-xs-12">                     
 <div class="x_panel" style="">
-    <div class="x_title">
-        <h2>기본정보</h2> 
-            
-<div class="clearfix"></div>
-    </div>
+   
     <div class="x_content">
         <div class="container">
 	        <ul class="stats-overview">
 	          <li>
-	          	<span class="name"> 성명 </span>
-	            <input type="text" id="KOR_NM" name="KOR_NM" readonly> 
+	          	<span class="name" > 성명 </span>
+	            <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="KOR_NM" name="KOR_NM" readonly> 
 	           
 	          </li>
 	           
 	          <li>
 	            <span class="name"> 직급 </span>
-	            <input type="text" id="JIKGUP_NM" name="JIKGUP_NM" readonly>
+	            <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;"id="JIKGUP_NM" name="JIKGUP_NM" readonly>
 	          </li>
 	          <li class="hidden-phone">
 	             <span class="name"> 부서 </span>
-	           <input type="text" id="DEPT_NM" name="DEPT_NM" >
+	           <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="DEPT_NM" name="DEPT_NM" readonly>
 	          </li>
 	          
 	        </ul>
 	        <ul class="stats-overview">
 	          <li>
 	            <span class="name"> 지각횟수 </span>
-	            <input type="text" id="LATE_CNT" name="LATE_CNT">
+	            <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="LATE_CNT" name="LATE_CNT" readonly>
 	          </li>
 	          <li>
 	            <span class="name"> 지각누계 </span>
-	           <input type="text"  id="LATE_TIME" name="LATE_TIME"> 
+	           <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="LATE_TIME" name="LATE_TIME" readonly> 
 	          </li>
 	          <li class="hidden-phone">
 	            <span class="name"> </span>
@@ -282,104 +250,111 @@
   
   
 <div class="x_panel" style="">
-    <div class="x_title">
-        <h2>기본내역 <small> 정정구분 및 신청일자</small></h2>
-   <div class="clearfix"></div>
-    </div>
+
+        <h2> <small> 정정구분 및 신청일자</small></h2>
+		
+		
+		<div class="x_content" style="text-align: right">
+			<span>신청일자</span>
+			<input type="date" class="btn" style="color:black" name="WORK_DT2" id="WORK_DT2" readonly>
+							
+			</div>
+
     <div class="x_content">
 	
        <div class="row">
        
        <div class="col-sm-4">
-               
-				<!-- <div class="form-group">
-					<div class="radio">
-					<label>
-					  <input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">승인
-					</label>
-					<label>
-					  <input type="radio" value="option2" id="optionsRadios2" name="optionsRadios"> 미승인
-					</label>
-					<label>
-					  <input type="radio" value="option2" id="optionsRadios2" name="optionsRadios"> All
-					</label>
-					</div>   
-				</div>
-			</div> -->
-
 	</div>	
 	
 					
-         <table class="table">         
-                      <tbody>
-                      
+         <table class="table table-striped jambo_table bulk_action"	>
+                      <thead>
                         <tr>
-	                        <th>출근일시</th>
-	                        <td>  
-	                        <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-							<input type="text" id="START_TIME" name="START_TIME" readonly>
-							</td>
-							
-		                    <th></th>
-		                    <td>
-		                    <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-		                    <!-- <input type="date"> -->
-		                    <span class="name"> 수정할 시각↓ </span>
-		                    </td>
-                        </tr>
-                        
-                        <tr>
-                          <th>퇴근일시</th>
-                          <td>
-                          <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-                          <input type="text" id="END_DT" name="END_DT" readonly>
-                          </td>
-                        
-						  <th>퇴근일시</th>
-                          <td>
-                          <div class="col-md-7 col-sm-12 col-xs-12 form-group">
-                          <input type="date" max="2020-12-31">
-						  </td>
-                        </tr>
+                          <th>수정전↓</th>
+                          <th></th>
+                          <th>수정후↓</th>
+                          <th></th>
+                          <th></th>
 
-						<!-- <tr>
-							<th>직급</th>
-							<td>
-								<div class="form-group">
-									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text"><button data-toggle="modal" data-target="#no"><i class="fa fa-search"></i></button>
-									</div>
-								</div>
-							</td>
-							<th></th>
-							<td>
-								<div class="form-group">
-									<div class="col-md-4">
-												
-									</div>
-								</div>
-							</td>
-						</tr> -->
+                        </tr>
+                      </thead>
+                      <tbody>
+                      	<tr>
+							<td>출근일 <input type="text" id="WORK_DT3" style="width: 100px;" readonly></td>
+							<td>시간 <input type="text" id="START_TIME" name="START_TIME" style="width: 75px;" readonly></td>	
+						
+							<td>출근일 <input type="text" id="WORK_DT4" style="width: 100px;" readonly></td>
+							<td>시간 <input type="text" id="START_TIME1" style="width: 75px;" readonly></td>	
+						</tr>
+
+                        <tr>
+                       		<td>퇴근일 <input type="text" id="END_DT" style="width: 100px;" readonly></td>
+                          	<td>시간 <input type="text" id="END_TIME" name="END_TIME" style="width: 75px;" readonly></td>
+
+                          	<td>퇴근일 <input type="text" id="WORK_DT5" style="width: 100px;" readonly></td>
+                          	<td>시간 <input type="text" id="test" style="width: 75px;" readonly></td>
+                        </tr>
 
 						<tr>
-							<th>정정 사유</th>
-							<td>
-								<div class="form-group">
-									<div class="col-md-7 col-sm-9 col-xs-12">
-										<th colspan="10"><textarea id="RMK_1"> </textarea></th>
-									</div>
-								</div>
-								
+							<td>사유</td>
+								<td ><textarea></textarea></td>											
 							<th></th>
                           	<td></td>
-	
 						</tr>
 					</tbody>
                     </table>
             </div>
         </div>
     </div>
-
+<!-- <!--  급여 등록 (오른쪽)
+		<div class="col-md-4 col-sm-12 col-xs-12">
+			<div class="x_panel" style="color:black;">
+				<h4>급여 계산 처리</h4>
+				<div class="x_title">
+				</div>
+				<div class="form-inline">
+					<table class="table table-bordered jambo_table bulk_action">
+						<thead>
+							<tr>
+								<td colspan="2">• 필수 입력 사항</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="text-align: center">
+									사원명
+								</td>
+								<td>
+									<input type="text">
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: center">
+									기간
+								</td>
+								<td>
+									<input type="date" style="width: 130px" id="GIVE_DATE">
+								</td>
+							</tr>
+							
+							<tr>
+								<td style="text-align: center">
+								</td>
+								<td>
+									<input type="date">
+								</td>
+							</tr>
+						</tbody>
+						
+					</table>		                       				                      	
+					
+				</div>	
+				  
+			</div>
+		</div>
+	</div>
+ -->
 
 
 
