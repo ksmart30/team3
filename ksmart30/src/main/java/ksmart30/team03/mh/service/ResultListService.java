@@ -24,11 +24,13 @@ public class ResultListService {
 	public List<Map<String,Object>> getApprovalSearchName(ResultPersonList resultPersonList){
 		List<Map<String,Object>> vo = resultListMapper.getResultSearchName(resultPersonList);
 		System.out.println("service getApprovalSearchName 요청");
-		if(resultPersonList.getEMP_NO() =="" ) {
-			vo = resultListMapper.getResultSearchName2(resultPersonList);
-		}else {
-			vo = resultListMapper.getResultSearchName(resultPersonList);
-		}
+		/*
+		 * if(resultPersonList.getEMP_NO() =="" && resultPersonList.getWORK_YM()=="" ||
+		 * resultPersonList.getEMP_NO() !="" && resultPersonList.getWORK_YM()=="" ||
+		 * resultPersonList.getEMP_NO() =="" && resultPersonList.getWORK_YM()!="") { vo
+		 * = resultListMapper.getResultSearchName2(resultPersonList); }else { vo =
+		 * resultListMapper.getResultSearchName(resultPersonList); }
+		 */
 		return vo;
 	}
 }

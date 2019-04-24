@@ -8,6 +8,7 @@
 		<select id="getresultListView"
 		resultType="ksmart30.team03.mh.domain.ResultPersonList">
 		  SELECT TOP 20
+			 A.WORK_YM,
 			 A.EMP_NO,
 			 ISNUlL(B.LEVEL2_NM,'-') AS JIKGUP_CD,
 			 ISNULL(C.KOR_NM,'-') AS KOR_NM,
@@ -24,11 +25,12 @@
 			AND(A.PJT_CD *= D.PJT_CD)
 			AND((A.EMP_NO *= C.EMP_NO)) 
 		</select>
-		<!-- 5.3 M/H실적(월별) 사원번호검색 쿼리-->
+		<!-- 5.3 M/H실적(월별) 사원번호검색 및 날짜검색 쿼리-->
 		<select id="getResultSearchName"
 				parameterType="String" 
 				resultType="java.util.Map">
 		  SELECT TOP 20
+			 A.WORK_YM,
 			 A.EMP_NO,
 			 ISNUlL(B.LEVEL2_NM,'-') AS JIKGUP_CD,
 			 ISNULL(C.KOR_NM,'-') AS KOR_NM,
@@ -43,7 +45,8 @@
 			T_SM3000_2016 D
 			WHERE((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB= 'H' ))
 			AND(A.PJT_CD *= D.PJT_CD)
-			AND((A.EMP_NO *= C.EMP_NO)) AND A.EMP_NO<![CDATA[=]]>#{EMP_NO}
+			AND((A.EMP_NO *= C.EMP_NO)) AND A.EMP_NO LIKE '%'+#{EMP_NO}+'%'
+			AND A.WORK_YM LIKE '%'+#{WORK_YM}+'%';
 		</select>
 		
 		<!-- 5.3 M/H실적(월별) 사원번호검색 쿼리 검색이 없을 때-->
@@ -51,6 +54,7 @@
 				parameterType="String" 
 				resultType="java.util.Map">
 		 SELECT TOP 20
+			 A.WORK_YM,
 			 A.EMP_NO,
 			 ISNUlL(B.LEVEL2_NM,'-') AS JIKGUP_CD,
 			 ISNULL(C.KOR_NM,'-') AS KOR_NM,

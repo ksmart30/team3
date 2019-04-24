@@ -18,9 +18,13 @@ public interface ResultMapper {
 	//M/H 실적 리스트 검색
 	//검색이 있을떄
 	List<Map<String,Object>> getListSearch(Result result);
+	//실적 디테일 출력
+	List<Result> getResultListDetailView(String EMP_NO);
+		
 	//검색이 없을때
 	List<Map<String,Object>> getListSearch2(Result result);
 	
 	//입력 할때 프로젝트 선택
 	List<Result> getSelectListView();
+	
 }

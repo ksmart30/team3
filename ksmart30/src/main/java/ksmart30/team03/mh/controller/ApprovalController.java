@@ -33,6 +33,6 @@ public class ApprovalController {
 	  List<Map<String,Object>> resultdate = approvalService.getApprovalSearchDate(result);	  
 
 	  return resultdate;
-	  
 	  }
+	  
 }

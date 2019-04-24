@@ -9,56 +9,32 @@
 	<link href="/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
 	<head>
 		<script>
+		//날짜 및 사원번호 검색
 			$(document).ready(function(){
 				$("#btn_name").click(function(){
 					let EMP_NO = $('#EMP_NO').val();
-					console.log("사원 번호 :"+EMP_NO);					
+					let work_dt_format = $('#WORK_YM').val();
+					let WORK_YM = work_dt_format.substr(0,4)+work_dt_format.substr(5,2);
+					console.log("사원 번호 :"+EMP_NO);	
+					console.log("날짜 :"+WORK_YM);
 					$.ajax({
 						url:'/manHour/resultNameSearchView',
 						type:'GET',
-						data:{EMP_NO:EMP_NO},
+						data:{EMP_NO:EMP_NO,WORK_YM:WORK_YM},
 						success:(data)=>{
 							$('#list').empty();
 							console.log('리스트 출력');
 							console.log(data);
 							$(data).each(function(index,item){
-								$('#list').append('<tr>');
-								$('#list').append('<td>'+item.EMP_NO+'</td>');
-								$('#list').append('<td>'+item.JIKGUP_CD+'</td>');
-								$('#list').append('<td>'+item.KOR_NM+'</td>');
-								$('#list').append('<td>'+item.PJT_CD+'</td>');
-								$('#list').append('<td></td>');
-								$('#list').append('<td>'+item.D_01+'</td>');
-								$('#list').append('<td>'+item.D_02+'</td>');
-								$('#list').append('<td>'+item.D_03+'</td>');
-								$('#list').append('<td>'+item.D_04+'</td>');
-								$('#list').append('<td>'+item.D_05+'</td>');
-								$('#list').append('<td>'+item.D_06+'</td>');
-								$('#list').append('<td>'+item.D_07+'</td>');
-								$('#list').append('<td>'+item.D_08+'</td>');
-								$('#list').append('<td>'+item.D_09+'</td>');
-								$('#list').append('<td>'+item.D_10+'</td>');
-								$('#list').append('<td>'+item.D_11+'</td>');
-								$('#list').append('<td>'+item.D_12+'</td>');
-								$('#list').append('<td>'+item.D_13+'</td>');
-								$('#list').append('<td>'+item.D_14+'</td>');
-								$('#list').append('<td>'+item.D_15+'</td>');
-								$('#list').append('<td>'+item.D_16+'</td>');
-								$('#list').append('<td>'+item.D_17+'</td>');
-								$('#list').append('<td>'+item.D_18+'</td>');
-								$('#list').append('<td>'+item.D_19+'</td>');
-								$('#list').append('<td>'+item.D_21+'</td>');
-								$('#list').append('<td>'+item.D_22+'</td>');
-								$('#list').append('<td>'+item.D_23+'</td>');
-								$('#list').append('<td>'+item.D_24+'</td>');
-								$('#list').append('<td>'+item.D_25+'</td>');
-								$('#list').append('<td>'+item.D_26+'</td>');
-								$('#list').append('<td>'+item.D_27+'</td>');
-								$('#list').append('<td>'+item.D_28+'</td>');
-								$('#list').append('<td>'+item.D_29+'</td>');
-								$('#list').append('<td>'+item.D_30+'</td>');
-								$('#list').append('<td>'+item.D_31+'</td>');							
-								$('#list').append('</tr>');
+								$('#list').append('<tr><td>'+item.WORK_YM+'</td><td>'+item.EMP_NO+'</td><td>'+item.JIKGUP_CD+'</td><td>'+item.KOR_NM+'</td>'
+								+'<td>'+item.PJT_CD+'</td><td></td><td>'+item.D_01+'</td><td>'+item.D_02+'</td><td>'+item.D_03+'</td>'
+								+'<td>'+item.D_04+'</td><td>'+item.D_05+'</td><td>'+item.D_06+'</td><td>'+item.D_07+'</td>'
+								+'<td>'+item.D_08+'</td><td>'+item.D_09+'</td><td>'+item.D_10+'</td><td>'+item.D_11+'</td>'
+								+'<td>'+item.D_12+'</td><td>'+item.D_13+'</td><td>'+item.D_14+'</td><td>'+item.D_15+'</td>'
+								+'<td>'+item.D_16+'</td><td>'+item.D_17+'</td><td>'+item.D_18+'</td><td>'+item.D_19+'</td>'
+								+'<td>'+item.D_21+'</td><td>'+item.D_22+'</td><td>'+item.D_23+'</td><td>'+item.D_24+'</td>'
+								+'<td>'+item.D_25+'</td><td>'+item.D_26+'</td><td>'+item.D_27+'</td><td>'+item.D_28+'</td>'
+								+'<td>'+item.D_29+'</td><td>'+item.D_30+'</td><td>'+item.D_31+'</td></tr>');
 							});
 						}
 					});
@@ -73,18 +49,19 @@
 	<div class="title_left">
 	 <h2><b>M/H 실적 조회</b></h2>
 	 <h5></h5>
-	<h5><font color= "gray"><b>5.M/H 관리&nbsp;>&nbsp;&nbsp;5.3M/H실적조회</b></font></h5>
+	<h5><font color= "gray"><b>5.M/H 관리&nbsp;>&nbsp;&nbsp;5.3M/H실적조회&nbsp;>&nbsp;M/H 실적 조회 </b></font></h5>
 					
 	</div>
 	</div>
         </div>
         <div class="x_content" style="text-align: right">
 				<div class="btn-group" >
-					<button class="btn btn-default" type="reset">입력</button>
-					<button class="btn btn-default" type="button">수정</button>
-					<button class="btn btn-default" type="button">삭제</button>
-					<button class="btn btn-default" type="button">저장</button>
-					<button class="btn btn-default" type="button">출력</button>
+					<button class="btn btn-default" type="button" disabled="disabled">입력</button>
+					<button class="btn btn-default" type="button" id="btn_name">조회</button>
+					<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+					<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+					<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+					<button class="btn btn-default" type="button" disabled="disabled">출력</button>
 				</div>
 		
 			</div>		            
@@ -92,57 +69,72 @@
                 <div class="x_panel">  
                 	<form action="/manHour/resultNameSearchView">
 							<label>
-                    		◎사원번호검색　
+                    		사원번호　
                     		<input type="text" id="EMP_NO" name="EMP_NO">
-                          	<button type="button" style="color:black" id="btn_name">검색</button>
+                    		날짜 
+                    		<input type="month" id="WORK_YM" name="WORK_YM">
+                          	<!-- <button type="button" style="color:black" id="btn_name">검색</button> -->
                           	</label>
                           	</form>                 
                   <div class="x_content">
 					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">									
                     <table class="table table-bordered" style="color:black;">                    		                    		                         	
                       <thead> 
-                      	 <tr>                     	                                       	                                                
+                      	 <tr>
+                      	  <th bgcolor="#EAEAEA">날짜</th>                     	                                       	                                                
                           <th bgcolor="#EAEAEA">사원번호</th>
                           <th bgcolor="#EAEAEA">직급</th>
                           <th bgcolor="#EAEAEA">성명</th>
                           <th bgcolor="#EAEAEA">프로젝트 코드명</th>
-                          <th bgcolor="#EAEAEA">월계</th>                                                  
-                          <th bgcolor="#EAEAEA">月01</th>
-                          <th bgcolor="#EAEAEA">火02</th>
-                          <th bgcolor="#EAEAEA">水03</th>
-                          <th bgcolor="#EAEAEA">木04</th>
-                          <th bgcolor="#EAEAEA">金05</th>
-                          <th bgcolor="#EAEAEA">土06</th>
-                          <th bgcolor="#EAEAEA">日07</th>
-                          <th bgcolor="#EAEAEA">月08</th>
-                          <th bgcolor="#EAEAEA">火09</th>
-                          <th bgcolor="#EAEAEA">水10</th>
-                          <th bgcolor="#EAEAEA">木11</th>
-                          <th bgcolor="#EAEAEA">金12</th>
-                          <th bgcolor="#EAEAEA">土13</th>
-                          <th bgcolor="#EAEAEA">日14</th>
-                          <th bgcolor="#EAEAEA">月15</th>
-                          <th bgcolor="#EAEAEA">火16</th>
-                          <th bgcolor="#EAEAEA">水17</th>
-                          <th bgcolor="#EAEAEA">木18</th>
-                          <th bgcolor="#EAEAEA">金19</th>
-                          <th bgcolor="#EAEAEA">土20</th>
-                          <th bgcolor="#EAEAEA">日21</th>
-                          <th bgcolor="#EAEAEA">月22</th>
-                          <th bgcolor="#EAEAEA">火23</th>
-                          <th bgcolor="#EAEAEA">水24</th>
-                          <th bgcolor="#EAEAEA">木25</th>
-                          <th bgcolor="#EAEAEA">金26</th>
-                          <th bgcolor="#EAEAEA">土27</th>
-                          <th bgcolor="#EAEAEA">日28</th>
-                          <th bgcolor="#EAEAEA">月29</th>
-                          <th bgcolor="#EAEAEA">火30</th>
-                          <th bgcolor="#EAEAEA">水31</th>
+                          <th bgcolor="#EAEAEA">월계</th>  
+                          <!--1주  -->                                                
+                          <th bgcolor="#EAEAEA">月</th>
+                          <th bgcolor="#EAEAEA">火</th>
+                          <th bgcolor="#EAEAEA">水</th>
+                          <th bgcolor="#EAEAEA">木</th>
+                          <th bgcolor="#EAEAEA">金</th>
+                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
+                          <th bgcolor="#EAEAEA" style="color:red">日</th>
+                          <!--2주  -->
+                          <th bgcolor="#EAEAEA">月</th>
+                          <th bgcolor="#EAEAEA">火</th>
+                          <th bgcolor="#EAEAEA">水</th>
+                          <th bgcolor="#EAEAEA">木</th>
+                          <th bgcolor="#EAEAEA">金</th>
+                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
+                          <th bgcolor="#EAEAEA" style="color:red">日</th>
+                          <!--3주 -->
+                          <th bgcolor="#EAEAEA">月</th>
+                          <th bgcolor="#EAEAEA">火</th>
+                          <th bgcolor="#EAEAEA">水</th>
+                          <th bgcolor="#EAEAEA">木</th>
+                          <th bgcolor="#EAEAEA">金</th>
+                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
+                          <th bgcolor="#EAEAEA" style="color:red">日</th>
+                          <!--4주 -->
+                          <th bgcolor="#EAEAEA">月</th>
+                          <th bgcolor="#EAEAEA">火</th>
+                          <th bgcolor="#EAEAEA">水</th>
+                          <th bgcolor="#EAEAEA">木</th>
+                          <th bgcolor="#EAEAEA">金</th>
+                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
+                          <th bgcolor="#EAEAEA" style="color:red">日</th>
+                          <!--5주 -->
+                          <th bgcolor="#EAEAEA">月</th>
+                          <th bgcolor="#EAEAEA">火</th>
+                          <th bgcolor="#EAEAEA">水</th>
+                          <th bgcolor="#EAEAEA">木</th>
+                          <th bgcolor="#EAEAEA">金</th>
+                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
+                          <th bgcolor="#EAEAEA" style="color:red">日</th>
+                          <!--6주  -->
+                          
                         </tr>
                       </thead>   
                       
                       <tbody id = "list">
                       <tr th:each="l : ${ListView}">
+                        <td th:text="${l.WORK_YM}"></td>
   						<td th:text="${l.EMP_NO}"></td>
   						<td th:text="${l.JIKGUP_CD}"></td>
   						<td th:text="${l.KOR_NM}"></td>

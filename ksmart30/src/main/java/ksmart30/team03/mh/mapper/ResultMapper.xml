@@ -43,9 +43,8 @@
 				A.WORK_TIME,
 				A.ETC_SPEC,		
 				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
-				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD
-	
-			FROM T_PM1020 A, 
+				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD	
+			FROM T_PM1020_BNT A, 
 				 T_SC9100 B,
 				 T_SC9100 C,
 				 T_SC1010 D,
@@ -53,6 +52,7 @@
 				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
 				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+				 
 	</select>
 	
 	<!-- M/H실적 리스트 검색 -->
@@ -68,9 +68,8 @@
 				A.WORK_TIME,
 				A.ETC_SPEC,		
 				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
-				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD
-	
-			FROM T_PM1020 A, 
+				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD	
+			FROM T_PM1020_BNT A, 
 				 T_SC9100 B,
 				 T_SC9100 C,
 				 T_SC1010 D,
@@ -78,7 +77,8 @@
 				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
 				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
-	 AND A.WORK_DT<![CDATA[>=]]>#{WORK_DT} AND A.WORK_DT<![CDATA[<=]]>#{WORK_DT2}
+	 			 AND A.WORK_DT<![CDATA[>=]]>#{WORK_DT} AND A.WORK_DT<![CDATA[<=]]>#{WORK_DT2}
+	 			 
 	</select>
 	
 	<!-- M/H실적 리스트 검색 값이 없을 때 -->
@@ -95,16 +95,48 @@
 				A.ETC_SPEC,		
 				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
 				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD
-	
-			FROM T_PM1020 A, 
-				 T_SC9100 B,
-				 T_SC9100 C,
-				 T_SC1010 D,
-				 T_SM3000_2016 E
-				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
-				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
-				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)	 
+		FROM T_PM1020_BNT A, 
+			 T_SC9100 B,
+			 T_SC9100 C,
+			 T_SC1010 D,
+			 T_SM3000_2016 E
+		 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+		 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+		 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+				 
 	</select>
+	
+	
+	<!-- M/H실적 디테일 쿼리 -->
+	<select  id="getResultListDetailView"
+	resultType="ksmart30.team03.mh.domain.Result" parameterType="String">
+		SELECT 
+				A.EMP_NO,
+				A.WORK_DT,	
+				ISNULL(E.PJT_NM,'-') AS PJT_CD,
+				A.WORK_SPEC,	
+				ISNULL(D.DEPT_NM,'-') AS DEPT_CD,
+				A.WORK_TIME,
+				A.ETC_SPEC,		
+				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
+				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD
+		FROM T_PM1020_BNT A, 
+			 T_SC9100 B,
+			 T_SC9100 C,
+			 T_SC1010 D,
+			 T_SM3000_2016 E
+		 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+		 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+		 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+		 AND A.EMP_NO LIKE '%'+#{EMP_NO}+'%';
+	</select>
+	
+	
+	
+	
+	
+	
+	
 	<select id = "getSelectListView"
 				  resultType="ksmart30.team03.mh.domain.Result">
 	SELECT PJT_CD,PJT_NM FROM T_SM3000
