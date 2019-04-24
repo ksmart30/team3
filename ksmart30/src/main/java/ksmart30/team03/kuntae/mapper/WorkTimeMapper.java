@@ -30,8 +30,8 @@ public interface WorkTimeMapper {
 	// 출 퇴근 기록부(Total) 전체 검색 
  	List<WorkTimeSingleList> getRecordTotalSearch(String WORK_DT, String END_DT, String EMP_NO);
  	
- 	// 전체 검색(검색조건들을 vo로 받음)
- 	List<Map<String, Object>> getRecordTotal(WorkTimeSingleList vo);
+ 	// 전체 검색(검색 조건들을 vo로 받음)
+ 	List<Map<String, Object>> getSingleListDomain(WorkTimeSingleList vo);
 	
  	// 출퇴근 정정신청 List가져오기
  	List<WorkTime> getWorkTimeView();

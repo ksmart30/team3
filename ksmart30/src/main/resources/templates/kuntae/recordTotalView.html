@@ -10,9 +10,6 @@
 		<th:block th:include="layout/customHead"></th:block>
 <head>
 <script>
-
-
-
 	/* 사원번호 검색*/
 	$(document).ready(function(){
 		console.log('출,퇴근(Total) 리스트 출력')
@@ -82,8 +79,10 @@
 });
 	
 	
+	
+	
 	/* 전체 검색 */
-	$(document).ready(function(){
+/* 	$(document).ready(function(){
 		console.log('전체  검색')
 		$("#btn_search").click(function(){
 			let work_dt_format = $('#WORK_DT').val();
@@ -119,8 +118,77 @@
 			}
 		});
 	});
-});
+}); */
+
+/* vo 
+$('#btn_KORNM').click(function(){
+   	var KOR_NM = $('#INPUT_KOR_NM').val();
+   	console.log(KOR_NM);
+		let work_dt_format = $('#WORK_DT').val();
+		console.log(work_dt_format);
+		let work_dt1_format = $('#WORK_DT1').val();	
+		console.log(work_dt1_format);
+		let WORK_DT = work_dt_format.substr(0,4)+work_dt_format.substr(5,2)+work_dt_format.substr(8,2);
+		let WORK_DT1 = work_dt1_format.substr(0,4)+work_dt1_format.substr(5,2)+work_dt1_format.substr(8,2); 
+   		let DEPT_NM = $('#DEPT_NM').val();
+		$.ajax({
+           url:'/kuntae/workTimeSearch',
+           type:'GET',
+           dataType:'json',	           
+        	data : {KOR_NM:KOR_NM,WORK_DT:WORK_DT,WORK_DT1:WORK_DT1,DEPT_NM:DEPT_NM},
+           success:function(data){
+           	console.log('사원 번호 쿼리 성공!');
+               $('#list').empty();
+               $(data).each(function(index,item){ //each = foreach (반복문)
+                   $('#list').append('<tr><td style="display : none">'+item.EMP_NO+'</td><td>'+item.KOR_NM+'</td><td style="display : none">'+item.DEPT_NM+'</td><td style="display : none">'+item.JIKGUP_NM+'</td><td>'+item.WORK_DT+'</td><td>'+item.START_TIME+'</td><td>'+item.END_DT+'</td><td style="display : none">'+item.END_TIME+'</td></tr>');
+										
+								});                   
+           }/*error:function(request,status,error){
+               alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); 
+           }  
+
+       });
+   }); */
 	
+/* 전체 검색 */
+ 	$(document).ready(function(){
+		console.log('전체  검색')
+		$("#btn_search").click(function(){
+			let work_dt_format = $('#WORK_DT').val();
+			let end_dt_format = $('#END_DT').val();
+			let EMP_NO = $('#EMP_NO').val();
+			let DEPT_NM = $('#DEPT_NM').val();
+	
+			let WORK_DT = work_dt_format.substr(0,4)+work_dt_format.substr(5,2)+work_dt_format.substr(8,2);
+			let END_DT = end_dt_format.substr(0,4)+end_dt_format.substr(5,2)+end_dt_format.substr(8,2);
+			console.log("날짜=>" + WORK_DT + END_DT +"사원번호=>" + EMP_NO);		
+			
+		$.ajax({
+			url:'/kuntae/singleListDomain',
+            type:'GET',
+            dataType:'json',
+			data:{WORK_DT:WORK_DT,END_DT:END_DT,EMP_NO:EMP_NO,DEPT_NM:DEPT_NM},
+			success : function(data) {
+            	console.log('날짜 검색 쿼리 성공!');
+                $('#list').empty();
+                $(data).each(function(index,item){ //each = foreach (반복문)
+                    $('#list').append('<tr>');
+                    $('#list').append('<td>'+item.DEPT_NM+'</td>');
+                    $('#list').append('<td>'+item.JIKGUP_NM+'</td>'); 
+                    $('#list').append('<td>'+item.KOR_NM+'</td>'); 
+                    $('#list').append('<td>'+item.WORK_DT.substring(0,4)+'</td>');
+                    $('#list').append('<td>'+item.WORK_DT.substring(4,6)+'</td>');
+                    $('#list').append('<td>'+item.WORK_DT.substring(6,8)+'</td>');
+                    $('#list').append('<td>'+item.START_TIME+'</td>');
+                    $('#list').append('<td>'+item.END_TIME+'</td>');
+                    $('#list').append('<td>'+item.END_DT+'</td>');
+                    $('#list').append('</tr>'); 
+
+                });                   			
+			}
+		});
+	});
+}); 	
 	
 	</script> 
 
@@ -133,145 +201,71 @@
 	<div class="col-md-9 col-xs-12" style="color:black;">
         <div class="page-title">
 			<div class="title_left">
-				<h2><b>4. 근태 관리</b></h2>
+				<h2><b>출퇴근기록부</b></h2>
 				<h5></h5>
-				<h5><font color= "gray"><b>4.2 출퇴근 기록부&nbsp;</b></font></h5>
+				<h5><font color= "gray"><b>4.근태 관리 &nbsp;&gt;&nbsp;&nbsp;4.2 출퇴근기록부</b></font></h5>
 			</div>
 		</div>
     </div>
 	
-	<div class="">
-		
-<div class="x_panel" style=""> 	
-    <div class="x_title">
-        <h2>기본내역 </h2>
-        	<!-- 검색 버튼 -->
-			<div class="x_content" style="text-align: right">
-				<button type="button" id="btn_search" class="btn" style="color:black">전체검색</button>
+	<div class="x_content" style="text-align: right">
+			<div class="btn-group">
+				<button class="btn btn-default" type="button" id="btn_search" style="color:black">조회</button>
+				<button class="btn btn-default" type="reset">입력</button>
+				<button class="btn btn-default" type="button">수정</button>
+				<button class="btn btn-default" type="button">삭제</button>
+				<button class="btn btn-default" type="button">저장</button>
+				<button class="btn btn-default" type="button">출력</button>
 			</div>
-	   <!-- 박스내의 상단 -->
-	<div class="clearfix"></div>
-</div>
-    
-
-
-			
-					<br>
-					<!-- <div class="x_content">
-						<form action="/kuntae/recordDateSearchProcess">
-							<table class="table table-bordered">
-								<thead>
-									<tr style="font-size: 15px">
-										
-										<th>시작년월 &emsp;&emsp;&emsp; 
-										<input type="date" id="WORK_DT" name="WORK_DT"> &emsp;&emsp;										
-										</th>
-										<th>마감년월 &emsp;&emsp;&emsp; 
-										<input type="date" id="END_DT" name="END_DT"> &emsp;&emsp;										
-											<button id="btn_day" type="button" class="btn" style="color:black">검색</button>
-										</th>
-									</tr>									
-								</thead>
-							</table>
-						</form>
-						
-						
-					</div> -->
-<!-- 		<div class="col-sm-4">
-		    <label>부서
-				<select name="datatable-keytable_length" aria-controls="datatable-keytable" class="form-control input-sm">
-					<option>부서</option>
-					<option>전사</option>
-					<option>경영부문</option>
-					<option>경영지원실</option>
-					<option>인사총무실</option>
-					<option>품질관리실</option>
-					<option>재무관리실</option>
-					<option>수주부문</option>
-					<option>수주전략본부</option>
-					<option>수주부문</option>
-				</select>
-			</label>
 		</div>
 		
-		<div class="col-sm-4">
-			<label class="control-label">사원번호</label><br>
-				<input type="text" id="EMP_NO" name="EMP_NO">
-	            <button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
-	   	</div>	
-	</div>
-</div> -->
+		<div class="x_panel">
+        	<div class="x_title">	               	                                    	
+            	<div class="x_content">
+            		<div class="row">
+            		 	<form >
+              			<table class="table table-bordered" style="color:black;">
+							<tbody><tr>
+								<th>
+	                  				<div class="col-md-12 col-sm-12 col-xs-12 form-group">          	
+	                  					검색조건                
+	                  				</div>                               				
+		                  			<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+ 										기간	 <input type="month" id="WORK_DT" name="WORK_DT"> ~ <input type="month" id="END_DT" name="END_DT">
+	                  				</div>                                    
+			                  		<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+	                  					 부서명 
+	                 					<select id="DEPT_NM">
+	                 						<option></option>
+											<th:block th:each="d : ${deptResult}">
+												<option th:value="${d.DEPT_NM}">[[${d.DEPT_NM}]]</option>									
+											</th:block>
+						  	  			</select>                 	  
+	                  				</div>	
+			                  				
+			                  				
+			                  		<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+										사원번호 <input type="text" size="5" id="EMP_NO" name="EMP_NO">
+										<button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
+			                  		</div>	
+			                  		
+			                  		<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+			                  		</div>
+			             		</th>
+		          			</tr>
+             			</tbody>
+             			</table>
+         			</form>
+         			</div>                                  
+       			</div>
+       		</div>
+     	</div>
 
 
 
- <div class="clearfix"></div>
- 	<form action="/kuntae/recordTotalSearch">
-		<div class="col-md-12 col-sm-12 col-xs-12">
-			<form action="/kuntae/recordDateSearchProcess">
-				<table class="table">
-					<tbody>
-					
-						<tr>
-							<th>시작달</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="month" id="WORK_DT" name="WORK_DT">
-								</div>
-							</td>
-							
-							<th>끝난달</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="month" id="END_DT" name="END_DT">
-									<!-- <button id="btn_day" type="button" class="btn" style="color:black">검색</button> -->
-								</div>
-							</td>
-							
-							
-						</tr>
-					</form>
-						<tr>
-							<th>사원번호</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" id="EMP_NO" name="EMP_NO">
-									<button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
-								</div>
-							</td>
-
-							<th></th>
-							 <td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<!-- <input type="text" class="form-control"> -->
-								</div>
-							</td> 
-						</tr>
-
-					</tbody>
-				</table>
-				</div>
-				</div>
-			</form>
 				
                 <div class="x_panel">
-                  <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
+                
                   <div class="x_content">
 					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
                     <table class="table table-striped jambo_table bulk_action">

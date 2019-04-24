@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import ksmart30.team03.kuntae.domain.WorkTime;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 import ksmart30.team03.kuntae.mapper.WorkTimeMapper;
+import ksmart30.team03.person.mapper.PersonMapper;
 
 @Service
 public class WorkTimeService {
 	@Autowired private WorkTimeMapper workTimeMapper;
+	@Autowired PersonMapper personMapper;	
 	
 	// 출,퇴근 기록부(개인별) 사원번호 검색
 	public List<WorkTimeSingleList> getRecordSingle(String EMP_NO){
@@ -49,6 +51,20 @@ public class WorkTimeService {
 	public List<WorkTimeSingleList> getRecordTotalSearch(String WORK_DT, String END_DT, String EMP_NO){
 		System.out.println("S : Total 전체 검색 시작날짜 =>"+WORK_DT+"끝난날짜=>"+END_DT+"사원번호=>"+EMP_NO);
 		return workTimeMapper.getRecordTotalSearch(WORK_DT, END_DT, EMP_NO);
+	}
+	
+	// 부서코드 Select Option
+	public List<Map<String, Object>> gbCdListView(){
+		System.out.println("S :코드별 구분 select option");
+		return personMapper.gbCdListView();
+	}
+	
+	// 전체 검색(검색 조건들을 vo로 받음)
+	public List<Map<String, Object>> getSingleListDomain(WorkTimeSingleList vo){
+		System.out.println("S : 출퇴근 정정 신청 List");
+		List<Map<String, Object>> data = workTimeMapper.getSingleListDomain(vo);
+		System.out.println("S : 출퇴근 정정 신청 Vo" + data);
+		return data;
 	}
 	
 	// 출퇴근 정정 신청 List

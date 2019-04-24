@@ -1,6 +1,9 @@
 package ksmart30.team03.kuntae.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ksmart30.team03.kuntae.domain.WorkTime;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 import ksmart30.team03.kuntae.service.WorkTimeService;
+import ksmart30.team03.person.service.PersonService;
 
 @Controller
 public class WorkTimeController {
 	@Autowired private WorkTimeService workTimeService;
+	@Autowired PersonService personService;
 	
 	
 	// 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력
@@ -23,7 +28,11 @@ public class WorkTimeController {
 	public String recordTotalView(Model model) {
 		System.out.println("C : Total 기록부 화면 먼저 호출");
 		List<WorkTimeSingleList> data = workTimeService.getRecordTotalList();
+		List<Map<String, Object>> data1 = personService.deptCdListView();
 		model.addAttribute("data", data);
+		model.addAttribute("deptResult", data1);
+		System.out.println("C : 출퇴근 명단 출력 data =>"+ data);
+		System.out.println("C : 출퇴근 deptResult data1 =>"+ data1);
 		return "/kuntae/recordTotalView";
 	}
 	
@@ -44,26 +53,16 @@ public class WorkTimeController {
  		System.out.println("C : Total data 정보=>"+data);
  		return data;
  	}
-	
-	/*
-	 * // 출, 퇴근 기록부 (개인별)
-	 * 
-	 * @GetMapping("/kuntae/recordSingleView") 
-	 * public List<WorkTimeSingleList> recordSingleView() { 
-	 * System.out.println("C : 출, 퇴근 기록부 (개인별)");
-	 * List<WorkTimeSingleList> result = workTimeService.getRecordSingleList();
-	 * return result; }
-	 */
-	
-	// 출, 퇴근 기록부 (개인별)
-	/*
-	 * @GetMapping("/kuntae/recordSingleView") 
-	 * public String recordSingleView(Model model) { 
-	 * System.out.println("C : 출, 퇴근 기록부 (개인별)"); 
-	 * List<WorkTimeSingleList> data = workTimeService.getRecordSingleList();
-	 * model.addAttribute("singleList", data); System.out.println("C 개인별 data :"+data); 
-	 * return "/kuntae/recordSingleView"; }
-	 */
+ 	
+ 	// 전체 검색 조건 vo로 받기
+ 	@GetMapping("/kuntae/singleListDomain")
+ 	public @ResponseBody List<Map<String, Object>> singleListDomain(WorkTimeSingleList vo){
+ 		System.out.println("C : Vo받기!!");
+ 		System.out.println("C : WorkTimeSingleList Vo =>"+ vo);
+ 		List<Map<String,Object>> data = workTimeService.getSingleListDomain(vo);
+ 		System.out.println("C : VO data =>"+ data);
+ 		return data;
+ 	}
 	
 	// 출, 퇴근 기록부 (개인별) 이름 검색
 	@GetMapping("/kuntae/recordSingleName")

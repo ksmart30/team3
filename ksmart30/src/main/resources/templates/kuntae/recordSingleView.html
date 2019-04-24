@@ -130,22 +130,30 @@
 	</head>
 	</th:block>
 	<th:block layout:fragment="customBody">
-
 <font color="black">
 	<div class="col-md-9 col-xs-12" style="color:black;">
         <div class="page-title">
 			<div class="title_left">
-				<h2><b>4. 근태 관리</b></h2>
+				<h2><b>출퇴근기록부(개인별)</b></h2>
 				<h5></h5>
-				<h5><font color= "gray"><b>4.3 출퇴근 기록부(개인별)&nbsp;</b></font></h5>
+				<h5><font color= "gray"><b>4.근태 관리 &nbsp;&gt;&nbsp;&nbsp;4.3 출퇴근기록부(개인별)</b></font></h5>
 			</div>
 		</div>
     </div>
-	<div class="">
+	
+	<div class="x_content" style="text-align: right">
+			<div class="btn-group">
+				<button class="btn btn-default" type="button" id="btn_search" style="color:black">조회</button>
+				<button class="btn btn-default" type="reset">입력</button>
+				<button class="btn btn-default" type="button">수정</button>
+				<button class="btn btn-default" type="button">삭제</button>
+				<button class="btn btn-default" type="button">저장</button>
+				<button class="btn btn-default" type="button">출력</button>
+			</div>
+		</div>
 
 <div class="x_panel" style=""> 	
-   
-        <h2>기본내역 </h2>
+
         	<!-- 검색 버튼 -->
 			<div class="x_content" style="text-align: right">
 				<button type="button" id="btn_search" class="btn" style="color:black">전체검색</button>
@@ -207,26 +215,9 @@
 	
 				
 				
-		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%">
+
                 <div class="x_panel">
-                  <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                <div class="clearfix"></div>
-                  </div>
+
                   <div class="x_content">
 					<div style="overflow:scroll; width:100%; height:650px; padding:10px; background-color:;">
 						 <table class="table table-striped jambo_table bulk_action">
@@ -276,8 +267,7 @@
                 </div>
               
               </div>
-             </div>
-			</div>
+
 			
 	</th:block>
 	<th:block layout:fragment="customJquery">

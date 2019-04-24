@@ -103,7 +103,7 @@
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
 
-		SELECT  a.EMP_NO,
+		SELECT TOP 200 a.EMP_NO,
 				 a.KOR_NM,
 				 b.LEVEL2_NM AS JIKGUP_NM,
 				 DEPT_NM,
@@ -151,7 +151,7 @@
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
 	
-	 SELECT 
+	 	SELECT 
 				 DEPT_NM,
 				 b.LEVEL2_NM AS JIKGUP_NM,
 				 a.EMP_NO,
@@ -250,6 +250,27 @@
  	FROM T_PM1010,
   	(Select Convert(varchar(10),DATEADD(year,-1,GETDATE()),112) o) o 
  	WHERE EMP_NO  = #{EMP_NO} AND WORK_DT >=o.o
+	</select>
+	
+	<!-- 전체 검색 조건 vo로 받기 -->
+	<select id="getSingleListDomain"
+			parameterType="String"
+			resultType="java.util.Map">
+		SELECT TOP 200 a.EMP_NO,
+				 a.KOR_NM,
+				 b.LEVEL2_NM AS JIKGUP_NM,
+				 DEPT_NM,
+				 e.WORK_DT,
+				(CASE WHEN e.START_TIME IS NULL THEN '퇴근미입력' WHEN e.START_TIME='' THEN '출근미입력' ELSE e.START_TIME END ) START_TIME,
+				(CASE WHEN e.END_TIME IS NULL THEN '퇴근미입력' WHEN e.END_TIME= '' then '퇴근미입력' else e.END_TIME end) END_TIME,
+				(CASE WHEN e.END_DT IS NULL THEN '퇴근미입력' when e.END_DT= '' then '퇴근미입력' else e.END_DT end) END_DT
+		FROM T_HM1000 a 
+		JOIN T_SC9100 b ON a.JIKGUP_CD=b.LEVEL2_CD
+		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
+		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
+		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
+		<!-- WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%%' AND e.WORK_DT >= '' AND e.END_DT <= '' AND DEPT_NM LIKE '%설계2본부%' -->
+		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%'+#{EMP_NO}+'%' AND e.WORK_DT <![CDATA[>=]]>#{WORK_DT} AND e.END_DT <![CDATA[<=]]>#{END_DT} AND DEPT_NM LIKE '%'+#{DEPT_NM}+'%'		
 	</select>
 
 
