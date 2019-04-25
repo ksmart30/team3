@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team00.baseinfo.domain.Department;
 import ksmart30.team00.baseinfo.service.DepartmentService;
@@ -27,31 +28,41 @@ public class DepartmentController {
 		return "baseInfo/departmentView";
 	}
 
-	// 10.3.2.2 부서코드 입력폼
+	// 10.3.2.2 부서코드 검색
+	@GetMapping("/baseInfo/departmentSearchProcess")
+	public @ResponseBody List<Department> departmentSearchProcess(Department department) {
+		System.out.println("(C) 10.3.2.2 부서코드 검색 departmentSearchProcess()");
+		// 1. Service 실행 (결과값 : 검색된 부서코드 정보(List))
+		List<Department> departmentList = departmentService.getDepartmentSearch(department);
+		// 2. 결과값 리턴
+		return departmentList;
+	}
+
+	// 10.3.2.3 부서코드 입력폼
 	@GetMapping("/baseInfo/departmentWriteView")
 	public String departmentWriteView() {
 		return "baseInfo/departmentWriteView";
 	}
 
-	// 10.3.2.3 부서코드 입력 처리
+	// 10.3.2.4 부서코드 입력 처리
 	@GetMapping("/baseInfo/departmentWriteProcess")
 	public String departmentWriteProcess() {
 		return "baseInfo/departmentWriteProcess";
 	}
 
-	// 10.3.2.4 부서코드 수정폼
+	// 10.3.2.5 부서코드 수정폼
 	@GetMapping("/baseInfo/departmentModifyView")
 	public String departmentModifyView() {
 		return "baseInfo/departmentModifyView";
 	}
 
-	// 10.3.2.5 부서코드 수정처리
+	// 10.3.2.6 부서코드 수정처리
 	@GetMapping("/baseInfo/departmentModifyProcess")
 	public String departmentModifyProcess() {
 		return "baseInfo/departmentModifyProcess";
 	}
 
-	// 10.3.2.6 부서코드 삭제처리
+	// 10.3.2.7 부서코드 삭제처리
 	@GetMapping("/baseInfo/departmentDeleteProcess")
 	public String departmentDeleteProcess() {
 		return "baseInfo/departmentDeleteProcess";

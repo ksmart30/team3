@@ -3,7 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team00.baseinfo.mapper.DepartmentMapper">
-    <select id="getDepartmentList"
+    <!-- 10.3.2.1 부서코드 조회 및 검색처리-->
+    <select id="getDepartmentSearchList"
+            parameterType="ksmart30.team00.baseinfo.domain.Department"
             resultType="ksmart30.team00.baseinfo.domain.Department">
             SELECT  
                 A.DEPT_CD,
@@ -23,19 +25,20 @@
                     CASE WHEN A.NOT_USE = '1' THEN '1'
                       ELSE '2' 
                       END AS NOT_USE,
-                    CASE WHEN LEN(A.NOTUSE_DATE) = 8 THEN (SUBSTRING(A.NOTUSE_DATE,1,4) + '/' + SUBSTRING(A.NOTUSE_DATE,5,2) + '/' + SUBSTRING(A.NOTUSE_DATE,7,2))
-                      ELSE '____/__/__'
+                    CASE WHEN LEN(A.NOTUSE_DATE) = 8 THEN (SUBSTRING(A.NOTUSE_DATE,1,4) + '-' + SUBSTRING(A.NOTUSE_DATE,5,2) + '-' + SUBSTRING(A.NOTUSE_DATE,7,2))
+                      ELSE ' '
                       END AS NOTUSE_DATE
-                FROM  
-                    T_SC1010 A,
-                    T_SC9100 B,
-                    T_SC9100 C,
-                    T_SC9100 D,
-                    T_SC9100 E
-                WHERE ((A.LEVEL_GB *= B.LEVEL2_CD) AND (B.LEVEL1_CD = '160' AND B.BUSI_GB = 'H'))
-                    AND((A.DIV_TYPE *= C.LEVEL2_CD) AND (C.LEVEL1_CD = '16' AND C.BUSI_GB = 'A'))
-                    AND((A.DIV_ID *= D.LEVEL2_CD) AND (D.LEVEL1_CD = '360' AND D.BUSI_GB = 'J'))
-                    AND((A.ACC_UNIT *= E.LEVEL2_CD) AND (E.LEVEL1_CD = '08' AND E.BUSI_GB = 'A'))
-                ORDER BY A.DEPT_CD
+            FROM  
+                T_SC1010 A,
+                T_SC9100 B,
+                T_SC9100 C,
+                T_SC9100 D,
+                T_SC9100 E
+            WHERE ((A.LEVEL_GB *= B.LEVEL2_CD) AND (B.LEVEL1_CD = '160' AND B.BUSI_GB = 'H'))
+                AND((A.DIV_TYPE *= C.LEVEL2_CD) AND (C.LEVEL1_CD = '16' AND C.BUSI_GB = 'A'))
+                AND((A.DIV_ID *= D.LEVEL2_CD) AND (D.LEVEL1_CD = '360' AND D.BUSI_GB = 'J'))
+                AND((A.ACC_UNIT *= E.LEVEL2_CD) AND (E.LEVEL1_CD = '08' AND E.BUSI_GB = 'A'))
+                AND((A.DEPT_NM LIKE #{DEPT_NM}+'%') AND (A.NOT_USE LIKE '%'+#{NOT_USE}+'%'))
+            ORDER BY A.DEPT_CD
     </select>
 </mapper>

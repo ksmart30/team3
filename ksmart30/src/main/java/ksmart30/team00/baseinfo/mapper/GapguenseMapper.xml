@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- @file Client.java @brief 기준정보관리-거래처등록 Controller @author ksmart30 YSM -->
 <mapper namespace="ksmart30.team00.baseinfo.mapper.GapguenseMapper">
-    <!-- 갑근세 세액 조견표 조회 -->
+    <!-- 10.2.10.1 갑근세 세액 조견표 조회(결과값 : 갑근세 세액 조견표 리스트) -->
     <select id="getGapguenseList"
             resultType="ksmart30.team00.baseinfo.domain.Gapguense">
             SELECT 

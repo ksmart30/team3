@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- @file Client.java @brief 기준정보관리-거래처등록 Controller @author ksmart30 YSM -->
 <mapper namespace="ksmart30.team00.baseinfo.mapper.InsureMapper">
-    <!-- 4대보험 계산을 위한 요율 가져오기 -->
+    <!-- 10.2.9 4대보험 요율 정보 가져오기 -->
     <select id="getFourInsure"
             parameterType="ksmart30.team00.baseinfo.domain.Insure"
             resultType="ksmart30.team00.baseinfo.domain.Insure">

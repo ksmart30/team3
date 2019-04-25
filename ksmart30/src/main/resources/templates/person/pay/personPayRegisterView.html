@@ -40,31 +40,36 @@
 					data:{PAY_YYMM:searchDate,DEPT_NM:searchDeptNm,KOR_NM:searchKorNm},
 					success:(data)=>{
 						$('#personPayMonthList').empty();
+						// 결과값이 없다면
+						if(data.length == 0) {
+							$('#personPayMonthList').append('<tr><td colspan="19" style="text-align: center; background-color: bisque">검색결과가 없습니다.</td></tr>');
+						}
+						// 결과값이 있다면
 						$(data).each(function(index,item){
 							// 사원명과 부서명이 null이면 생략
 							if(item.kor_NM == null || item.dept_NM == null) {
 							// 구분 1인 경우 (급여)
 							}else if(item.pay_GB == '1'){		
-							$('#personPayMonthList').append('<tr><td></td><td style="text-align: center">'+item.emp_NO+'</td>'+
-							'<td style="text-align: center">'+item.dept_NM+'</td><td style="text-align: center">'+item.jikgup_NM+'</td>'+
-							'<td style="text-align: center">'+item.kor_NM+'</td><td style="text-align: center">급여</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.paytot)+'</td><td style="text-align: right">'+numberWithCommas(item.bikwat)+'</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.kwaset)+'</td><td style="text-align: right">'+numberWithCommas(item.soduk_TAX)+'</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.jumin_TAX)+'</td><td style="text-align: right">'+numberWithCommas(item.h_INSURE)+'</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.pension)+'</td><td style="text-align: right">'+numberWithCommas(item.e_INSURE)+'</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.chagam)+'</td>'+
-							'<td style="text-align: center">'+item.pay_DT.substring(0,4)+'.'+item.pay_DT.substring(4,6)+'.'+item.pay_DT.substring(6,8)+'</td></tr>');
+								$('#personPayMonthList').append('<tr><td></td><td style="text-align: center">'+item.emp_NO+'</td>'+
+								'<td style="text-align: center">'+item.dept_NM+'</td><td style="text-align: center">'+item.jikgup_NM+'</td>'+
+								'<td style="text-align: center">'+item.kor_NM+'</td><td style="text-align: center">급여</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.paytot)+'</td><td style="text-align: right">'+numberWithCommas(item.bikwat)+'</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.kwaset)+'</td><td style="text-align: right">'+numberWithCommas(item.soduk_TAX)+'</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.jumin_TAX)+'</td><td style="text-align: right">'+numberWithCommas(item.h_INSURE)+'</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.pension)+'</td><td style="text-align: right">'+numberWithCommas(item.e_INSURE)+'</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.chagam)+'</td>'+
+								'<td style="text-align: center">'+item.pay_DT.substring(0,4)+'.'+item.pay_DT.substring(4,6)+'.'+item.pay_DT.substring(6,8)+'</td></tr>');
 							// 구분 2인 경우 (상여)	
 							}else if(item.pay_GB == '2'){		
-							$('#personPayMonthList').append('<tr><td></td><td style="text-align: center">'+item.emp_NO+'</td>'+
-							'<td style="text-align: center">'+item.dept_NM+'</td><td style="text-align: center">'+item.jikgup_NM+'</td>'+
-							'<td style="text-align: center">'+item.kor_NM+'</td><td style="text-align: center">상여</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.paytot)+'</td><td style="text-align: right">'+numberWithCommas(item.bikwat)+'</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.kwaset)+'</td><td style="text-align: right">'+numberWithCommas(item.soduk_TAX)+'</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.jumin_TAX)+'</td><td style="text-align: right">'+numberWithCommas(item.h_INSURE)+'</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.pension)+'</td><td style="text-align: right">'+numberWithCommas(item.e_INSURE)+'</td>'+
-							'<td style="text-align: right">'+numberWithCommas(item.chagam)+'</td>'+
-							'<td style="text-align: center">'+item.pay_DT.substring(0,4)+'.'+item.pay_DT.substring(4,6)+'.'+item.pay_DT.substring(6,8)+'</td></tr>');
+								$('#personPayMonthList').append('<tr><td></td><td style="text-align: center">'+item.emp_NO+'</td>'+
+								'<td style="text-align: center">'+item.dept_NM+'</td><td style="text-align: center">'+item.jikgup_NM+'</td>'+
+								'<td style="text-align: center">'+item.kor_NM+'</td><td style="text-align: center">상여</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.paytot)+'</td><td style="text-align: right">'+numberWithCommas(item.bikwat)+'</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.kwaset)+'</td><td style="text-align: right">'+numberWithCommas(item.soduk_TAX)+'</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.jumin_TAX)+'</td><td style="text-align: right">'+numberWithCommas(item.h_INSURE)+'</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.pension)+'</td><td style="text-align: right">'+numberWithCommas(item.e_INSURE)+'</td>'+
+								'<td style="text-align: right">'+numberWithCommas(item.chagam)+'</td>'+
+								'<td style="text-align: center">'+item.pay_DT.substring(0,4)+'.'+item.pay_DT.substring(4,6)+'.'+item.pay_DT.substring(6,8)+'</td></tr>');
 							}		
 						});
 					}
@@ -76,6 +81,11 @@
 					data:{PAY_YYMM:searchDate,DEPT_NM:searchDeptNm,KOR_NM:searchKorNm},
 					success:(data)=>{
 						$('#personPayYearList').empty();
+						// 결과값이 없다면
+						if(data.length == 0) {
+							$('#personPayYearList').append('<tr><td colspan="19" style="text-align: center; background-color: bisque">검색결과가 없습니다.</td></tr>');
+						}
+						// 결과값이 있다면
 						$(data).each(function(index,item){
 							// 합계 출력시
 							if(item.emp_NO == '99999999' && item.dept_CD != 'zzzzzzz') {

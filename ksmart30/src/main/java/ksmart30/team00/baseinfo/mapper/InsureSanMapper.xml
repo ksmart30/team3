@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- @file Client.java @brief 기준정보관리-거래처등록 Controller @author ksmart30 YSM -->
 <mapper namespace="ksmart30.team00.baseinfo.mapper.InsureSanMapper">
-    <!-- 산재보험 대분류 리스트 조회 -->
+    <!-- 10.2.9.5 산재보험 대분류 리스트 조회 -->
     <select id="getInsureSanjeLargeList"
             resultType="ksmart30.team00.baseinfo.domain.InsureSan">
             SELECT
@@ -23,7 +23,7 @@
             OR INSURE_SAN_NO = 901
             OR INSURE_SAN_NO = 0 
     </select>
-    <!-- 산재보험 중분류 리스트 조회 -->
+    <!-- 10.2.9.6 산재보험 중분류 리스트 조회 -->
     <select id="getInsureSanjeMiddleList"
             parameterType="ksmart30.team00.baseinfo.domain.InsureSan"
             resultType="ksmart30.team00.baseinfo.domain.InsureSan">

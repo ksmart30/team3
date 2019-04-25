@@ -9,105 +9,168 @@
 		
 		<script>
 			$(document).ready(function() { 
-					$("#departmentList tr").click(function() {
-							// 행과 각각의 값들을 담아옴
-							let tr = $(this);
-							let td = tr.children();
-							// 클릭한 행만 색상 변경
-							$("#departmentList tr").css("background-color", "#ffffff");
-							$(this).css( "background-color", "#CEFBC9" );
-							// 체크 표시
+				// 1. 부서코드 리스트 클릭시 수정폼에 등록
+				$('#departmentList').delegate('tr', 'click', function(){
+					// 행과 각각의 값들을 담아옴
+					let tr = $(this);
+					let td = tr.children();
+					// 클릭한 행만 색상 변경
+					$("#departmentList tr").css("background-color", "#ffffff");
+					$(this).css( "background-color", "#CEFBC9" );
+					// 체크 표시
 
-							// 변수 초기화
-							let LEVEL_GB = '0'	// 권한 변수
-							let DIV_TYPE = '0'	// 배부부문 변수
-							let DIV_ID = '0'		// M/D부서 변수
-							let ACC_UNIT = '00'	// 회계단위 변수
-							let NOTUSE_DATE = td.eq(13).text().substring(0,4)+'-'+td.eq(13).text().substring(5,7)+'-'+td.eq(13).text().substring(8,10)	// 미사용일자 변수
-							// '한글명 '값을 '코드값'으로 변경하여 대입
-								// 1. 권한 (eq(7))
-								if(td.eq(7).text() == '회장') {
-									LEVEL_GB = '1';
-								}else if(td.eq(7).text() == '대표이사') {
-									LEVEL_GB = '2';
-								}else if(td.eq(7).text() == '사장') {
-									LEVEL_GB = '3';
-								}else if(td.eq(7).text() == '임원') {
-									LEVEL_GB = '4';
-								}else if(td.eq(7).text() == '부문') {
-									LEVEL_GB = '5';
-								}else if(td.eq(7).text() == '본부') {
-									LEVEL_GB = '6';
-								}else if(td.eq(7).text() == '실') {
-									LEVEL_GB = '7';
-								}else if(td.eq(7).text() == '팀') {
-									LEVEL_GB = '8';
+					// 변수 초기화
+					let LEVEL_GB = '0'	// 권한 변수
+					let DIV_TYPE = '0'	// 배부부문 변수
+					let DIV_ID = '0'		// M/D부서 변수
+					let ACC_UNIT = '00'	// 회계단위 변수
+					let NOTUSE_DATE = td.eq(13).text().substring(0,4)+'-'+td.eq(13).text().substring(5,7)+'-'+td.eq(13).text().substring(8,10)	// 미사용일자 변수
+					// '한글명 '값을 '코드값'으로 변경하여 대입
+						// 1. 권한 (eq(7))
+						if(td.eq(7).text() == '회장') {
+							LEVEL_GB = '1';
+						}else if(td.eq(7).text() == '대표이사') {
+							LEVEL_GB = '2';
+						}else if(td.eq(7).text() == '사장') {
+							LEVEL_GB = '3';
+						}else if(td.eq(7).text() == '임원') {
+							LEVEL_GB = '4';
+						}else if(td.eq(7).text() == '부문') {
+							LEVEL_GB = '5';
+						}else if(td.eq(7).text() == '본부') {
+							LEVEL_GB = '6';
+						}else if(td.eq(7).text() == '실') {
+							LEVEL_GB = '7';
+						}else if(td.eq(7).text() == '팀') {
+							LEVEL_GB = '8';
+						}
+						// 2. 배부부문 (eq(8))
+						if(td.eq(8).text() == '간접비-빌딩') {
+							DIV_TYPE = '10';
+						}else if(td.eq(8).text() == '간접비-전산') {
+							DIV_TYPE = '20';
+						}else if(td.eq(8).text() == '간접비-통신') {
+							DIV_TYPE = '30';
+						}else if(td.eq(8).text() == '공통비Ⅱ') {
+							DIV_TYPE = '40';
+						}else if(td.eq(8).text() == '관리부문비') {
+							DIV_TYPE = '50';
+						}else if(td.eq(8).text() == '공통비Ⅰ- 임원') {
+							DIV_TYPE = '60';
+						}else if(td.eq(8).text() == '공통비Ⅰ- 지원부서') {
+							DIV_TYPE = '61';
+						}else if(td.eq(8).text() == '공통비Ⅰ- 부문') {
+							DIV_TYPE = '62';
+						}else if(td.eq(8).text() == '공통비Ⅰ- 본부') {
+							DIV_TYPE = '63';
+						}else if(td.eq(8).text() == '공통비Ⅰ- 본부(부)') {
+							DIV_TYPE = '64';
+						}else if(td.eq(8).text() == '이익관리부문') {
+							DIV_TYPE = '70';
+						}
+						// 3. M/D부서 (eq(11))
+						if(td.eq(11).text() == '') {
+							DIV_ID = '0';
+						}else if(td.eq(11).text() == '입력부서') {
+							DIV_ID = '10';
+						}else if(td.eq(11).text() == '미입력부서') {
+							DIV_ID = '20';
+						}
+						// 4. 회계단위 (eq(9))
+						if(td.eq(9).text() == '(주)이에이치네트웍스') {
+							ACC_UNIT = '01';
+						}
+					// 값 유무에 따른 체크박스 변경
+						// 1. 회계부서
+						if(td.eq(10).find('input[type="checkbox"]').is(':checked')) {
+							$("input:checkbox[id='ACC_DEPT']").prop("checked", true);
+						}else {
+							$("input:checkbox[id='ACC_DEPT']").prop("checked", false);
+						}
+						// 2. 미사용구분
+						if(td.eq(12).find('input[type="checkbox"]').is(':checked')) {
+							$("input:checkbox[id='NOT_USE']").prop("checked", true);
+						}else {
+							$("input:checkbox[id='NOT_USE']").prop("checked", false);
+						}
+						// 3. 해외구분 (사용하지 않음)
+						$("input:checkbox[id='FOREIGN_WORK']").prop("checked", false);
+					// 가져온 값을 수정폼에 대입(변경)
+						$('#DEPT_CD').val(td.eq(1).text());										// 부서코드
+						$('#SYS_COD').val(td.eq(2).text());										// 내부코드
+						$('#LEVEL_GB').val(LEVEL_GB).prop("selected", true);	// 권한
+						$('#DEPT_NM').val(td.eq(4).text());										// 부서명
+						$('#SHORT_NM').val(td.eq(5).text());									// 약어명
+						$('#SHORT_NM1').val(td.eq(6).text());		  						// 약어명(2)
+						$('#DIV_TYPE').val(DIV_TYPE).prop("selected", true);	// 배부부문
+						$('#DIV_ID').val(DIV_ID).prop("selected", true);			// M/D부서
+						$('#ACC_UNIT').val(ACC_UNIT).prop("selected", true);;	// 회계단위
+						$('#NOTUSE_DATE').val(NOTUSE_DATE);										// 미사용일자
+					// 클릭된 행의 값 (배열)
+					console.log("클릭된 행의 값 : "+ tr.text());
+				});
+				// 2. 검색기능
+				$('#DEPARTMENT_SEARCH').click(function() {
+					let deptNm = $('#DEPT_NM_SEARCH').val();
+					let notUse = $('input[name="NOT_USE_SEARCH"]:checked').val();
+					$.ajax({
+						url:'/baseInfo/departmentSearchProcess',
+						type:'GET',
+						data:{DEPT_NM:deptNm,NOT_USE:notUse},
+						success:function(data){
+							$('#departmentList').empty();
+							// 결과값이 없다면
+							if(data.length == 0) {
+								$('#departmentList').append('<tr><td colspan="14" style="text-align: center; background-color: bisque">검색결과가 없습니다.</td></tr>');
+							}
+							$(data).each(function(index,departmentList){
+								// 회계부서 및 미사용부서 체크박스 값에 따른 출력
+								if(departmentList.acc_DEPT == '1'){
+									if(departmentList.not_USE == '1'){
+										$('#departmentList').append('<tr><td></td>'+	
+										'<td>'+departmentList.dept_CD+'</td><td>'+departmentList.sys_COD+'</td>'+
+										'<td>'+departmentList.sys_COD2+'</td><td>'+departmentList.dept_NM+'</td>'+
+										'<td>'+departmentList.short_NM+'</td><td>'+departmentList.short_NM1+'</td>'+
+										'<td>'+departmentList.level_GB+'</td><td>'+departmentList.div_TYPE+'</td>'+
+										'<td>'+departmentList.acc_UNIT+'</td><td style="text-align: center"><input type="checkbox" checked="checked" disabled></td>'+
+										'<td>'+departmentList.div_ID+'</td><td style="text-align: center"><input type="checkbox" checked="checked" disabled></td>'+
+										'<td>'+departmentList.notuse_DATE+'</td></tr>');
+									}
+									else if(departmentList.not_USE == '2'){
+										$('#departmentList').append('<tr><td></td>'+	
+										'<td>'+departmentList.dept_CD+'</td><td>'+departmentList.sys_COD+'</td>'+
+										'<td>'+departmentList.sys_COD2+'</td><td>'+departmentList.dept_NM+'</td>'+
+										'<td>'+departmentList.short_NM+'</td><td>'+departmentList.short_NM1+'</td>'+
+										'<td>'+departmentList.level_GB+'</td><td>'+departmentList.div_TYPE+'</td>'+
+										'<td>'+departmentList.acc_UNIT+'</td><td style="text-align: center"><input type="checkbox" checked="checked" disabled></td>'+
+										'<td>'+departmentList.div_ID+'</td><td style="text-align: center"><input type="checkbox" disabled></td>'+
+										'<td>'+departmentList.notuse_DATE+'</td></tr>');
+									}
+								}else if(departmentList.acc_DEPT == '2'){
+									if(departmentList.not_USE == '1'){
+										$('#departmentList').append('<tr><td></td>'+	
+										'<td>'+departmentList.dept_CD+'</td><td>'+departmentList.sys_COD+'</td>'+
+										'<td>'+departmentList.sys_COD2+'</td><td>'+departmentList.dept_NM+'</td>'+
+										'<td>'+departmentList.short_NM+'</td><td>'+departmentList.short_NM1+'</td>'+
+										'<td>'+departmentList.level_GB+'</td><td>'+departmentList.div_TYPE+'</td>'+
+										'<td>'+departmentList.acc_UNIT+'</td><td style="text-align: center"><input type="checkbox" disabled></td>'+
+										'<td>'+departmentList.div_ID+'</td><td style="text-align: center"><input type="checkbox" checked="checked" disabled></td>'+
+										'<td>'+departmentList.notuse_DATE+'</td></tr>');
+									}else if(departmentList.not_USE == '2'){
+										$('#departmentList').append('<tr><td></td>'+	
+										'<td>'+departmentList.dept_CD+'</td><td>'+departmentList.sys_COD+'</td>'+
+										'<td>'+departmentList.sys_COD2+'</td><td>'+departmentList.dept_NM+'</td>'+
+										'<td>'+departmentList.short_NM+'</td><td>'+departmentList.short_NM1+'</td>'+
+										'<td>'+departmentList.level_GB+'</td><td>'+departmentList.div_TYPE+'</td>'+
+										'<td>'+departmentList.acc_UNIT+'</td><td style="text-align: center"><input type="checkbox" disabled></td>'+
+										'<td>'+departmentList.div_ID+'</td><td style="text-align: center"><input type="checkbox" disabled></td>'+
+										'<td>'+departmentList.notuse_DATE+'</td></tr>');
+									}
 								}
-								// 2. 배부부문 (eq(8))
-								if(td.eq(8).text() == '간접비-빌딩') {
-									DIV_TYPE = '10';
-								}else if(td.eq(8).text() == '간접비-전산') {
-									DIV_TYPE = '20';
-								}else if(td.eq(8).text() == '간접비-통신') {
-									DIV_TYPE = '30';
-								}else if(td.eq(8).text() == '공통비Ⅱ') {
-									DIV_TYPE = '40';
-								}else if(td.eq(8).text() == '관리부문비') {
-									DIV_TYPE = '50';
-								}else if(td.eq(8).text() == '공통비Ⅰ- 임원') {
-									DIV_TYPE = '60';
-								}else if(td.eq(8).text() == '공통비Ⅰ- 지원부서') {
-									DIV_TYPE = '61';
-								}else if(td.eq(8).text() == '공통비Ⅰ- 부문') {
-									DIV_TYPE = '62';
-								}else if(td.eq(8).text() == '공통비Ⅰ- 본부') {
-									DIV_TYPE = '63';
-								}else if(td.eq(8).text() == '공통비Ⅰ- 본부(부)') {
-									DIV_TYPE = '64';
-								}else if(td.eq(8).text() == '이익관리부문') {
-									DIV_TYPE = '70';
-								}
-								// 3. M/D부서 (eq(11))
-								if(td.eq(11).text() == '') {
-									DIV_ID = '0';
-								}else if(td.eq(11).text() == '입력부서') {
-									DIV_ID = '10';
-								}else if(td.eq(11).text() == '미입력부서') {
-									DIV_ID = '20';
-								}
-								// 4. 회계단위 (eq(9))
-								if(td.eq(9).text() == '(주)이에이치네트웍스') {
-									ACC_UNIT = '01';
-								}
-							// 값 유무에 따른 체크박스 변경
-								// 1. 회계부서
-								if(td.eq(10).find('input[type="checkbox"]').is(':checked')) {
-									$("input:checkbox[id='ACC_DEPT']").prop("checked", true);
-								}else {
-									$("input:checkbox[id='ACC_DEPT']").prop("checked", false);
-								}
-								// 2. 미사용구분
-								if(td.eq(12).find('input[type="checkbox"]').is(':checked')) {
-									$("input:checkbox[id='NOT_USE']").prop("checked", true);
-								}else {
-									$("input:checkbox[id='NOT_USE']").prop("checked", false);
-								}
-								// 3. 해외구분 (사용하지 않음)
-								$("input:checkbox[id='FOREIGN_WORK']").prop("checked", false);
-							// 가져온 값을 수정폼에 대입(변경)
-								$('#DEPT_CD').val(td.eq(1).text());										// 부서코드
-								$('#SYS_COD').val(td.eq(2).text());										// 내부코드
-								$('#LEVEL_GB').val(LEVEL_GB).prop("selected", true);	// 권한
-								$('#DEPT_NM').val(td.eq(4).text());										// 부서명
-								$('#SHORT_NM').val(td.eq(5).text());									// 약어명
-								$('#SHORT_NM1').val(td.eq(6).text());		  						// 약어명(2)
-								$('#DIV_TYPE').val(DIV_TYPE).prop("selected", true);	// 배부부문
-								$('#DIV_ID').val(DIV_ID).prop("selected", true);			// M/D부서
-								$('#ACC_UNIT').val(ACC_UNIT).prop("selected", true);;	// 회계단위
-								$('#NOTUSE_DATE').val(NOTUSE_DATE);										// 미사용일자
-							// 클릭된 행의 값 (배열)
-							console.log("클릭된 행의 값 : "+ tr.text());
+							});
+						}
 					});
+				});
 			});
 			</script>
 		<th:block th:include="layout/customHead"></th:block>	
@@ -136,12 +199,13 @@
 						<h5>⊙ 검색 조건</h5>
 							<div class="col-md-4 col-sm-12 col-xs-12">
 							미사용 구분
-								<input type="radio" name="NOT_USE_Search" value="1">유
-								<input type="radio" name="NOT_USE_Search" value="0">무
+								<input type="radio" name="NOT_USE_SEARCH" value="" checked="checked">전체
+								<input type="radio" name="NOT_USE_SEARCH" value="0">유
+								<input type="radio" name="NOT_USE_SEARCH" value="1">무
 							<br>
 							부서명 : 
-								<input type="text" name="company">
-								<button type="submit" class="btn" style="color:black" name="companyButton">검색</button>
+								<input type="text" name="DEPT_NM_SEARCH" id="DEPT_NM_SEARCH">
+								<button type="button" class="btn" style="color:black" name="DEPARTMENT_SEARCH" id="DEPARTMENT_SEARCH">검색</button>
 							
 							</div>
 					</form>
@@ -301,8 +365,7 @@
 									<td th:text="${departmentList.SHORT_NM1}"></td><!-- 약어명(2) -->
 									<td th:text="${departmentList.LEVEL_GB}"></td><!-- 조직구분 (SELECT)--> 
 									<td th:text="${departmentList.DIV_TYPE}"></td><!-- 배부부문 (SELECT)-->
-									<td th:if="${departmentList.ACC_UNIT == '(주)이에이치네트웍스'}">(주)이에이치네트웍스</td><!-- 회계단위 (01)-->
-									<td th:unless="${departmentList.ACC_UNIT == '(주)이에이치네트웍스'}"></td><!-- 회계단위 (else)-->
+									<td th:text="${departmentList.ACC_UNIT}"></td>
 									<!-- 회계부서 / 체크박스 -->
 									<td th:if="${departmentList.ACC_DEPT == '1'}" style="text-align: center">
 										<input type="checkbox" th:checked="${departmentList.ACC_DEPT}" disabled>
@@ -310,9 +373,7 @@
 									<td th:if="${departmentList.ACC_DEPT == '2'}" style="text-align: center">
 											<input type="checkbox" disabled>
 									</td>
-									<td th:if="${departmentList.DIV_ID == '입력부서'}">입력부서</td><!-- M/D부서 (10)-->
-									<td th:if="${departmentList.DIV_ID == '미입력부서'}">미입력부서</td><!-- M/D부서 (20)-->
-									<td th:if="${departmentList.DIV_ID == '1'}"></td><!-- M/D부서 (****)-->
+									<td th:text="${departmentList.DIV_ID}"></td><!-- M/D부서 (10)-->
 									<!-- 미사용유무 / 체크박스 -->
 									<td th:if="${departmentList.NOT_USE == '1'}" style="text-align: center">
 										<input type="checkbox" th:checked="${departmentList.NOT_USE}" disabled>

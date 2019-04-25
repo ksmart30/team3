@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team00.system.mapper.LoginMapper">
-	<!-- 사용자 등록정보 조회 (사원번호(ID), PW) -->
+	<!-- 0.2.1 사용자 등록정보 조회 (사원번호(ID), PW) -->
 	<select id="getLogin"
 			parameterType="ksmart30.team00.system.domain.Login"
             resultType="ksmart30.team00.system.domain.Login">
@@ -18,7 +18,7 @@
             AND A.EMP_NO = #{EMP_NO}
             AND A.PASS_WD = #{PASS_WD}
 	</select>
-    <!-- 접속 정보 추가 -->
+    <!-- 0.2.3 접속 정보 추가 -->
     <insert id="addConnect"
             parameterType="ksmart30.team00.system.domain.Ip">
             INSERT INTO T_SM4000 (
