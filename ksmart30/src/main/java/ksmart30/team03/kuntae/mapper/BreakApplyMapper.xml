@@ -5,11 +5,11 @@
   <mapper namespace="ksmart30.team03.kuntae.mapper.BreakApplyMapper">
   
  <select id="getBreakApplyList"
- 		resultType="java.util.Map"
- 		parameterType="String">
+ 		parameterType="String"
+ 		resultType="java.util.Map">
 
-		<!-- 휴가 신청 List -->
-		SELECT TOP 50 A.APP_DATE,
+		<!-- 4.05 휴가 신청 List -->
+		SELECT TOP 25 A.APP_DATE,
 		       A.EMP_NO, B.KOR_NM,
 		       B.DEPT_CD,   (SELECT SHORT_NM  FROM T_SC1010 WHERE DEPT_CD = B.DEPT_CD) DEPT_NM,
 		       B.JIKGUP_CD, (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = B.JIKGUP_CD) JIKGUP_NM,
@@ -32,9 +32,42 @@
 		       A.RETURN_TIME,
 		       A.PRINT_YN
 		 FROM T_PM2200 A,
-		      (SELECT * FROM T_HM1000 UNION SELECT * FROM T_HM1000_T) B
+		      T_HM1000 B
 		WHERE A.EMP_NO = B.EMP_NO
-		  AND A.EMP_NO LIKE '%%'
+		ORDER BY APP_DATE1 DESC, APP_GB
+ </select>
+ 
+ <select id="getBreakApplyList2"
+ 		parameterType="String"
+ 		resultType="java.util.Map">
+
+		<!-- 4.05 휴가 신청 Detail -->
+		SELECT TOP 10 A.APP_DATE,
+		       A.EMP_NO, B.KOR_NM,
+		       B.DEPT_CD,   (SELECT SHORT_NM  FROM T_SC1010 WHERE DEPT_CD = B.DEPT_CD) DEPT_NM,
+		       B.JIKGUP_CD, (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = B.JIKGUP_CD) JIKGUP_NM,
+		       A.APP_GB,
+		       A.APP_GB1,
+		       A.APP_DATE1, A.APP_TIME1,
+		       A.APP_DATE2, A.APP_TIME2,
+		       A.APP_RMK,
+		       A.APP_PJT_CD,
+		       (SELECT '['+A.APP_PJT_CD+']'+ CASE PJT_CD WHEN '84701' THEN '공통 프로젝트' ELSE PJT_NM END FROM T_SM3000 WHERE PJT_CD = SUBSTRING(A.APP_PJT_CD,1,5)) PJT_NM,
+		       A.APP_PLACE,
+		       A.APP_BIGO,
+		       A.LEAVING_GBN,
+		       A.AUDIT_ID,
+		       A.APP_DATE1+APP_TIME1+APP_DATE2+APP_TIME2 APP_USE,
+		       CASE CONFIRM_YN WHEN '1' THEN '승인' ELSE '대기중' END CONFIRM,
+		       CONFIRM_YN,
+		       A.CONFIRM_DT,
+		       A.RETURN_YN,
+		       A.RETURN_TIME,
+		       A.PRINT_YN
+		 FROM T_PM2200 A,
+		      T_HM1000 B
+		WHERE A.EMP_NO = B.EMP_NO
+		  AND A.EMP_NO LIKE '%'+#{EMP_NO}+'%'
 		ORDER BY APP_DATE1 DESC, APP_GB
  </select>
   

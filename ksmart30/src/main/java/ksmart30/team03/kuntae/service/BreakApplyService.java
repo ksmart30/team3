@@ -12,15 +12,8 @@ import ksmart30.team03.kuntae.mapper.BreakApplyMapper;
 @Service
 public class BreakApplyService {
 	@Autowired private BreakApplyMapper breakApplyMapper;
-	
-	// 휴가신청 List
-	/*
-	 * public List<BreakApply> getBreakApplyList(){
-	 * System.out.println("S : 휴가신청 List"); return
-	 * breakApplyMapper.getBreakApplyList(); }
-	 */
-	
-	// 휴가신청 List Ajax
+
+	// 4.05 휴가신청 List Ajax
 	public List<Map<String, Object>> getBreakApplyList(BreakApply vo){
 		System.out.println("S : 휴가 신청 List Ajax");
 		List<Map<String, Object>> data = breakApplyMapper.getBreakApplyList(vo);
@@ -28,4 +21,12 @@ public class BreakApplyService {
 		return data;
 	}
 	
+	// 4.05 휴가신청 List Detail
+	public List<Map<String, Object>> getBreakApplyList2(BreakApply vo){
+		System.out.println("S : 휴가 신청 List Detail");
+		List<Map<String, Object>> data = breakApplyMapper.getBreakApplyList2(vo);
+		System.out.println("S : data =>"+ data);
+		return data;
+	}
+		
 }

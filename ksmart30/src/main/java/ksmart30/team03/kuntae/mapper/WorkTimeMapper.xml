@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team03.kuntae.mapper.WorkTimeMapper">
 
-	<!-- 출,퇴근 기록부(개인별) 사원번호 검색 -->
+	<!-- 4.03 출,퇴근 기록부(개인별) 사원번호 검색 -->
 	<select id="getRecordSingleNoSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
@@ -20,7 +20,7 @@
 		WHERE a.EMP_NO=#{EMP_NO}
 	</select>
 	
-	<!-- 이름검색 -->
+	<!-- 4.03 이름검색 -->
 	<select id="getRecordSingleNameSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
@@ -57,7 +57,7 @@
 		<!-- WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt >= '201903' AND e.end_dt <= '201905' -->
 	</select>
 	
-	<!-- 출,퇴근 기록부(Total) 사원번호 검색 -->
+	<!-- 4.02, 4.03 출,퇴근 기록부(Total,Single) 사원번호 검색 --> 
 	<select id="getRecordTotalNoSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
@@ -75,9 +75,9 @@
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD 
 		JOIN T_PM1010 e ON a.EMP_NO=e.EMP_NO
 		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%%'
-	</select>
+	</select> 
 	
-	<!-- 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력 -->
+	<!-- 4.02 출 퇴근 기록부(Total) 당일 출 퇴근 명단 출력 -->
 	<select id="getRecordTotalList"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList">
 		SELECT 
@@ -98,7 +98,8 @@
 		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.work_dt=o.o
 	</select> 
 	
-	<!-- 출퇴근(Total) 전체 검색 -->
+	
+	<!-- 4.02 출퇴근(Total) 전체 검색 -->
 	<select id="getRecordTotalSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
@@ -119,34 +120,8 @@
 		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%'+#{EMP_NO}+'%' AND e.WORK_DT <![CDATA[>=]]> #{WORK_DT} AND e.END_DT <![CDATA[<=]]> #{END_DT}
 	</select>
 	
-	<select id="getDayList1"
-			resultType="ksmart30.team03.kuntae.domain.WorkTimeDay"
-			parameterType="String">
-		SELECT SYS_COD,
-		       SORT_DEPT,
-		       GUBUN,
-		       DEPT_CD,
-		       DEPT_NM,
-		       DEPT_TITLE,
-		       TOT_INWON,
-		       CHUL_INWON,
-		       JIGAK_INWON,
-		       SAGO_INWON,
-		       SAGO_01, SAGO_02, SAGO_03, SAGO_04, SAGO_05,
-		       SAGO_06, SAGO_07, SAGO_08, SAGO_09, SAGO_10,
-		       T_TOT_INWON,
-		       T_CHUL_INWON,
-		       T_JIGAK_INWON,
-		       T_SAGO_INWON,
-		       T_SAGO_01, T_SAGO_02, T_SAGO_03, T_SAGO_04, T_SAGO_05,
-		       T_SAGO_06, T_SAGO_07, T_SAGO_08, T_SAGO_09, T_SAGO_10,
-				 '20170102' DATA,
-		       CONVERT(VARCHAR(12), GETDATE(),102)   YYYYMMDD 
-		  FROM DBO.SF_KUNTAE_TODAY_PJT('20190417','','')
-		 ORDER BY SORT_DEPT, GUBUN
-	</select>
 	
-	<!-- 근태정정 신청 List 가져오기-->
+	<!-- 4.04 근태정정 신청 List 가져오기-->
 	<select id="getWorkTimeView"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
@@ -203,7 +178,7 @@
 	 </select>
 	
 	
-	<!-- 근태정정 신청 List 기간, 이름 검색 -->
+	<!-- 4.04 근태정정 신청 List 기간, 이름 검색 -->
 	<select id="getWorkTimeSearchView"
 			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
 			parameterType="String">
@@ -240,7 +215,7 @@
 		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND e.WORK_DT<![CDATA[>=]]>#{WORK_DT} AND e.WORK_DT<![CDATA[<=]]>#{WORK_DT1} AND E.END_DT='' AND a.KOR_NM LIKE '%'+#{KOR_NM}+'%'
 	</select>
 	
-	<!-- 지각 횟수 누계(당일부터 1년) --> 
+	<!-- 4.04 근태정정 신청 지각 횟수 누계(당일부터 1년) --> 
 	<select id="getWorkTimeJigakSearch"
 			resultType="ksmart30.team03.kuntae.domain.WorkTime"
 			parameterType="String">
@@ -252,7 +227,7 @@
  	WHERE EMP_NO  = #{EMP_NO} AND WORK_DT >=o.o
 	</select>
 	
-	<!-- 전체 검색 조건 vo로 받기 -->
+	<!--  4.04 근태정정 신청 전체 검색 조건 vo로 받기 -->
 	<select id="getSingleListDomain"
 			parameterType="String"
 			resultType="java.util.Map">

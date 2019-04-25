@@ -4,7 +4,7 @@
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>kuntae</title>
+		<title>출퇴근기록부(개인별)</title>
 		
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<th:block th:include="layout/customHead"></th:block>
@@ -18,7 +18,7 @@
 
 	/* 사원번호 검색*/
 	$(document).ready(function(){
-		console.log('출,퇴근(Total) 리스트 출력')
+		console.log('출,퇴근(Single)리스트 출력')
 	     $('#btn_empno').click(function(){
 	    	var EMP_NO = $('#EMP_NO').val();
 	    	 $.ajax({
@@ -30,24 +30,15 @@
 	            	console.log('사원 번호 쿼리 성공!');
 	                $('#list').empty();
 	                $(data).each(function(index,item){ //each = foreach (반복문)
-	                    $('#list').append('<tr>');
-	                    $('#list').append('<td>'+item.dept_NM+'</td>');
-	                    $('#list').append('<td>'+item.jikgup_NM+'</td>'); 
-	                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
-	                    $('#list').append('<td>'+item.work_DT.substring(0,4)+'</td>');
-	                    $('#list').append('<td>'+item.work_DT.substring(4,6)+'</td>');
-	                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
-	                    $('#list').append('<td>'+item.start_TIME+'</td>');
-	                    $('#list').append('<td>'+item.end_TIME+'</td>');
-	                    $('#list').append('<td>'+item.end_DT+'</td>');
-	                    $('#list').append('</tr>'); 
+	                    $('#list').append('<tr><td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>'+item.work_DT.substring(0,4)+'</td><td>'+item.work_DT.substring(4,6)+'</td><td>'+item.work_DT.substring(6,8)+'</td><td>'+item.start_TIME+'</td><td>'+item.end_TIME+'</td><td>'+item.end_DT+'</td></tr>');
+	         
 	                });                   
 	            }
 	        });
 	    });
 	 });		
 	
-	/* 날짜 검색 */
+/* 	/* 날짜 검색 
 	$(document).ready(function(){
 		console.log('출,퇴근(Total) 날짜 출력')
 		$("#btn_day").click(function(){
@@ -82,7 +73,7 @@
 			}
 		});
 	});
-});
+}); */
 	
 	
 	/* 전체 검색 */
@@ -106,22 +97,29 @@
             	console.log('날짜 검색 쿼리 성공!');
                 $('#list').empty();
                 $(data).each(function(index,item){ //each = foreach (반복문)
-                    $('#list').append('<tr>');
-                    $('#list').append('<td>'+item.dept_NM+'</td>');
-                    $('#list').append('<td>'+item.jikgup_NM+'</td>'); 
-                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
-                    $('#list').append('<td>'+item.work_DT.substring(0,4)+'</td>');
-                    $('#list').append('<td>'+item.work_DT.substring(4,6)+'</td>');
-                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
-                    $('#list').append('<td>'+item.start_TIME+'</td>');
-                    $('#list').append('<td>'+item.end_TIME+'</td>');
-                    $('#list').append('<td>'+item.end_DT+'</td>');
-                    $('#list').append('</tr>'); 
-
+                    $('#list').append('<tr><td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>'+item.work_DT.substring(0,4)+'</td><td>'+item.work_DT.substring(4,6)+'</td><td>'+item.work_DT.substring(6,8)+'</td><td>'+item.start_TIME+'</td><td>'+item.end_TIME+'</td><td>'+item.end_DT+'</td></tr>');
                 });                   			
 			}
 		});
 	});
+
+		// 1. 오늘날짜 넣기
+		let date = new Date();
+		let year = date.getFullYear();	//년도
+		let month = date.getMonth()+1;	//월
+		let day = date.getDate();		//일
+		if((month+"").length<2) {
+			month = "0" + month;
+		}
+		if((day+"").length<2) {
+			day = "0" + day;
+		}
+		let getToday = year+"-"+month +"-"+day;	// 오늘 날짜 (0000-00-00)
+
+		// 검색날짜에 대입
+		$('#END_DT').val(getToday);			
+		
+		
 });
 	
 	
@@ -144,78 +142,47 @@
 	<div class="x_content" style="text-align: right">
 			<div class="btn-group">
 				<button class="btn btn-default" type="button" id="btn_search" style="color:black">조회</button>
-				<button class="btn btn-default" type="reset">입력</button>
-				<button class="btn btn-default" type="button">수정</button>
-				<button class="btn btn-default" type="button">삭제</button>
-				<button class="btn btn-default" type="button">저장</button>
-				<button class="btn btn-default" type="button">출력</button>
+				<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
+				<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+				<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+				<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+				<button class="btn btn-default" type="button" disabled="disabled">출력</button>
 			</div>
 		</div>
 
-<div class="x_panel" style=""> 	
-
-        	<!-- 검색 버튼 -->
-			<div class="x_content" style="text-align: right">
-				<button type="button" id="btn_search" class="btn" style="color:black">전체검색</button>
-			</div>
-	   <!-- 박스내의 상단 -->
-	<div class="clearfix">
-</div>
-
-
-
-
- <div class="clearfix"></div>
- 	<form action="/kuntae/recordTotalSearch">
-		<div class="col-md-12 col-sm-12 col-xs-12">
-			<form action="/kuntae/recordDateSearchProcess">
-				<table class="table">
-					<tbody>
-					
-						<tr>
-							<th>시작일</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="date" id="WORK_DT" name="WORK_DT">
-								</div>
-							</td>
-							
-							<th>끝난일</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="date" id="END_DT" name="END_DT">
-								</div>
-							</td>
-							
-							
-						</tr>
-					</form>
-						<tr>
-							<th>사원번호</th>
-							<td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" id="EMP_NO" name="EMP_NO">
-									<button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
-								</div>
-							</td>
-
-							<th></th>
-							 <td>
-								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<!-- <input type="text" class="form-control"> -->
-								</div>
-							</td> 
-						</tr>
-
-					</tbody>
-				</table>
-				</div>
-				</div>
-			</form>
+<div class="x_panel">
+        	<div class="x_title">	               	                                    	
+            	<div class="x_content">
+            		<div class="row">
+            		 	<form >
+              			<table class="table table-bordered" style="color:black;">
+							<tbody><tr>
+								<th>
+	                  				<div class="col-md-12 col-sm-12 col-xs-12 form-group">          	
+	                  					검색조건                
+	                  				</div>                               				
+		                  			<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+ 										기간	 
+ 									<input type="date" id="WORK_DT" name="WORK_DT"> ~ <input type="date" id="END_DT" name="END_DT">
+	                  				</div>                                    
+			                  			
+			                  		<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+										사원번호 <input type="text" size="5" id="EMP_NO" name="EMP_NO">
+										<button type="button" id="btn_empno"><i class="fa fa-search"></i></button>
+			                  		</div>	
+			                  		
+			                  		<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+			                  		</div>
+			             		</th>
+		          			</tr>
+             			</tbody>
+             			</table>
+         			</form>
+         			</div>                                  
+       			</div>
+       		</div>
+     	</div>
 	
-				
-				
-
                 <div class="x_panel">
 
                   <div class="x_content">

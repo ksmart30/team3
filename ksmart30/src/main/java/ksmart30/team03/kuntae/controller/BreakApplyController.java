@@ -24,8 +24,18 @@ public class BreakApplyController {
 	 * System.out.println("data=>"+data); return "/kuntae/breakApplyView"; }
 	 */
 	
-	// 
+	// 4.05 휴가신청 List Detail
 	@GetMapping("/kuntae/breakApplyView2")
+	public @ResponseBody List<Map<String, Object>> breakApplyList2(BreakApply vo){
+		System.out.println("C : 휴가신청 List Ajax쓰겠음");
+		System.out.println("C : vo =>"+ vo);
+		List<Map<String, Object>> data = breakApplyService.getBreakApplyList2(vo);
+		System.out.println("C : Ajax List data=>"+data);
+		return data;
+	}
+	
+	// 4.05 휴가신청 List
+	@GetMapping("/kuntae/breakApplyView1")
 	public @ResponseBody List<Map<String, Object>> breakApplyList(BreakApply vo){
 		System.out.println("C : 휴가신청 List Ajax쓰겠음");
 		System.out.println("C : vo =>"+ vo);
@@ -34,15 +44,14 @@ public class BreakApplyController {
 		return data;
 	}
 	
+	// 4.05 휴가신청 List 처음 화면
 	@GetMapping("/kuntae/breakApplyView")
 	public String breakApplyList2() {
 		System.out.println("Ajax화면 출력!!!");
 		return "/kuntae/breakApplyView";
 	}
 	
-	
-	
-	// 휴가 신청 입력
+	// 4.05.01휴가 신청 입력 폼
 	@GetMapping("/kuntae/breakApplyWriteView")
 	public String breakApplyWriteView() {
 		return "/kuntae/breakApplyWriteView";
