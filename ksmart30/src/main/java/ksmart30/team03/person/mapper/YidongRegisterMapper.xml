@@ -4,9 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="ksmart30.team03.person.mapper.YidongRegisterMapper">
-<!-- 
-인사발령대장 list
- -->
+	<!-- 
+	 6.2.2인사발령대장 - 인사발령대장 list
+	 -->
 	<select id="getYidongRegister" resultType="ksmart30.team03.person.domain.Yidong">
 		SELECT TOP 100
 		    A.APPOINT_NO,
@@ -51,9 +51,9 @@
 	
 	</select>
 
-<!-- 
-인사발령대장 검색 list(ajax)
- -->
+	<!-- 
+	 6.2.2인사발령대장 - 인사발령대장 검색
+	 -->
 	<select id="searchYidongRegister" parameterType="String" resultType="java.util.Map">
 		SELECT TOP 100
 		    A.APPOINT_NO,
@@ -99,7 +99,9 @@
 		   AND APPROVE_YN =#{APPROVE_YN}
 		ORDER BY A.APPOINT_DT DESC
 	</select>
-	
+	<!-- 
+	 6.2.2인사발령대장 - 날짜입력값 없이(승인여부만 가지고) 인사발령대장 검색
+	 -->
 	<select id="searchYidongRegister2" parameterType="String" resultType="java.util.Map">
 		SELECT TOP 100
 		    A.APPOINT_NO,

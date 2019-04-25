@@ -6,13 +6,13 @@
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-	
+
 	<th:block th:include="layout/customHead"></th:block>
-	
+
 	<script>
 	
 	function searchResult(KOR_NM){
@@ -109,10 +109,10 @@
 							
 							
 							$('#yidongInsert2').empty();
-							$('#yidongInsert2').append('<tr><th><input type="text" id="APPOINT_NO" class="table table-bordered" style="width:70%;"></th>'
+							$('#yidongInsert2').append('<tr><th style="text-align:center"><input type="text" id="APPOINT_NO" class="table table-bordered" style="width:70%;"></th>'
 							
-							+'<th>'+'<input type="date" id="APPOINT_DT" class="table table-bordered" style="width:70%;"></th>'
-							+'<th>'+'<input type="text" id="REMARK" class="table table-bordered"></th></tr>');
+							+'<th style="text-align:center">'+'<input type="date" id="APPOINT_DT" class="table table-bordered" style="width:70%;"></th>'
+							+'<th style="text-align:center">'+'<input type="text" id="REMARK" class="table table-bordered"></th></tr>');
 							
 							
 								
@@ -160,7 +160,7 @@
 		
 
 </script>
-<title>발령등록</title>
+	<title>발령등록</title>
 </th:block>
 
 <th:block layout:fragment="customBody">
@@ -172,94 +172,94 @@
 					<b>발령등록</b>
 				</h2>
 				<h5>
-					<font color="gray">
-					<b>6.인사/급여&nbsp;>&nbsp;&nbsp;6.2이동관리 > 6.2.1발령등록</b>
+					<font color="gray"> <b>6.인사/급여&nbsp;>&nbsp;&nbsp;6.2이동관리
+							> 6.2.1발령등록</b>
 					</font>
 				</h5>
 
 			</div>
 		</div>
 	</div>
-		<div class="x_content" style="text-align: right">
-			<div class="btn-group" >
-				<br>
-				<button class="btn btn-default" type="button" id="btn_list">조회</button>
-				<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
-				<button class="btn btn-default" type="button" disabled="disabled">수정</button>
-				<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
-				<button class="btn btn-default" type="button" id="btn_insert">저장</button>
-				<button class="btn btn-default" type="button">출력</button>
-				<br>
-			</div>
+	<div class="x_content" style="text-align: right">
+		<div class="btn-group">
+			<br>
+			<button class="btn btn-default" type="button" id="btn_list">조회</button>
+			<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
+			<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+			<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+			<button class="btn btn-default" type="button" id="btn_insert">저장</button>
+			<button class="btn btn-default" type="button">출력</button>
+			<br>
 		</div>
-	
+	</div>
+
 
 	<!-- 
               직원list 시작
                -->
-    
-	<div class="col-md-6 col-sm-6 col-xs-12" style="color:black;">
+
+	<div class="col-md-6 col-sm-6 col-xs-12" style="color: black;">
 		<div class="x_panel">
 			<div class="x_title">
-				<h2>
-					직원 list 
-				</h2>
-			
-		<div class="clearfix"></div>
+				<h2>직원 list</h2>
+
+				<div class="clearfix"></div>
 			</div>
-			<div class="x_content" style="overflow:scroll; width:100%; height:450px; background-color:;">
-					
-					<form action="/person/personYidongListSearch">
-						<table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-responsive_info" >
-						
+			<div class="x_content"
+				style="overflow: scroll; width: 100%; height: 450px; background-color:;">
+
+				<form action="/person/personYidongListSearch">
+					<table
+						class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+						role="grid" aria-describedby="datatable-responsive_info">
+
 						<tr role="row">
-							<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
-											&nbsp;사원명
-							</th>
-							<th class="sorting" aria-controls="datatable-responsive">
-								<input type="text" name="KOR_NM" id="KOR_NM" style="width:50%;">
-									 <button class="btn" style="color:black" id="btn_list">검색</button>
-							
+							<th class="sorting_asc" aria-controls="datatable-responsive"
+								aria-sort="ascending" style="text-align: center">&nbsp;사원명</th>
+							<th class="sorting" aria-controls="datatable-responsive"><input
+								type="text" name="KOR_NM" id="KOR_NM" style="width: 50%;">
+								<button class="btn" style="color: black" id="btn_list">검색</button>
+
 							</th>
 
 						</tr>
-						</table>
-					</form>
-					
-					
-					
-				<table class="table table-striped jambo_table bulk_action" >
-					
-					<thead>
-						<tr>
-							
-							<th>사원번호</th>
-							<th>성명</th>
-							
+					</table>
+				</form>
+
+
+
+				<table class="table table-striped jambo_table bulk_action">
+
+					<thead >
+						<tr >
+
+							<th style="text-align: center">사원번호</th>
+							<th style="text-align: center">성명</th>
+
 						</tr>
 					</thead>
-					<tbody  id = "list">
-						
+					<tbody id="list" style="text-align: center">
+
 						<tr th:each="y : ${yidongList}">
 							<td th:text="${y.EMP_NO}"></td>
 							<td th:text="${y.KOR_NM}"></td>
 						</tr>
-						
+
 					</tbody>
-					
+
 				</table>
-				
-				
+
+
 
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 
               발령 등록 insertForm 시작
                -->
-    <div class="col-md-6 col-sm-6 col-xs-12" style="color:black;">           
-	<div class="x_panel">
+	<div class="col-md-6 col-sm-6 col-xs-12" style="color: black;">
+		<div class="x_panel">
 
 			<div class="title_left">
 				<h3>발령 등록 insert form</h3>
@@ -268,187 +268,173 @@
 			<!----------------------------------- 조건별검색(부장님)----------------------------------------- -->
 
 			<div class="col-md-12 col-xs-12">
-				<form method="post" class="form-horizontal form-label-left input_mask" name="testForm">
-					<table id="beforeInfo" class="table table-striped jambo_table bulk_action" role="row">
+				<form method="post"
+					class="form-horizontal form-label-left input_mask" name="testForm">
+					<table id="beforeInfo"
+						class="table table-striped jambo_table bulk_action" role="row">
 						<thead>
-						<h4>발령 전 정보</h4>
-							<tr>
-								<th>사원번호</th>
-								<th>성명</th>
-								<th>소속부서</th>
-								<th>직 급</th>
-								<th>직 책</th>
+							<h4>발령 전 정보</h4>
+							<tr >
+								<th style="text-align: center">사원번호</th>
+								<th style="text-align: center">성명</th>
+								<th style="text-align: center">소속부서</th>
+								<th style="text-align: center">직 급</th>
+								<th style="text-align: center">직 책</th>
 							</tr>
-						
+
 						</thead>
-						<tbody id="yidongInsert">
-						
+						<tbody id="yidongInsert" style="text-align: center">
+
 						</tbody>
 					</table>
-				
-					<table id="datatable-responsive" class="table table-striped jambo_table bulk_action">
+
+					<table id="datatable-responsive"
+						class="table table-striped jambo_table bulk_action" >
 						<thead>
-							<h4>
-								발령 후 정보
-							</h4>
+							<h4>발령 후 정보</h4>
 							<tr>
-								<th>발령번호</th>
-								<th>발령일자</th>
-								<th>비고</th>
+								<th style="text-align: center">발령번호</th>
+								<th style="text-align: center">발령일자</th>
+								<th style="text-align: center">비고</th>
 							</tr>
 						</thead>
-						<tbody id="yidongInsert2">
-						
+						<tbody id="yidongInsert2" style="text-align: center">
+
 						</tbody>
 						<tbody >
-							
+
 							<tr >
-								<th >발령종류</th>
-								<td style="width:50%;">
-									
-											<select class="form-control" id="APPOINT_GB" name="APPOINT_GB" >
-												<option></option>
-												<th:block th:each="gb : ${gbResult}">
-													<th:block th:if="${gb.LEVEL1_CD} == 170">									
-														<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
-													</th:block>
-												</th:block>
-											</select>																		
-									
-								</td>
-								<td>
-								</td>
-								
+								<th style="text-align: center;background-color:#FFF9DF">발령종류</th>
+								<td style="width: 50%;"><select class="form-control"
+									id="APPOINT_GB" name="APPOINT_GB">
+										<option></option>
+										<th:block th:each="gb : ${gbResult}">
+											<th:block th:if="${gb.LEVEL1_CD} == 170">
+												<option th:value="${gb.LEVEL2_CD}">[[${gb.LEVEL2_NM}]]</option>
+											</th:block>
+										</th:block>
+								</select></td>
+								<td></td>
+
 							</tr>
 						</tbody>
 						<tbody>
 							<tr>
-								
-								<th>부서명</th>
-								<td>
-									
-											<select class="form-control" id="DEPT_NM2" name="DEPT_NM2" >
-												<option></option>
-												<th:block th:each="deptCd: ${deptCd}">
-													<option th:value="${deptCd.DEPT_NM}">[[${deptCd.DEPT_NM}]]</option>
-												</th:block>
-											</select>			
-									
-	
-								</td>
-								<td>
-								</td>
+
+								<th style="text-align: center;background-color:#FFF9DF">부서명</th>
+								<td><select class="form-control" id="DEPT_NM2"
+									name="DEPT_NM2">
+										<option></option>
+										<th:block th:each="deptCd: ${deptCd}">
+											<option th:value="${deptCd.DEPT_NM}">[[${deptCd.DEPT_NM}]]</option>
+										</th:block>
+								</select></td>
+								<td></td>
 							</tr>
 							<tr>
-								<th>직급</th>
-								<td>
-									
-										
-											<select class="form-control" id="JIKGUP_NM2" name="JIKGUP_NM2" >
-												<option></option>
-												<th:block th:each="gb : ${gbResult}">
-													<th:block th:if="${gb.LEVEL1_CD} == 110">									
-														<option th:value="${gb.LEVEL2_NM}">[[${gb.LEVEL2_NM}]]</option>
-													</th:block>
-												</th:block>
-											</select>																		
-								</td>
-								<td>
-								</td>
+								<th style="text-align: center;background-color:#FFF9DF">직급</th>
+								<td><select class="form-control" id="JIKGUP_NM2"
+									name="JIKGUP_NM2">
+										<option></option>
+										<th:block th:each="gb : ${gbResult}">
+											<th:block th:if="${gb.LEVEL1_CD} == 110">
+												<option th:value="${gb.LEVEL2_NM}">[[${gb.LEVEL2_NM}]]</option>
+											</th:block>
+										</th:block>
+								</select></td>
+								<td></td>
 							</tr>
 							<tr>
-								<th>직책</th>
-								<td>
-									
-											<select class="form-control" id="JIKCHK_NM2" name="JIKCHK_NM2" >
-												<option></option>
-												<th:block th:each="gb : ${gbResult}">
-													<th:block th:if="${gb.LEVEL1_CD} == 120">									
-														<option th:value="${gb.LEVEL2_NM}">[[${gb.LEVEL2_NM}]]</option>
-													</th:block>
-												</th:block>
-											</select>			
-								</td>
-								<td>
-								</td>
-							</tr>					
+								<th style="text-align: center;background-color:#FFF9DF">직책</th>
+								<td><select class="form-control" id="JIKCHK_NM2"
+									name="JIKCHK_NM2">
+										<option></option>
+										<th:block th:each="gb : ${gbResult}">
+											<th:block th:if="${gb.LEVEL1_CD} == 120">
+												<option th:value="${gb.LEVEL2_NM}">[[${gb.LEVEL2_NM}]]</option>
+											</th:block>
+										</th:block>
+								</select></td>
+								<td></td>
+							</tr>
 						</tbody>
-						
-						
-						
-						
+
+
+
+
 						<tbody>
-						
-							
-							
+
+
+
 						</tbody>
-						
+
 					</table>
 				</form>
 			</div>
-		
-	
+
+
+		</div>
 	</div>
-	</div>
-	
+
 	<!--
 	 이동자료 list
 	 -->
-	<div class="" style="color:black;">
-            <div class="page-title">
-              <div class="title_left">
-                <h3> <!-- <small>Some examples to get you started</small> --></h3>
-              </div>
+	<div class="" style="color: black;">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>
+					<!-- <small>Some examples to get you started</small> -->
+				</h3>
+			</div>
 
-              
-            </div>
 
-            <div class="clearfix"></div>
+		</div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>이동자료 list</h2>
-                    
-                    <div class="clearfix"></div>
-                  </div>
-                  
-                  <div class="x_content">
-                    <!-- <p class="text-muted font-13 m-b-30">
+		<div class="clearfix"></div>
+
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>이동자료 list</h2>
+
+						<div class="clearfix"></div>
+					</div>
+
+					<div class="x_content">
+						<!-- <p class="text-muted font-13 m-b-30">
                       DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
                     </p> -->
-                    <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
-                      <thead>
-                        <tr>
-                          
-                          <th>명령번호</th>
-                          <th>명령종류</th>
-                          <th>명령일자</th>
-                          <th>사원번호</th>
-                          <th>성명</th>
-                          <th>명령내역</th>
-                          <th>비고</th>
-                          <th>승인여부</th>
-                        </tr>
-                      </thead>
+						<table id="datatable-checkbox"
+							class="table table-striped table-bordered bulk_action">
+							<thead>
+								<tr>
+
+									<th>명령번호</th>
+									<th>명령종류</th>
+									<th>명령일자</th>
+									<th>사원번호</th>
+									<th>성명</th>
+									<th>명령내역</th>
+									<th>비고</th>
+									<th>승인여부</th>
+								</tr>
+							</thead>
 
 
-                      <tbody id="yidongRegister">
-                      	
-                      </tbody>
-                    </table>
-                    
-                    
-                    
-                    <div class="x_content" style="text-align: right" >
-	                    
+							<tbody id="yidongRegister">
+
+							</tbody>
+						</table>
+
+
+
+						<div class="x_content" style="text-align: right"></div>
 					</div>
-                  </div>
-                </div>
-              </div>
-             </div>
+				</div>
 			</div>
+		</div>
+	</div>
 </th:block>
 
 <th:block layout:fragment="customJquery">

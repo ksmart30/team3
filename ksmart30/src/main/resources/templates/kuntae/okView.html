@@ -1,15 +1,18 @@
 <!-- 근태승인처리 -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
-	<th:block layout:fragment="customHead">
-		<meta charset="UTF-8">
-		<title>근태승인처리</title>
-		<th:block th:include="layout/customHead"></th:block>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/main">
+<th:block layout:fragment="customHead">
+	<meta charset="UTF-8">
+	<title>근태승인처리</title>
+	<th:block th:include="layout/customHead"></th:block>
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	
-	
-    <script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+	<script>
     $(document).ready(function(){
     	console.log('근태승인처리 검색 list 출력하자');
     	$('#btn_list').click(function(){
@@ -30,22 +33,21 @@
 						console.log("실행확인");
 						$(data).each(function(index,item){
 
-								$('#list').append('<tr >');	
-								$('#list').append('<td width="70">'+item.APP_DATE+'</td>');
-								$('#list').append('<td width="50">'+item.APP_NM+'</td>');
-								$('#list').append('<td width="100">'+item.DEPT_NM+'</td>');
-								$('#list').append('<td width="50">'+item.JIKGUP_NM+'</td>');
-								$('#list').append('<td width="70">'+item.EMP_NM+'</td>');
-								$('#list').append('<td>'+item.CONFIRM_YN+'</td>');
-								$('#list').append('<td width="70">'+item.APP_DATE1+'</td>');
-								$('#list').append('<td width="70">'+item.APP_DATE2+'</td>');
-								$('#list').append('<td width="50">'+item.TERM+'</td>');
-								$('#list').append('<td width="100">'+item.APP_RMK+'</td>');
-								$('#list').append('<td>'+item.PJT_NM+'</td>');
-								$('#list').append('<td>'+item.APP_PLACE+'</td>');
-								$('#list').append('<td>'+item.APP_BIGO+'</td>');
-
-								$('#list').append('</tr>');	
+								$('#list').append('<tr >'
+										+'<td width="70">'+item.APP_DATE+'</td>'
+										+'<td width="100">'+item.APP_NM+'</td>'
+										+'<td width="100">'+item.DEPT_NM+'</td>'
+										+'<td width="50">'+item.JIKGUP_NM+'</td>'
+										+'<td width="70">'+item.EMP_NM+'</td>'
+										+'<td>'+item.CONFIRM_YN+'</td>'
+										+'<td width="70">'+item.APP_DATE1+'</td>'
+										+'<td width="70">'+item.APP_DATE2+'</td>'
+										+'<td width="50">'+item.TERM+'</td>'
+										+'<td width="100">'+item.APP_RMK+'</td>'
+										+'<td>'+item.PJT_NM+'</td>'
+										+'<td>'+item.APP_PLACE+'</td>'
+										+'<td>'+item.APP_BIGO+'</td>'
+										+'</tr>');	
 						
 
 						});
@@ -57,23 +59,27 @@
     
     
     </script>
-    
-    </th:block>
-	<th:block layout:fragment="customBody">
+
+</th:block>
+<th:block layout:fragment="customBody">
 	<head>
-  	</head>
-		<div class="col-md-12 col-xs-12" style="color: black;">
-	<div class="page-title">
-	
-	<div class="title_left">
-					
-		<h2><b>근태승인처리</b></h2>
-		<h5><font color="gray"><b>4.근태 관리</b><b> > 4.6근태승인처리</b></font></h5>
-		
-	</div>
-	</div>
+	</head>
+	<div class="col-md-12 col-xs-12" style="color: black;">
+		<div class="page-title">
+
+			<div class="title_left">
+
+				<h2>
+					<b>근태승인처리</b>
+				</h2>
+				<h5>
+					<font color="gray"><b>4.근태 관리</b><b> > 4.6근태승인처리</b></font>
+				</h5>
+
+			</div>
+		</div>
 		<div class="x_content" style="text-align: right">
-			<div class="btn-group" >
+			<div class="btn-group">
 				<br>
 				<button class="btn btn-default" type="button" id="btn_list">조회</button>
 				<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
@@ -87,214 +93,230 @@
 
 
 
-<!-- 2 -->
+		<!-- 2 -->
 
-<div class="x_panel" style="">
-   	
-    <div class="x_title">
-        <h4 style="color:black">⊙ 검색조건 </h4>
-	   <!-- 박스내의 상단 -->
-	   <div class="clearfix"></div>
-    </div>
-    
-    
-    
-    <div class="x_content">
-<table style="width:50%" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" id="personSearch_table"role="grid" aria-describedby="datatable-responsive_info" >
-       
-       
-       
-       
-		<tr role="row" >
-			<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending" >
-									<label>신청일자</label>
-			</th>
-			<th class="sorting" aria-controls="datatable-responsive" >
-				<input type="date" name="FRDATE" id="FRDATE" >
-				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~
-			</th>
-			
-				
-			
-			<th class="sorting" aria-controls="datatable-responsive" >
-				<input type="date" name="TODATE" id="TODATE" >
-			</th>
-		</tr>
-		
-</table>		   
-<table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" id="personSearch_table"role="grid" aria-describedby="datatable-responsive_info" >
-	
-	
-		<tr role="row">
-               <th  class="sorting" aria-controls="datatable-responsive">
-				<label>승인여부
-						<select id="CONFIRM_YN" aria-controls="datatable-keytable" class="form-control input-sm">
-						<option value="1">승인</option>
-						<option value="0">미승인</option>
-						
-						</select>
-				</label>
-				</th>
-		
-	
+		<div class="x_panel" style="">
+
+			<div class="x_title">
+				<h4 style="color: black">⊙ 검색조건</h4>
+				<!-- 박스내의 상단 -->
+				<div class="clearfix"></div>
+			</div>
 
 
-				<th class="sorting" aria-controls="datatable-responsive">
-	
-						<label>부서명
-							<select id="DEPT_CD" aria-controls="datatable-keytable" class="form-control input-sm">
-							<option></option>
-							<th:block th:each="deptCd : ${result}">
-							
+
+			<div class="x_content" >
+
+				<table style="width: 50%"
+					class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+					id="personSearch_table" role="grid"
+					aria-describedby="datatable-responsive_info">
+
+
+
+
+					<tr role="row">
+						<th class="sorting_asc" aria-controls="datatable-responsive"
+							aria-sort="ascending"><label>신청일자</label></th>
+						<th class="sorting" aria-controls="datatable-responsive"><input
+							type="date" name="FRDATE" id="FRDATE">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~</th>
+
+
+
+						<th class="sorting" aria-controls="datatable-responsive"><input
+							type="date" name="TODATE" id="TODATE"></th>
+					</tr>
+
+				</table>
+				<table style="width: 60%"
+					class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+					id="personSearch_table" role="grid"
+					aria-describedby="datatable-responsive_info">
+
+
+					<tr role="row">
+						<th class="sorting" aria-controls="datatable-responsive"><label>승인여부
+								<select id="CONFIRM_YN" aria-controls="datatable-keytable"
+								class="form-control input-sm">
+									<option value="1">승인</option>
+									<option value="0">미승인</option>
+
+							</select>
+						</label></th>
+
+
+
+
+						<th class="sorting" aria-controls="datatable-responsive"><label>부서명
+								<select id="DEPT_CD" aria-controls="datatable-keytable"
+								class="form-control input-sm">
+									<option></option>
+									<th:block th:each="deptCd : ${result}">
+
 										<option th:value="${deptCd.DEPT_CD}">[[${deptCd.DEPT_NM}]]</option>
-										
-											
-											
-											
-							</th:block>
-							
-							</select>
-						</label>
 
-				</th>
-				<th class="sorting" aria-controls="datatable-responsive">
-	
-						<label>근태구분
-							<select id="APP_GB" aria-controls="datatable-keytable" class="form-control input-sm">
-							<option></option>
-							<th:block th:each="appGb : ${result2}">
-										
+
+
+
+									</th:block>
+
+							</select>
+						</label></th>
+						<th class="sorting" aria-controls="datatable-responsive"><label>근태구분
+								<select id="APP_GB" aria-controls="datatable-keytable"
+								class="form-control input-sm">
+									<option></option>
+									<th:block th:each="appGb : ${result2}">
+
 										<option th:value="${appGb.APP_GB}">[[${appGb.APP_NM}]]</option>
-										
-											
-											
-											
-							</th:block>
-							
+
+
+
+
+									</th:block>
+
 							</select>
-						</label>
-				</th>
+						</label></th>
 
-				<th class="sorting" aria-controls="datatable-responsive" style="width:20%;">
-					<label class="control-label">사원명</label><br>
-					<input type="text" id=EMP_NM >
-  				</th>	
-		 </tr> 
-</table>		
-</div>
-        </div>
-            <div class="clearfix"></div>
+						<th class="sorting" aria-controls="datatable-responsive"
+							style="width: 20%;"><label class="control-label">사원명</label><br>
+							<input type="text" id=EMP_NM></th>
+					</tr>
+				</table>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>근태승인처리</h2>
-                    
-                    <div class="clearfix"></div>
-                  </div>
-                  
-                  <div class="x_content">
-                    
-                    <table  id="datatable-checkbox" class="table table-striped jambo_table bulk_action" style="text-align:center">
-                      <thead>
-                        <tr >
-                          <th rowspan="2">신청일자</th>
-                          <th rowspan="2">근태구분</th>
-                          <th rowspan="2">부서</th>
-                          <th rowspan="2">직급</th>
-                          <th rowspan="2">성명</th>
-                          <th rowspan="2">승인</th>
-                          <th colspan="3">기간</th>
-                          <th rowspan="2">사유</th>
-                          <th rowspan="2">프로젝트</th>
-                          <th rowspan="2">행선지</th>
-                          <th rowspan="2">비고</th>
-                        </tr>
-                        
-                        <tr>
-                          <th>From</th>
-                          <th>To</th>
-                          <th>일수</th>
-                        </tr>
-                      </thead>
+			</div>
+		</div>
+		<div class="clearfix"></div>
 
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>근태승인처리</h2>
 
-                      <tbody id="list" >
-                        
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-             </div>          
-</div>
+						<div class="clearfix"></div>
+					</div>
+
+					<div class="x_content" style="overflow: scroll; width: 100%; height: 450px; background-color:;">
+
+						<table id="datatable-checkbox"
+							class="table table-striped jambo_table bulk_action"
+							style="text-align: center" border="1">
+							<thead style="text-align: center">
+								<tr style="text-align: center">
+									<th rowspan="2" style="text-align: center">신청일자</th>
+									<th rowspan="2" style="text-align: center">근태구분</th>
+									<th rowspan="2" style="text-align: center">부서</th>
+									<th rowspan="2" style="text-align: center">직급</th>
+									<th rowspan="2" style="text-align: center">성명</th>
+									<th rowspan="2" style="text-align: center">승인</th>
+									<th colspan="3" style="text-align: center">기간</th>
+									<th rowspan="2" style="text-align: center">사유</th>
+									<th rowspan="2" style="text-align: center">프로젝트</th>
+									<th rowspan="2" style="text-align: center">행선지</th>
+									<th rowspan="2" style="text-align: center">비고</th>
+								</tr>
+
+								<tr>
+									<th>From</th>
+									<th>To</th>
+									<th>일수</th>
+								</tr>
+							</thead>
 
 
- <!-- 승인 modal -->
+							<tbody id="list">
 
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="ok">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-         </button>
-         <h4 class="modal-title" id="myModalLabel2">승인하시겠습니까?</h4>
-       </div>
-       <form action="/#" method="get">
-			        <div class="modal-body">ID : <input type="text" name="profit" value=""></div>
-			        <div class="modal-body">PW : <input type="text" name="pay" value=""></div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         <button type="submit" class="btn btn-success" >Save changes</button>
-       </div>
-       </form>
-     </div>
-   </div>
- </div>		                 
-<!-- / 승인 modals -->
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-<!-- 사원번호 modal -->
+	<!-- 승인 modal -->
 
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="no">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-         </button>
-         <h4 class="modal-title" id="myModalLabel2">사원번호 검색</h4>
-       </div>
-       <form action="/#" method="get">
-			        <div class="modal-body">번호 : <input type="text" name="profit" value=""></div>
-			        <div class="modal-body">번호 : <input type="text" name="pay" value=""></div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         <!-- <button type="submit" class="btn btn-success" >Save changes</button> -->
-       </div>
-       </form>
-     </div>
-   </div>
- </div>		                 
-<!-- / 사원번호 modals -->
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+		aria-hidden="true" id="ok">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel2">승인하시겠습니까?</h4>
+				</div>
+				<form action="/#" method="get">
+					<div class="modal-body">
+						ID : <input type="text" name="profit" value="">
+					</div>
+					<div class="modal-body">
+						PW : <input type="text" name="pay" value="">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-success">Save
+							changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- / 승인 modals -->
+
+
+	<!-- 사원번호 modal -->
+
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+		aria-hidden="true" id="no">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel2">사원번호 검색</h4>
+				</div>
+				<form action="/#" method="get">
+					<div class="modal-body">
+						번호 : <input type="text" name="profit" value="">
+					</div>
+					<div class="modal-body">
+						번호 : <input type="text" name="pay" value="">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<!-- <button type="submit" class="btn btn-success" >Save changes</button> -->
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- / 사원번호 modals -->
 
 
 
 
 
 
-			
-	    <!-- jQuery -->
-	    <script src="/vendors/jquery/dist/jquery.min.js"></script>
-	    <!-- bootstrap-daterangepicker -->
-	    <script src="/vendors/moment/min/moment.min.js"></script>
-	    <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-	    <!-- bootstrap-datetimepicker -->    
-	    <script src="/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
-			
-	    <!-- Initialize datetimepicker -->
-		<script>
+	<!-- jQuery -->
+	<script src="/vendors/jquery/dist/jquery.min.js"></script>
+	<!-- bootstrap-daterangepicker -->
+	<script src="/vendors/moment/min/moment.min.js"></script>
+	<script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<!-- bootstrap-datetimepicker -->
+	<script
+		src="/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+
+	<!-- Initialize datetimepicker -->
+	<script>
 		    $('#myDatepicker').datetimepicker();
 		    
 		    $('#myDatepicker2').datetimepicker({
@@ -324,9 +346,9 @@
 		        $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
 		    });
 		</script>
-			
-	</th:block>
-	<th:block layout:fragment="customJquery">
-		<th:block th:include="layout/customJquery"></th:block>
-    </th:block>	
+
+</th:block>
+<th:block layout:fragment="customJquery">
+	<th:block th:include="layout/customJquery"></th:block>
+</th:block>
 </html>

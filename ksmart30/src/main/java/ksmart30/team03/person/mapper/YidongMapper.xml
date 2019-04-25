@@ -6,16 +6,18 @@
   
 <mapper namespace="ksmart30.team03.person.mapper.YidongMapper">
 
-<!-- 리스트에 직원 정보 뿌려주는 쿼리 test 	
-  -->
+	<!--
+	6.2.1발령등록 - 리스트에 직원 정보 뿌려주는 쿼리 	
+  	-->
  
 	<select id="getYidongList" resultType="ksmart30.team03.person.domain.Yidong">
 		SELECT a.EMP_NO, a.KOR_NM 
 		FROM T_HM1000 a
 		
 	</select>
-
-
+	<!--
+	6.2.1발령등록 - 직원 클릭시 발령 전 정보를 발령등록 insert form에 뿌려준다 
+	 -->
 	<select id="getYidongList2" resultType="ksmart30.team03.person.domain.Yidong" parameterType="String">
 		SELECT a.EMP_NO,a.KOR_NM,a.JIKGUP_CD,b.LEVEL2_NM AS JIKGUP_NM,a.JIKCHK_CD, c.LEVEL2_NM AS JIKCHK_NM,DEPT_NM 
 		FROM T_HM1000 a 
@@ -23,7 +25,9 @@
 		JOIN T_SC9100 c ON a.JIKCHK_CD=c.LEVEL2_CD 
 		JOIN T_SC1010 d ON a.DEPT_CD=d.DEPT_CD WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO=#{EMP_NO}
 	</select>
-
+	<!-- 
+	6.2.1발령등록 - 직원검색 후 list 출력
+	-->
 	<select id="searchYidongList" resultType="ksmart30.team03.person.domain.Yidong"  parameterType="String">
 		SELECT EMP_NO, KOR_NM 
 		FROM T_HM1000 WHERE KOR_NM LIKE '%'+#{KOR_NM}+'%'
@@ -31,29 +35,29 @@
 	</select>
 	
 	<!-- 
-	옵션값(명령종류) 가져오기
+	6.2.1발령등록 - 옵션값(명령종류) 가져오기
 	 -->
 	<select id="appGb" resultType="java.util.Map">
 		SELECT LEVEL2_NM APPOINT_NM,LEVEL2_CD APPOINT_GB FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '170'
 		
 	</select>
 	<!-- 
-	발령등록 메서드
+	6.2.1발령등록 - 발령등록 메서드
 	 -->
 	<insert id="addYidongList" parameterType="String">
 	INSERT 
 	INTO T_HM1400(
 	EMP_NO,O_DEPT_NM,O_JIKGUP_NM,O_JIKCHK_NM,APPOINT_NO, 
-	APPOINT_GB, APPOINT_DT, DEPT_NM ,JIKGUP_NM ,JIKCHK_NM,REMARK, AUDIT_TM)  
+	APPOINT_GB, APPOINT_DT, DEPT_NM ,JIKGUP_NM ,JIKCHK_NM,REMARK, AUDIT_TM,APPROVE_YN)  
  	VALUES(#{EMP_NO},#{DEPT_NM},#{JIKGUP_NM},#{JIKCHK_NM},#{APPOINT_NO},
  			#{APPOINT_GB},CONVERT(CHAR(8),#{APPOINT_DT},112),#{DEPT_NM2},
- 			#{JIKGUP_NM2},#{JIKCHK_NM2},#{REMARK},GETDATE())
+ 			#{JIKGUP_NM2},#{JIKCHK_NM2},#{REMARK},GETDATE(),'')
 	
 	
 	</insert>
 	
 	<!-- 
-	직원 클릭시 발령대장 list 출력
+	6.2.1발령등록 - 직원 클릭시 발령대장 list 출력
 	 -->
 	<select id="getYidongList3" resultType="ksmart30.team03.person.domain.Yidong" parameterType="String">
 		SELECT

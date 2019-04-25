@@ -1,12 +1,15 @@
 <!-- 근태현황(일, 월) -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
-	<th:block layout:fragment="customHead">
-		<meta charset="UTF-8">
-		<title>근태현황</title>
-		<th:block th:include="layout/customHead"></th:block>
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/main">
+<th:block layout:fragment="customHead">
+	<meta charset="UTF-8">
+	<title>근태현황</title>
+	<th:block th:include="layout/customHead"></th:block>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script>
 	$(document).ready(function(){
 		 console.log('근태현황list 출력해보자');	
@@ -30,106 +33,102 @@
 							
 								
 							if(item.GUBUN==9){
-								$('#list').append('<tr >');	
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.DEPT_NM+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.JIKGUP_NM+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.KOR_NM+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.JIGAK+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.KYULGUN1+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.KYULGUN2+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.SAYU_NM+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.HOLI_WORK+'</td>');
+								$('#list').append('<tr >'
+										+'<td style="background-color:#E6F8E0">'+item.DEPT_NM+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.JIKGUP_NM+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.KOR_NM+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.JIGAK+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.KYULGUN1+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.KYULGUN2+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.SAYU_NM+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.HOLI_WORK+'</td>'
 								//잔여휴가일수 (YEARLY_DAY)
-								$('#list').append('<td style="background-color:#E6F8E0">'+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.HOLI_1+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.HOLI_2+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.HOLI_3+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.HOLI_4+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.HOLI_5+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.HOLI_6+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.HOLI_7+'</td>');
-								$('#list').append('<td style="background-color:#E6F8E0">'+item.KYUL_TOT+'</td>');
+										+'<td style="background-color:#E6F8E0">'+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.HOLI_1+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.HOLI_2+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.HOLI_3+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.HOLI_4+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.HOLI_5+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.HOLI_6+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.HOLI_7+'</td>'
+										+'<td style="background-color:#E6F8E0">'+item.KYUL_TOT+'</td>'
 								//연차휴가발생 (YEARLY_CHA)
-								$('#list').append('<td style="background-color:#E6F8E0">'+'</td>');
-								$('#list').append('</tr>');	
+										+'<td style="background-color:#E6F8E0">'+'</td>'
+										+'</tr>');	
 							}else if(item.GUBUN==5){
-								$('#list').append('<tr >');	
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.DEPT_NM+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.JIKGUP_NM+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.KOR_NM+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.JIGAK+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.KYULGUN1+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.KYULGUN2+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.SAYU_NM+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.HOLI_WORK+'</td>');
+								$('#list').append('<tr >'
+										+'<td style="background-color:#F8E0E0">'+item.DEPT_NM+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.JIKGUP_NM+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.KOR_NM+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.JIGAK+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.KYULGUN1+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.KYULGUN2+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.SAYU_NM+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.HOLI_WORK+'</td>'
 								//잔여휴가일수 (YEARLY_DAY)
-								$('#list').append('<td style="background-color:#F8E0E0">'+'</td>');
+										+'<td style="background-color:#F8E0E0">'+'</td>'
 								
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.HOLI_1+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.HOLI_2+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.HOLI_3+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.HOLI_4+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.HOLI_5+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.HOLI_6+'</td>');
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.HOLI_7+'</td>');
-						
-								$('#list').append('<td style="background-color:#F8E0E0">'+item.KYUL_TOT+'</td>');
+										+'<td style="background-color:#F8E0E0">'+item.HOLI_1+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.HOLI_2+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.HOLI_3+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.HOLI_4+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.HOLI_5+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.HOLI_6+'</td>'
+										+'<td style="background-color:#F8E0E0">'+item.HOLI_7+'</td>'
+										
+										+'<td style="background-color:#F8E0E0">'+item.KYUL_TOT+'</td>'
 								//연차휴가발생 (YEARLY_CHA)
-								$('#list').append('<td style="background-color:#F8E0E0">'+'</td>');
-								
-								$('#list').append('</tr>');	
+									 	+'<td style="background-color:#F8E0E0">'+'</td>'
+									 	+'</tr>');	
 							}else if(item.GUBUN==4){
-								$('#list').append('<tr >');	
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.DEPT_NM+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.JIKGUP_NM+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.KOR_NM+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.JIGAK+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.KYULGUN1+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.KYULGUN2+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.SAYU_NM+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.HOLI_WORK+'</td>');
+								$('#list').append('<tr >'
+										+'<td style="background-color:#ffeeaa">'+item.DEPT_NM+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.JIKGUP_NM+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.KOR_NM+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.JIGAK+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.KYULGUN1+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.KYULGUN2+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.SAYU_NM+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.HOLI_WORK+'</td>'
 								//잔여휴가일수 (YEARLY_DAY)
-								$('#list').append('<td style="background-color:#ffeeaa">'+'</td>');
+										+'<td style="background-color:#ffeeaa">'+'</td>'
 								
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.HOLI_1+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.HOLI_2+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.HOLI_3+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.HOLI_4+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.HOLI_5+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.HOLI_6+'</td>');
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.HOLI_7+'</td>');
+										+'<td style="background-color:#ffeeaa">'+item.HOLI_1+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.HOLI_2+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.HOLI_3+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.HOLI_4+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.HOLI_5+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.HOLI_6+'</td>'
+										+'<td style="background-color:#ffeeaa">'+item.HOLI_7+'</td>'
 								
-								$('#list').append('<td style="background-color:#ffeeaa">'+item.KYUL_TOT+'</td>');
+										+'<td style="background-color:#ffeeaa">'+item.KYUL_TOT+'</td>'
 								//연차휴가발생 (YEARLY_CHA)
-								$('#list').append('<td style="background-color:#ffeeaa">'+'</td>');
-								
-	
-								$('#list').append('</tr>');									
+										+'<td style="background-color:#ffeeaa">'+'</td>'
+										+'</tr>');									
 							}else{
-								$('#list').append('<tr >');	
-								$('#list').append('<td>'+item.DEPT_NM+'</td>');
-								$('#list').append('<td>'+item.JIKGUP_NM+'</td>');
-								$('#list').append('<td>'+item.KOR_NM+'</td>');
-								$('#list').append('<td>'+item.JIGAK+'</td>');
-								$('#list').append('<td>'+item.KYULGUN1+'</td>');
-								$('#list').append('<td>'+item.KYULGUN2+'</td>');
-								$('#list').append('<td>'+item.SAYU_NM+'</td>');
-								$('#list').append('<td>'+item.HOLI_WORK+'</td>');
-								$('#list').append('<td>'+item.YEARLY_DAY+'</td>');
+								$('#list').append('<tr >'
+										+'<td>'+item.DEPT_NM+'</td>'
+										+'<td>'+item.JIKGUP_NM+'</td>'
+										+'<td>'+item.KOR_NM+'</td>'
+										+'<td>'+item.JIGAK+'</td>'
+										+'<td>'+item.KYULGUN1+'</td>'
+										+'<td>'+item.KYULGUN2+'</td>'
+										+'<td>'+item.SAYU_NM+'</td>'
+										+'<td>'+item.HOLI_WORK+'</td>'
+										+'<td>'+item.YEARLY_DAY+'</td>'
 								
-								$('#list').append('<td>'+item.HOLI_1+'</td>');
-								$('#list').append('<td>'+item.HOLI_2+'</td>');
-								$('#list').append('<td>'+item.HOLI_3+'</td>');
-								$('#list').append('<td>'+item.HOLI_4+'</td>');
-								$('#list').append('<td>'+item.HOLI_5+'</td>');
-								$('#list').append('<td>'+item.HOLI_6+'</td>');
-								$('#list').append('<td>'+item.HOLI_7+'</td>');
-								
-								$('#list').append('<td>'+item.KYUL_TOT+'</td>');
-								$('#list').append('<td>'+item.YEARLY_CHA+'</td>');
-								
-
-								$('#list').append('</tr>');	
+										+'<td>'+item.HOLI_1+'</td>'
+										+'<td>'+item.HOLI_2+'</td>'
+										+'<td>'+item.HOLI_3+'</td>'
+										+'<td>'+item.HOLI_4+'</td>'
+										+'<td>'+item.HOLI_5+'</td>'
+										+'<td>'+item.HOLI_6+'</td>'
+										+'<td>'+item.HOLI_7+'</td>'
+										
+										+'<td>'+item.KYUL_TOT+'</td>'
+										+'<td>'+item.YEARLY_CHA+'</td>'
+										
+										+'</tr>');	
 							}
 
 						});
@@ -143,23 +142,27 @@
 	
 	
 	</script>
-	
-	
-	
-	</th:block>
-	<th:block layout:fragment="customBody">
+
+
+
+</th:block>
+<th:block layout:fragment="customBody">
 	<div class="col-md-12 col-xs-12" style="color: black;">
 		<div class="page-title">
-	
-	<div class="title_left">
-					
-		<h2><b>근태현황</b></h2>
-		<h5><font color="gray"><b>4.근태 관리</b><b> > 4.7근태현황</b></font></h5>
-		
-	</div>
-	</div>
+
+			<div class="title_left">
+
+				<h2>
+					<b>근태현황</b>
+				</h2>
+				<h5>
+					<font color="gray"><b>4.근태 관리</b><b> > 4.7근태현황</b></font>
+				</h5>
+
+			</div>
+		</div>
 		<div class="x_content" style="text-align: right">
-			<div class="btn-group" >
+			<div class="btn-group">
 				<br>
 				<button class="btn btn-default" type="button" id="btn_list">조회</button>
 				<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
@@ -170,114 +173,112 @@
 				<br>
 			</div>
 		</div>
-	
 
-          
-            
-            
-            <div class="col-md-12 col-sm-12 col-xs-12">
+
+
+
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
-		<div class="x_title">
-	        <h4 style="color:black">⊙ 검색조건 </h4>
-		   <!-- 박스내의 상단 -->
-		   <div class="clearfix"></div>
-	    </div>
-				
-				
+				<div class="x_title">
+					<h4 style="color: black">⊙ 검색조건</h4>
+					<!-- 박스내의 상단 -->
+					<div class="clearfix"></div>
+				</div>
 
-				<table style="width:80%" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" id="personSearch_table"role="grid" aria-describedby="datatable-responsive_info" >
-					
 
-						<th class="sorting" aria-controls="datatable-responsive" >
-							<label>년월</label>
-							
-								
-									<input type="month" name="FRDATE" id="FRDATE">
-								
-									~
-							
-								
-									<input type="month" name="TODATE" id="TODATE">
-						</th>	
-						<th class="sorting" aria-controls="datatable-responsive" >	
-							<label>부서코드</label>
-							<select id="DEPT_CD">
+
+				<table style="width: 80%"
+					class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+					id="personSearch_table" role="grid"
+					aria-describedby="datatable-responsive_info">
+
+
+					<th class="sorting" aria-controls="datatable-responsive"><label>년월</label>
+
+
+						<input value="2019-04" type="month" name="FRDATE" id="FRDATE">
+
+						~ <input value="2019-05" type="month" name="TODATE" id="TODATE">
+					</th>
+					<th class="sorting" aria-controls="datatable-responsive"><label>부서코드</label>
+						<select id="DEPT_CD">
 							<option></option>
 							<th:block th:each="deptCd : ${result}">
-							
-										<option th:value="${deptCd.DEPT_CD}">[[${deptCd.DEPT_NM}]]</option>
-										
-											
-											
-											
-							</th:block>
-							
-							</select>
 
-						</th>
-						
-					
+								<option th:value="${deptCd.DEPT_CD}">[[${deptCd.DEPT_NM}]]</option>
+
+
+
+
+							</th:block>
+
+					</select></th>
+
+
 				</table>
 			</div>
-			</div>
-            
+		</div>
 
-            <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                   
-                    
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <!-- <p class="text-muted font-13 m-b-30">
+		<div class="clearfix"></div>
+
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+
+
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<!-- <p class="text-muted font-13 m-b-30">
                       DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
                     </p> -->
-                    <table id="datatable-checkbox" class="table table-striped jambo_table bulk_action" style="text-align:center">
-                      <thead>
-                        <tr>                         
-                          <th rowspan="2">부서명</th>
-                          <th rowspan="2">직급</th>
-                          <th rowspan="2">성명</th>
-                          <th rowspan="2">지각</th>
-                          <th colspan="2">결근</th>
-                          <th rowspan="2">결근사유</th>
-                          <th rowspan="2">휴일근무일수</th>
-                          <th rowspan="2">연차휴가발생</th>
-                          <th colspan="7">휴가사용일수</th>
-                          <th rowspan="2">무단결근</th>
-                          <th rowspan="2">잔여 휴가일수</th>
-                        </tr>
-                        <tr>
-                          <th>사고계 제 출</th>
-                          <th>무단결근</th>
-                          <th>휴가</th>
-                          <th>경조</th>
-                          <th>철야</th>
-                          <th>공상</th>
-                          <th>포상</th>
-                          <th>출산</th>
-                          <th>휴직</th>
-                        </tr>
-                      </thead>
+						<table id="datatable-checkbox"
+							class="table table-striped jambo_table bulk_action"
+							style="text-align: center" border="1">
+							<thead>
+								<tr>
+									<th rowspan="2" style="text-align: center">부서명</th>
+									<th rowspan="2" style="text-align: center" width="50">직급</th>
+									<th rowspan="2" style="text-align: center" width="50">성명</th>
+									<th rowspan="2" style="text-align: center">지각</th>
+									<th colspan="2" style="text-align: center">결근</th>
+									<th rowspan="2" style="text-align: center">결근사유</th>
+									<th rowspan="2" style="text-align: center">휴일근무일수</th>
+									<th rowspan="2" style="text-align: center">연차휴가발생</th>
+									<th colspan="7" style="text-align: center">휴가사용일수</th>
+									<th rowspan="2" style="text-align: center">무단결근</th>
+									<th rowspan="2" style="text-align: center">잔여 휴가일수</th>
+								</tr>
+								<tr>
+									<th style="text-align: center">사고계 제출</th>
+									<th style="text-align: center">무단결근</th>
+									<th style="text-align: center">휴가</th>
+									<th style="text-align: center">경조</th>
+									<th style="text-align: center">철야</th>
+									<th style="text-align: center">공상</th>
+									<th style="text-align: center">포상</th>
+									<th style="text-align: center">출산</th>
+									<th style="text-align: center">휴직</th>
+								</tr>
+							</thead>
 
 
-                      <tbody id="list">
-                        
+							<tbody id="list">
 
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-             </div>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
+		</div>
+	</div>
 
-	</th:block>
-	<th:block layout:fragment="customJquery">
-		<th:block th:include="layout/customJquery"></th:block>
-    </th:block>
+</th:block>
+<th:block layout:fragment="customJquery">
+	<th:block th:include="layout/customJquery"></th:block>
+</th:block>
 </html>

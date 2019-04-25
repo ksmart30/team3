@@ -6,13 +6,12 @@
   
 <mapper namespace="ksmart30.team03.mh.mapper.ResultNugaeMapper">
 
-<!-- 리스트에 pjt_cd 뿌려주는 쿼리 test 	
-  -->
+	<!-- 
+	5.2.2M/H 계획/실적(프로젝트 누계) - 프로젝트별 계획,실적 M/H list 출력 	
+	  -->
  
 	<select id="getResultNugaeList" resultType="ksmart30.team03.mh.domain.ResultList">
-SELECT
-			
-			
+	SELECT
 			g.WORK_STEP,f.WORK_TIME,d.DEPT_NM,b.pjt_cd PJT_CD, e.SVC PJT_NM ,b.PLAN_A,b.PLAN_B,b.PLAN_C,b.PLAN_D,
 			b.PLAN_E,b.PLAN_F,b.PLAN_G,b.TOT_MD,
 			(CASE g.WORK_STEP WHEN 'A' THEN b.PLAN_A WHEN 'B' THEN b.PLAN_A+b.PLAN_B 
@@ -46,82 +45,84 @@ SELECT
 		
 	</select>
 	
-	
-		<select id="getResultNugaeList2" resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
-SELECT *
-FROM ( 
- /* 계약프로젝트 일정계획 단계별 계획 대 실적 M/D작성 */
- SELECT #{PJT_CD} PJT_CD, '' PJT_TYPE, WORK_STEP, ISNULL(LEVEL1_NM,'합  계') WORK_NM, 
-   FLOOR(YEA_MD) YEA_MD, SIL_TM
- FROM (
-  SELECT 'A' WORK_STEP, ISNULL(SUM(A.PLAN_A),0) YEA_MD,
-   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
-    FROM T_PM1020 B
-    WHERE B.PJT_CD    = #{PJT_CD}
-    AND B.WORK_STEP = 'A' ) SIL_TM
-  FROM T_P11050 A
-  WHERE A.PJT_CD    = #{PJT_CD}
-  UNION ALL
-  SELECT 'B' WORK_STEP, ISNULL(SUM(A.PLAN_B),0) YEA_MD,
-   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
-    FROM T_PM1020 B
-    WHERE B.PJT_CD    = #{PJT_CD}
-    AND B.WORK_STEP = 'B' ) SIL_TM
-  FROM T_P11050 A
-  WHERE A.PJT_CD    = #{PJT_CD}
-  UNION ALL
-  SELECT 'C' WORK_STEP, ISNULL(SUM(A.PLAN_C),0) YEA_MD,
-   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
-    FROM T_PM1020 B
-    WHERE B.PJT_CD    =#{PJT_CD}
-    AND B.WORK_STEP = 'C' ) SIL_TM
-  FROM T_P11050 A
-  WHERE A.PJT_CD    = #{PJT_CD}
-  UNION ALL
-  SELECT 'D' WORK_STEP, ISNULL(SUM(A.PLAN_D),0) YEA_MD,
-   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
-    FROM T_PM1020 B
-    WHERE B.PJT_CD    = #{PJT_CD}
-    AND B.WORK_STEP = 'D' ) SIL_TM
-  FROM T_P11050 A
-  WHERE A.PJT_CD    = #{PJT_CD}
-  UNION ALL
-  SELECT 'E' WORK_STEP, ISNULL(SUM(A.PLAN_E),0) YEA_MD,
-   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
-    FROM T_PM1020 B
-    WHERE B.PJT_CD    = #{PJT_CD}
-    AND B.WORK_STEP = 'E' ) SIL_TM
-  FROM T_P11050 A
-  WHERE A.PJT_CD    =#{PJT_CD}
-  UNION ALL
-  SELECT 'F' WORK_STEP, ISNULL(SUM(A.PLAN_F),0) YEA_MD,
-   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
-    FROM T_PM1020 B
-    WHERE B.PJT_CD    = #{PJT_CD}
-    AND B.WORK_STEP = 'F' ) SIL_TM
-  FROM T_P11050 A
-  WHERE A.PJT_CD    =#{PJT_CD}
-  UNION ALL
-  SELECT 'G' WORK_STEP, ISNULL(SUM(A.PLAN_G),0) YEA_MD,
-   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
-    FROM T_PM1020 B
-    WHERE B.PJT_CD    = #{PJT_CD}
-    AND B.WORK_STEP = 'G' ) SIL_TM
-  FROM T_P11050 A
-  WHERE A.PJT_CD    = #{PJT_CD}
-  UNION ALL
-  SELECT 'T' WORK_STEP, ISNULL(SUM(A.PLAN_A + A.PLAN_B + A.PLAN_C + A.PLAN_D +
-                                           A.PLAN_E + A.PLAN_F + A.PLAN_G),0) YEA_MD,
-   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
-    FROM T_PM1020 B
-    WHERE B.PJT_CD    = #{PJT_CD}
-    AND B.WORK_STEP IN ('A','B','C','D','E','F','G')) SIL_TM
-  FROM T_P11050 A
-  WHERE A.PJT_CD    = #{PJT_CD}
-  ) A,
-  T_SC9000 B
- WHERE WORK_STEP *= LEVEL1_CD
- AND BUSI_GB   = 'J') A 
+	<!-- 
+	5.2.2M/H 계획/실적(프로젝트 누계) - 프로젝트 클릭 시 상세 계획,실적 list 출력	
+	  -->
+	<select id="getResultNugaeList2" resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
+	SELECT *
+	FROM ( 
+	 /* 계약프로젝트 일정계획 단계별 계획 대 실적 M/D작성 */
+	 SELECT #{PJT_CD} PJT_CD, '' PJT_TYPE, WORK_STEP, ISNULL(LEVEL1_NM,'합  계') WORK_NM, 
+	   FLOOR(YEA_MD) YEA_MD, SIL_TM
+	 FROM (
+		  SELECT 'A' WORK_STEP, ISNULL(SUM(A.PLAN_A),0) YEA_MD,
+		   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
+		    FROM T_PM1020 B
+		    WHERE B.PJT_CD    = #{PJT_CD}
+		    AND B.WORK_STEP = 'A' ) SIL_TM
+	  FROM T_P11050 A
+	  WHERE A.PJT_CD    = #{PJT_CD}
+	  UNION ALL
+	  SELECT 'B' WORK_STEP, ISNULL(SUM(A.PLAN_B),0) YEA_MD,
+		   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
+		    FROM T_PM1020 B
+		    WHERE B.PJT_CD    = #{PJT_CD}
+		    AND B.WORK_STEP = 'B' ) SIL_TM
+	  FROM T_P11050 A
+	  WHERE A.PJT_CD    = #{PJT_CD}
+	  UNION ALL
+	  SELECT 'C' WORK_STEP, ISNULL(SUM(A.PLAN_C),0) YEA_MD,
+		   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
+		    FROM T_PM1020 B
+		    WHERE B.PJT_CD    =#{PJT_CD}
+		    AND B.WORK_STEP = 'C' ) SIL_TM
+	  FROM T_P11050 A
+	  WHERE A.PJT_CD    = #{PJT_CD}
+	  UNION ALL
+	  SELECT 'D' WORK_STEP, ISNULL(SUM(A.PLAN_D),0) YEA_MD,
+		   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
+		    FROM T_PM1020 B
+		    WHERE B.PJT_CD    = #{PJT_CD}
+		    AND B.WORK_STEP = 'D' ) SIL_TM
+	  FROM T_P11050 A
+	  WHERE A.PJT_CD    = #{PJT_CD}
+	  UNION ALL
+	  SELECT 'E' WORK_STEP, ISNULL(SUM(A.PLAN_E),0) YEA_MD,
+		   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
+		    FROM T_PM1020 B
+		    WHERE B.PJT_CD    = #{PJT_CD}
+		    AND B.WORK_STEP = 'E' ) SIL_TM
+	  FROM T_P11050 A
+	  WHERE A.PJT_CD    =#{PJT_CD}
+	  UNION ALL
+	  SELECT 'F' WORK_STEP, ISNULL(SUM(A.PLAN_F),0) YEA_MD,
+		   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
+		    FROM T_PM1020 B
+		    WHERE B.PJT_CD    = #{PJT_CD}
+		    AND B.WORK_STEP = 'F' ) SIL_TM
+	  FROM T_P11050 A
+	  WHERE A.PJT_CD    =#{PJT_CD}
+	  UNION ALL
+	  SELECT 'G' WORK_STEP, ISNULL(SUM(A.PLAN_G),0) YEA_MD,
+		   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
+		    FROM T_PM1020 B
+		    WHERE B.PJT_CD    = #{PJT_CD}
+		    AND B.WORK_STEP = 'G' ) SIL_TM
+	  FROM T_P11050 A
+	  WHERE A.PJT_CD    = #{PJT_CD}
+	  UNION ALL
+	  SELECT 'T' WORK_STEP, ISNULL(SUM(A.PLAN_A + A.PLAN_B + A.PLAN_C + A.PLAN_D +
+		                                           A.PLAN_E + A.PLAN_F + A.PLAN_G),0) YEA_MD,
+		   (SELECT CAST(ISNULL(SUM(B.WORK_TIME),0) AS INT)
+		    FROM T_PM1020 B
+		    WHERE B.PJT_CD    = #{PJT_CD}
+		    AND B.WORK_STEP IN ('A','B','C','D','E','F','G')) SIL_TM
+	  FROM T_P11050 A
+	  WHERE A.PJT_CD    = #{PJT_CD}
+	  ) A,
+	  T_SC9000 B
+	 WHERE WORK_STEP *= LEVEL1_CD
+	 AND BUSI_GB   = 'J') A 
 		
 	</select>
 </mapper>
