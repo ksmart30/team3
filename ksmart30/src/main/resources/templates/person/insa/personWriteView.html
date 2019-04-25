@@ -79,21 +79,7 @@ $(document).ready(function(){
 		}
 		
 	});
-	//입력버튼 클릭시 입력할 수 있는 창이 나옴
-	$('#btn_family').click(function(){
-		
-		$('#family_table').append('<tr>');
-		$('#family_table').append('<td></td>');
-		$('#family_table').append('<td><select class="form-control" id="RELATION" name="RELATION"><option></option><option value="00">본인</option><option value="10">소득자직계존속</option><option value="11">부</option><option value="12">모</option>'+
-		'<option value="20">배우자직계존속</option><option value="21">배우자 부</option><option value="22">배우자 모</option><option value="30">배우자</option><option value="40">직계비속자녀</option><option value="41">자</option><option value="42">녀</option>'+
-		'<option value="50">직계비속 자녀외</option><option value="51">손자</option><option value="52">손녀</option><option value="60">형제자매</option><option value="61">형</option><option value="62">제</option><option value="63">자</option><option value="63">자</option>'+
-		'<option value="64">매</option><option value="70">기초생활 수급자</option><option value="80">위탁아동</option></select></td>');
-		$('#family_table').append('<td><input type="text" id="NAME" name="NAME"></td>');
-		$('#family_table').append('<td><input type="text" id="JOB" name="JOB"></td>');
-		$('#family_table').append('<td><input type="text" id="ADDRESS" name="ADDRESS"></td>');
-		$('#family_table').append('</tr>');	
-		
-	});	
+
 	
 });
 
@@ -104,7 +90,7 @@ $(document).ready(function(){
 	
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
-				<h3>인사기록카드 등록</h3>		
+				<h3>인사기록카드 등록</h3>				
 				<form method="post" class="personInsa" id="personInsa">
 					<table class="table">							
 						<div class="x_content" style="text-align: right">								
@@ -113,13 +99,14 @@ $(document).ready(function(){
 									
 					<tbody>
 						<tr>
-							<th>성명</th>
+							<th>성명
+							<span style="color:gray; font-size:10px"> (필수)</span></th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" id="KOR_NM" name="KOR_NM">																		
 								</div>
 							</td>
-							<th>주민등록번호</th>
+							<th>주민등록번호<span style="color:gray; font-size:10px"> (필수)</span></th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
 									<input type="text" class="form-control" id="JUMIN_NO" name="JUMIN_NO">
@@ -142,7 +129,7 @@ $(document).ready(function(){
 							</td>
 						</tr>
 						<tr>
-							<th>성별</th>
+							<th>성별<span style="color:gray; font-size:10px"> (필수)</span></th>
 							<td>
 								<p>
 									Male <input type="radio" class="flat" name="SEX_GB" id="SEX_GB" value="1" checked="" required /> 
@@ -150,7 +137,7 @@ $(document).ready(function(){
 								</p>
 							</td>
 
-							<th>부서코드</th>
+							<th>부서코드<span style="color:gray; font-size:10px"> (필수)</span></th>
 							<td>
 								<div class="form-group">
 									<div class="col-md-7 col-sm-9 col-xs-12">
@@ -165,7 +152,7 @@ $(document).ready(function(){
 						</tr>
 
 						<tr>
-							<th>직급</th>
+							<th>직급<span style="color:gray; font-size:10px"> (필수)</span></th>
 							<td>
 								<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12">
@@ -180,7 +167,7 @@ $(document).ready(function(){
 									</div>
 								</div>
 							</td>
-							<th>직책</th>
+							<th>직책<span style="color:gray; font-size:10px"> (필수)</span></th>
 							<td>
 								<div class="form-group">
 									<div class="col-md-7 col-sm-9 col-xs-12">
@@ -482,7 +469,7 @@ $(document).ready(function(){
 
 						<tbody>
 							<tr>
-								<td>입사일자</td>
+								<td>입사일자<span style="color:gray; font-size:10px"> (필수)</span></td>								
 								<td><input type="date" id="IN_DT" name="IN_DT"></td>
 								<td>퇴직기준</td>
 								<td><input type="date" id="OUT_STD_DT" name="OUT_STD_DT"></td>

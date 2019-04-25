@@ -7,263 +7,335 @@
 	<!-- 6.1.2 직원 검색 출력하는 쿼리 -->
 	<select id="personInsaEmployeeSearchView" 
 	parameterType="String" resultType="java.util.Map">
-	SELECT   
-  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
-  		B.SHORT_NM DEPT_NM, 
-  		A.EMP_NO, 
-  		A.KOR_NM, 
-  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
-    	(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM,
- 		A.IN_PHONE_NO,
- 		CONVERT(varchar(30), A.AUDIT_TM,112) AUDIT_TM,
- 		A.OUT_DT,
- 		(CASE A.SEX_GB WHEN '1' THEN '남자' WHEN '2' THEN '여자' END) SEX_GB, 
-		(CASE  WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) OUT_DT2
-	FROM 
-		(SELECT * FROM T_HM1000 UNION SELECT* FROM T_HM1000_T) A, 
-		T_SC1010 B
-   	WHERE 
-   		A.DEPT_CD = B.DEPT_CD AND
-   		EMP_NO LIKE '%'+#{EMP_NO}+'%' AND
-		KOR_NM LIKE '%'+#{KOR_NM}+'%' AND
-		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) LIKE '%'+#{JIKGUP_NM}+'%' AND
-		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) LIKE '%'+#{JIKCHK_NM}+'%' AND
-		CONVERT(varchar(30), A.AUDIT_TM,112) LIKE '%'+#{AUDIT_TM}+'%' AND
-		A.IN_PHONE_NO LIKE '%'+#{IN_PHONE_NO}+'%' AND
-		SEX_GB LIKE '%'+#{SEX_GB}+'%' AND
-		DEPT_NM LIKE '%'+#{DEPT_NM}+'%' AND		
-		(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%'+#{OUT_DT3}+'%'	  	
-	 	ORDER BY OUT_DT2,SORT_VALUE;  	
+		SELECT   
+	  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
+	  		B.SHORT_NM DEPT_NM, 
+	  		A.EMP_NO, 
+	  		A.KOR_NM, 
+	  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
+	    	(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM,
+	 		A.IN_PHONE_NO,
+	 		CONVERT(varchar(30), A.AUDIT_TM,112) AUDIT_TM,
+	 		A.OUT_DT,
+	 		(CASE A.SEX_GB WHEN '1' THEN '남자' WHEN '2' THEN '여자' END) SEX_GB, 
+			(CASE  WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) OUT_DT2
+		FROM 
+			(SELECT * FROM T_HM1000 UNION SELECT* FROM T_HM1000_T) A, 
+			T_SC1010 B
+	   	WHERE 
+	   		A.DEPT_CD = B.DEPT_CD AND
+	   		EMP_NO LIKE '%'+#{EMP_NO}+'%' AND
+			KOR_NM LIKE '%'+#{KOR_NM}+'%' AND
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) LIKE '%'+#{JIKGUP_NM}+'%' AND
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) LIKE '%'+#{JIKCHK_NM}+'%' AND
+			CONVERT(varchar(30), A.AUDIT_TM,112) LIKE '%'+#{AUDIT_TM}+'%' AND
+			A.IN_PHONE_NO LIKE '%'+#{IN_PHONE_NO}+'%' AND
+			SEX_GB LIKE '%'+#{SEX_GB}+'%' AND
+			DEPT_NM LIKE '%'+#{DEPT_NM}+'%' AND		
+			(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%'+#{OUT_DT3}+'%'	  	
+		 	ORDER BY OUT_DT2,SORT_VALUE;  	
 	</select>
 			
-	<!--6.1.2 직원 디테일 출력하는 쿼리 -->
+	<!--6.1.2 직원 클릭시 해당하는 직원의 디테일 출력하는 쿼리 -->
 	<select id="personInsaEmployeeDetailView"
 	resultType="ksmart30.team03.person.domain.Person" parameterType="String">
-	SELECT
-		  A.EMP_NO, 
-		  A.KOR_NM, 
-		  (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
-		  (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM, 
-		  A.IN_PHONE_NO,
-    	  A.PHONE_NO,
-    	  A.BIRTH_DT,
-    	  A.CUR_ADDRESS,
-    	  A.AUDIT_TM,
-    	  A.MAIL_ADDRESS    	  
-    FROM T_HM1000 A,
-      T_SC1010 B
-      WHERE A.DEPT_CD = B.DEPT_CD AND A.EMP_NO LIKE '%'+#{EMP_NO}+'%';
-	
+		SELECT
+			  A.EMP_NO, 
+			  A.KOR_NM, 
+			  (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
+			  (SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM, 
+			  A.IN_PHONE_NO,
+	    	  A.PHONE_NO,
+	    	  A.BIRTH_DT,
+	    	  A.CUR_ADDRESS,
+	    	  A.AUDIT_TM,
+	    	  A.MAIL_ADDRESS    	  
+	    FROM T_HM1000 A,
+	      T_SC1010 B
+	      WHERE A.DEPT_CD = B.DEPT_CD AND A.EMP_NO LIKE '%'+#{EMP_NO}+'%';	
 	</select>
 
-	<!-- 인사기록카드 직원list -->
-	
+	<!-- 6.1.1 인사기록카드 직원list -->	
 	<select id="personListView" parameterType="String" resultType="java.util.Map">
-	SELECT   
-  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
-  		B.SHORT_NM DEPT_NM, 
-  		A.EMP_NO, 
-  		A.KOR_NM, 
-		(CASE  WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) OUT_DT
-	FROM (SELECT * FROM T_HM1000 UNION SELECT* FROM T_HM1000_T) A, T_SC1010 B
-   			
-	WHERE A.DEPT_CD = B.DEPT_CD AND
-		EMP_NO LIKE '%'+#{EMP_NO}+'%' AND
-		KOR_NM LIKE '%'+#{KOR_NM}+'%' AND
-		(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%'+#{OUT_DT3}+'%'				
-	ORDER BY SORT_VALUE;	
+		SELECT   
+	  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
+	  		B.SHORT_NM DEPT_NM, 
+	  		A.EMP_NO, 
+	  		A.KOR_NM, 
+			(CASE  WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) OUT_DT
+		FROM (SELECT * FROM T_HM1000 UNION SELECT* FROM T_HM1000_T) A, T_SC1010 B  			
+		WHERE A.DEPT_CD = B.DEPT_CD AND
+			EMP_NO LIKE '%'+#{EMP_NO}+'%' AND
+			KOR_NM LIKE '%'+#{KOR_NM}+'%' AND
+			(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%'+#{OUT_DT3}+'%'				
+		ORDER BY SORT_VALUE;	
 	</select>
-	<!-- 사원번호 자동생성을 위한 select문 -->
+	
+	<!-- 6.1.1 사원번호 자동생성을 위한 select문 -->
 	<select id="empnoSelect" resultType ="int">
-	SELECT 
-		MAX(CAST(SUBSTRING(EMP_NO,0,10) AS DECIMAL)) AS MAX_EMP_NO
-	FROM T_HM1000
+		SELECT 
+			MAX(CAST(SUBSTRING(EMP_NO,0,10) AS DECIMAL)) AS MAX_EMP_NO
+		FROM T_HM1000
 	</select>
 	
-	<!--인사기록카드 등록  insert문-->
+	<!--6.1.1 인사기록카드 등록  insert문-->
 	<insert id="addPersonInsa" parameterType="String">	
-	INSERT 
-	INTO T_HM1000(
-		EMP_NO,KOR_NM,JUMIN_NO,ENG_NM,HANJA_NM,SEX_GB,DEPT_CD,JIKGUP_CD,JIKCHK_CD,PHONE_NO,H_PHONE_NO,
-		MAIL_ADDRESS,BON_ADDRESS,BORN_AREA_GB,HEIGHT,WEIGHT,BLOOD_TYPE,ARMY_TYPE,BRANCHE_GB,GRADE_CD,
-		ARMS_GB,PRO_GB,LEVEL_GB,IN_DT,OUT_STD_DT,OUT_DT,CUR_ADDRESS,CUR_ZIP_NO)
-	VALUES(
-		#{EMP_NO},#{KOR_NM},#{JUMIN_NO},#{ENG_NM},#{HANJA_NM},#{SEX_GB},#{DEPT_CD},#{JIKGUP_CD},#{JIKCHK_CD},		
-		#{PHONE_NO},#{H_PHONE_NO},#{MAIL_ADDRESS},#{BON_ADDRESS},#{BORN_AREA_GB},#{HEIGHT},
-		#{WEIGHT},#{BLOOD_TYPE},#{ARMY_TYPE},#{BRANCHE_GB},#{GRADE_CD},#{ARMS_GB},#{PRO_GB},
-		#{LEVEL_GB},#{IN_DT},#{OUT_STD_DT},#{OUT_DT},#{CUR_ADDRESS},#{CUR_ZIP_NO}
-		)		
+		INSERT 
+		INTO T_HM1000(
+			EMP_NO,<!--사원번호 -->
+			KOR_NM,<!--한글성명 -->
+			JUMIN_NO,<!--주민등록번호 -->
+			ENG_NM,<!--영문성명 -->
+			HANJA_NM,<!--한자성명 -->
+			SEX_GB,<!--성별 -->
+			DEPT_CD,<!--부서코드 -->
+			JIKGUP_CD,<!--직급코드 -->
+			JIKCHK_CD,<!--직책코드 -->
+			PHONE_NO,<!--전화번호 -->
+			H_PHONE_NO,<!--휴대전화 -->
+			MAIL_ADDRESS,<!--이메일 -->
+			BON_ADDRESS,<!--본적 -->
+			BORN_AREA_GB,<!--출신지역 -->
+			HEIGHT,<!--키 -->
+			WEIGHT,<!--몸무게 -->
+			BLOOD_TYPE,<!--혈액형 -->
+			ARMY_TYPE,<!--역종구분(군대) -->
+			BRANCHE_GB,<!--군별 -->
+			GRADE_CD,<!--계급구분 -->
+			ARMS_GB,<!--병과구분 -->
+			PRO_GB,<!--전문분야구분 -->
+			LEVEL_GB,<!-- 등급구분 -->
+			IN_DT,<!-- 입사일 -->
+			OUT_STD_DT,<!-- 퇴직금기산일 -->
+			OUT_DT,<!-- 퇴직일 -->
+			CUR_ADDRESS,<!-- 현거주지 -->
+			CUR_ZIP_NO, <!-- 우편번호 -->
+			IN_PHONE_NO
+			)
+		VALUES(
+			#{EMP_NO},
+			#{KOR_NM},
+			#{JUMIN_NO},
+			#{ENG_NM},
+			#{HANJA_NM},
+			#{SEX_GB},
+			#{DEPT_CD},
+			#{JIKGUP_CD},
+			#{JIKCHK_CD},		
+			#{PHONE_NO},
+			#{H_PHONE_NO},
+			#{MAIL_ADDRESS},
+			#{BON_ADDRESS},
+			#{BORN_AREA_GB},
+			#{HEIGHT},
+			#{WEIGHT},
+			#{BLOOD_TYPE},
+			#{ARMY_TYPE},
+			#{BRANCHE_GB},
+			#{GRADE_CD},
+			#{ARMS_GB},
+			#{PRO_GB},
+			#{LEVEL_GB},
+			SUBSTRING(CONVERT(CHAR(10),#{IN_DT},112),0,5)+SUBSTRING(CONVERT(CHAR(10),#{IN_DT},112),6,2)+SUBSTRING(CONVERT(CHAR(10),#{IN_DT},112),9,2),
+			SUBSTRING(CONVERT(CHAR(10),#{OUT_STD_DT},112),0,5)+SUBSTRING(CONVERT(CHAR(10),#{OUT_STD_DT},112),6,2)+SUBSTRING(CONVERT(CHAR(10),#{OUT_STD_DT},112),9,2),
+			SUBSTRING(CONVERT(CHAR(10),#{OUT_DT},112),0,5)+SUBSTRING(CONVERT(CHAR(10),#{OUT_DT},112),6,2)+SUBSTRING(CONVERT(CHAR(10),#{OUT_DT},112),9,2),
+			#{CUR_ADDRESS},
+			#{CUR_ZIP_NO},
+			''
+			)		
 	</insert>
 	
-	 <!-- 인사기록카드 가족사항 insert문 -->	
+	 <!--6.1.1  인사기록카드 추가기록 가족사항 insert문 -->	
 	<insert id="modifyPersonInsaFamily" parameterType="String">
-	INSERT INTO T_HM1100(
-		EMP_NO,
-		SEQ,
-		RELATION,
-		NAME,
-		JOB,
-		ADDRESS,
-		AUDIT_TM,
-		AUDIT_ID) 
-	VALUES(
-		#{EMP_NO},
-		#{SEQ},
-		#{RELATION},
-		#{NAME},
-		#{JOB},
-		#{ADDRESS},
-		GETDATE(),
-		#{AUDIT_ID})
+		INSERT INTO T_HM1100(
+			EMP_NO,
+			SEQ,
+			RELATION,
+			NAME,
+			JOB,
+			ADDRESS,
+			AUDIT_TM,
+			AUDIT_ID) 
+		VALUES(
+			#{EMP_NO},
+			#{SEQ},
+			#{RELATION},
+			#{NAME},
+			#{JOB},
+			#{ADDRESS},
+			GETDATE(),
+			#{AUDIT_ID})
 	</insert>
 	
-	<!-- 인사기록카드 부양가족 insert문 -->	
+	<!-- 6.1.1 인사기록카드 추가기록 부양가족 insert문 -->	
 	<insert id="modifyPersonInsaFamilyCare" parameterType="String">
-	INSERT INTO T_HM1130(
-		EMP_NO,
-		JUMIN_NO,
-		RELATION,
-		PARTNER_YN,
-		BUYANG_YN,
-		OLDMAN_YN2,
-		JANGAE_YN,
-		CHILD6_YN,
-		AUDIT_TM,
-		AUDIT_ID) 
-	VALUES(
-		#{EMP_NO},
-		#{JUMIN_NO},
-		#{RELATION},
-		#{PARTNER_YN},
-		#{BUYANG_YN},
-		#{OLDMAN_YN2},
-		#{JANGAE_YN},
-		#{CHILD6_YN},
-		GETDATE(),
-		#{AUDIT_ID})
+		INSERT INTO T_HM1130(
+			EMP_NO,
+			JUMIN_NO,
+			RELATION,
+			PARTNER_YN,
+			BUYANG_YN,
+			OLDMAN_YN2,
+			JANGAE_YN,
+			CHILD6_YN,
+			AUDIT_TM,
+			AUDIT_ID) 
+		VALUES(
+			#{EMP_NO},
+			#{JUMIN_NO},
+			#{RELATION},
+			#{PARTNER_YN},
+			#{BUYANG_YN},
+			#{OLDMAN_YN2},
+			#{JANGAE_YN},
+			#{CHILD6_YN},
+			GETDATE(),
+			#{AUDIT_ID})
 	</insert>
-	<!-- 인사기록카드 자격,면허사항 insert문-->
+	
+	<!-- 6.1.1 인사기록카드 추가기록 자격,면허사항 insert문-->
 	<insert id="modifyPersonInsaLicense" parameterType="String">
-	INSERT INTO T_HM1500(
-		EMP_NO,
-		LICENSE_CD,
-		ACQUIRE_DT,
-		LICENSE_NO,
-		AUDIT_TM,
-		AUDIT_ID)
-	VALUES(	
-		#{EMP_NO},
-		#{LICENSE_CD},
-		#{ACQUIRE_DT},
-		#{LICENSE_NO},
-		GETDATE(),
-		#{AUDIT_ID})			
+		INSERT INTO T_HM1500(
+			EMP_NO,
+			LICENSE_CD,
+			ACQUIRE_DT,
+			LICENSE_NO,
+			AUDIT_TM,
+			AUDIT_ID)
+		VALUES(	
+			#{EMP_NO},
+			#{LICENSE_CD},
+			#{ACQUIRE_DT},
+			#{LICENSE_NO},
+			GETDATE(),
+			#{AUDIT_ID})			
 	</insert>	
 	
+	<!-- 6.1.1 인사기록카드 수정화면으로 넘어갈때 해당하는 직원의 정보를 출력하는 쿼리 -->
 	<select id="personInsaEmployeeModifyView" parameterType="String" resultType="ksmart30.team03.person.domain.Person">
-	SELECT 
-		EMP_NO,KOR_NM,JUMIN_NO,ENG_NM,HANJA_NM,SEX_GB,DEPT_CD,JIKGUP_CD,JIKCHK_CD,PHONE_NO,H_PHONE_NO,
-		MAIL_ADDRESS,BON_ADDRESS,BORN_AREA_GB,HEIGHT,WEIGHT,BLOOD_TYPE,ARMY_TYPE,BRANCHE_GB,GRADE_CD,
-		ARMS_GB,PRO_GB,LEVEL_GB,IN_DT,OUT_STD_DT,OUT_DT,CUR_ADDRESS,CUR_ZIP_NO 
-	FROM T_HM1000 
-	WHERE EMP_NO=#{EMP_NO}
+		SELECT 
+			EMP_NO,
+			KOR_NM,
+			JUMIN_NO,
+			ENG_NM,
+			HANJA_NM,
+			SEX_GB,
+			DEPT_CD,
+			JIKGUP_CD,
+			JIKCHK_CD,
+			PHONE_NO,
+			H_PHONE_NO,
+			MAIL_ADDRESS,
+			BON_ADDRESS,
+			BORN_AREA_GB,
+			HEIGHT,
+			WEIGHT,
+			BLOOD_TYPE,
+			ARMY_TYPE,
+			BRANCHE_GB,
+			GRADE_CD,
+			ARMS_GB,PRO_GB,
+			LEVEL_GB,
+			IN_DT,
+			OUT_STD_DT,
+			OUT_DT,
+			CUR_ADDRESS,
+			CUR_ZIP_NO 
+		FROM T_HM1000 
+		WHERE EMP_NO=#{EMP_NO}
 	</select>
-	<!-- 부서코드 -->
+	<!-- 6.1.1 부서코드 list 출력  -->
 	<select id="deptCdListView" resultType="java.util.Map">
-	SELECT 
-		DEPT_CD, 
-		DEPT_NM 
-	FROM T_SC1010 
-		
+		SELECT 
+			DEPT_CD, 
+			DEPT_NM 
+		FROM T_SC1010 	
 	</select>
-	<!-- 직급, 직책코드 -->
+	<!-- 6.1.1 직급, 직책코드 list 출력 -->
 	<select id="gbCdListView" resultType="java.util.Map">
-	SELECT 
-		LEVEL1_CD, 
-		LEVEL2_CD, 
-		LEVEL2_NM 
-	FROM T_SC9100 
-	WHERE BUSI_GB='H'
+		SELECT 
+			LEVEL1_CD, 
+			LEVEL2_CD, 
+			LEVEL2_NM 
+		FROM T_SC9100 
+		WHERE BUSI_GB='H'
 	</select>
-	<!-- 관계코드 -->
+	<!-- 6.1.1 관계코드 list 출력-->
 	<select id="gbCdRelationListView" resultType="ksmart30.team03.person.domain.Person">
-	SELECT 
-		LEVEL1_CD, 
-		LEVEL2_CD, 
-		LEVEL2_NM 
-	FROM T_SC9100 
-	WHERE BUSI_GB='H' AND LEVEL1_CD='140'
+		SELECT 
+			LEVEL1_CD, 
+			LEVEL2_CD, 
+			LEVEL2_NM 
+		FROM T_SC9100 
+		WHERE BUSI_GB='H' AND LEVEL1_CD='140'
 	</select>
-	<!-- 자격이름,자격발행기관 코드 -->
+	<!-- 6.1.1 자격이름,자격발행기관 코드 list 출력 -->
 	<select id="licenseListView" resultType="java.util.Map">
-	SELECT 
-		LEVEL1_CD,
-		LEVEL2_CD,
-		LEVEL2_NM,
-		REF1_NM 
-	FROM T_SC9100 
-	WHERE BUSI_GB = 'H' AND LEVEL1_CD = '390'
+		SELECT 
+			LEVEL1_CD,
+			LEVEL2_CD,
+			LEVEL2_NM,
+			REF1_NM 
+		FROM T_SC9100 
+		WHERE BUSI_GB = 'H' AND LEVEL1_CD = '390'
 	</select>
 	
 	<!-- 인사기록카드 가족사항 list 출력 문 -->
 	<select id="getPersonInsaInfoFamily" parameterType="String" resultType="ksmart30.team03.person.domain.Family">
-	SELECT 
-		SEQ,
-		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB='H' AND LEVEL1_CD='140' AND A.RELATION = LEVEL2_CD) RELATION,
-		NAME,
-		JOB,
-		ADDRESS 
-	FROM T_HM1100 A
-	WHERE EMP_NO=#{EMO_NO}
+		SELECT 
+			SEQ,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB='H' AND LEVEL1_CD='140' AND A.RELATION = LEVEL2_CD) RELATION,
+			NAME,
+			JOB,
+			ADDRESS 
+		FROM T_HM1100 A
+		WHERE EMP_NO=#{EMO_NO}
 	</select>
 	
-	<!-- 인사기록카드 학력사항 list 출력문 -->
+	<!-- 6.1.1 인사기록카드 학력사항 list 출력 -->
 	<select id="getPersonInsaInfoEducation" parameterType="String" resultType="ksmart30.team03.person.domain.Education">
-	SELECT 
-		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '300' AND A.SCHOOL_GB=LEVEL2_CD) SCHOOL_GB,
-		EMP_NO,
-		ENTRY_DT,
-		FINISH_DT,
-		(SELECT MAJOR_NM FROM T_SC1070 WHERE MAJOR_CD = A.MAJOR_CD) MAJOR_NM,
-		(SELECT SCHOOL_NM FROM T_SC1060 WHERE SCHOOL_CD = A.SCHOOL_CD) SCHOOL_NM,
-		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '310' AND A.DEGREE_GB=LEVEL2_CD) DEGREE_NM,
-		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '320' AND A.COMPLETE_GB=LEVEL2_CD) COMPLETE_NM,
-		(CASE F_SCHOOL_YN WHEN 1 THEN '√' ELSE '' END) F_SCHOOL_YN
-	FROM T_HM1700P A
-	WHERE A.EMP_NO = #{EMO_NO}
+		SELECT 
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '300' AND A.SCHOOL_GB=LEVEL2_CD) SCHOOL_GB,
+			EMP_NO,
+			ENTRY_DT,
+			FINISH_DT,
+			(SELECT MAJOR_NM FROM T_SC1070 WHERE MAJOR_CD = A.MAJOR_CD) MAJOR_NM,
+			(SELECT SCHOOL_NM FROM T_SC1060 WHERE SCHOOL_CD = A.SCHOOL_CD) SCHOOL_NM,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '310' AND A.DEGREE_GB=LEVEL2_CD) DEGREE_NM,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '320' AND A.COMPLETE_GB=LEVEL2_CD) COMPLETE_NM,
+			(CASE F_SCHOOL_YN WHEN 1 THEN '√' ELSE '' END) F_SCHOOL_YN
+		FROM T_HM1700P A
+		WHERE A.EMP_NO = #{EMO_NO}
 	</select>
 	
-	<!-- 자격사항 SELECT문 -->
+	<!-- 6.1.1 인사기록카드  자격사항 list 출력 -->
 	<select id="getPersonInsaInfoLicense" parameterType="String" resultType="ksmart30.team03.person.domain.License" >
-	SELECT 
-		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '390' AND LEVEL2_CD = A.LICENSE_CD) LICENSE_NM,
-		(SELECT REF1_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '390' AND LEVEL2_CD = A.LICENSE_CD) ORGAN2_NM,
-		A.ACQUIRE_DT,
-		A.LICENSE_NO,
-		ISNULL(A.VALID_DT,'') VALID_DT
-	FROM T_HM1500 A,
-		 T_SC9100 B	  		
-	WHERE A.EMP_NO=#{EMP_NO} 
-		AND B.LEVEL2_CD = A.LICENSE_CD
-
+		SELECT 
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '390' AND LEVEL2_CD = A.LICENSE_CD) LICENSE_NM,
+			(SELECT REF1_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '390' AND LEVEL2_CD = A.LICENSE_CD) ORGAN2_NM,
+			A.ACQUIRE_DT,
+			A.LICENSE_NO,
+			ISNULL(A.VALID_DT,'') VALID_DT
+		FROM T_HM1500 A,
+			 T_SC9100 B	  		
+		WHERE A.EMP_NO=#{EMP_NO}  AND 
+			  B.LEVEL2_CD = A.LICENSE_CD
 	</select>
 	
-	<!-- 부양가족 SELECT문 -->
+	<!--6.1.1 인사기록카드  부양가족 list 출력 -->
 	<select id="getPersonInsaInfoFamilyCare" parameterType="String" resultType="ksmart30.team03.person.domain.FamilyCare">
-	SELECT
-		SUBSTRING(JUMIN_NO,0,7)+'-'+SUBSTRING(JUMIN_NO,8,14) JUMIN_NO,
-		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB='H' AND LEVEL1_CD='140' AND A.RELATION = LEVEL2_CD)RELATION,
-		NAME,
-		ISNULL((CASE PARTNER_YN WHEN 1 THEN 'Y' END),'N') PARTNER_YN,
-		ISNULL((CASE BUYANG_YN WHEN 1 THEN 'Y' END),'N') BUYANG_YN,
-		ISNULL((CASE OLDMAN_YN2 WHEN 1 THEN 'Y' END),'N') OLDMAN_YN,
-		ISNULL((CASE JANGAE_YN WHEN 1 THEN 'Y' END),'N') JANGAE_YN,
-		ISNULL((CASE CHILD6_YN WHEN 1 THEN 'Y' END),'N') CHILD6_YN
-	FROM T_HM1130 A 
-	WHERE A.EMP_NO=#{EMP_NO}
+		SELECT
+			SUBSTRING(JUMIN_NO,0,7)+'-'+SUBSTRING(JUMIN_NO,8,14) JUMIN_NO,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB='H' AND LEVEL1_CD='140' AND A.RELATION = LEVEL2_CD)RELATION,
+			NAME,
+			ISNULL((CASE PARTNER_YN WHEN 1 THEN 'Y' END),'N') PARTNER_YN,
+			ISNULL((CASE BUYANG_YN WHEN 1 THEN 'Y' END),'N') BUYANG_YN,
+			ISNULL((CASE OLDMAN_YN2 WHEN 1 THEN 'Y' END),'N') OLDMAN_YN,
+			ISNULL((CASE JANGAE_YN WHEN 1 THEN 'Y' END),'N') JANGAE_YN,
+			ISNULL((CASE CHILD6_YN WHEN 1 THEN 'Y' END),'N') CHILD6_YN
+		FROM T_HM1130 A 
+		WHERE A.EMP_NO=#{EMP_NO}
 	</select>
-	
-
 	
 </mapper>  
 

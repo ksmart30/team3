@@ -22,17 +22,21 @@ function updateInsa(EMP_NO){
 		}
 				
 	}); 
-	
-	
-	
+
 }
-	$(document).ready(function(){
+function retireeEmployee(){
+	alert('수정 할 권한이 없습니다.');
+}
+
+$(document).ready(function(){
 		console.log('인사기록카드 등록 시작');
 		
 		$('#btn_list').click(function(){
 			let EMP_NO2 = $('#EMP_NO2').val();
 			let KOR_NM2 = $('#KOR_NM2').val();
 			let OUT_DT3 = $('#OUT_DT3').val();
+			let session_EMP_NO = '[[${session.EMP_NO}]]';
+			console.log('로그인 한 사원번호 : '+session_EMP_NO); 
 			$.ajax({
 				url:'/person/personInsaList',
 				type:'GET',
@@ -41,7 +45,12 @@ function updateInsa(EMP_NO){
 					$('#list').empty();
 					console.log("직원리스트 출력: "+data);
 					$(data).each(function(index,item){
-						$('#list').append('<tr class="even pointer"><td class="a-center "><input type="checkbox" class="flat" name="table_records"></td><td>'+item.SORT_VALUE+'</td><td>'+item.DEPT_NM+'</td><td id="EMP_NO" onclick="updateInsa('+item.EMP_NO+')">'+item.EMP_NO+'</td><td>'+item.KOR_NM+'</td><td>'+item.OUT_DT+'</td></tr>');
+						if(item.OUT_DT=="재직자" && session_EMP_NO=="20190007"){
+							$('#list').append('<tr class="even pointer"><td class="a-center "><input id="EMP_NO" type="checkbox" class="flat" name="table_records"></td><td onclick="updateInsa('+item.EMP_NO+')" >'+item.SORT_VALUE+'</td><td onclick="updateInsa('+item.EMP_NO+')" >'+item.DEPT_NM+'</td><td id="EMP_NO" onclick="updateInsa('+item.EMP_NO+')">'+item.EMP_NO+'</td><td onclick="updateInsa('+item.EMP_NO+')" >'+item.KOR_NM+'</td><td onclick="updateInsa('+item.EMP_NO+')" >'+item.OUT_DT+'</td></tr>');				
+						}else{
+							$('#list').append('<tr class="even pointer"><td class="a-center "><input id="EMP_NO" type="checkbox" class="flat" name="table_records"></td><td>'+item.SORT_VALUE+'</td><td onclick="retireeEmployee()">'+item.DEPT_NM+'</td><td onclick="retireeEmployee()" id="EMP_NO">'+item.EMP_NO+'</td><td onclick="retireeEmployee()">'+item.KOR_NM+'</td><td onclick="retireeEmployee()">'+item.OUT_DT+'</td></tr>');						
+						
+						}
 						
 					});	
 					
@@ -147,7 +156,7 @@ function updateInsa(EMP_NO){
 						<table class="table table-striped jambo_table bulk_action">
 							<thead>
 								<tr class="headings">
-									<th><input type="checkbox" id="check-all" class="flat">
+									<th><input type="checkbox" id="check-all" class="flat" >
 									</th>
 									<th class="column-title">순번</th>
 									<th class="column-title">부서명</th>

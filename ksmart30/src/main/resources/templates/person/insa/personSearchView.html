@@ -55,25 +55,6 @@ function detail(emp_NO){
 
 $(document).ready(function(){
 	
-	/* //오늘 날짜 DATE에 넣기
-	let date = new Date();
-	//년도 출력
-	let year = date.getFullYear();
-	//월 출력
-	let month = date.getMonth()+1;
-	//일 출력
-	let day = date.getDate();
-	if((month+"").length<2 ){
-		month = "0" + month
-		
-	}
-	if((day+"").length<2 ){
-		day ="0" + day;
-	}
-	let getToday = year+"-"+month+"-"+day;
-	$('#AUDIT_TM2').val(getToday);
-	console.log("오늘 날짜" + getToday); */
-	
 	 console.log('직원list 출력해보자');	
 	//검색버튼 클릭 시 전체 직원조회
 	 $("#btn_list").click(function(){	
@@ -98,8 +79,9 @@ $(document).ready(function(){
 					$('#list').empty();
 					$(data).each(function(index,item){
 						//한 행을 클릭시 사원번호	
-						console.log(data);						
-						$('#list').append('<tr class="even pointer"><td class="a-center "><input type="checkbox" class="flat" name="table_records"></td><td onclick="detail('+item.EMP_NO+')">'+item.SORT_VALUE+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.DEPT_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.EMP_NO+'</td>'+
+						console.log(data);	
+						index +=1;
+						$('#list').append('<tr class="even pointer"><td class="a-center "><input type="checkbox" class="flat" name="table_records"></td><td onclick="detail('+item.EMP_NO+')">'+index+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.DEPT_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.EMP_NO+'</td>'+
 								'<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.KOR_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.JIKCHK_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.IN_PHONE_NO+'</td>'+
 								'<td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.SEX_GB+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.AUDIT_TM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.OUT_DT2+'</td></tr>');						
 					});
