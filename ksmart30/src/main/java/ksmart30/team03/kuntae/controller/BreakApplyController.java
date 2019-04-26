@@ -8,14 +8,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 /*import org.springframework.ui.Model;*/
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team03.kuntae.domain.BreakApply;
 import ksmart30.team03.kuntae.service.BreakApplyService;
+import ksmart30.team03.person.domain.Education;
+import ksmart30.team03.person.domain.Family;
+import ksmart30.team03.person.domain.FamilyCare;
+import ksmart30.team03.person.domain.License;
+import ksmart30.team03.person.domain.Person;
+import ksmart30.team03.person.service.PersonService;
 
 @Controller
 public class BreakApplyController {
 	@Autowired private BreakApplyService breakApplyService;
+	@Autowired 	PersonService personService;
 	// 휴가 신청 (조회) List로 보내기
 	/*
 	 * @GetMapping("/kuntae/breakApplyView") public String breakApplyList(Model
@@ -56,6 +64,4 @@ public class BreakApplyController {
 	public String breakApplyWriteView() {
 		return "/kuntae/breakApplyWriteView";
 	}
-	
-
 }

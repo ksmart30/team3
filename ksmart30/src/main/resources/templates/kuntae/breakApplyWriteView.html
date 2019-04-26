@@ -6,9 +6,75 @@
 		<title>휴가신청서</title>
 	<th:block th:include="layout/customHead"></th:block>
 	
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
+	<script>
+
+	
+	$(document).ready(function(){
+	// 1. 오늘날짜 넣기
+	let date = new Date();
+	let year = date.getFullYear();	//년도
+	let month = date.getMonth()+1;	//월
+	let day = date.getDate();		//일
+	if((month+"").length<2) {
+		month = "0" + month;
+	}
+	if((day+"").length<2) {
+		day = "0" + day;
+	} 
+	let getToday = year+"-"+month +"-"+day;	// 오늘 날짜 (0000-00-00)
+
+	// 검색날짜에 대입
+	$('#WORK_DT1').val(getToday);   
+	$('#WORK_DT2').val(getToday);
+	
+	let url = $(location).attr('href');
+	console.log(url);
+	let empNo = url.substring(url.length, url.length-8);
+	
+	console.log('휴가 신청 값 담기 성공!!'+empNo);
+	$.ajax({
+		url:'/person/personInsaEmployeeView',
+		type:'GET',
+		data :{OUT_DT3:"",EMP_NO:empNo,KOR_NM:"",AUDIT_TM:"",JIKGUP_NM:"",JIKCHK_NM:"",IN_PHONE_NO:"",DEPT_NM:"",SEX_GB:""},
+		success:(data)=>{
+			console.log("data =>"+data[0]);
+        	$('#EMP_NO').val(data[0].EMP_NO);
+        	$('#KOR_NM').val(data[0].KOR_NM); 
+        	$('#JIKGUP_NM').val(data[0].JIKGUP_NM);
+        	$('#DEPT_NM').val(data[0].DEPT_NM);    	
+		}
+	});
+     
+ });
+	
+
+
+	</script>
 	</th:block>
 	<th:block layout:fragment="customBody">
+<font color="black">
+	<div class="col-md-9 col-xs-12" style="color:black;">
+        <div class="page-title">
+			<div class="title_left">
+				<h2><b>휴가 신청서</b></h2>
+				<h5></h5>
+				<h5><font color= "gray"><b>4.근태 관리 &nbsp;&gt;&nbsp;&nbsp;4.5 휴가 신청</b></font></h5>
+			</div>
+		</div>
+    </div>
+	<div class="x_content" style="text-align: right">
+			<div class="btn-group" >
+				<button class="btn btn-default" type="reset" disabled="disabled">조회</button>
+				<button class="btn btn-default" type="reset">입력</button>
+				<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+				<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+				<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+				<button class="btn btn-default" type="button" disabled="disabled">출력</button>
+			</div>
+	</div>
 	
 	
 	
@@ -17,40 +83,42 @@
 	<div class="clearfix"></div>
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
-				<h1>휴가신청서<small></small></h1>
-
+			<h1>휴가신청서<small></small></h1>
+				<div class="x_content" style="text-align: right">
+					<span>신청일자</span>
+					<input type="date" class="btn" style="color:black" name="WORK_DT2" id="WORK_DT2" readonly>				
+				</div>
 				<table class="table">
-					<tbody>
-
+					<tbody id="list">
 						<tr>
-							<th>신청날짜</th>
-							<td>
+							<th>성명</th>
+							<td >
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="date" name="">
+									<input type="text" class="form-control" id="KOR_NM" name="KOR_NM" readonly>	
 								</div>
 							</td>
 							
-							<th>사원번호(자동)</th>
+							<th>사원번호</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<input type="text" class="form-control" id="EMP_NO" readonly>
 								</div>
 							</td>
 							
 						</tr>
 
 						<tr>
-							<th>직급(자동)</th>
+							<th>직급</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<input type="text" class="form-control" id="JIKGUP_NM" readonly>
 								</div>
 							</td>
 
-							<th>부서(자동)</th>
+							<th>부서</th>
 							<td>
 								<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-									<input type="text" class="form-control">
+									<input type="text" class="form-control" id="DEPT_NM" readonly>
 								</div>
 							</td>
 						</tr>
@@ -58,22 +126,22 @@
 					</tbody>
 				</table>
 				
-										<table class="table table-bordered">
-
-							<tbody><tr>
+						<table class="table table-bordered">
+							<tbody>
+							<tr>
 								<th>근태구분</th>
 								<th class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 35%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
 										<div class="radio">
-											<label style="padding-left: 50px;"><input type="radio">전표일자</label>
-											<label style="padding-left: 50px;"><input type="radio">발의부서</label>
-											<label style="padding-left: 50px;"><input type="radio">귀속부서</label>
-											<label style="padding-left: 50px;"><input type="radio">차변금액</label>
+											<label style="padding-left: 50px;"><input type="radio">휴가</label>
+											<label style="padding-left: 50px;"><input type="radio">휴직</label>
+											<label style="padding-left: 50px;"><input type="radio">교육훈련</label>
+											<label style="padding-left: 50px;"><input type="radio">출장</label>
 										</div>
 										
 									</th>
 								<th>기간</th>
-								<th><input type="date" name="">부터
-									<input type="date" name="">까지
+								<th><input type="date" max="2020-12-31" name="">부터
+									<input type="date" max="2020-12-31" name="">까지
 								</th>
 								
 							</tr>
@@ -82,7 +150,7 @@
 								<th>
 									<div class="form-group">
 									<div class="col-md-7 col-sm-12 col-xs-12 form-group">
-										<input type="text"><button data-toggle="modal" data-target="#pjt"><i class="fa fa-search"></i></button>
+										<input type="text" ><button data-toggle="modal" data-target="#pjt"><i class="fa fa-search"></i></button>
 									</div>
 									</div>
 								</th>
@@ -93,7 +161,7 @@
 								<th>작업단계</th>
 								<th></th>
 								<th></th>
-								<th><label style="padding-left: 50px;"><input type="radio">전표일자</label>복귀 예정 시 체크해주세요</th>
+								<th><label style="padding-left: 50px;"></label></th>
 							</tr>
 							<tr>
 								<th>사유(자세히 기록)</th>
@@ -103,16 +171,11 @@
 							</tr>
 							<tr>
 								<th>연락처</th>
-								<th></th>
+								<th><input type="text" ></th>
 								<th>비고</th>
 								<th></th>
 							</tr>
-							<tr>
-								<th>문서번호</th>
-								<th></th>
-								<th>진행사항</th>
-								<th></th>
-							</tr>
+							
 						</tbody></table>
 			</div>
 		</div>

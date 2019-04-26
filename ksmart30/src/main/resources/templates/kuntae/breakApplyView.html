@@ -37,7 +37,7 @@
 				$('#detail').empty();
 				$(data).each(function(index,item){
 					console.log(data);						
-					$('#detail').append('<tr><td>'+item.APP_DATE1.substring(0,4)+'년'+item.APP_DATE1.substring(4,6)+'월'+item.APP_DATE1.substring(6,8)+'일'+'</td><td>'+item.APP_RMK+'</td><td>'+item.CONFIRM+'</td></tr>');			
+					$('#detail').append('<tr><td>'+item.APP_DATE1.substring(0,4)+'년'+item.APP_DATE1.substring(4,6)+'월'+item.APP_DATE1.substring(6,8)+'일'+' ~ '+item.APP_DATE2.substring(0,4)+'년'+item.APP_DATE2.substring(4,6)+'월'+item.APP_DATE2.substring(6,8)+'일'+'</td><td>'+item.APP_RMK+'</td><td>'+item.CONFIRM+'</td></tr>');			
 
 					detail2(emp_NO);
 				});
@@ -61,7 +61,19 @@
 					});
 				}
 			});
-		});
+
+			 // 휴가 신청으로 값가지고 넘거가기 
+			 // url이 모델이 담겨있을 때에는 datType='json'을 쓰면 안 넘어감.
+		     $('#btn_apply').click(function(){
+				let EMP_NO = $('#EMP_NO1').val();		
+				console.log('휴가 신청 값 담기 성공!!'+EMP_NO);
+	    		location.href="/kuntae/breakApplyWriteView?EMP_NO="+EMP_NO;
+		    }); 	 
+		});	    	 
+
+
+
+		 
 	
 	</script>
 </head>
@@ -79,7 +91,7 @@
     </div>
 	<div class="x_content" style="text-align: right">
 			<div class="btn-group" >
-				<button class="btn btn-default" type="button" id="btn_search" style="color:black">조회</button>
+				<button class="btn btn-default" type="reset" disabled="disabled">조회</button>
 				<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
 				<button class="btn btn-default" type="button" disabled="disabled">수정</button>
 				<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
@@ -185,11 +197,11 @@
 			</tbody>      				
        </table> 
        <div class="modal-footer">
-		  <a href="/kuntae/breakApplyWriteView">
-          <button type="submit" class="btn btn-success" href="/kuntae/breakApplyWriteView" >휴가신청</button>
-       	  </a>
+		   <!-- <a href="/kuntae/breakApplyWriteView">  -->
+          <button type="button" class="btn btn-success" id="btn_apply">휴가신청</button>
+       	  <!-- </a> 
        </div>   	
-     </div>
+     </div>	
    </div>
  </div>	
  	                               

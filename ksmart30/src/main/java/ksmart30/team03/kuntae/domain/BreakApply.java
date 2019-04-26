@@ -15,6 +15,7 @@ public class BreakApply {
 	private String APP_GB1;		// 근태 구분
 	private String APP_GB_NM_T; // 7-파견신청서, 1-출장신청서, 8-외출신청서, 4-휴직신청서
 	private String APP_DATE1;	// 휴가 시작 날짜
+	private String APP_DATE_UP; // 휴가 시작 날짜 기간 설정 위해서 
 	private String APP_TIME1;	// 휴가 시작 시간?
 	private String APP_DATE2;	// 휴가 끝  날짜
 	private String APP_TIME2;	// 휴가 끝 시간?
@@ -109,6 +110,12 @@ public class BreakApply {
 	}
 	public void setAPP_DATE1(String aPP_DATE1) {
 		APP_DATE1 = aPP_DATE1;
+	}
+	public String getAPP_DATE_UP() {
+		return APP_DATE_UP;
+	}
+	public void setAPP_DATE_UP(String aPP_DATE_UP) {
+		APP_DATE_UP = aPP_DATE_UP;
 	}
 	public String getAPP_TIME1() {
 		return APP_TIME1;
@@ -217,18 +224,12 @@ public class BreakApply {
 		return "BreakApply [APP_DATE=" + APP_DATE + ", EMP_NO=" + EMP_NO + ", KOR_NM=" + KOR_NM + ", DEPT_CD=" + DEPT_CD
 				+ ", DEPT_NM=" + DEPT_NM + ", JIKGUP_CD=" + JIKGUP_CD + ", JIKGUP_NM=" + JIKGUP_NM + ", IN_DT=" + IN_DT
 				+ ", APP_GB=" + APP_GB + ", APP_GB_NM=" + APP_GB_NM + ", APP_GB1=" + APP_GB1 + ", APP_GB_NM_T="
-				+ APP_GB_NM_T + ", APP_DATE1=" + APP_DATE1 + ", APP_TIME1=" + APP_TIME1 + ", APP_DATE2=" + APP_DATE2
-				+ ", APP_TIME2=" + APP_TIME2 + ", APP_CNT=" + APP_CNT + ", APP_RMK=" + APP_RMK + ", APP_PJT_CD="
-				+ APP_PJT_CD + ", PJT_NM=" + PJT_NM + ", APP_PLACE=" + APP_PLACE + ", APP_BIGO=" + APP_BIGO
-				+ ", LEAVING_GBN=" + LEAVING_GBN + ", AUDIT_ID=" + AUDIT_ID + ", PRINT_YN=" + PRINT_YN + ", APP_USE="
-				+ APP_USE + ", CONFIRM_YN=" + CONFIRM_YN + ", CONFIRM=" + CONFIRM + ", H_PHONE_NO=" + H_PHONE_NO
-				+ ", CONFIRM_DT=" + CONFIRM_DT + "]";
+				+ APP_GB_NM_T + ", APP_DATE1=" + APP_DATE1 + ", APP_DATE_UP=" + APP_DATE_UP + ", APP_TIME1=" + APP_TIME1
+				+ ", APP_DATE2=" + APP_DATE2 + ", APP_TIME2=" + APP_TIME2 + ", APP_CNT=" + APP_CNT + ", APP_RMK="
+				+ APP_RMK + ", APP_PJT_CD=" + APP_PJT_CD + ", PJT_NM=" + PJT_NM + ", APP_PLACE=" + APP_PLACE
+				+ ", APP_BIGO=" + APP_BIGO + ", LEAVING_GBN=" + LEAVING_GBN + ", AUDIT_ID=" + AUDIT_ID + ", PRINT_YN="
+				+ PRINT_YN + ", APP_USE=" + APP_USE + ", CONFIRM_YN=" + CONFIRM_YN + ", CONFIRM=" + CONFIRM
+				+ ", H_PHONE_NO=" + H_PHONE_NO + ", CONFIRM_DT=" + CONFIRM_DT + "]";
 	}
-	
-	
-	
-
-
-	
 	
 }
