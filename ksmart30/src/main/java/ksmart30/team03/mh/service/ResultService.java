@@ -45,11 +45,23 @@ public class ResultService {
 		
 		return vo;		
 	}
-	public List<Result> getResultListDetailView(String EMP_NO){
+	// M/H 입력 실적리스트 디테일
+	public List<Result> getResultListDetailView(String ETC_SPEC){
 		System.out.println("servie :실적 디테일 출력"); 
-		return resultMapper.getResultListDetailView(EMP_NO);
+		return resultMapper.getResultListDetailView(ETC_SPEC);
 	}
-	
+	// M/H 입력 실적리스트 ajax
+	public List<Map<String,Object>> getListView2(Result result){
+		System.out.println("service :ajax 입력리스트(개인) 출력");
+		List<Map<String,Object>> vo = resultMapper.getListSearch2(result);
+		return vo;
+	}
+	// M/H 입력 PJT 명 목록 가져오기
+	public List<Map<String,Object>> getSelectPjtNameView(Result result) {
+		System.out.println("service : getSelectPjtNameView 요청");
+		List<Map<String,Object>> vo = resultMapper.getSelectPjtNameView(result);
+		return vo;
+	}
 	public List<Result> getSelectListView() {
 		return resultMapper.getSelectListView();
 	}

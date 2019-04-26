@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team03.mh.domain.Result;
 import ksmart30.team03.mh.service.ResultService;
+import ksmart30.team03.person.domain.PersonRequest;
 
 @Controller
 public class ResultController {
@@ -51,13 +52,18 @@ public class ResultController {
 	  }
 	  // M/H 실적 입력 디테일 컨트롤러
 	  @GetMapping("/manHour/resultWriteDetailView")
-	  public @ResponseBody List<Result> resultWriteModifyView(@RequestParam(value = "EMP_NO")String EMP_NO) {
+	  public @ResponseBody List<Result> resultWriteModifyView(@RequestParam(value = "ETC_SPEC")String ETC_SPEC) {
 		  System.out.println("실적 입력디테일보기");
-		  List<Result> data = resultService.getResultListDetailView(EMP_NO);
+		  List<Result> data = resultService.getResultListDetailView(ETC_SPEC);
 		  System.out.println("실적 List 디테일 :" + data);
-	  return data;
-		  
+	  return data;		  
 	  }
-	  
-	 
+	  // M/H 입력 PJT 명 목록 가져오기
+	  @GetMapping("/manHour/getSelectPjtNameView")
+	  public @ResponseBody List<Map<String,Object>> getSelectPjtNameView(Result result){
+		  System.out.println("C: 프로젝트이름 가져오기");
+		  List<Map<String,Object>> vo = resultService.getSelectPjtNameView(result);		 
+		return vo;
+	  }
+ 
 }

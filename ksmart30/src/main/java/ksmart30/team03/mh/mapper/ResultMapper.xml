@@ -4,11 +4,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ksmart30.team03.mh.mapper.ResultMapper">
-	<!-- 5.1 M/H 입력 -->
+	<!-- 5.1.1 M/H 입력 -->
 	<insert id="resultWriteView"
 			parameterType="ksmart30.team03.mh.domain.Result">
 		INSERT INTO
-			T_PM1020_BNT(
+			T_PM1020(
 					EMP_NO,
 					WORK_DT,
 					PJT_CD,
@@ -31,35 +31,37 @@
 				)
 	</insert>
 	
-	<!-- M/H실적 리스트 -->
+	<!--5.1.2 M/H 입력 실적 리스트 -->
 	<select id="getListView"
 			resultType="ksmart30.team03.mh.domain.Result">
 			SELECT  TOP 20
 				A.EMP_NO,
 				A.WORK_DT,	
 				ISNULL(E.PJT_NM,'-') AS PJT_CD,
-				A.WORK_SPEC,	
+				ISNULL(F.LEVEL2_NM,'-') AS WORK_SPEC,	
 				ISNULL(D.DEPT_NM,'-') AS DEPT_CD,
 				A.WORK_TIME,
 				A.ETC_SPEC,		
 				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
 				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD	
-			FROM T_PM1020_BNT A, 
+			FROM T_PM1020 A, 
 				 T_SC9100 B,
 				 T_SC9100 C,
 				 T_SC1010 D,
-				 T_SM3000_2016 E
+				 T_SM3000 E,
+				 T_SC9100 F
 				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
 				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
-				 
+				 AND((A.WORK_SPEC *=F.LEVEL2_CD) AND(F.LEVEL1_CD='Z' AND F.BUSI_GB= 'J'))
+				 ORDER BY WORK_DT DESC;
 	</select>
 	
-	<!-- M/H실적 리스트 검색 -->
+	<!--5.1.3 M/H실적 리스트 검색 -->
 	<select id="getListSearch"
 			parameterType="String"
 			resultType="java.util.Map">
-		SELECT  TOP 25
+		SELECT  TOP 20
 				A.EMP_NO,
 				A.WORK_DT,	
 				ISNULL(E.PJT_NM,'-') AS PJT_CD,
@@ -69,11 +71,11 @@
 				A.ETC_SPEC,		
 				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
 				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD	
-			FROM T_PM1020_BNT A, 
+			FROM T_PM1020 A, 
 				 T_SC9100 B,
 				 T_SC9100 C,
 				 T_SC1010 D,
-				 T_SM3000_2016 E
+				 T_SM3000 E
 				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
 				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
 				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
@@ -81,81 +83,155 @@
 	 			 
 	</select>
 	
-	<!-- M/H실적 리스트 검색 값이 없을 때 -->
+	<!--5.1.4 M/H실적 리스트 검색 값이 없을 때 -->
 	<select id="getListSearch2"
 			parameterType="String"
 			resultType="java.util.Map">
-		SELECT  TOP 25
+		SELECT  TOP 20
 				A.EMP_NO,
 				A.WORK_DT,	
 				ISNULL(E.PJT_NM,'-') AS PJT_CD,
-				A.WORK_SPEC,	
+				ISNULL(F.LEVEL2_NM,'-') AS WORK_SPEC,	
 				ISNULL(D.DEPT_NM,'-') AS DEPT_CD,
 				A.WORK_TIME,
 				A.ETC_SPEC,		
 				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
-				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD
-		FROM T_PM1020_BNT A, 
-			 T_SC9100 B,
-			 T_SC9100 C,
-			 T_SC1010 D,
-			 T_SM3000_2016 E
-		 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
-		 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
-		 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD	
+			FROM T_PM1020 A, 
+				 T_SC9100 B,
+				 T_SC9100 C,
+				 T_SC1010 D,
+				 T_SM3000 E,
+				 T_SC9100 F
+				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+				 AND((A.WORK_SPEC *=F.LEVEL2_CD) AND(F.LEVEL1_CD='Z' AND F.BUSI_GB= 'J'))
+				 ORDER BY WORK_DT DESC;
 				 
 	</select>
 	
 	
-	<!-- M/H실적 디테일 쿼리 -->
+	<!--5.1.5 M/H실적 디테일 쿼리 -->
 	<select  id="getResultListDetailView"
 	resultType="ksmart30.team03.mh.domain.Result" parameterType="String">
 		SELECT 
 				A.EMP_NO,
 				A.WORK_DT,	
 				ISNULL(E.PJT_NM,'-') AS PJT_CD,
-				A.WORK_SPEC,	
+				ISNULL(F.LEVEL2_NM,'-') AS WORK_SPEC,	
 				ISNULL(D.DEPT_NM,'-') AS DEPT_CD,
 				A.WORK_TIME,
 				A.ETC_SPEC,		
 				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
-				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD
-		FROM T_PM1020_BNT A, 
-			 T_SC9100 B,
-			 T_SC9100 C,
-			 T_SC1010 D,
-			 T_SM3000_2016 E
-		 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
-		 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
-		 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
-		 AND A.EMP_NO LIKE '%'+#{EMP_NO}+'%';
+				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD	
+			FROM T_PM1020 A, 
+				 T_SC9100 B,
+				 T_SC9100 C,
+				 T_SC1010 D,
+				 T_SM3000 E,
+				 T_SC9100 F
+				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+				 AND((A.WORK_SPEC *=F.LEVEL2_CD) AND(F.LEVEL1_CD='Z' AND F.BUSI_GB= 'J'))
+				 AND A.ETC_SPEC LIKE '%'+#{ETC_SPEC}+'%' ORDER BY WORK_DT DESC
+	</select>
+	<!-- 5.1.6 M/H 실적입력 ajax list 화면 출력 쿼리 -->
+	<select id="getListView2"
+			resultType="java.util.Map"
+			parameterType="String">
+			SELECT  TOP 20
+				A.EMP_NO,
+				A.WORK_DT,	
+				ISNULL(E.PJT_NM,'-') AS PJT_CD,
+				ISNULL(F.LEVEL2_NM,'-') AS WORK_SPEC,	
+				ISNULL(D.DEPT_NM,'-') AS DEPT_CD,
+				A.WORK_TIME,
+				A.ETC_SPEC,		
+				ISNULL(C.LEVEL2_NM,'-') AS WORK_STEP,
+				ISNULL(B.LEVEL2_NM,'-') AS JIKGUP_CD	
+			FROM T_PM1020 A, 
+				 T_SC9100 B,
+				 T_SC9100 C,
+				 T_SC1010 D,
+				 T_SM3000 E,
+				 T_SC9100 F
+				 WHERE ((A.WORK_STEP *= C.LEVEL2_CD) AND (C.LEVEL1_CD='110' AND C.BUSI_GB = 'J'))
+				 AND((A.JIKGUP_CD *= B.LEVEL2_CD) AND (B.LEVEL1_CD='110' AND B.BUSI_GB = 'H'))
+				 AND(A.DEPT_CD *= D.DEPT_CD)  AND(A.PJT_CD *= E.PJT_CD)
+				 AND((A.WORK_SPEC *=F.LEVEL2_CD) AND(F.LEVEL1_CD='Z' AND F.BUSI_GB= 'J'))
+				 ORDER BY WORK_DT DESC;
+	</select>
+	<!-- 5.1.7 M/H 실적입력사원번호,직급,부서 세션에서 불러 오는 쿼리 -->
+	<select id="getresultsessionview"
+	parameterType="String" resultType="java.util.Map">
+	SELECT   
+	  		ROW_NUMBER()OVER(ORDER BY (B.SYS_COD+A.JIKGUP_CD+CASE A.JIKCHK_CD WHEN '61' THEN '52' ELSE A.JIKCHK_CD END+A.EMP_NO)) AS SORT_VALUE, 
+	  		B.SHORT_NM DEPT_NM, 
+	  		A.EMP_NO, 
+	  		A.KOR_NM, 
+	  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM, 
+	    	(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) JIKCHK_NM,
+	 		A.IN_PHONE_NO,
+	 		CONVERT(varchar(30), A.AUDIT_TM,112) AUDIT_TM,
+	 		A.OUT_DT,
+	 		(CASE A.SEX_GB WHEN '1' THEN '남자' WHEN '2' THEN '여자' END) SEX_GB, 
+			(CASE  WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) OUT_DT2,
+			A.DEPT_CD,
+			A.JIKGUP_CD
+		FROM 
+			(SELECT * FROM T_HM1000 UNION SELECT* FROM T_HM1000_T) A, 
+			T_SC1010 B
+	   	WHERE 
+	   		A.DEPT_CD = B.DEPT_CD AND
+	   		EMP_NO LIKE '%%' AND
+			KOR_NM LIKE '%%' AND
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) LIKE '%%' AND
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '120' AND LEVEL2_CD = A.JIKCHK_CD) LIKE '%%' AND
+			CONVERT(varchar(30), A.AUDIT_TM,112) LIKE '%%' AND
+			A.IN_PHONE_NO LIKE '%%' AND
+			SEX_GB LIKE '%%' AND
+			DEPT_NM LIKE '%%' AND		
+			(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%%'	  	
+		 	ORDER BY OUT_DT2,SORT_VALUE; 
+	</select>
+	<!--5.1.8 M/H 입력 PJT명,작업단계, 목록 가져오는 쿼리-->
+	<select id = "getSelectPjtNameView"
+				  resultType="java.util.Map"
+				  parameterType="String">
+				 SELECT 
+					A.PJT_CD,C.PJT_NM,B.LEVEL2_NM,B.LEVEL2_CD
+				FROM
+					(SELECT PJT_CD,MIN(WORK_STEP)CD FROM T_P11080 WHERE END_YN = '0' GROUP BY PJT_CD)A,
+					(SELECT LEVEL2_NM, LEVEL2_CD FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD = '110')B,
+					T_SM3000 C
+				WHERE
+					C.PJT_CD = A.PJT_CD
+				AND 
+					A.CD = B.LEVEL2_CD
+				AND
+					C.PJT_NM LIKE '%'+#{PJT_NM}+'%'
+					--fit. KDY,BSH,IHG		
 	</select>
 	
+	<!-- M/H입력 PJT명 선택시 작업단계 설정 쿼리 -->
+	<!-- <select id="getpjtLevelSelectView"
+			resultType="java.util.Map"
+			parameterType="String">
+			SELECT 
+				B.PJT_CD,
+				A.LEVEL2_NM
+			FROM 
+				(SELECT LEVEL2_NM, LEVEL2_CD FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD = '110') A,
+				T_P11080 B
+				WHERE
+				A.LEVEL2_CD = B.WORK_STEP
+				AND 
+				B.PJT_CD = #{PCJ_CD}
+				AND
+				B.END_YN = '0'
+	</select> -->
 	
 	
-	
-	
-	
-	
-	<select id = "getSelectListView"
-				  resultType="ksmart30.team03.mh.domain.Result">
-	SELECT PJT_CD,PJT_NM FROM T_SM3000
-		WHERE 	
-			PJT_CD = 17001 
-	 		OR PJT_CD = 17002 OR PJT_CD = 17003 OR PJT_CD = 17004 OR PJT_CD = 17005
-			OR PJT_CD = 17006 OR PJT_CD = 17007 OR PJT_CD = 17008 OR PJT_CD = 17009
-	 		OR PJT_CD = 18001 OR PJT_CD = 18002 OR PJT_CD = 18003 OR PJT_CD = 18004
-			OR PJT_CD = 18005 OR PJT_CD = 18006 OR PJT_CD = 18007 OR PJT_CD = 18008
-			OR PJT_CD = 18009 OR PJT_CD = 18010 OR PJT_CD = 18011 OR PJT_CD = 18012
-			OR PJT_CD = 18013 OR PJT_CD = 18014 OR PJT_CD = 18015 OR PJT_CD = 18016
-			OR PJT_CD = 18017 OR PJT_CD = 18018 OR PJT_CD = 18019 OR PJT_CD = 18020
-			OR PJT_CD = 18021 OR PJT_CD = 18022 OR PJT_CD = 18023 OR PJT_CD = 18024
-			OR PJT_CD = 18025 OR PJT_CD = 18026 OR PJT_CD = 18027 OR PJT_CD = 18028
-			OR PJT_CD = 18029 OR PJT_CD = 18030 OR PJT_CD = 18031 OR PJT_CD = 19001
-			OR PJT_CD = 19002 OR PJT_CD = 19003 OR PJT_CD = 19004 OR PJT_CD = 19005
-			OR PJT_CD = 19006 OR PJT_CD = 19007 OR PJT_CD = 19008 OR PJT_CD = 19009
-			OR PJT_CD = 19010 OR PJT_CD = 19011 OR PJT_CD = 19012 OR PJT_CD = 19013
-			OR PJT_CD = 19014 OR PJT_CD = 19015 OR PJT_CD = 19016 OR PJT_CD = 19017
-			OR PJT_CD = 19018 OR PJT_CD = 19019 OR PJT_CD = 19020 OR PJT_CD = 19021
-	</select>
 </mapper>
