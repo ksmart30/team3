@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ksmart30.team00.baseinfo.domain.Department;
 import ksmart30.team00.baseinfo.service.DepartmentService;
@@ -29,13 +30,17 @@ public class DepartmentController {
 	}
 
 	// 10.3.2.2 부서코드 검색
-	@GetMapping("/baseInfo/departmentSearchProcess")
-	public @ResponseBody List<Department> departmentSearchProcess(Department department) {
+	@PostMapping("/baseInfo/departmentListSearchView")
+	public String departmentSearchProcess(Model model, @RequestParam(value="DEPT_NM_SEARCH")String deptNm, @RequestParam(value="NOT_USE_SEARCH")String notUse) {
 		System.out.println("(C) 10.3.2.2 부서코드 검색 departmentSearchProcess()");
-		// 1. Service 실행 (결과값 : 검색된 부서코드 정보(List))
+		// 1. 검색 Setting (검색어, 미사용구분)
+		department.setDEPT_NM(deptNm);
+		department.setNOT_USE(notUse);
+		// 2. Service 실행 (결과값 : 검색된 부서코드 정보(List))
 		List<Department> departmentList = departmentService.getDepartmentSearch(department);
-		// 2. 결과값 리턴
-		return departmentList;
+		// 3. 결과값 리턴
+		model.addAttribute("departmentList", departmentList);
+		return "baseInfo/departmentView";
 	}
 
 	// 10.3.2.3 부서코드 입력폼

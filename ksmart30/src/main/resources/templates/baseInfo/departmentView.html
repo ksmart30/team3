@@ -9,6 +9,9 @@
 		
 		<script>
 			$(document).ready(function() { 
+				// 저장기능 비활성화
+				$('#DEPARTMENT_SAVE').attr('disabled','true');
+				
 				// 1. 부서코드 리스트 클릭시 수정폼에 등록
 				$('#departmentList').delegate('tr', 'click', function(){
 					// 행과 각각의 값들을 담아옴
@@ -113,6 +116,15 @@
 				$('#DEPARTMENT_SEARCH').click(function() {
 					let deptNm = $('#DEPT_NM_SEARCH').val();
 					let notUse = $('input[name="NOT_USE_SEARCH"]:checked').val();
+
+					// 입력, 수정, 삭제 초기화
+					$('#DEPARTMENT_WRITE').removeAttr('disabled');
+					$('#DEPARTMENT_MODIFY').removeAttr('disabled');
+					$('#DEPARTMENT_DELETE').removeAttr('disabled');
+
+					// 리스트 클릭 활성화
+					$('#departmentList').on('click');
+
 					$.ajax({
 						url:'/baseInfo/departmentSearchProcess',
 						type:'GET',
@@ -171,6 +183,101 @@
 						}
 					});
 				});
+				// 3. 입력창 생성
+				$('#DEPARTMENT_WRITE').click(function() {
+					$('#departmentList').prepend('<tr><td id="departmentAdd"><input type="text" style="border: none; background: transparent; width: 7px" readonly></td>'+
+						'<td><input type="text" style="border: none; background: transparent; width: 79px" name="DEPT_CD" readonly></td><td><input type="text" style="border: none; background: transparent; width: 79px" name="SYS_COD" readonly></td>'+
+						'<td><input type="text" style="border: none; background: transparent; width: 115px" name="SYS_COD" readonly></td><td><input type="text" style="border: none; background: transparent; width: 150px" name="DEPT_NM" readonly></td>'+
+						'<td><input type="text" style="border: none; background: transparent; width: 150px" name="SHORT_NM" readonly></td><td><input type="text" style="border: none; background: transparent; width: 150px" name="SHORT_NM1" readonly></td>'+
+						'<td><input type="text" style="border: none; background: transparent; width: 79px" name="LEVEL_GB" readonly></td><td><input type="text" style="border: none; background: transparent; width: 162px" name="DIV_TYPE" readonly></td>'+
+						'<td><input type="text" style="border: none; background: transparent; width: 182px" name="ACC_UNIT" readonly></td><td style="text-align: center"><input type="checkbox" style="width : 62px" name="ACC_DEPT" disabled></td>'+
+						'<td><input type="text" style="border: none; background: transparent; width: 97px" name="DIV_ID" readonly></td><td style="text-align: center"><input type="checkbox" style="width : 72px" name="NOT_USE" disabled></td>'+
+						'<td><input type="text" style="border: none; background: transparent; width: 100px" name="NOTUSE_DATE" readonly></td></tr>');
+					$('#departmentAdd').click();
+					// 입력시 입력,수정 및 삭제를 할 수 없도록 막음
+					$('#DEPARTMENT_WRITE').attr('disabled','true');
+					$('#DEPARTMENT_MODIFY').attr('disabled','true');
+					$('#DEPARTMENT_DELETE').attr('disabled','true');
+					// 저장 활성화
+					$('#DEPARTMENT_SAVE').removeAttr('disabled');
+					// 미사용 기간 초기화 (disabled 처리)
+					$('#NOTUSE_DATE').attr('disabled','true');
+					// 리스트 클릭 비활성화
+					$('#departmentList').off('click');
+				});
+				// 4. 입력시 빈칸란에 바로 입력
+				$('#DEPT_CD').change(function(){	// 부서코드
+					$('input[name="DEPT_CD"]').val($(this).val());
+					$('input[name="DEPT_CD"]').text($(this).val());
+				});
+				$('#SYS_COD').change(function(){	// 내부코드
+					$('input[name="SYS_COD"]').val($(this).val());
+					$('input[name="SYS_COD"]').text($(this).val());
+				});
+				$('#LEVEL_GB').change(function(){	// 권한
+					$('input[name="LEVEL_GB"]').val($("#LEVEL_GB option:selected").text());
+					$('input[name="LEVEL_GB"]').text($("#LEVEL_GB option:selected").text());
+				});
+				$('#DEPT_NM').change(function(){	// 부서명
+					$('input[name="DEPT_NM"]').val($(this).val());
+					$('input[name="DEPT_NM"]').text($(this).val());
+				});
+				$('#SHORT_NM').change(function(){	// 약어명(1)
+					$('input[name="SHORT_NM"]').val($(this).val());
+					$('input[name="SHORT_NM"]').text($(this).val());
+				});
+				$('#SHORT_NM1').change(function(){	// 약어명(2)
+					$('input[name="SHORT_NM1"]').val($(this).val());
+					$('input[name="SHORT_NM1"]').text($(this).val());
+				});
+				$('#SYS_COD').change(function(){	// 배부부문
+					$('input[name="SYS_COD"]').val($(this).val());
+					$('input[name="SYS_COD"]').text($(this).val());
+				});
+				$('#DIV_TYPE').change(function(){	// 공통비
+					$('input[name="DIV_TYPE"]').val($("#DIV_TYPE option:selected").text());
+					$('input[name="DIV_TYPE"]').text($("#DIV_TYPE option:selected").text());
+				});
+				$('#DIV_ID').change(function(){	// MD부서
+					$('input[name="DIV_ID"]').val($("#DIV_ID option:selected").text());
+					$('input[name="DIV_ID"]').text($("#DIV_ID option:selected").text());
+				});
+				$('#ACC_UNIT').change(function(){	// 회계단위
+					$('input[name="ACC_UNIT"]').val($("#ACC_UNIT option:selected").text());
+					$('input[name="ACC_UNIT"]').text($("#ACC_UNIT option:selected").text());
+				});
+				$('#ACC_DEPT').change(function(){	// 회계부서
+					if($('input:checkbox[id="ACC_DEPT"]').is(":checked")) {
+						$("input[name='ACC_DEPT']").prop("checked", true);
+					}else {
+						$("input[name='ACC_DEPT']").prop("checked", false);
+					}
+				});
+				$('#NOT_USE').change(function(){	// 미사용 구분
+					if($('input:checkbox[id="NOT_USE"]').is(":checked")) {
+						$("input[name='NOT_USE']").prop("checked", true);
+						$('#NOTUSE_DATE').removeAttr('disabled');
+					}else {
+						$("input[name='NOT_USE']").prop("checked", false);
+						$('#NOTUSE_DATE').val(null);
+						$("input[name='NOTUSE_DATE']").val(null);
+						$('#NOTUSE_DATE').attr('disabled','true');
+					}
+				});
+				$('#NOTUSE_DATE').change(function(){	// 미사용 일자
+					$('input[name="NOTUSE_DATE"]').val($(this).val());
+					$('input[name="NOTUSE_DATE"]').text($(this).val());
+				});
+				// 5. 저장하기
+				$('#DEPARTMENT_SAVE').click(function(){
+					var result = confirm('저장하시겠습니까?'); 
+					if(result) { 
+						//yes 
+						location.replace('index.php'); } 
+					else {
+					 //no 
+					}
+				});
 			});
 			</script>
 		<th:block th:include="layout/customHead"></th:block>	
@@ -186,26 +293,27 @@
 		</div>
 		<div class="x_content" style="text-align: right">
 				<div class="btn-group" >
-						<button class="btn btn-default" id ="btnWrite"type="reset">입력</button>
-						<button class="btn btn-default" type="button">수정</button>
-						<button class="btn btn-default" type="button">삭제</button>
+						<button class="btn btn-default" id="DEPARTMENT_WRITE" type="button">입력</button>
+						<button class="btn btn-default" id="DEPARTMENT_MODIFY" type="button">수정</button>
+						<button class="btn btn-default" id="DEPARTMENT_DELETE" type="button">삭제</button>
+						<button class="btn btn-default" id="DEPARTMENT_SAVE" type="button">저장</button>
 						<button class="btn btn-default" type="button">출력</button>
 				</div>
 		</div>				
 		<div class="col-md-12 col-sm-6 col-xs-12 table-responsive" style="width:100%">
 			<div class="x_panel" style="color:black;">
 				<div class="x_title">
-					<form>
+					<form action="/baseInfo/departmentListSearchView" method="POST">
 						<h5>⊙ 검색 조건</h5>
 							<div class="col-md-4 col-sm-12 col-xs-12">
 							미사용 구분
-								<input type="radio" name="NOT_USE_SEARCH" value="" checked="checked">전체
-								<input type="radio" name="NOT_USE_SEARCH" value="0">유
-								<input type="radio" name="NOT_USE_SEARCH" value="1">무
+								<input type="radio" name="NOT_USE_SEARCH" id="NOT_USE_SEARCH" value="" checked="checked">전체
+								<input type="radio" name="NOT_USE_SEARCH" id="NOT_USE_SEARCH" value="1">유
+								<input type="radio" name="NOT_USE_SEARCH" id="NOT_USE_SEARCH" value="0">무
 							<br>
 							부서명 : 
 								<input type="text" name="DEPT_NM_SEARCH" id="DEPT_NM_SEARCH">
-								<button type="button" class="btn" style="color:black" name="DEPARTMENT_SEARCH" id="DEPARTMENT_SEARCH">검색</button>
+								<button type="submit" class="btn" style="color:black" name="DEPARTMENT_SEARCH" id="DEPARTMENT_SEARCH">검색</button>
 							
 							</div>
 					</form>
@@ -215,23 +323,23 @@
 					<form class="form-horizontal form-label-left">
 						<table class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed" id="deportmentModifyView"role="grid" aria-describedby="datatable-responsive_info" style="width:100%;">
 							<tr role="row">
-								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
+								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending" >
 									부서코드
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="text" name="DEPT_CD" id="DEPT_CD" style="width:20%;">
+									<input type="text" id="DEPT_CD" style="width:20%;">
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									내부코드
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="text" name="SYS_COD" id="SYS_COD" style="width:20%;">
+									<input type="text" id="SYS_COD" style="width:20%;">
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									권한
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<select Name="LEVEL_GB" id="LEVEL_GB" style="width:40%;">
+									<select id="LEVEL_GB" style="width:40%;">
 										<option value="0"></option>
 										<option value="1">회장</option>
 										<option value="2">대표이사</option>
@@ -249,19 +357,19 @@
 									부서명
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="text" name="DEPT_NM" id="DEPT_NM" style="width:40%;">
+									<input type="text" id="DEPT_NM" style="width:40%;">
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									약어명(1)
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="text" name="SHORT_NM" id="SHORT_NM" style="width:40%;">
+									<input type="text" id="SHORT_NM" style="width:40%;">
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									약어명(2)
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="text" name="SHORT_NM1" id="SHORT_NM1" style="width:40%;">
+									<input type="text" id="SHORT_NM1" style="width:40%;">
 								</th>
 							</tr>
 							<tr role="row">
@@ -269,7 +377,7 @@
 									배부부문
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<select Name="DIV_TYPE" id="DIV_TYPE"style="width:40%;">
+									<select id="DIV_TYPE"style="width:40%;">
 										<option value="0"></option>
 										<option value="10">간접비-빌딩</option>
 										<option value="20">간접비-전산</option>
@@ -288,7 +396,7 @@
 									M/D 부서
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<select Name="DIV_ID" id="DIV_ID" style="width:40%;">
+									<select id="DIV_ID" style="width:40%;">
 										<option value="0"></option>
 										<option value="10">입력부서</option>
 										<option value="20">미입력부서</option>
@@ -298,11 +406,11 @@
 									회계단위
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<select Name="ACC_UNIT" id="ACC_UNIT" style="width:40%;">
+									<select id="ACC_UNIT" style="width:40%;">
 										<option value="00"></option>
 										<option value="01">(주)이에이치네트웍스</option>
 									</select>
-									<input type="checkbox" name="ACC_DEPT" id="ACC_DEPT"value="1">회계부서 <!-- 체크박스 -->
+									<input type="checkbox" id="ACC_DEPT" value="1">회계부서 <!-- 체크박스 -->
 								</th>
 							</tr>
 							<tr role="row">
@@ -310,19 +418,19 @@
 									해외근무
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="checkbox" name="FOREIGN_WORK" id="FOREIGN_WORK" value="1">	<!-- 체크박스 -->
+									<input type="checkbox" name="FOREIGN_WORK" id="FOREIGN_WORK" value="1" disabled>	<!-- 체크박스 -->
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									미사용구분
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="checkbox" name="NOT_USE" id="NOT_USE" value="1">	<!-- 체크박스 -->
+									<input type="checkbox" id="NOT_USE" value="1">	<!-- 체크박스 -->
 								</th>
 								<th class="sorting_asc" aria-controls="datatable-responsive" aria-sort="ascending">
 									미사용일자									
 								</th>
 								<th class="sorting" aria-controls="datatable-responsive">
-									<input type="date" name="NOTUSE_DATE" id="NOTUSE_DATE" style="width:40%;">
+									<input type="date" id="NOTUSE_DATE" style="width:40%;" max="2999-12-31">
 								</th>
 							</tr>
 						</table>
@@ -339,19 +447,19 @@
 								<tr class="headings">
 									<th>
 									</th>
-									<th class="column-title">부서코드</th>
-									<th class="column-title">내부코드</th>
-									<th class="column-title">내부순서코드</th>
+									<th class="column-title" style="width:6%">부서코드</th>
+									<th class="column-title" style="width:6%">내부코드</th>
+									<th class="column-title" style="width:8%">내부순서코드</th>
 									<th class="column-title">부서명</th>
 									<th class="column-title">약어명</th>
 									<th class="column-title">약어명(2)</th>
-									<th class="column-title">조직구분</th>
+									<th class="column-title" style="width:6%">조직구분</th>
 									<th class="column-title">배부부문</th>
-									<th class="column-title">회계단위</th>
-									<th class="column-title">회계부서</th><!-- 체크박스 -->
-									<th class="column-title">M/D부서</th>
-									<th class="column-title">미사용유무</th><!-- 체크박스 -->                  
-									<th class="column-title">미사용일자</th>
+									<th class="column-title" style="width:12%">회계단위</th>
+									<th class="column-title" style="width : 80px">회계부서</th><!-- 체크박스 -->
+									<th class="column-title" style="width:8%">M/D부서</th>
+									<th class="column-title" style="width : 90px">미사용유무</th><!-- 체크박스 -->                  
+									<th class="column-title" style="width:8%">미사용일자</th>
 									</tr>
 							</thead>		
 								<tbody id="departmentList">
