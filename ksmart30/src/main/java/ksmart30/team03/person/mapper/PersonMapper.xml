@@ -18,7 +18,9 @@
 	 		CONVERT(varchar(30), A.AUDIT_TM,112) AUDIT_TM,
 	 		A.OUT_DT,
 	 		(CASE A.SEX_GB WHEN '1' THEN '남자' WHEN '2' THEN '여자' END) SEX_GB, 
-			(CASE  WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) OUT_DT2
+			(CASE  WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) OUT_DT2,
+			DEPT_CD,
+			JIKGUP_CD
 		FROM 
 			(SELECT * FROM T_HM1000 UNION SELECT* FROM T_HM1000_T) A, 
 			T_SC1010 B
@@ -244,6 +246,7 @@
 		FROM T_HM1000 
 		WHERE EMP_NO=#{EMP_NO}
 	</select>
+	
 	<!-- 6.1.1 부서코드 list 출력  -->
 	<select id="deptCdListView" resultType="java.util.Map">
 		SELECT 
@@ -251,6 +254,7 @@
 			DEPT_NM 
 		FROM T_SC1010 	
 	</select>
+	
 	<!-- 6.1.1 직급, 직책코드 list 출력 -->
 	<select id="gbCdListView" resultType="java.util.Map">
 		SELECT 
@@ -260,6 +264,7 @@
 		FROM T_SC9100 
 		WHERE BUSI_GB='H'
 	</select>
+	
 	<!-- 6.1.1 관계코드 list 출력-->
 	<select id="gbCdRelationListView" resultType="ksmart30.team03.person.domain.Person">
 		SELECT 
@@ -269,6 +274,17 @@
 		FROM T_SC9100 
 		WHERE BUSI_GB='H' AND LEVEL1_CD='140'
 	</select>
+	
+	<!-- 6.1.1 학교코드 list 출력 -->
+	<select id="educationListView" resultType="java.util.Map">
+		SELECT 
+			LEVEL2_NM,
+			LEVEL2_CD 
+		FROM T_SC9100 
+		WHERE BUSI_GB = 'H' AND 
+			  LEVEL1_CD = '300' 	
+	</select>
+	
 	<!-- 6.1.1 자격이름,자격발행기관 코드 list 출력 -->
 	<select id="licenseListView" resultType="java.util.Map">
 		SELECT 
