@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>5.M/H 관리 - 프로젝트 종료</title>
+        <th:block th:include="layout/customHead"></th:block>
+        
+        <!-- Jquery, Ajax 선언 -->
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        
+	</th:block>
+	<th:block layout:fragment="customBody">
+        <div class="page-title">
+            <div class="col-md-12 col-xs-12" style="color:black;">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h2><b>프로젝트 종료</b></h2>
+                        <h5><fontcolor="gray"><b>5.M/H 관리&nbsp;>&nbsp;&nbsp;5.2 프로젝트 진행관리 &nbsp;>&nbsp;&nbsp;5.2.6 프로젝트 종료</b></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="x_content" style="text-align: right">
+            <div class="btn-group" >
+                <button class="btn btn-default" id ="btnWrite"type="reset">입력</button>
+                <button class="btn btn-default" type="button">수정</button>
+                <button class="btn btn-default" type="button">삭제</button>
+                <button class="btn btn-default" type="button">조회</button>
+                <button class="btn btn-default" type="button">출력</button>
+            </div>
+        </div>
+        <div class="x_panel" style="color: black;">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_content">
+            </div>
+            </div>
+        </div>
+	</th:block>
+	<th:block layout:fragment="customJquery">
+		<th:block th:include="layout/customJquery"></th:block>
+    </th:block>
+</html>

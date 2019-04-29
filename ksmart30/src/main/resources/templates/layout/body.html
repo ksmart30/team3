@@ -102,7 +102,8 @@
 	                  		<li><a href="/manHour/manHourResultNugaeView"> M/H 계획/실적(프로젝트 누계) </a></li>
 	                  		<li><a href="#"> #M/H 실적(당해) </a></li>
 	                  		<li><a href="#"> #프로젝트 단계완료 미입력 List </a></li>
-	                  		<li><a href="#"> #프로젝트 일정관리 </a></li>
+                        <li><a href="#"> #프로젝트 일정관리 </a></li>
+                        <li><a href="/manHour/projectEndView"> 프로젝트 종료 </a></li>
                   	</ul>
                   	<li><a><i class="fa fa-user"></i> 6. 인사 / 급여 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -201,24 +202,21 @@
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
-            <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-              </a>
-              <a data-toggle="tooltip" data-placement="top" title="Lock">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-              </a>
+            <div class="sidebar-footer hidden-small" style="width: 230px">
               <!-- 로그인 상태인 경우 (session notnull)-->
-              <a th:if="${session.KOR_NM != null}" data-toggle="tooltip" data-placement="top" title="Logout" href="/logoutProcess">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              <a th:if="${session.KOR_NM != null}" data-toggle="tooltip" data-placement="top" title="출근체크" href="/checkOn" style="width: 115px">
+                <span class="glyphicon glyphicon-time" aria-hidden="true" style="color: darkgray; font-size: 14px">&nbsp;출근체크</span>
+              </a>
+              <a th:if="${session.KOR_NM != null}" data-toggle="tooltip" data-placement="top" title="퇴근체크" href="/checkOff" style="width: 115px">
+                <span class="glyphicon glyphicon-off" aria-hidden="true" style="color: darkgray; font-size: 14px">&nbsp;퇴근체크</span>
               </a>
               <!-- 로그아웃 상태인 경우 (session null)-->
-              <a th:unless="${session.KOR_NM != null}" data-toggle="tooltip" data-placement="top" title="Login" href="/loginView">
+              <div th:unless="${session.KOR_NM != null}" style="width: 230px; height: 30px;"></div>
+              <!--               
+              <a th:unless="${session.KOR_NM != null}" data-toggle="tooltip" data-placement="top" title="Login" href="/loginView" style="width: 230px">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-              </a>
+              </a> 
+              -->
             </div>
             <!-- /menu footer buttons -->
           </div>
