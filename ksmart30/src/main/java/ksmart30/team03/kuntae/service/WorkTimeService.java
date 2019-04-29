@@ -1,7 +1,11 @@
 package ksmart30.team03.kuntae.service;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 import ksmart30.team03.kuntae.domain.WorkTime;
 import ksmart30.team03.kuntae.domain.WorkTimeSingleList;
 import ksmart30.team03.kuntae.mapper.WorkTimeMapper;
+import ksmart30.team03.person.domain.Person;
 import ksmart30.team03.person.mapper.PersonMapper;
 
 @Service
@@ -84,6 +89,38 @@ public class WorkTimeService {
 	public List<WorkTime> getWorkTimeJigakSearch(String EMP_NO){
 		System.out.println("S : 지각 횟수 ");
 		return workTimeMapper.getWorkTimeJigakSearch(EMP_NO);
+	}
+	
+	// 출근 처리
+	public int getCheckOn(HttpSession httpSession, WorkTimeSingleList vo) throws UnknownHostException {
+		// 0. 리턴변수 초기화
+		int result = 0;
+		// 1. 세션 정보 가져오기
+		String sessionEmpNo = (String)httpSession.getAttribute("EMP_NO");
+		vo.setEMP_NO(sessionEmpNo);
+		
+		// 2. 출퇴근 리스트 조회
+		List<WorkTimeSingleList> checkList = workTimeMapper.getCheckOn(vo);
+		System.out.println("출근값에 대한 정보 값 : " + checkList.size());
+			// 2.1 출근값이 있다면
+			if(checkList.size() != 0) {
+				result = 1;
+			}
+			// 2.2 출근값이 없다면 출근 처리 하기
+			else {
+				// 2.2.1 부서정보 넣기
+				Person deptValue = personMapper.personInsaEmployeeModifyView(sessionEmpNo);
+				vo.setDEPT_CD(deptValue.getDEPT_CD());
+				// 2.2.2 ip정보 넣기
+	            InetAddress catchIp = InetAddress.getLocalHost();
+	            String connentIp = catchIp.getHostAddress();
+	            vo.setCONN_IP(connentIp);
+				// 2.2.2 출근처리 
+				int checkOn = workTimeMapper.addCheckOn(vo);
+				System.out.println("출근 처리 완료 여부 : "+ checkOn);
+				result = 2;
+			}
+		return result;
 	}
 
 }

@@ -248,5 +248,44 @@
 		WHERE b.LEVEL1_CD='110' AND c.LEVEL1_CD='120' AND a.EMP_NO LIKE '%'+#{EMP_NO}+'%' AND e.WORK_DT <![CDATA[>=]]>#{WORK_DT} AND e.END_DT <![CDATA[<=]]>#{END_DT} AND DEPT_NM LIKE '%'+#{DEPT_NM}+'%'		
 	</select>
 
+	<!--  4.05 출퇴근 리스트 정보 가져오기(사원명,출근일자) -->
+	<select id="getCheckOn"
+			parameterType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
+			resultType="ksmart30.team03.kuntae.domain.WorkTimeSingleList">
+		SELECT EMP_NO, 
+				WORK_DT, 
+				DEPT_CD, 
+				START_TIME, 
+				END_DT, 
+				END_TIME 
+		FROM T_PM1010,
+			 (Select Convert(varchar(10),Getdate(),112) TODAY) TODAY 
+	 	WHERE EMP_NO = #{EMP_NO} AND WORK_DT = TODAY
+	</select>
+
+	<!--  4.05 출근 입력(사원명,출근일자) -->
+	<insert id="addCheckOn"
+			parameterType="ksmart30.team03.kuntae.domain.WorkTimeSingleList">
+		INSERT INTO 
+			T_PM1010 (
+				EMP_NO, 
+				WORK_DT,
+				DEPT_CD,
+				START_TIME,
+				DAY_TIME,
+				WORK_TIME,
+				ETC_TIME,
+				CONN_IP )
+			VALUES (
+				#{EMP_NO},
+				(Select Convert(varchar(10),Getdate(),112)),
+				#{DEPT_CD},
+				(SELECT REPLACE (SUBSTRING (Convert(varchar(10),GETDATE(),108),1,5),':','')),
+				0,
+				0,
+				0,
+				#{CONN_IP}
+			)
+	</insert>
 
 </mapper>

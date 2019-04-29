@@ -13,7 +13,7 @@
 	<link href="/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
 	<head>
 <script>
-
+	
 
 
 	/* 사원번호 검색*/
@@ -30,51 +30,13 @@
 	            	console.log('사원 번호 쿼리 성공!');
 	                $('#list').empty();
 	                $(data).each(function(index,item){ //each = foreach (반복문)
-	                    $('#list').append('<tr><td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>'+item.work_DT.substring(0,4)+'</td><td>'+item.work_DT.substring(4,6)+'</td><td>'+item.work_DT.substring(6,8)+'</td><td>'+item.start_TIME+'</td><td>'+item.end_TIME+'</td><td>'+item.end_DT+'</td></tr>');
+	                    $('#list').append('<tr><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.dept_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.jikgup_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.kor_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.work_DT.substring(0,4)+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.work_DT.substring(4,6)+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.work_DT.substring(6,8)+'</td><td>'+item.start_TIME+'</td><td>'+item.end_TIME+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.end_DT+'</td></tr>');
 	         
 	                });                   
 	            }
 	        });
 	    });
 	 });		
-	
-/* 	/* 날짜 검색 
-	$(document).ready(function(){
-		console.log('출,퇴근(Total) 날짜 출력')
-		$("#btn_day").click(function(){
-			let work_dt_format = $('#WORK_DT').val();
-			let end_dt_format = $('#END_DT').val();
-			
-			let WORK_DT = work_dt_format.substr(0,4)+work_dt_format.substr(5,2)+work_dt_format.substr(8,2);
-			let END_DT = end_dt_format.substr(0,4)+end_dt_format.substr(5,2)+end_dt_format.substr(8,2);
-			console.log(WORK_DT +"날짜"+ END_DT);		
-			
-		$.ajax({
-			url:'/kuntae/recordDateSearchProcess',
-            type:'GET',
-            dataType:'json',
-			data:{WORK_DT:WORK_DT,END_DT:END_DT},
-			success : function(data) {
-            	console.log('날짜 검색 쿼리 성공!');
-                $('#list').empty();
-                $(data).each(function(index,item){ //each = foreach (반복문)
-                    $('#list').append('<tr>');
-                    $('#list').append('<td>'+item.dept_NM+'</td>');
-                    $('#list').append('<td>'+item.jikgup_NM+'</td>'); 
-                    $('#list').append('<td>'+item.kor_NM+'</td>'); 
-                    $('#list').append('<td>'+item.work_DT.substring(0,4)+'</td>');
-                    $('#list').append('<td>'+item.work_DT.substring(4,6)+'</td>');
-                    $('#list').append('<td>'+item.work_DT.substring(6,8)+'</td>');
-                    $('#list').append('<td>'+item.start_TIME+'</td>');
-                    $('#list').append('<td>'+item.end_TIME+'</td>');
-                    $('#list').append('<td>'+item.end_DT+'</td>');
-                    $('#list').append('</tr>'); 
-                });                   			
-			}
-		});
-	});
-}); */
-	
 	
 	/* 전체 검색 */
 	$(document).ready(function(){
@@ -97,7 +59,7 @@
             	console.log('날짜 검색 쿼리 성공!');
                 $('#list').empty();
                 $(data).each(function(index,item){ //each = foreach (반복문)
-                    $('#list').append('<tr><td>'+item.dept_NM+'</td><td>'+item.jikgup_NM+'</td><td>'+item.kor_NM+'</td><td>'+item.work_DT.substring(0,4)+'</td><td>'+item.work_DT.substring(4,6)+'</td><td>'+item.work_DT.substring(6,8)+'</td><td>'+item.start_TIME+'</td><td>'+item.end_TIME+'</td><td>'+item.end_DT+'</td></tr>');
+                    $('#list').append('<tr><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.dept_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.jikgup_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.kor_NM+'</td><td>'+item.work_DT.substring(0,4)+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.work_DT.substring(4,6)+'</td><td>'+item.work_DT.substring(6,8)+'</td><td>'+item.start_TIME+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.end_TIME+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.end_DT+'</td></tr>');
                 });                   			
 			}
 		});
@@ -234,7 +196,65 @@
                 </div>
               
               </div>
+<!-- 디테일 modal -->
 
+<div class="modal fade bs-example-modal-lg1"  tabindex="-1" role="dialog" aria-hidden="true" id="ok" >
+   <div class="modal-dialog modal-lg" >
+     <div class="modal-content modal-lg" >
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+         </button>
+         <h3 class="modal-title" id="myModalLabel2">⊙ 직원상세정보</h3>
+       </div>     
+       <table class="table table-striped table-bordered table-hover" style="text-align:center">	     	
+	     	<thead style="text-align:center">
+	        	<tr>
+	        		<th>사원번호</th>
+	        		<th>사원명</th>
+	        		<th>사내번호</th>
+	        	</tr>	        		        	        		
+	        </thead>		              		
+			<tbody id="detail" style="font-size: 14px; line-height: 25px">						
+			<thead style="text-align:center">
+				<tr>
+					<th>직급</th>
+	        		<th>직책</th>
+	        		<th>입사일</th>
+	        	</tr>
+			</thead>
+			</tbody>
+			<tbody id="detail2" style="font-size: 14px; line-height: 25px">						
+			</tbody> 			
+			<thead style="text-align:center">
+				<tr>
+	        		<th>사내번호</th>
+	        		<th>입사일</th>
+	        		<th>주소</th>		    
+		        </tr>
+			</thead>
+			</tbody>
+			<tbody id="detail3" style="font-size: 14px; line-height: 25px">						
+			</tbody> 
+			
+			<thead style="text-align:center">
+				<tr>
+	        		<th>이메일</th>		
+	        		<th>생년월일</th>
+	        	
+	        	</tr>
+			</thead>
+			</tbody>
+			<tbody id="detail4" style="font-size: 14px; line-height: 25px">						
+			</tbody>      				
+	       <!-- <div class="modal-footer">
+	         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	       </div>  -->     
+       </table>    
+     </div>
+   </div>
+ </div>	
+ 	                               
+<!-- / 디테일 modals -->
 			
 	</th:block>
 	<th:block layout:fragment="customJquery">

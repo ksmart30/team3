@@ -12,17 +12,22 @@
 	<script>
 	
 	// 한 행 클릭 시 이름, 직급, 사원번호 출력
-	function detail2(emp_NO) {	
+	function detail2(SESSION_EMP_NO) {	
+		console.log('개인정보 조회 =>'+SESSION_EMP_NO);
 		$.ajax({
-            url:'/person/personInsaEmployeeDetailView',
-            type:'GET',
-            dataType:'json',	           
-         	data : {EMP_NO : emp_NO},
-            success:function(data){  
-            	console.log(data);
-            	$('#JIKGUP_NM1').val(data[0].jikgup_NM);
-            	$('#EMP_NO1').val(data[0].emp_NO);
-            	$('#KOR_NM1').val(data[0].kor_NM);  	
+            url:'/person/personInsaEmployeeView',
+            type:'GET',           	           
+        	data :{OUT_DT3:"",EMP_NO:SESSION_EMP_NO,KOR_NM:"",AUDIT_TM:"",JIKGUP_NM:"",JIKCHK_NM:"",IN_PHONE_NO:"",DEPT_NM:"",SEX_GB:""},
+    		 	success:function(data){  
+            	console.log('사원 정보 data=>'+data);
+            	$('#JIKGUP_NM1').val(data[0].JIKGUP_NM);
+            	$('#JIKGUP_NM2').val(data[0].JIKGUP_NM);
+            	$('#EMP_NO1').val(data[0].EMP_NO);
+            	$('#EMP_NO2').val(data[0].EMP_NO);
+            	$('#KOR_NM1').val(data[0].KOR_NM);  	
+            	$('#KOR_NM2').val(data[0].KOR_NM);  	
+            	$('#DEPT_NM1').val(data[0].DEPT_NM);  
+            	$('#DEPT_NM2').val(data[0].DEPT_NM);  
             }
         });
 	} 
@@ -38,31 +43,44 @@
 				$(data).each(function(index,item){
 					console.log(data);						
 					$('#detail').append('<tr><td>'+item.APP_DATE1.substring(0,4)+'년'+item.APP_DATE1.substring(4,6)+'월'+item.APP_DATE1.substring(6,8)+'일'+' ~ '+item.APP_DATE2.substring(0,4)+'년'+item.APP_DATE2.substring(4,6)+'월'+item.APP_DATE2.substring(6,8)+'일'+'</td><td>'+item.APP_RMK+'</td><td>'+item.CONFIRM+'</td></tr>');			
-
-					detail2(emp_NO);
+					
+					
 				});
 			}
 		});
 	}	
 		// 휴가 신청 리스트 출력  
-		$(document).ready(function(){
-			console.log('휴가 신청 Ajax로 List 출력');
-
-			$.ajax({
-				url:'/kuntae/breakApplyView1',
-				type:'GET',
-				success:(data)=>{
-					console.log("data =>"+data);
+		$(document).ready(function(){			
+			let SESSION_EMP_NO = '[[${session.EMP_NO}]]';
+			console.log('로그인 한 사원번호 : '+SESSION_EMP_NO); 
+			if(SESSION_EMP_NO == '') {
+				SESSION_EMP_NO = '없음';
+				alert('로그인 후 신청 가능합니다');
+			//2.2 사원정보가 있으면 세션값 정보로 검색	
+			}else{	
+				detail2(SESSION_EMP_NO);
+				
+				$.ajax({
+					url:'/kuntae/breakApplyView2',
+					type:'GET',
+					data:{EMP_NO:SESSION_EMP_NO},
+					success:function(data){	
+						if(SESSION_EMP_NO==''){
+							alert('휴가신청 내역이 없습니다.');
+						}
+					console.log('개인리스트 data =>'+data[0].EMP_NO);
 					$('#list').empty();
 					$(data).each(function(index,item){	
-						$('#list').append('<tr><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.DEPT_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.JIKGUP_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.EMP_NO+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.KOR_NM+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.APP_RMK+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.CONFIRM+'</td></tr>');			
-					
-						
+						$('#list').append('<tr><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.APP_DATE1.substring(0,4)+'년'+item.APP_DATE1.substring(4,6)+'월'+item.APP_DATE1.substring(6,8)+'일'+' ~ '+item.APP_DATE2.substring(0,4)+'년'+item.APP_DATE2.substring(4,6)+'월'+item.APP_DATE2.substring(6,8)+'일'+'</td>'+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.APP_RMK+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.CONFIRM+'</td></tr>');				
+			
 					});
-				}
-			});
-
-			 // 휴가 신청으로 값가지고 넘거가기 
+					}
+				});
+			
+			console.log('휴가 신청 List 불러오기 ');
+			}
+			
+			 // 휴가 신청으로 값가지고 넘어가기 
 			 // url이 모델이 담겨있을 때에는 datType='json'을 쓰면 안 넘어감.
 		     $('#btn_apply').click(function(){
 				let EMP_NO = $('#EMP_NO1').val();		
@@ -71,9 +89,6 @@
 		    }); 	 
 		});	    	 
 
-
-
-		 
 	
 	</script>
 </head>
@@ -99,7 +114,80 @@
 				<button class="btn btn-default" type="button" disabled="disabled">출력</button>
 			</div>
 	</div>
+	
+	<div class="x_panel" style="">
+	 <div class="col-md-3 col-sm-3 col-xs-12">
+<div class="x_panel">
+        	<div class="x_title">	               	                                    	
+            	<div class="x_content">
+            		<div class="row">
+            		 	<form >
+              			<table class="table table-bordered" style="color:black;">
+							<tbody><tr>
+								<th>
+	                  				<div class="col-md-12 col-sm-12 col-xs-12 form-group">          	
+	                  					검색조건                
+	                  				</div>                               				
+		                  			<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+ 										기간	 
+ 									<input type="date" id="WORK_DT" name="WORK_DT"> ~ <input type="date" id="END_DT" name="END_DT">
+	                  				</div>                                    
+			                  		<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+			                  		</div>
+			             		</th>
+		          			</tr>
+             			</tbody>
+             			</table>
+         			</form>
+         			</div>                                  
+       			</div>
+       		</div>
+     	</div>
+     </div>
+     
+	<div class="col-md-9 col-sm-12 col-xs-12">     
+	    <div class="x_content">
+        <div class="container">
+	        <ul class="stats-overview">
+	          <li>
+	          	<span class="name" > 본부 </span>
+	            <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="DEPT_NM1" name="DEPT_NM1" readonly> 
+	           
+	          </li>
+	           
+	          <li>
+	            <span class="name"> 직급 </span>
+	             <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="JIKGUP_NM1" name="JIKGUP_NM1" readonly>
+	          </li>
+	          <li class="hidden-phone">
+	             <span class="name"> 사번 </span>
+	           <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="EMP_NO1" name="EMP_NO1" readonly>
+	          </li>
+	          
+	        </ul>
+	        <ul class="stats-overview">
+	          <li>
+	            <span class="name"> 성명 </span>
+	            <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="KOR_NM1" name="KOR_NM1" readonly>
+	          </li>
+	          <li>
+	            <span class="name">  </span>
+	           <input type="text" style="width: 100px; text-align: end; border: none; background: transparent;" id="LATE_TIME" name="LATE_TIME" readonly> 
+	          </li>
+	          <li class="hidden-phone">
+	            <span class="name"> </span>
+	            <span class="value text-success"></span>
+	          </li> 
+	        </ul>
+			<br> 
 
+			<br> 
+	      
+        </div>
+       </div>
+       </div>
+
+     
             <div class="clearfix"></div>
 
             <div class="row">
@@ -112,19 +200,15 @@
                     <!-- <p class="text-muted font-13 m-b-30">
                       DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
                     </p> -->
+                    
                     <table class="table table-striped jambo_table bulk_action">
                       <thead>
                         <tr>
-                          <th>본부</th>
-                          <th>직급</th>
-                          <th>사번</th>
-                          <th>성명</th>
+                          <th>휴가신청날짜</th>
 						  <th>사유</th>
 						  <th>승인여부</th>
                         </tr>
                       </thead>
-
-
                       <tbody id="list">
                         <tr> <!-- th:each="b : ${data}" -->
 	                          <!-- <td>
@@ -169,9 +253,9 @@
 	        	</tr>
 			</thead>
 				<tr>
-	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;" id="JIKGUP_NM1"></td>
-	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;"  id="EMP_NO1"></td>
-	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;"  id="KOR_NM1"></td>
+	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;" id="JIKGUP_NM2"></td>
+	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;" id="EMP_NO2"></td>
+	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;" id="KOR_NM2"></td>
 	        	</tr>
 			</tbody>
 	     	<thead style="text-align:center">

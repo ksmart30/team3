@@ -12,6 +12,14 @@ public class WorkTimeSingleList {
 	private String DEPT_CD;	// 부서 코드
 	private String JIKGUP_NM; // 직급 이름
 	private String JIKCHK_NM; // 직책 이름
+	private String CONN_IP;	//ip접속정보
+	
+	public String getCONN_IP() {
+		return CONN_IP;
+	}
+	public void setCONN_IP(String cONN_IP) {
+		CONN_IP = cONN_IP;
+	}
 	public String getKOR_NM() {
 		return KOR_NM;
 	}
@@ -83,7 +91,7 @@ public class WorkTimeSingleList {
 		return "WorkTimeSingleList [KOR_NM=" + KOR_NM + ", EMP_NO=" + EMP_NO + ", WORK_DT=" + WORK_DT + ", WROK_DT1="
 				+ WROK_DT1 + ", END_DT=" + END_DT + ", START_TIME=" + START_TIME + ", END_TIME=" + END_TIME
 				+ ", DEPT_NM=" + DEPT_NM + ", DEPT_CD=" + DEPT_CD + ", JIKGUP_NM=" + JIKGUP_NM + ", JIKCHK_NM="
-				+ JIKCHK_NM + "]";
+				+ JIKCHK_NM + ", CONN_IP=" + CONN_IP + "]";
 	}
 
 	

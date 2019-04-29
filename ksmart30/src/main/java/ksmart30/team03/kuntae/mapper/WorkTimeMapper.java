@@ -40,6 +40,11 @@ public interface WorkTimeMapper {
  	// 4.04 출퇴근 정정 신청 한 행의 지각 횟수와 지각 누계 정보 가져오기
  	List<WorkTime> getWorkTimeJigakSearch(String EMP_NO);
  	
+ 	// 4.05 출퇴근 리스트 검색
+ 	List<WorkTimeSingleList> getCheckOn(WorkTimeSingleList vo);
+ 	
+ 	// 4.05 출퇴근 입력처리
+ 	int addCheckOn(WorkTimeSingleList vo);
  	
 }
 
