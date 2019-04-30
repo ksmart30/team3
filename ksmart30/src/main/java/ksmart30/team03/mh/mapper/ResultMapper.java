@@ -22,7 +22,7 @@ public interface ResultMapper {
 		List<Map<String,Object>> getListSearch2(Result result);
 	
 	//M/H 실적 디테일 출력
-	List<Result> getResultListDetailView(String ETC_SPEC);
+	List<Result> getResultListDetailView(String WORK_DT);
 		
 	//M/H ajax 실적 리스트 
 	List<Map<String,Object>> getListView2(Result result);

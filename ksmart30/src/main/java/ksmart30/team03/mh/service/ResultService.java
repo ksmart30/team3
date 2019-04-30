@@ -46,9 +46,9 @@ public class ResultService {
 		return vo;		
 	}
 	// M/H 입력 실적리스트 디테일
-	public List<Result> getResultListDetailView(String ETC_SPEC){
+	public List<Result> getResultListDetailView(String WORK_DT){
 		System.out.println("servie :실적 디테일 출력"); 
-		return resultMapper.getResultListDetailView(ETC_SPEC);
+		return resultMapper.getResultListDetailView(WORK_DT);
 	}
 	// M/H 입력 실적리스트 ajax
 	public List<Map<String,Object>> getListView2(Result result){

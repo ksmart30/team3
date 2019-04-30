@@ -37,46 +37,61 @@
 				});
 			}
 		});
-	}); */
+	}); */ 
 	//작업내용으로 디테일 출력 ajax
-	function detail(etc_SPEC){
-		console.log('상세내용' + etc_SPEC);
-		$.ajax({
-			url:'/manHour/resultWriteDetailView',
-			type:'GET',
-			data:{ETC_SPEC:etc_SPEC},
-			success:function(data){
-				$(data).each(function(index,item){
-					console.log(data);	
-					
-					$('#detail').empty();
-					$('#detail').append('<tr>');			
-					$('#detail').append('<td>'+item.emp_NO+'</td>');
-					$('#detail').append('<td>'+item.work_DT+'</td>');
-					$('#detail').append('<td>'+item.pjt_CD+'</td>');				
-					$('#detail').append('</tr>');
-					
-					$('#detail2').empty();
-					$('#detail2').append('<tr>');
-					$('#detail2').append('<td>'+item.work_STEP+'</td>');			
-					$('#detail2').append('<td>'+item.work_SPEC+'</td>');
-					$('#detail2').append('<td>'+item.dept_CD+'</td>');					
-					$('#detail2').append('</tr>');
-					
-					$('#detail3').empty();
-					$('#detail3').append('<tr>');
-					$('#detail3').append('<td>'+item.work_TIME+'</td>');				
-					$('#detail3').append('<td>'+item.etc_SPEC+'</td>');			
-					$('#detail3').append('<td>'+item.jikgup_CD+'</td>');				
-					$('#detail3').append('</tr>');				
-				});
-			}
-		});
+	
+	// 상세보기 화면	
+	  function detail(td){ //
+										
+		$('#detail').empty();
+		$('#detail').append('<tr>');			
+		$('#detail').append('<td>'+td.eq(0).text()+'</td>');
+		$('#detail').append('<td>'+td.eq(1).text()+'</td>');
+		$('#detail').append('<td>'+td.eq(2).text()+'</td>');				
+		$('#detail').append('</tr>');
+		
+		$('#detail2').empty();
+		$('#detail2').append('<tr>');
+		$('#detail2').append('<td>'+td.eq(3).text()+'</td>');
+		$('#detail2').append('<td>'+td.eq(4).text()+'</td>');
+		$('#detail2').append('<td>'+td.eq(5).text()+'</td>');
+		$('#detail2').append('</tr>');
+		
+		$('#detail3').empty();
+		$('#detail3').append('<tr>');
+		$('#detail3').append('<td>'+td.eq(6).text()+'</td>');				
+		$('#detail3').append('<td>'+td.eq(7).text()+'</td>');			
+		$('#detail3').append('<td>'+td.eq(8).text()+'</td>');				
+		$('#detail3').append('</tr>');
 	}
-
-	$(document).ready(function(){
+	
+	$(document).ready(function(){	
 		let pjtNm = "";
 		pjt(pjtNm);
+		console.log('리스트 행 검색');
+		$('#list').on('click','tr',function(){			
+			let tr = $(this);
+			let td = tr.children();
+			
+			console.log(td);
+			console.log(td.eq(1).text());
+			
+			let empno = td.eq(0).text();//
+			/* $('#EMP_NO').val(td.eq(1).text());
+			$('#WORK_DT').val(td.eq(2).text());
+			$('#PJT_CD').val(td.eq(3).text());
+			$('#WORK_STEP').val(td.eq(4).text());
+			$('#WORK_SPEC').val(td.eq(5).text());
+			$('#DEPT_CD').val(td.eq(6).text());
+			$('#WORK_TIME').val(td.eq(7).text());
+			$('#ETC_SPEC').val(td.eq(8).text());
+			$('#JIKGUP_CD').val(td.eq(9).text()); */
+			console.log("클릭된 행의 값 :"+ tr.text());
+			
+			detail(td);
+			
+		});		
+		
 		// 1. 오늘 날짜 DATE에 넣기
 		let date = new Date();
 		//년도 출력
@@ -126,36 +141,27 @@
 			}					
 		}); 						
 	// 3. M/H실적 입력 유효성검사
-		//1. WORK_DT : 작업일자
-		//2. EMP_NO : 사원번호
-		//3. WORK_SPEC :작업내용
-		//4. WORK_TIME : 작업시간
-		//5. ETC_SPEC:상세내용
-		//6. WORK_STEP
+		//3-1. EMP_NO : 사원번호		
 		$('#btn_name').click(function(){
-			 if($('#WORK_DT').val()==""){
-				$('#WORK_DT').focus();
-				$('#span').text('날짜입력하세요');
-				return false;
-			}else if($('#EMP_NO').val()==""){
+			if($('#EMP_NO').val()==""){
 				$('#EMP_NO').focus();
 				$('#EMP_NO').attr('placeholder','사원번호를 입력해주세요');
 				return false;
-			}else if($('#WORK_SPEC').val()==""){
-				$('#WORK_SPEC').focus();
-				$('#WORK_SPEC').attr('placeholder','작업코드을01~10 입력하세요');
-				return false;
-			}else if($('#WORK_STEP option:selected').val()==""){
-				$('#WORK_STEP').focus();
-				$('#WORK_STEP').attr('placeholder','프로젝트 명을 선택해주세요.');
-				return false;
+		
+		//3-2. WORK_TIME : 작업시간		
 			}else if($('#WORK_TIME').val()==""){
 				$('#WORK_TIME').focus();
 				$('#WORK_TIME').attr('placeholder','작업시간을 입력하세요');
 				return false;
+		//3-3. ETC_SPEC:상세내용
 			}else if($('#ETC_SPEC').val() ==""){
 				$('#ETC_SPEC').focus();
 				$('#ETC_SPEC').attr('placeholder','상세내용을 입력하세요');
+				return false;
+		//3-4. WORK_STEP : 작업단계		
+			}else if($('#WORK_PJTNm').val()=="선택해주세요."){
+				$('#WORK_PJTNm').focus();
+				$('#WORK_PJTNm').attr('placeholder','프로젝트 명을 선택해주세요.');
 				return false;
 			}else{
 				alert('등록 성공');
@@ -179,9 +185,9 @@
 		        	console.log('리스트 출력');
 		        	console.log(data);	            
 		            $(data).each(function(index,item){ //each = foreach (반복문)
-		                $('#list').append('<tr class="even pointer"><td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.EMP_NO+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.WORK_DT+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.PJT_CD+'</td>'
-		                +'<td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.WORK_STEP+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.WORK_SPEC+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.DEPT_CD+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.WORK_TIME+'</td>'
-		                +'<td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.ETC_SPEC+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.ETC_SPEC+')">'+item.JIKGUP_CD+'</td><td></td></tr>'); 
+		                $('#list').append('<tr data-toggle="modal" data-target="#ok" onclick="detail('+item.WORK_DT+')" class="even pointer"><td>'
+		                		+item.EMP_NO+'</td><td>'+item.WORK_DT+'</td><td>'+item.PJT_CD+'</td><td>'+item.WORK_STEP+'</td><td>'
+		                		+item.WORK_SPEC+'</td><td>'+item.DEPT_CD+'</td><td>'+item.WORK_TIME+'</td><td>'+item.ETC_SPEC+'</td><td>'+item.JIKGUP_CD+'</td></tr>'); 
 		            });                   			
 				}
 			});
@@ -229,6 +235,24 @@
 				console.log("저장후 값 : "+ $('#PJT_CD').val());
 			} 
 		});
+	// 7 입력값 
+	/* 	$('#detail').delegate('tr','click',function(){
+			let tr = $(this);
+			let td = tr.children();
+			
+			$('#EMP_NO').val(td.eq(1).text());
+			$('#WORK_DT').val(td.eq(2).text());
+			$('#PJT_CD').val(td.eq(3).text());
+			$('#WORK_STEP').val(td.eq(4).text());
+			$('#WORK_SPEC').val(td.eq(5).text());
+			$('#DEPT_CD').val(td.eq(6).text());
+			$('#WORK_TIME').val(td.eq(7).text());
+			$('#ETC_SPEC').val(td.eq(8).text());
+			$('#JIKGUP_CD').val(td.eq(9).text());
+			
+			console.log("클릭된 행의 값 : "+tr.text());
+		});		
+ */	
 	});
 	</script>
 	</head>
@@ -425,7 +449,10 @@
 								<td> <!-- 작업단계 -->
 								<div class="form-group">
 									<div class="col-md-5 col-sm-6 col-xs-6">
-										<select class="form-control" id="WORK_STEP" name="WORK_STEP"></select>							
+										<span id="WORK_STEP1"></span>
+										<select class="form-control" id="WORK_STEP" name="WORK_STEP">
+										<option value=""></option>										
+										</select>																	
 									</div>
 								</div>
 								</td>			
@@ -520,64 +547,7 @@
 				</div>
 			</div>
 
-			<div class="ln_solid"></div>
-
-			<div class="row">
-				<div class="col-sm-12" style="color:black;">
-					<table id="datatable"
-						class="table table-striped table-bordered dataTable no-footer"
-						role="grid" aria-describedby="datatable_info">
-						<thead>
-							<tr role="row">
-								<th class="sorting_asc" tabindex="0" aria-controls="datatable"
-									rowspan="1" colspan="1" aria-sort="ascending"
-									aria-label="Name: activate to sort column descending"
-									style="width: 86px;"><font
-									style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">이름</font></font></th>
-								<th class="sorting" tabindex="0" aria-controls="datatable"
-									rowspan="1" colspan="1"
-									aria-label="Position: activate to sort column ascending"
-									style="width: 800px;"><font
-									style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;"></font></font></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr role="row" class="odd">
-								<td class=""><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">일정</font></font></td>
-								<td class=""><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;"></font></font></td>
-							</tr>
-						</tbody>
-						<tbody>
-							<tr role="row" class="odd">
-								<td class=""><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">주간 목표</font></font></td>
-								<td class=""><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;"></font></font></td>
-							</tr>
-						</tbody>
-						<tbody>
-							<tr role="row" class="odd">
-								<td class=""><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">주간 계획</font></font></td>
-								<td class=""><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;"></font></font></td>
-							</tr>
-						</tbody>
-						<tbody>
-							<tr role="row" class="odd">
-								<td class=""><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">M/H 합계</font></font></td>
-								<td class=""><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;"></font></font></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
+			<div class="ln_solid"></div>			
 		<!-- 	<div class="form-group">
 				<div class="col-md-6 col-md-offset-3">					
 					<button type="submit" class="btn btn-success" id="btn_name">
@@ -598,7 +568,7 @@
 							<font style="vertical-align: inherit;"><font
 								style="vertical-align: inherit;">M/H실적 리스트(개인) </font></font>
 						</h2>
-						<ul class="nav navbar-right panel_toolbox">
+						<!-- <ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -609,7 +579,7 @@
 									<li><a href="#">Settings 2</a></li>
 								</ul></li>
 							<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-						</ul>
+						</ul> -->
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
@@ -624,17 +594,10 @@
 										<label></label>
 									</div>
 								</div>
-								<div class="col-sm-6">
-									<div id="datatable_filter" class="dataTables_filter">
-										<label>
+								<div class="col-sm-6" style="text-align:right">
 										날짜 
-										<input type="date" name="SEARCH_WORK_DT1" id="SEARCH_WORK_DT1">
-										~
-										<input type="date" name="SEARCH_WORK_DT2" id="SEARCH_WORK_DT2">
-										<!-- <button type="button" style="color:black" id="btn_day">검색</button> -->
-										<!-- <input type="search" class="form-control input-sm" placeholder="" aria-controls="datatable"> -->
-										</label>
-									</div>
+										<input type="date" name="SEARCH_WORK_DT1" id="SEARCH_WORK_DT1">~
+										<input type="date" name="SEARCH_WORK_DT2" id="SEARCH_WORK_DT2">									
 								</div>
 							</div>
 							<table class="table table-striped jambo_table bulk_action">
@@ -657,15 +620,15 @@
 
                         <tbody id = "list">
                         	 <tr th:each="l : ${list}" style="color:black;">		                       
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.EMP_NO}"></td>
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.WORK_DT}"></td>
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.PJT_CD}"></td>
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.WORK_STEP}"></td> 
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.WORK_SPEC}"></td>
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.DEPT_CD}"></td>
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.WORK_TIME}"></td>
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.ETC_SPEC}"></td>
-		                        <td data-toggle="modal" data-target="#ok" onclick="detail(${l.ETC_SPEC})" th:text="${l.JIKGUP_CD}"></td>		                     		                                                           
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.EMP_NO}"></td>
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.WORK_DT}"></td>
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.PJT_CD}"></td>
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.WORK_STEP}"></td> 
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.WORK_SPEC}"></td>
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.DEPT_CD}"></td>
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.WORK_TIME}"></td>
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.ETC_SPEC}"></td>
+		                        <td data-toggle="modal" data-target="#ok" th:text="${l.JIKGUP_CD}"></td>		                     		                                                           
 		                      </tr>		                                                                                                                                                                                       
                         </tbody>                                                                         
                       </table>							

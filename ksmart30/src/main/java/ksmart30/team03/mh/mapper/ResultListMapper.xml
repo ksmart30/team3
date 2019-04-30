@@ -71,4 +71,20 @@
 			AND(A.PJT_CD *= D.PJT_CD)
 			AND((A.EMP_NO *= C.EMP_NO)) 			
 		</select>
+		<select id = "getResultCalendar"
+				parameterType="ksmart30.team00.baseinfo.domain.KuntaeSchedule"
+				resultType="ksmart30.team00.baseinfo.domain.KuntaeSchedule">
+		SELECT
+			DAY_DD,
+				CASE(DAY_WEEK)
+				WHEN 1 THEN '日'
+				WHEN 1 THEN '月'
+				WHEN 1 THEN '火'
+				WHEN 1 THEN '水'
+				WHEN 1 THEN '木'
+				WHEN 1 THEN '金'
+				WHEN 1 THEN '土'
+			end
+		FROM T_SC9200 WHERE DAY_YM = #{DAY_YM}
+		</select>
 </mapper>

@@ -10,6 +10,10 @@
 	<head>
 <script>
 $(document).ready(function(){
+	$('#ok').on('click','tr',function(){
+		let tr= $(this);
+		let td = tr.children();
+	});
 	//오늘 날짜 DATE에 넣기
 	let date = new Date();
 	//년도 출력
@@ -28,7 +32,7 @@ $(document).ready(function(){
 	let getToday = year+"-"+month+"-"+day;
 	$('#WORK_DT2').val(getToday);
 	console.log("오늘 날짜" + getToday);
-	
+	// 검색 클릭시 날짜별로 검색 
 	$("#btn_day").click(function(){
 		let work_dt_format = $('#WORK_DT').val();
 		let end_dt_format = $('#WORK_DT2').val();	
@@ -49,11 +53,12 @@ $(document).ready(function(){
                 +'<td>'+item.EMP_NO+'</td><td>'+item.WORK_DT+'</td><td>'+item.PJT_CD+'</td>'
                 +'<td>'+item.WORK_STEP+'</td><td>'+item.WORK_SPEC+'</td><td>'+item.DEPT_CD+'</td>'
                 +'<td>'+item.WORK_TIME+'</td><td>'+item.ETC_SPEC+'</td><td>'+item.JIKGUP_CD+'</td>'
-                +'<td "column-title no-link last" ><button id="send" type="submit" class="btn btn-success">승인</td></tr>'); 
+                +'<td "column-title no-link last"  ><button  data-toggle="modal" data-target="#ok" id="send" type="submit" class="btn btn-success">승인</td></tr>'); 
             });                   			
 		}
 	});
-});
+}); // -끝 검색 클릭시 날짜별로 검색  -
+
 });
 </script>
 
@@ -113,24 +118,15 @@ $(document).ready(function(){
 						</p>
 						<div id="datatable_wrapper"
 							class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="dataTables_length" id="datatable_length">
-										<label></label>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<form action="/manHour/approvalDateSearchView">	
-										<div class="x_content" style="text-align: right">							
+							<div class="col-sm-12" style="text-align:right">				
+									<form action="/manHour/approvalDateSearchView">																	
 										<label>	
-																												
-										<input type="date" name="WORK_DT" id="WORK_DT">
+										날짜																		
+										<input type="date" name="WORK_DT" id="WORK_DT">~
 										<input type="date" name="WORK_DT2" id="WORK_DT2">																				
 										<!-- <button type="button" style="color:black" id="btn_day">날짜검색</button> -->																			
 										</label>									
-									</div>
 									</form>
-								</div>
 							</div>
 							<table class="table table-striped jambo_table bulk_action">
                         <thead>
@@ -147,7 +143,7 @@ $(document).ready(function(){
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작업시간 </font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">상세내용</font></font></th>
                             <th class="column-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">직급 </font></font></th>                                    
-                            <th class="column-title no-link last"><span class="nobr"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></span>
+                            <th class="column-title no-link last" ><span class="nobr"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">승인</font></font></span>
                             </th>
                             <th class="bulk-actions" colspan="7">
                               <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
@@ -168,7 +164,7 @@ $(document).ready(function(){
                         <td th:text="${l.ETC_SPEC}"></td>
                         <td th:text="${l.JIKGUP_CD}"></td>
                         <td>
-                        <button id="send" type="submit" class="btn btn-success">
+                        <button data-toggle="modal" data-target="#ok" id="send" type="submit" class="btn btn-success">
 						<font style="vertical-align: inherit;">승인</font>
 						</button>
 						</td>
@@ -181,6 +177,38 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	<!-- 승인 화면 -->
+	<div class="modal fade bs-example-modal-lg1"  tabindex="-1" role="dialog" aria-hidden="true" id="ok" >
+   <div class="modal-dialog modal-lg" style="color:black;">
+     <div class="modal-content modal-sm" style="text-align:center">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+         </button>
+         <h3 class="modal-title" id="myModalLabel2">⊙ 승인 화면</h3>
+       </div>     
+       <table class="table table-striped table-bordered table-hover" style="text-align:center">	     	
+	     	<thead style="text-align:center">
+	        	<tr>
+	        		<th>아이디</th>
+	        		<th><input type="text" id="" name=""></th>	        		        			        
+	        	</tr>	        	
+	        	<tr>
+	        		<th>비밀번호 </th>
+	        		<th><input type="text" id="" name=""></th>
+	        	</tr>
+	        		        	        	
+	        </thead>		              		
+			<tbody id="detailok" style="font-size: 14px; line-height: 25px">								
+       </table>    
+
+		   <!-- <a href="/kuntae/breakApplyWriteView">  -->
+          <button type="button" class="btn btn-success" id="btn_apply" style="text-align:right">승인</button>        	
+     </div>	
+   </div>
+ </div>
+     </div>
+   </div>
+ </div>	
 </th:block>
 <th:block layout:fragment="customJquery">
 		<th:block th:include="layout/customJquery"></th:block>

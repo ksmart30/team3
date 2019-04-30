@@ -66,7 +66,7 @@
 		
 			</div>		            
 		<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%" >									
-                <div class="x_panel">  
+                <div class="col-sm-12" style="text-align:right"> 
                 	<form action="/manHour/resultNameSearchView">
 							<label>
                     		사원번호　
@@ -81,58 +81,27 @@
                     <table class="table table-bordered" style="color:black;">                    		                    		                         	
                       <thead> 
                       	 <tr>
-                      	  <th bgcolor="#EAEAEA">날짜</th>                     	                                       	                                                
-                          <th bgcolor="#EAEAEA">사원번호</th>
-                          <th bgcolor="#EAEAEA">직급</th>
-                          <th bgcolor="#EAEAEA">성명</th>
-                          <th bgcolor="#EAEAEA">프로젝트 코드명</th>
-                          <th bgcolor="#EAEAEA">월계</th>  
+                      	  <!-- <tr th:each="c : ${calender}"> --> 
+                      	  <td bgcolor="#EAEAEA">날짜</td>                     	                                       	                                                
+                          <td bgcolor="#EAEAEA">사원번호</td>
+                          <td bgcolor="#EAEAEA">직급</td>
+                          <td bgcolor="#EAEAEA">성명</td>
+                          <td bgcolor="#EAEAEA">프로젝트 코드명</td>
+                          <td bgcolor="#EAEAEA">월계</td>  
+                          <!-- <th th:text="${c.DAY_DD}"></th>
+                          <th th:text="${c.DAY_WEEK}"></th> -->
                           <!--1주  -->                                                
-                          <th bgcolor="#EAEAEA">月</th>
+                         <!--  <th bgcolor="#EAEAEA">月</th>
                           <th bgcolor="#EAEAEA">火</th>
                           <th bgcolor="#EAEAEA">水</th>
                           <th bgcolor="#EAEAEA">木</th>
                           <th bgcolor="#EAEAEA">金</th>
                           <th bgcolor="#EAEAEA" style="color:blue">土</th>
-                          <th bgcolor="#EAEAEA" style="color:red">日</th>
-                          <!--2주  -->
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
-                          <th bgcolor="#EAEAEA" style="color:red">日</th>
-                          <!--3주 -->
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
-                          <th bgcolor="#EAEAEA" style="color:red">日</th>
-                          <!--4주 -->
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
-                          <th bgcolor="#EAEAEA" style="color:red">日</th>
-                          <!--5주 -->
-                          <th bgcolor="#EAEAEA">月</th>
-                          <th bgcolor="#EAEAEA">火</th>
-                          <th bgcolor="#EAEAEA">水</th>
-                          <th bgcolor="#EAEAEA">木</th>
-                          <th bgcolor="#EAEAEA">金</th>
-                          <th bgcolor="#EAEAEA" style="color:blue">土</th>
-                          <th bgcolor="#EAEAEA" style="color:red">日</th>
-                          <!--6주  -->
-                          
+                          <th bgcolor="#EAEAEA" style="color:red">日</th>     -->                                              
                         </tr>
                       </thead>   
                       
-                      <tbody id = "list">
+                      <!-- <tbody id = "list">
                       <tr th:each="l : ${ListView}">
                         <td th:text="${l.WORK_YM}"></td>
   						<td th:text="${l.EMP_NO}"></td>
@@ -170,7 +139,7 @@
   						<td th:text="${l.D_28}"></td>
   						<td th:text="${l.D_29}"></td>
   						<td th:text="${l.D_30}"></td>
-  						<td th:text="${l.D_31}"></td>  						  					
+  						<td th:text="${l.D_31}"></td>  	 -->					  					
                       </tr>                  
                     </table>
 					</div>

@@ -1,8 +1,5 @@
 package ksmart30.team03.mh.domain;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Result {
 	private String EMP_NO;    //1.사원번호
 	private String WORK_DT;   //2.작업일자1

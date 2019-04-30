@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ksmart30.team00.baseinfo.domain.KuntaeSchedule;
 import ksmart30.team03.mh.domain.ResultPersonList;
 import ksmart30.team03.mh.mapper.ResultListMapper;
 
@@ -32,5 +33,10 @@ public class ResultListService {
 		 * resultListMapper.getResultSearchName(resultPersonList); }
 		 */
 		return vo;
+	}
+	//M/H실적(월별) 개인 리스트  요일별 표시
+	public List<KuntaeSchedule> getResultCalendar(){
+		System.out.println("service getResultCalendar  요청");
+		return resultListMapper.getResultCalendar();		
 	}
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team03.mh.domain.Result;
 import ksmart30.team03.mh.service.ResultService;
-import ksmart30.team03.person.domain.PersonRequest;
 
 @Controller
 public class ResultController {
@@ -28,7 +27,6 @@ public class ResultController {
 		model.addAttribute("list", list);
 		return "mh/result/resultWriteView";
 		}
-		
 		//M/H 실적 입력 액션 
 		@PostMapping("/manHour/resultWriteView")
 		public String resultWriteView(Result result) {
@@ -45,6 +43,7 @@ public class ResultController {
 	  return resultdate;
 	  
 	  }
+	  
 	  @GetMapping("/manHour/resultWritePjtView")
 	  public List<Result> resultWritePjtView(){
 		  List<Result> list = resultService.getSelectListView();  
@@ -52,9 +51,9 @@ public class ResultController {
 	  }
 	  // M/H 실적 입력 디테일 컨트롤러
 	  @GetMapping("/manHour/resultWriteDetailView")
-	  public @ResponseBody List<Result> resultWriteModifyView(@RequestParam(value = "ETC_SPEC")String ETC_SPEC) {
+	  public @ResponseBody List<Result> resultWriteModifyView(@RequestParam(value = "WORK_DT")String WORK_DT) {
 		  System.out.println("실적 입력디테일보기");
-		  List<Result> data = resultService.getResultListDetailView(ETC_SPEC);
+		  List<Result> data = resultService.getResultListDetailView(WORK_DT);
 		  System.out.println("실적 List 디테일 :" + data);
 	  return data;		  
 	  }
