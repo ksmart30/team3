@@ -11,12 +11,18 @@
 			b.KOR_NM,
 			c.PJT_CD, 
 			c.SVC,
-			a.CONTRACT_PRI1,<!--pjt 시작일 -->
-			a.CONTRACT_PRI2,<!--pjt 종료일 -->
+			a.CONTRACT_PRI1,
+			a.CONTRACT_PRI2,
 			d.DEPT_NM
-		FROM T_HM1000 AS b join T_P11000 AS a 
+		FROM T_HM1000P AS b join T_P11000 AS a 
 		on b.EMP_NO=a.PM_EMP_NO join T_PS1000 AS c 
 		on c.PJT_CD=a.PJT_CD join T_SC1010 AS d on b.DEPT_CD=d.DEPT_CD
+		JOIN T_P11080 e ON e.PJT_CD=c.PJT_CD
+		WHERE e.START_DAY <![CDATA[<]]> GETDATE() AND e.PLAN_END_DAY <![CDATA[>]]> GETDATE()
+		GROUP BY KOR_NM,c.PJT_CD,c.SVC,a.CONTRACT_PRI1,
+			a.CONTRACT_PRI2,
+			d.DEPT_NM
+		ORDER BY c.PJT_CD	
 		
 	</select>
 	

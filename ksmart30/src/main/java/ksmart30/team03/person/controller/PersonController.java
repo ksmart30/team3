@@ -162,5 +162,25 @@ public class PersonController {
 		List<Map<String, Object>> data = personService.licenseListView();
 		System.out.println("CONTROLLER : 자격,면허 select box 출력" + data);
 		return data;
-	}	
+	}
+	//6.1.1직원 인사기록카드 추가사항(학력사항) 입력 select box
+	@GetMapping("/person/personInsaEducationView")
+	public @ResponseBody List<Map<String, Object>> getPersonInsaEducationList(){
+		List<Map<String, Object>> data = personService.educationListView();
+		return data;		
+	}
+	//6.1.1직원 인사기록카드 추가사항(학력사항)  select list
+	@PostMapping("/person/personInsaEducationSelectView")
+	public @ResponseBody List<Map<String, Object>> getPersonInsaEducationSelect(){
+		List<Map<String, Object>> data = personService.schoodGbListView();
+		System.out.println("CONTROLLER : 학력사항 select list 출력" + data);
+		return data;		
+	}
+	//6.1.1 직원 인사기록카드 추가사항(전공) select list
+	@PostMapping("/person/personInsaMajorView")
+	public @ResponseBody List<Map<String, Object>> getPersonInsaMajorList(){
+		List<Map<String, Object>> data = personService.majorGbListView();
+		return data;		
+	}
+
 }

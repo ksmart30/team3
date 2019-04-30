@@ -28,10 +28,28 @@ public class ResultList {
 	private int TOT_PLAN;
 	private String YEA_MD;//계획(예산)MH
 	private String SIL_TM;//실적MH
-	private String CONTRACT_PRI1;//프로젝트 시작일
-	private String CONTRACT_PRI2;//프로젝트 종료일
+	private String CONTRACT_PRI1;
+	private String CONTRACT_PRI2;
+	private String START_DATE;//프로젝트 시작일
+	private String END_DAY;//프로젝트 종료일
+		
 	
-	
+	public String getSTART_DATE() {
+		return START_DATE;
+	}
+
+	public void setSTART_DATE(String sTART_DATE) {
+		START_DATE = sTART_DATE;
+	}
+
+	public String getEND_DAY() {
+		return END_DAY;
+	}
+
+	public void setEND_DAY(String eND_DAY) {
+		END_DAY = eND_DAY;
+	}
+
 	public String getCONTRACT_PRI1() {
 		return CONTRACT_PRI1;
 	}
@@ -253,7 +271,8 @@ public class ResultList {
 				+ ", KOR_NM=" + KOR_NM + ", END_DATE=" + END_DATE + ", SVC=" + SVC + ", DEPT_NM=" + DEPT_NM
 				+ ", PJT_NM=" + PJT_NM + ", WORK_TIME=" + WORK_TIME + ", WORK_STEP=" + WORK_STEP + ", WORK_NM="
 				+ WORK_NM + ", TOT_PLAN=" + TOT_PLAN + ", YEA_MD=" + YEA_MD + ", SIL_TM=" + SIL_TM + ", CONTRACT_PRI1="
-				+ CONTRACT_PRI1 + ", CONTRACT_PRI2=" + CONTRACT_PRI2 + ", CRT_DATE=" + CRT_DATE + "]";
+				+ CONTRACT_PRI1 + ", CONTRACT_PRI2=" + CONTRACT_PRI2 + ", START_DATE=" + START_DATE + ", END_DAY="
+				+ END_DAY + ", CRT_DATE=" + CRT_DATE + "]";
 	}
 
 }

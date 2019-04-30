@@ -33,8 +33,14 @@ public interface PersonMapper {
 	List<Map<String, Object>> gbCdListView();
 	//6.1.1인사기록카드 추가등록(자격,면서 select option)
 	List<Map<String, Object>> licenseListView();
+	//6.1.1인사기록카드 학교코드 list출력
+	List<Map<String, Object>> schoodGbListView();
+	//6.1.1 인사기록카드 전공코드 list 출력
+	List<Map<String, Object>> majorGbListView();
 	//6.1.1인사기록카드 등록 (가족사항 select option)
 	List<Person> gbCdRelationListView();
+	//6.1.1인사기록카드 등록(학력사항 select option-학교구분)
+	List<Map<String, Object>> educationListView();
 	//6.1.1 인사기록카드 추가등록 가족사항 insert
 	int modifyPersonInsaFamily(Family family);
 	//6.1.1 인사기록카드 추가등록 부양가족 insert

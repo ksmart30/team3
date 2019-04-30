@@ -1,15 +1,136 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
-	<th:block layout:fragment="customHead">
-		<meta charset="UTF-8">
-		<title>5.M/H 관리 - 프로젝트 종료</title>
-        <th:block th:include="layout/customHead"></th:block>
+<th:block layout:fragment="customHead">
+<meta charset="UTF-8">
+<title>5.M/H 관리 - 프로젝트 종료</title>
+<th:block th:include="layout/customHead"></th:block>
+
+<!-- Jquery, Ajax 선언 -->
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <head>    
+<script>
+function REALENDDAY(index,work_STEP){
+    console.log('종료 일자 나오는 함수실행');  
+    $('#date_table').empty();
+    $('#date_table').append('<tr><td><input type="date" id="DATE" name="DATE"></td></tr>');
+    console.log("index 값 확인 : "+index);
+
+    //오늘 날짜 DATE에 넣기
+    let date = new Date();
+	//년도 출력
+	let year = date.getFullYear();
+	//월 출력
+	let month = date.getMonth()+1;
+	//일 출력
+	let day = date.getDate();
+	if((month+"").length<2 ){
+		month = "0" + month		
+	}
+	if((day+"").length<2 ){
+		day ="0" + day;
+	}
+	let getToday = year+"-"+month+"-"+day;
+	$('#DATE').val(getToday);
+    console.log("오늘 날짜" + getToday);
+    //체크박스 value 값 가져오기 
+    let checkbox_value = $('input:checkbox[id="checkbox_value"]').val();
+    console.log('체크박스 값 : '+checkbox_value);
+    console.log("PJT_CD값 : "+PJT_CD+"/"+work_STEP);
+    /* let table_info = document.getElementById("table_info");
+    let index2 = table_info.rows[3].cells[index].innerHTML;
+    console.log('?'+index2); */
+     
+    //입력 버튼 클릭 시 종료일자 ->현재날짜변경, 종료구분 -> 0에서 1로 변경
+    /* $('#btn_insert').click(function(){
+        let checkbox_value = $('input:checkbox[id="checkbox_value"]').val();
         
-        <!-- Jquery, Ajax 선언 -->
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        
-	</th:block>
+    }) */
+
+}
+
+$(document).ready(function(){
+    console.log('실행 확인');   
+    
+/* 클릭한 pjt_cd에 대한 정보를 오른쪽에 출력 */
+$('#list_table tr').click(function(){
+    let tr = $(this);
+    let td = tr.children();
+    /* 선택한 행에 색 주기 */
+    $("#list_table tr").css("background-color", "#ffffff");
+    $(this).css( "background-color", "#f4f4f4" );
+    DEPT_NM = td.eq(0).text();
+    PJT_NM = td.eq(1).text();
+    PJT_TYPE = td.eq(2).text();
+    PJT_CD = td.eq(3).text();
+    console.log('부서명 : '+DEPT_NM+'프로젝트코드 : '+PJT_CD+'프로젝트 타입 : '+PJT_TYPE+'프로젝트 코드 : '+PJT_CD);
+    $('#pjtnm_view').empty();
+    $('#pjtnm_view').append('<tr><td>'+PJT_NM+'</td></tr>');
+    $.ajax({
+        url : '/manHour/manHourProjectEndStepList',
+        type : 'GET',
+        data : {PJT_CD:PJT_CD,PJT_TYPE:PJT_TYPE},
+        success:(data)=>{    
+            $('#end_table').empty();
+            
+            console.log(data);   
+            //단계종료처리 list 출력     
+            $(data).each(function(index,item){  
+                //end_YN == "1" -> 종료 , checked
+                if(item.end_YN == "1"){
+                    $('#end_table').append('<tr style="background-color:'
+                    +item.bgcolor+'"><td>'
+                    +item.work_STEP_NM+'</td><td>'
+                    +item.plan_END_DAY+'</td><td><input type="checkbox" checked="checked"></td><td>'
+                    +item.real_END_DAY+'</td></tr>'); 
+                }else if(item.end_YN == "0"){
+                    
+                    $('#end_table').append('<tr style="background-color:'
+                    +item.bgcolor+'"><td>'
+                    +item.work_STEP_NM+'</td><td>'                                                                              
+                    +item.plan_END_DAY+'</td><td><input type="checkbox" class="checkbox_value" id="checkbox_value" value="1" onclick="REALENDDAY('+index+','+item.work_STEP+')"></td><td id="date_table">'
+                    +item.real_END_DAY+'</td></tr>');  
+                }
+                                         
+            });
+        }
+    });
+    //종료구분 select list 출력
+   $.ajax({
+        url : '/manHour/manHourProjectGbListView',
+        type : 'GET',
+        success:(data)=>{
+            let endGbSelect = data;  
+            for(let i=0; i<endGbSelect.length; i++){
+                console.log("text 값 : "+endGbSelect[i].LEVEL1_CD+"/"+endGbSelect[i].LEVEL2_NM+"/"+endGbSelect[i].LEVEL2_CD);
+                    //사업성검토
+                if(endGbSelect[i].LEVEL1_CD == "250"){
+                    $('#BusinessGB').append('<option value="'+endGbSelect[i].LEVEL2_CD+'">'+endGbSelect[i].LEVEL2_NM+'</option></select>')
+                }else if(endGbSelect[i].LEVEL1_CD == "25A"){
+                    //계약프로젝트
+                    $('#ProjectGB').append('<option value="'+endGbSelect[i].LEVEL2_CD+'">'+endGbSelect[i].LEVEL2_NM+'</option></select>')
+                }
+            }
+        }
+    }); 
+     //종료처리 list 출력
+    $('#project_manage').empty();
+    $('#business_manage').empty();
+    if(PJT_TYPE == "C" || PJT_TYPE == "F"){  
+        $('#project_manage').append('<h5>◎ 사업성검토 종료처리</h5><thead><tr><th>종료구분&nbsp;&nbsp;</th><th><select id="BusinessGB"><option></option></th><th>종료일자<input type="date" id="end_date" max="2050-12-31">종료일자</th></tr></thead>');
+        $('#')
+    }else{
+        $('#project_manage').append('<h5>◎ 계약 프로젝트 종료처리</h5><thead><tr><th>종료구분&nbsp;&nbsp;</th><th><select id="ProjectGB"><option></option></th><th>종료일자<input type="date" id="end_date" max="2050-12-31">종료일자</th></tr></thead>');
+
+    }
+  
+
+});
+
+});
+</script>     
+</head>         
+</th:block>
 	<th:block layout:fragment="customBody">
         <div class="page-title">
             <div class="col-md-12 col-xs-12" style="color:black;">
@@ -23,18 +144,68 @@
         </div>
         <div class="x_content" style="text-align: right">
             <div class="btn-group" >
-                <button class="btn btn-default" id ="btnWrite"type="reset">입력</button>
+                <button class="btn btn-default" id ="btn_insert"type="reset">입력</button>
                 <button class="btn btn-default" type="button">수정</button>
                 <button class="btn btn-default" type="button">삭제</button>
                 <button class="btn btn-default" type="button">조회</button>
                 <button class="btn btn-default" type="button">출력</button>
             </div>
         </div>
-        <div class="x_panel" style="color: black;">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_content">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel" style="height:800px; color: black;"> 
+                <div style="overflow: scroll; width: 100%; height: 650px; padding: 10px;">
+                <h5>◎ 단계종료대상</h5>  
+                <table class="table jambo_table bulk_action">
+                        <thead>
+                            <tr>
+                                <th>부서명</th>
+                                <th>프로젝트코드명</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list_table">
+                            <tr th:each="l : ${resultList}">
+                                <td th:text="${l.DEPT_NM}"></td>
+                                <td th:text="${l.PJT_NM}"></td>
+                                <td th:text="${l.PJT_TYPE}" style="display:none;"></td>
+                                <td th:text="${l.PJT_CD}" style="display:none;"></td>
+                            </tr>                     
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+            
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel" style="height:800px; color: black;">
+                <h5>◎ 단계종료처리</h5> 
+                    <div id="pjtnm_view">                       
+                    </div> 
+                    <table id="table_info" class="table jambo_table bulk_action">
+                        <thead>
+                            <tr>
+                                <th>단계</th>
+                                <th>완료예정일</th>
+                                <th>종료승인</th>
+                                <th>종료일자</th>
+                            </tr>
+                        </thead>
+                        <tbody id="end_table">
+                        </tbody>
+                    </table>
+                    <div class="x_content">
+                        <table id="project_manage" class="table table-bordered">                                           
+                            <tbody id="project_manage_list">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="x_content">     
+                        <table id="business_manage" class="table table-bordered">                                           
+                            <tbody id="project_manage_list">
+                            </tbody>
+                        </table>  
+                    </div>                     
             </div>
-            </div>
+        </div>
         </div>
 	</th:block>
 	<th:block layout:fragment="customJquery">

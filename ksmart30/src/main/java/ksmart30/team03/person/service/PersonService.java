@@ -109,13 +109,25 @@ public class PersonService {
 		System.out.println("SERVICE : 부양가족 list 출력");
 		return personMapper.getPersonInsaInfoEducation(EMP_NO);
 	}
-	
+	//6.1.1. 인사기록카드 추가기록(학력사항 select list)
+	public List<Map<String, Object>> schoodGbListView(){
+		System.out.println("SERVICE : 학력사항 select list 출력");
+		return personMapper.schoodGbListView();
+	}
+	//6.1.1 인사기록카드 추가그록(전공 select list)
+	public List<Map<String, Object>> majorGbListView(){
+		System.out.println("SERVICE : 전공 select list 출력");
+		return personMapper.majorGbListView();
+	}
 	//6.1.1 인사기록카드 추가기록(자격,면허 select box)
 	public List<Map<String, Object>> licenseListView(){
 		System.out.println("SERVICE : 부양가족 select box 출력");
 		return personMapper.licenseListView();
 	}
-	
+	public List<Map<String, Object>> educationListView(){
+		System.out.println("SERVICE : 학력사항 select box 출력");
+		return personMapper.educationListView();
+	}
 	
 }
 

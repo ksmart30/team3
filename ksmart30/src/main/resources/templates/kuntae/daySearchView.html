@@ -88,6 +88,18 @@ $(document).ready(function(){
 				<h5><font color= "gray"><b>4.근태 관리&nbsp;>&nbsp;&nbsp;4.1일일근무현황</b></font></h5>
 			</div>
 		</div>
+		<div class="x_content" style="text-align: right">
+			<div class="btn-group">
+				<br>
+				<button class="btn btn-default" type="button" id="btn_search">조회</button>
+				<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
+				<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+				<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+				<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+				<button class="btn btn-default" type="button">출력</button>
+				<br>
+			</div>
+		</div>
    <div class="x_content"> 
 	<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
@@ -109,7 +121,7 @@ $(document).ready(function(){
 														<option th:value="${d.DEPT_CD}">[[${d.DEPT_NM}]]</option>									
 													</th:block>
 											</select>
-											<button id="btn_search" class="btn" style="color:black">검색</button>
+											
 										</th>
 									</tr>									
 								</thead>
@@ -132,7 +144,7 @@ $(document).ready(function(){
 		               <div class="clearfix"></div>
 		          </div>
 		                  <div class="x_content">
-							<div style="overflow:scroll;  width:100%; height:650px; padding:10px; background-color:;">
+							<div style="overflow:scroll;  width:100%; height:650px; padding:10px;">
 		                    <table class="table table-striped jambo_table bulk_action">
               
 							<thead>

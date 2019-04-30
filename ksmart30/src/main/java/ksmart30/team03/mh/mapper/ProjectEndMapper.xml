@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ksmart30.team03.mh.mapper.ProjectEndMapper">
+<!--5.2.6 프로젝트 종료 프로젝트 list 출력  -->
+<select id="getManHourProjectEndList" resultType="ksmart30.team03.mh.domain.ProjectEnd">
+    SELECT 
+        (SELECT DEPT_NM FROM T_SC1010 WHERE DEPT_CD = A.S_DEPT_CD) DEPT_NM,
+        '['+A.PJT_CD+A.PJT_TYPE+']'+A.PJT_NM PJT_NM,
+        A.PJT_TYPE,
+        A.PJT_CD
+    FROM T_SM3000 A
+</select>
+<!-- 5.2.6 프로젝트 단계종료처리 중 사업성검토 LIST-->
+<select id="getManHourProjectEndBusinessManageList" resultType="ksmart30.team03.mh.domain.ProjectEnd" parameterType="String">
+    SELECT 
+        PRE_PJT_CD PJT_CD, 
+        SEQ,
+        (CASE SEQ  WHEN '1' then '#f0d4d6' WHEN '2' then '#fbdbbe' WHEN '3' then '#fdfdbb' END )BGCOLOR,
+        JOB_STEP WORK_STEP_NM, 
+        END_EXP_DATE PLAN_END_DAY,
+        END_DATE REAL_END_DAY,
+        END_YN
+    FROM T_PS1050 
+    WHERE PRE_PJT_CD =#{PJT_CD}
+</select>
+<!-- 5.2.6 프로젝트 단계종료처리 중 계약프로젝트 LIST-->
+<select id="getManHourProjectEndProjectManageList" resultType="ksmart30.team03.mh.domain.ProjectEnd" parameterType="String">
+    SELECT 
+        PJT_CD, 
+        WORK_STEP,
+        CASE WORK_STEP
+            when 'A' then '#f0d4d6' 
+            when 'B' then '#fbdbbe' 
+            when 'C' then '#fdfdbb' 
+            when 'D' then '#bef8be' 
+            when 'E' then '#c0e6f8' 
+            when 'F' then '#dfbfe2'   
+            when 'G' then '#facdfe' end BGCOLOR,
+        LEVEL2_NM WORK_STEP_NM, 
+        START_DAY, 
+        PLAN_END_DAY, 
+        END_YN,
+        REAL_END_DAY
+    FROM T_P11080 a, T_SC9100 b 
+    WHERE PJT_CD =#{PJT_CD} 
+        AND WORK_STEP = LEVEL2_CD
+        AND BUSI_GB   ='J'
+        AND LEVEL1_CD = '110'
+</select>
+<!-- 5.2.6 계약프로젝트, 사업성검토 종료구분 select box list 출력 -->
+<select id="endProjectGbListView" resultType="java.util.Map">
+    SELECT 
+        LEVEL2_CD,
+        LEVEL1_CD,
+        LEVEL2_NM, 
+        LEVEL2_SHORT_NM 
+    FROM t_sc9100 
+    WHERE (level1_cd='250' OR level1_cd='25A') 
+    AND BUSI_GB = 'J'  
+</select>
+
+</mapper>
