@@ -12,16 +12,16 @@
 		<!-- 직원 검색 -->
 		<script>
 		$(document).ready(function(){
-			//검색버튼 클릭 시 전체 직원조회
+			// 1. 검색버튼 클릭 시 전체 직원조회
 			$("#PERSON_LIST").click(function(){		
-				let KOR_NM2 = $('#KOR_NM').val(); 
+				let KOR_NM2 = $('#KOR_NM_SEARCH').val(); 
 				console.log('직원  검색조건 (이름) : '+ KOR_NM2);
 
 				$.ajax({				
 						url:'/person/personInsaEmployeeView',
 						type:'GET',
 						data:{OUT_DT3:"",EMP_NO:"",KOR_NM:KOR_NM2,AUDIT_TM:"",JIKGUP_NM:"",JIKCHK_NM:"",IN_PHONE_NO:"",DEPT_NM:"",SEX_GB:""},
-						success:(data)=>{
+						success:function(data){
 							$('#LIST').empty();
 							$(data).each(function(index,item){
 								//한 행을 클릭시 사원번호	
@@ -36,20 +36,95 @@
 						}					
 				}); 				
 			});
+			// 2. 등록 및 수정 처리
+			$('#USER_Id').click(function(){
+				// 비밀번호 입력 유효성검사
+				if($('#PASS_WD').val()==""){
+					$('#PASS_WD').focus();
+					$('#PASS_WD').attr('placeholder','비밀번호를 입력해주세요.');
+					return false;
+				}else if($('#PASS_WD_CHECK').val()==""){
+					$('#PASS_WD_CHECK').focus();
+					$('#PASS_WD_CHECK').attr('placeholder','비밀번호를 한번 더 입력해주세요.');
+					return false;
+				}else{
+					let EMP_NO = $('#EMP_NO').val();
+					let PASS_WD = $('#PASS_WD').val();
+					let PASS_WD_CHECK = $('#PASS_WD_CHECK').val();
+					$.ajax({
+						url:'/system/userIdWriteProcess',
+						type:'GET',
+						data:{EMP_NO:EMP_NO,PASS_WD:PASS_WD,PASS_WD_CHECK:PASS_WD_CHECK},
+						success:function(data){
+							let userId = data;
+							// 비밀번호 불일치 -> 등록 수정 처리중단
+							if(userId.result == 0){
+								alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+								$('#PASS_WD').val('');
+								$('#PASS_WD').attr('placeholder','');
+								$('#PASS_WD_CHECK').val('');
+								$('#PASS_WD_CHECK').attr('placeholder','');
+								click2(EMP_NO);
+							// 비밀번호 일치 -> 수정처리인 경우
+							}else if(userId.result == 1){
+								alert('수정처리 하였습니다.');
+								$('#PASS_WD').val('');
+								$('#PASS_WD').attr('placeholder','');
+								$('#PASS_WD_CHECK').val('');
+								$('#PASS_WD_CHECK').attr('placeholder','');
+								click2(EMP_NO);
+							// 비밀번호 일치 -> 등록처리인 경우
+							}else if(userId.result == 2){
+								alert('등록처리 하였습니다.');
+								$('#PASS_WD').val('');
+								$('#PASS_WD').attr('placeholder','');
+								$('#PASS_WD_CHECK').val('');
+								$('#PASS_WD_CHECK').attr('placeholder','');
+								click2(EMP_NO);
+							}
+						}
+					});
+				}
+			});
 		});
 		function click2(emp_NO){
 		console.log('직원번호 '+emp_NO);
+			// 1. 회원정보로 가져오기(User-ID, 사용자명)
 			$.ajax({
 				url:'/person/personInsaEmployeeDetailView',
 				type:'GET',
 				data:{EMP_NO:emp_NO},
 				success:function(data){
 					$(data).each(function(index,item){
-						console.log(data);
-						$('#UP_EMP_NO').val(item.emp_NO);	// User-ID
-						$('#UP_KOR_NM').val(item.kor_NM);	// 사용자명
-						$('#UP_AUDIT_TM').val(item.audit_TM);	// 등록일자					
+						console.log("회원정보 : " + data);
+						$('#EMP_NO').val(item.emp_NO);	// User-ID
+						$('#KOR_NM').val(item.kor_NM);	// 사용자명				
 					});			
+				}	
+			});
+			// 2. 입력(자,일자)과 수정(자,일자)정보 가져오기
+			$.ajax({
+				url:'/system/userIdView',
+				type:'GET',
+				data:{EMP_NO:emp_NO},
+				success:function(data){
+					let userId = data;
+					console.log("입력, 수정 정보 : " + userId.emp_NO);
+					// 결과값이 없다면
+					if(userId.emp_NO == undefined){
+						console.log("undifined 임");
+						$('#CRT_MAN').val('');		// 생성자
+						$('#CRT_DATE').val('');		// 생성일자	
+						$('#UPD_MAN').val('');			// 수정자
+						$('#UPD_DATE').val('');		// 수정일자	
+					// 결과값이 있다면
+					}else if(userId.emp_NO != undefined){
+						console.log("undifined 아님");
+						$('#CRT_MAN').val(userId.crt_MAN);		// 생성자
+						$('#CRT_DATE').val(userId.crt_DATE);	// 생성일자	
+						$('#UPD_MAN').val(userId.upd_MAN);		// 수정자
+						$('#UPD_DATE').val(userId.upd_DATE);	// 수정일자		
+					}		
 				}	
 			});
 		}
@@ -68,9 +143,8 @@
 		</div>
 		<div class="x_content" style="text-align: right">
 				<div class="btn-group" >
-						<button class="btn btn-default" id ="btnWrite"type="reset">저장</button>
-						<button class="btn btn-default" type="button" disabled>수정</button>
-						<button class="btn btn-default" type="button">삭제</button>
+						<button class="btn btn-default" id="USER_Id">저장</button>
+						<button class="btn btn-default" type="button" disabled>삭제</button>
 						<button class="btn btn-default" type="button">출력</button>
 				</div>
 		</div>
@@ -92,7 +166,7 @@
 							<form>
 								• 사원명
 								<input type="hidden" id="User_ID">
-								<input type="text" name="KOR_NM" id="KOR_NM">
+								<input type="text" name="KOR_NM_SEARCH" id="KOR_NM_SEARCH">
 								<button type="button" class="btn" style="color:black" name="PERSON_LIST" id="PERSON_LIST">검색</button>
 								<br>
 							</form>
@@ -138,49 +212,49 @@
 								<tr>
 									<td style="width:20%; text-align: center">User ID</td>
 									<td style="width:50%">
-										<input type="text" name="UP_EMP_NO" id="UP_EMP_NO" readonly>
+										<input type="text" name="EMP_NO" id="EMP_NO" readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">사용자명</td>
 									<td style="width:50%">
-										<input type="text" name="UP_KOR_NM" id="UP_KOR_NM" readonly>
+										<input type="text" name="KOR_NM" id="KOR_NM" readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">새 비밀번호</td>
 									<td style="width:50%">
-										<input type="password" name="UP_EMP_PW" id="UP_EMP_PW">
+										<input type="password" name="PASS_WD" id="PASS_WD">
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">새 비밀번호 확인</td>
 									<td style="width:50%">
-										<input type="password" name="UP_EMP_PW2" id="UP_EMP_PW2">
+										<input type="password" name="PASS_WD_CHECK" id="PASS_WD_CHECK">
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">등록자</td>
 									<td style="width:50%">
-										<input type="text" name="UP_AUDIT_NM" id="UP_AUDIT_NM" readonly>
+										<input type="text" name="CRT_MAN" id="CRT_MAN" readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">등록일자</td>
 									<td style="width:50%">
-										<input type="text" name="UP_AUDIT_TM" id="UP_AUDIT_TM" readonly>
+										<input type="text" name="CRT_DATE" id="CRT_DATE" readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">수정자</td>
 									<td style="width:50%">
-										<input type="text" name="UP_AUDIT_NM2" id="UP_AUDIT_NM2" readonly>
+										<input type="text" name="UPD_MAN" id="UPD_MAN" readonly>
 									</td>
 								</tr>
 								<tr>
 									<td style="width:20%; text-align: center">수정일자</td>
 									<td style="width:50%">
-										<input type="text" name="UP_AUDIT_TM2" id="UP_AUDIT_TM2" readonly>
+										<input type="text" name="UPD_DATE" id="UPD_DATE" readonly>
 									</td>
 								</tr>
 							</tbody>

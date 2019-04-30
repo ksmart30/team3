@@ -1,1 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team00.system.mapper.UserIdMapper">
+    <!-- 11.1.1 UserId 등록조회 -->
+    <select id="getUserId"
+            parameterType="ksmart30.team00.system.domain.UserId"
+            resultType="ksmart30.team00.system.domain.UserId">
+            SELECT 
+                EMP_NO,
+                JIK_GB,
+                PASS_WD,
+                LOG_STA,
+                CRT_MAN,
+                CRT_DATE,
+                UPD_MAN,
+                UPD_DATE
+            FROM T_SM1100
+            WHERE EMP_NO = #{EMP_NO} 
+    </select>
+    <!-- 11.1.2 UserId 등록처리 -->
+    <insert id="addUserId"
+            parameterType="ksmart30.team00.system.domain.UserId">
+            INSERT INTO 
+            T_SM1100 (
+                EMP_NO,
+                JIK_GB,
+                PASS_WD,
+                CRT_MAN,
+                CRT_DATE )
+            VALUES (
+                #{EMP_NO},
+                1,
+                #{PASS_WD},
+                #{CRT_MAN},
+                GETDATE() )
+    </insert>
+    <!-- 11.1.2 UserId 수정처리 -->
+    <update id="modifyUserId"
+            parameterType="ksmart30.team00.system.domain.UserId">
+            UPDATE T_SM1100 
+            SET PASS_WD = #{PASS_WD},
+                UPD_MAN = #{UPD_MAN},
+                UPD_DATE = GETDATE()
+            WHERE EMP_NO = #{EMP_NO}
+    </update>
+    <!-- 11.1.5 사용자권한 등록(일반사원기준) -->
+    <insert id="addUserIdLevel"
+            parameterType="ksmart30.team00.system.domain.UserId">
+            INSERT INTO T_SM1010(
+                EMP_NO,UPMU_GBN,UPMU_GRP,CRT_MAN,CRT_DATE) VALUES(#{EMP_NO},'A','12',#{CRT_MAN},GETDATE())
+            INSERT INTO T_SM1010(
+                EMP_NO,UPMU_GBN,UPMU_GRP,CRT_MAN,CRT_DATE) VALUES(#{EMP_NO},'E','12',#{CRT_MAN},GETDATE())
+            INSERT INTO T_SM1010(
+                EMP_NO,UPMU_GBN,UPMU_GRP,CRT_MAN,CRT_DATE) VALUES(#{EMP_NO},'H','12',#{CRT_MAN},GETDATE())
+            INSERT INTO T_SM1010(
+                EMP_NO,UPMU_GBN,UPMU_GRP,CRT_MAN,CRT_DATE) VALUES(#{EMP_NO},'P1','12',#{CRT_MAN},GETDATE())
+            INSERT INTO T_SM1010(
+                EMP_NO,UPMU_GBN,UPMU_GRP,CRT_MAN,CRT_DATE) VALUES(#{EMP_NO},'P2','12',#{CRT_MAN},GETDATE())
+            INSERT INTO T_SM1010(
+                EMP_NO,UPMU_GBN,UPMU_GRP,CRT_MAN,CRT_DATE) VALUES(#{EMP_NO},'PS','12',#{CRT_MAN},GETDATE())
+            INSERT INTO T_SM1010(
+                EMP_NO,UPMU_GBN,UPMU_GRP,CRT_MAN,CRT_DATE) VALUES(#{EMP_NO},'S','12',#{CRT_MAN},GETDATE())
+    </insert>
+</mapper>
