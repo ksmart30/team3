@@ -46,5 +46,12 @@ public interface WorkTimeMapper {
  	// 4.05 출퇴근 입력처리
  	int addCheckOn(WorkTimeSingleList vo);
  	
+ 	// 4.05 퇴근 처리 중복 확인
+ 	List<WorkTimeSingleList> getCheckOff(WorkTimeSingleList vo);
+ 	
+ 	// 4.05 출퇴근 퇴근처리
+ 	int updateCheckOff(WorkTimeSingleList vo);
+
+ 	
 }
 

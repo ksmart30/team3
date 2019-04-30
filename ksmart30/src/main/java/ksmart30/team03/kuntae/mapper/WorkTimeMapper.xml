@@ -287,5 +287,30 @@
 				#{CONN_IP}
 			)
 	</insert>
+	
+	<!-- 4.05 퇴근 입력 -->
+	<update id="updateCheckOff"
+			parameterType="ksmart30.team03.kuntae.domain.WorkTimeSingleList">
+	UPDATE T_PM1010 SET END_DT = (Select Convert(varchar(10),Getdate(),112)),
+						END_TIME =(SELECT REPLACE (SUBSTRING (Convert(varchar(10),GETDATE(),108),1,5),':',''))
+			WHERE EMP_NO = #{EMP_NO}
+			 AND WORK_DT = (Select Convert(varchar(10),Getdate(),112)) 			  
+
+	</update>
+	
+	<!-- 4.05 퇴근 입력 후 중복 처리 안되도록 END_DT 검색 쿼리  -->
+	<select id="getCheckOff"
+			parameterType="ksmart30.team03.kuntae.domain.WorkTimeSingleList"
+			resultType="String">
+		 SELECT EMP_NO, 
+				WORK_DT, 
+				DEPT_CD, 
+				START_TIME, 
+				END_DT, 
+				END_TIME 
+		 FROM T_PM1010,
+			 (Select Convert(varchar(10),Getdate(),112) TODAY) TODAY 
+	 	 WHERE EMP_NO = #{EMP_NO} AND WORK_DT = TODAY AND END_DT=''	
+	</select>
 
 </mapper>

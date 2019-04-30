@@ -138,20 +138,22 @@ public class WorkTimeController {
 		WorkTimeSingleList vo = new WorkTimeSingleList();
 		// 2. 출근 처리 서비스 호출
 		int result = workTimeService.getCheckOn(httpSession, vo);
-		System.out.println("출근 결과 (1:출근처리가 이미된 상태 /2:출근처리가 되어 있지 않아 출근처리함)"+ result);
+		System.out.println("C : 출근(On) 결과 (1:출근처리가 이미된 상태 /2:출근처리가 되어 있지 않아 출근처리함)"+ result);
 		// 3. 결과 처리에 대한 정보를 팝업을 통해 보여주기 위해 세션값에 넣어 리턴
 		httpSession.setAttribute("checkOn", result);
 		return "/kuntae/checkView";
 	}
 	// 퇴근 처리
 	@GetMapping("/checkOff")
-	public String checkOff(){
-		System.out.println("C : 출근 처리 ");
+	public String checkOff(HttpSession httpSession) throws UnknownHostException{
+		System.out.println("C : 퇴근 처리");
 		// 1. 출근 테이블 생성여부 확인
-		
-		// 2.1 있다면 서비스 호출 X
+		WorkTimeSingleList vo = new WorkTimeSingleList();
+		// 2.1 있다면 서비스 호출 
+		int result = workTimeService.getCheckOff(httpSession, vo);
+		System.out.println("C : 퇴근(Off) 결과 (1:출근처리가 되어 있으면 update /2:출근처리가 안 된 상태)"+ result);
 		// 2.2 없다면 서비스 호출 O 
-
+		httpSession.setAttribute("checkOff", result);
 		// 3. 리턴 상황에 따른 알림팝업
 		return "/kuntae/checkView";
 	}

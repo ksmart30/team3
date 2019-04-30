@@ -97,30 +97,66 @@ public class WorkTimeService {
 		int result = 0;
 		// 1. 세션 정보 가져오기
 		String sessionEmpNo = (String)httpSession.getAttribute("EMP_NO");
-		vo.setEMP_NO(sessionEmpNo);
-		
-		// 2. 출퇴근 리스트 조회
-		List<WorkTimeSingleList> checkList = workTimeMapper.getCheckOn(vo);
-		System.out.println("출근값에 대한 정보 값 : " + checkList.size());
-			// 2.1 출근값이 있다면
-			if(checkList.size() != 0) {
-				result = 1;
-			}
-			// 2.2 출근값이 없다면 출근 처리 하기
-			else {
-				// 2.2.1 부서정보 넣기
-				Person deptValue = personMapper.personInsaEmployeeModifyView(sessionEmpNo);
-				vo.setDEPT_CD(deptValue.getDEPT_CD());
-				// 2.2.2 ip정보 넣기
-	            InetAddress catchIp = InetAddress.getLocalHost();
-	            String connentIp = catchIp.getHostAddress();
-	            vo.setCONN_IP(connentIp);
-				// 2.2.2 출근처리 
-				int checkOn = workTimeMapper.addCheckOn(vo);
-				System.out.println("출근 처리 완료 여부 : "+ checkOn);
-				result = 2;
-			}
+		System.out.println("S : sessionEmpNo 값 : "+sessionEmpNo);
+		// 1.1 세션 정보 Null에 대한 처리
+			if(sessionEmpNo == null) {
+				
+			}else{
+				vo.setEMP_NO(sessionEmpNo);
+				System.out.println("S : CheckOn sessionEmpNo : "+ sessionEmpNo);
+				// 2. 출퇴근 리스트 조회
+				List<WorkTimeSingleList> checkList = workTimeMapper.getCheckOn(vo);
+				System.out.println("S : 출근 SELECT 대한 정보 값 : " + checkList.size());
+					// 2.1 출근값이 있다면
+					if(checkList.size() != 0) {
+						result = 1; 
+						// 2.2 출근값이 없다면 출근 처리 하기
+					}else{
+						// 2.2.1 부서정보 넣기
+						Person deptValue = personMapper.personInsaEmployeeModifyView(sessionEmpNo);
+						vo.setDEPT_CD(deptValue.getDEPT_CD());
+	
+						// 2.2.2 ip정보 넣기
+						InetAddress catchIp = InetAddress.getLocalHost();
+						String connentIp = catchIp.getHostAddress();
+						vo.setCONN_IP(connentIp);
+						// 2.2.2 출근처리 
+						int checkOn = workTimeMapper.addCheckOn(vo);
+						System.out.println("S : 출근 처리 완료 여부 : "+ checkOn);
+						result = 2;							
+					}
+			}	
 		return result;
 	}
-
+	
+	// 퇴근 처리
+	public int getCheckOff(HttpSession httpSession, WorkTimeSingleList vo) throws UnknownHostException{
+		// 0. 리턴변수 초기화 3
+		int result = 0;
+		// 1. 세션 정보 가져오기
+		String sessionEmpNo = (String)httpSession.getAttribute("EMP_NO");
+		System.out.println("S : sessionEmpNo 값 : "+sessionEmpNo);
+		// 1.1 세션 정보 Null에 대한 처리
+		if(sessionEmpNo == null) {
+		
+		}else{
+			vo.setEMP_NO(sessionEmpNo);
+			System.out.println("S : Checkoff sessionEmpNo : "+ sessionEmpNo);
+			// 2. 출퇴근 리스트 조회
+			List<WorkTimeSingleList> checkList = workTimeMapper.getCheckOff(vo);	
+			System.out.println("S : 퇴근 여부 SELECT 결과 : " + checkList.size());
+			// 2.1 출근 값이 없다면
+			if(checkList.size() != 0) {
+				// 2.1 출근 처리 
+				int checkOff = workTimeMapper.updateCheckOff(vo);
+				System.out.println("S : 퇴근 처리 완료 여부 :" + checkOff);
+				result = 1;
+			// 2.1 출근 값이 있다면 
+			}else{
+				result = 2;	
+			}		
+		}
+		return result;
+	}
+	
 }

@@ -6,22 +6,50 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script>
 	$(document).ready(function(){
-		let checkOn = '[[${session.checkOn}]]';
-		console.log(checkOn);
-		//1.출근처리가 된경우
-		if(checkOn == 1) {
-			alert('출근처리가 이미 되어 있습니다.');
-			history.go(-1);      
-		//2.출근처리가 되지 않아 처리한 경우
-		}else if(checkOn == 2){
-			let date = new Date();
-			let time = (date.getMonth() + 1)+'월'+date.getDate()+'일'+date.getHours()+'시'+date.getMinutes()+'분'
-			alert('출근 입력완료 / 시간 : '+ time);
-			history.go(-1);
-		// 3.로그인 상태가 아닌경우
-		}else{
-			alert('로그인 해주세요.');
-			history.go(-1);
+		let url = $(location).attr('href');
+		console.log(url);
+		let checkURL = url.substring(url.length, url.length-8);
+		
+		// checkOn처리
+		if(checkURL == '/checkOn') {
+			let checkOn = '[[${session.checkOn}]]';
+			console.log(checkOn);
+			
+			//1.출근처리가 된경우
+			if(checkOn == 1) {
+				alert('출근처리가 이미 되어 있습니다.');	
+				history.go(-1); 
+				
+			//2.출근처리가 되지 않아 처리한 경우
+			}else if(checkOn == 2){
+				let date = new Date();
+				let time = (date.getMonth() + 1)+'월'+date.getDate()+'일'+date.getHours()+'시'+date.getMinutes()+'분'
+				alert('출근 입력완료 / 시간 : '+ time);
+				history.go(-1);
+			// 3.로그인 상태가 아닌경우
+			}else{
+				alert('로그인 해주세요.');
+				history.go(-1);
+			}
+			
+		// checkOff 처리
+		}else if(checkURL == 'checkOff'){
+			let checkOff = '[[${session.checkOff}]]';
+			console.log(checkOff);
+			
+			if(checkOff == 1) {
+				let date = new Date();
+				let time = (date.getMonth() + 1)+'월'+date.getDate()+'일'+date.getHours()+'시'+date.getMinutes()+'분'
+				alert('퇴근 입력완료 / 시간 : '+ time);
+				history.go(-1);      
+			//2.출근처리가 되지 않아 처리한 경우
+			}else if(checkOff == 2){
+				alert('이미 퇴근 처리가 되었습니다.');
+				history.go(-1);
+			}else{
+				alert('로그인이 필요합니다');
+				history.go(-1);
+			}
 		}
 		
 	});
