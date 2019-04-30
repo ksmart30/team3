@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ksmart30.team03.kuntae.domain.KuntaeSearch;
@@ -36,7 +37,22 @@ public class KuntaeController {
 		
 		return data;
 	}
+	// 근태승인처리 위해 정보 가져오기
+	@GetMapping("/kuntae/okSearchView2")
+	public @ResponseBody List<Map<String,Object>> okSearchView2(@RequestParam(value="EMP_NO") String EMP_NO,@RequestParam(value="APP_DATE") String APP_DATE){
+		System.out.println("근태승인처리 하기 전 list 불러오기(Controller)");
+		List<Map<String,Object>> result= kuntaeService.getOkSearch2(EMP_NO,APP_DATE);
+		return result;
+	}
 	
+	// 근태승인처리 승인처리기능
+	@GetMapping("/kuntae/okView/approval")
+	public @ResponseBody int okViewApproval(@RequestParam(value="EMP_NO") String EMP_NO,@RequestParam(value="APP_DATE") String APP_DATE,@RequestParam(value="CONFIRM_YN") String CONFIRM_YN){
+		System.out.println("근태승인처리 하자 (Controller)");
+		System.out.println("입력값 확인 "+EMP_NO+"//"+APP_DATE+"//"+CONFIRM_YN);
+		int result= kuntaeService.okViewApproval(EMP_NO,APP_DATE,CONFIRM_YN);
+		return result;
+	}
 	
 	// 근태현황(일, 월) 화면 이동
 	@GetMapping("/kuntae/searchView")
@@ -57,5 +73,6 @@ public class KuntaeController {
 		System.out.println("근태현황(월)list"+data);
 		return data;
 	}
+	
 	
 }

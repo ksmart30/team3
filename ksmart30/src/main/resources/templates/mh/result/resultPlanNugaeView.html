@@ -273,15 +273,15 @@
                       <table class="table table-striped jambo_table bulk_action" border="1" >
                         <thead>
                         <tr class="headings">
-                        	<th rowspan="2" style="text-align: center">부서</th>
-                        	<th rowspan="2" style="text-align: center">프로젝트 코드명</th>
+                        	<th rowspan="2" style="text-align: center" width="120">부서</th>
+                        	<th rowspan="2" style="text-align: center" >프로젝트 코드명</th>
                         	<th rowspan="2" style="text-align: center">프로젝트명</th>
                         	<th colspan="4" style="text-align: center">M/H 투입 누계</th>
                         	<th colspan="8" style="text-align: center">M/H 투입 계획</th>
                         </tr>
                           <tr class="headings" > 
                           
-                            <th class="column-title">단계</th>
+                            <th class="column-title" width="50">단계</th>
                             <th class="column-title">계획</th>
                             <th class="column-title">실적</th>
                             <th class="column-title">차이</th>
@@ -314,7 +314,7 @@
 								
 							
 								<td th:text="${r.DEPT_NM}">
-								<td th:text="${r.PJT_CD}">
+								<td th:text="${r.PJT_CD}" style="text-align: center">
 								<td th:text="${r.PJT_NM}">
 								<td th:text="${r.WORK_NM}">
 								<td th:text="${r.TOT_PLAN}">

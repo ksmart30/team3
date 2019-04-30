@@ -28,6 +28,24 @@ public class KuntaeService {
 		return result;
 		
 	}
+	//근태승인처리 클릭 시 정보 가져오기
+	public List<Map<String,Object>> getOkSearch2(String EMP_NO, String APP_DATE){
+		System.out.println("클릭 시 정보 가져오기 (Service)");
+		return kuntaeMapper.getOkSearch3(EMP_NO,APP_DATE);
+	}
+	//근태승인처리 하기
+	public int okViewApproval(String EMP_NO, String APP_DATE, String CONFIRM_YN){
+		System.out.println("근태승인처리 하자 (Service)");
+		int result=0;
+		if(CONFIRM_YN=="" || CONFIRM_YN=="0") {
+			System.out.println("근태승인 N일 때");
+			result = kuntaeMapper.okViewApproval(EMP_NO,APP_DATE);
+		}else {
+			System.out.println("근태승인 Y일 때");
+			result = 0;
+		}
+		return result;
+	}
 	//근태현황(월) list 검색 후 출력
 	public List<Map<String,Object>> getSearch(KuntaeSearch vo){
 		System.out.println("getSearch 메서드 호출(Service)");

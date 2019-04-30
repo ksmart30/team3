@@ -14,6 +14,11 @@ public interface KuntaeMapper {
 	List<Map<String,Object>> getOkSearch(KuntaeSearch vo);
 	//날짜값 NULL일때 나머지로 검색 list 출력
 	List<Map<String,Object>> getOkSearch2(KuntaeSearch vo);
+	//클릭시 정보 가져오기
+	List<Map<String,Object>> getOkSearch3(String EMP_NO, String APP_DATE);
+	//근태승인처리하기
+	int okViewApproval(String EMP_NO, String APP_DATE); 
+	
 	//근태현황(월) list 검색 후 출력(검색조건을 vo로 받는다)
 	List<Map<String,Object>> getSearch(KuntaeSearch vo);
 	
