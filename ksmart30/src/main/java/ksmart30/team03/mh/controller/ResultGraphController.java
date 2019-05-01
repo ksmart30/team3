@@ -1,10 +1,13 @@
 package ksmart30.team03.mh.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 /*import org.springframework.web.bind.annotation.PostMapping;*/
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +44,7 @@ public class ResultGraphController {
 		return "mh/result/resultPlanGraphView";
 	}
 
-	// 5.2.1 M/H 계획(그래프)에 해당하는 값 출력 컨트롤러
+	/* // 5.2.1 M/H 계획(그래프)에 해당하는 값 출력 컨트롤러
 	@GetMapping("/manHour/manHourResultGraph")
 	public @ResponseBody List<ResultList> manHourPlanGraphList(@RequestParam(value = "pjt_cd") String pjt_cd) {
 		System.out.println("cd : " + pjt_cd);
@@ -76,5 +79,16 @@ public class ResultGraphController {
 		 List<ResultCost> data = resultGraphService.getResultGraphResultNugae(pjt_cd); 
 		 System.out.println("data4"+data);
 		 return data; 
-	 }		 	
+	 }	 */
+	 
+	// 5.2.1 M/H 인건비 실적,계획 및 일한시간 실적,계획 (그래프)에 해당하는 값 출력 컨트롤러	
+	 @PostMapping("/manHour/manHourResultGraph")
+		public @ResponseBody Map<String, Object> manHourResultGraph(String pjt_cd) {
+		System.out.println("RestController projectManageHyunhwangMonthSangseProcess 메서드 실행");
+		return resultGraphService.getResultGraph(pjt_cd);		
+	}
+	 
+	 
+
+
 }

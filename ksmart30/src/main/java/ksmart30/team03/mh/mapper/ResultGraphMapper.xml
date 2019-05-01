@@ -46,7 +46,7 @@
 	
 	<!--5.2.1 MH 계획,실적 차트 출력 select문 (계획) -->
 	<select id="getResultGraph" 
-	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
+	parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT 
 			PJT_CD, 
 			SUM(PLAN_A) as PLAN_A, 
@@ -62,7 +62,7 @@
 	
 	<!--5.2.1 MH 계획,실적 차트 출력 select문 (실적) -->
 	<select id="getResultGraph2"
-	resultType="ksmart30.team03.mh.domain.ResultList" parameterType="String">
+	parameterType="java.util.Map" resultType="java.util.Map">
 	SELECT 
 		sum(WORK_TIME) as WORK_TIME, 
 		PJT_CD, 
@@ -75,7 +75,7 @@
 	
 	<!--5.2.1 MH 계획,실적 차트 출력 select문 (단계별 계획 인건비 누계 ) -->
 	<select id="getResultGraphPlanNugae"
-	resultType="ksmart30.team03.mh.domain.ResultCost" parameterType="String">
+	parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT 
 			sum(PLAN_A*DANGA) as PLAN_A, 
 			sum(PLAN_B*DANGA) as PLAN_B,
@@ -90,7 +90,7 @@
 	
 	<!--5.2.1 MH 계획,실적 차트 출력 select문 (단계별 실적  인건비 누계 ) -->
 	<select id="getResultGraphResultNugae"
-	resultType="ksmart30.team03.mh.domain.ResultCost" parameterType="String">
+	parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT 
 			SUM(A.WORK_TIME*B.DANGA) TOTAL, 
 			WORK_STEP

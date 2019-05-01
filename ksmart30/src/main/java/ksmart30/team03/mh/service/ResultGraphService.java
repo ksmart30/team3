@@ -1,6 +1,8 @@
 package ksmart30.team03.mh.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ public class ResultGraphService {
 			}			
 			return data2;
 	}		
-	//5.2.1M/H 계획 그래프 차트에 입력될 값 출력
+	/* //5.2.1M/H 계획 그래프 차트에 입력될 값 출력
 	public List<ResultList> getResultGraph(String pjt_cd) {
 		System.out.println("SERVICE : M/H계획 실적 그래프 값 출력");
 		return resultGraphMapper.getResultGraph(pjt_cd);
@@ -54,6 +56,20 @@ public class ResultGraphService {
 	public List<ResultCost> getResultGraphResultNugae(String pjt_cd) {
 		System.out.println("SERVICE : M/H계획실적 인건비 실적 그래프 값 출력"); 
 		return resultGraphMapper.getResultGraphResultNugae(pjt_cd); 
+	}
+ */
+
+	public Map<String, Object> getResultGraph(String pjt_cd) {
+		System.out.println("Service getProjectManageHyunhwangCount 메서드 실행");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("PJT_CD", pjt_cd);
+		// 결과 리턴용 Map
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("planHrGraph", resultGraphMapper.getResultGraph(map));
+		resultMap.put("nugaeHrGraph", resultGraphMapper.getResultGraph2(map));
+		resultMap.put("planEmployeeGraph", resultGraphMapper.getResultGraphPlanNugae(map));
+		resultMap.put("nugaeEmployeeGraph", resultGraphMapper.getResultGraphResultNugae(map));
+		return resultMap;
 	}
 
 }

@@ -33,6 +33,7 @@ function searchResult(CONTRACT_PRI1, CONTRACT_PRI2){
 
 function barchart() {
 	$('#planChart').empty();
+	$('#nugaeChart').empty();
 	let plan_a = 0;
 	let plan_b = 0;
 	let plan_c = 0;
@@ -40,7 +41,6 @@ function barchart() {
 	let plan_e = 0;
 	let plan_f = 0;
 	let plan_g = 0;
-
 	let time_a = 0;
 	let time_b = 0;
 	let time_c = 0;
@@ -49,14 +49,21 @@ function barchart() {
 	let time_f = 0;
 	let time_g = 0;
 	let time_z = 0;	
-	let result_nugae_a =0;
-	let result_nugae_b =0;
-	let result_nugae_c =0;
-	let result_nugae_d =0;
-	let result_nugae_e =0;
-	let result_nugae_f =0;
-	let result_nugae_g =0;
-	let result_nugae_z =0;			
+	let result_nugae_a = 0;
+	let result_nugae_b = 0;
+	let result_nugae_c = 0;
+	let result_nugae_d = 0;
+	let result_nugae_e = 0;
+	let result_nugae_f = 0;
+	let result_nugae_g = 0;
+	let result_nugae_z = 0;	
+	let plan_nugae_a = 0;
+	let plan_nugae_b = 0;
+	let plan_nugae_c = 0;
+	let plan_nugae_d = 0;
+	let plan_nugae_e = 0;
+	let plan_nugae_f = 0;
+	let plan_nugae_g = 0;
 	$("#list_table tr").click(function() {//문자열 저장할 변수 선언		
 		$('#planChart').empty();
 		let str = ""
@@ -77,23 +84,22 @@ function barchart() {
 		$.ajax({
 			
 				url : '/manHour/manHourResultGraph',
-				type : 'GET',
+				type : 'POST',
 				dataType : "json",
 				async:false,
 				data : {pjt_cd : pjt_cd},
 				//ajax 배열 값을 전역변수로 선언
 				success : function(data) {
 					//테이블의 행 클릭시 해당하는 값 출력		
-					$(data).each(function(index,item) { //each = foreach (반복문)
-						$('#chart').empty();	
-						
-						plan_a = item.plan_A;
-						plan_b = item.plan_B;
-						plan_c = item.plan_C;
-						plan_d = item.plan_D;
-						plan_e = item.plan_E;
-						plan_f = item.plan_F;
-						plan_g = item.plan_G;
+					$(data.planHrGraph).each(function(index,item) { //each = foreach (반복문)
+						$('#chart').empty();						
+						plan_a = item.PLAN_A;
+						plan_b = item.PLAN_B;
+						plan_c = item.PLAN_C;
+						plan_d = item.PLAN_D;
+						plan_e = item.PLAN_E;
+						plan_f = item.PLAN_F;
+						plan_g = item.PLAN_G;
 						$('#chart').append('<tr>');
 						$('#chart').append('<td>'+plan_a+ '</td>');
 						$('#chart').append('<td>'+plan_b+ '</td>');
@@ -105,172 +111,134 @@ function barchart() {
 						$('#chart').append('</tr>');
 						console.log("A : "+plan_a+ " B : "+ plan_b+ " C : "+ plan_c+" D : "+ plan_d+ " E: "+ plan_e+ " F : "+ plan_f+ " G : "+ plan_g);
 				});
-					
-			}
-								
-		});
-		//계획 그래프 값 가져오기 끝!
-		
-		//실적 그래프 값 가져오기 시작!
-		$.ajax({
-			url:'/manHour/manHourResultGraph2',
-			type:'GET',
-			dataType : "json",
-			data : {pjt_cd : pjt_cd},
-			success : function(data) {
-				console.log("실적그래프 값들 출력");
-				console.log(data);						
-				$(data).each(function(index,item){
-					$('#chart2').empty();
-					
-					console.log("work_time : "+item.work_TIME +"    work_STEP :  "+item.work_STEP);								
-					//WORK_STEP에 따른 WORK_TIME을 가져오기 위한 조건문							
-					if(item.work_STEP =='A'){
-						time_a = item.work_TIME;	
-						console.log("time_a : "+time_a);								
-					}
-					if(item.work_STEP =='B'){
-						time_b = item.work_TIME;
-						console.log("time_b : "+time_b);								
-					}							
-					if(item.work_STEP =='C'){
-						time_c = item.work_TIME;
-						console.log("time_c : "+time_c);								
-					}
-					if(item.work_STEP =='D'){
-						time_d = item.work_TIME;
-						console.log("time_d : "+time_d);								
-					}
-					if(item.work_STEP =='E'){
-						time_e = item.work_TIME;
-						console.log("time_e : "+time_e);								
-					}
-					if(item.work_STEP =='F'){
-						time_f = item.work_TIME;
-						console.log("time_f : "+time_f);								
-					}
-					if(item.work_STEP =='G'){
-						time_g = item.work_TIME;
-						console.log("time_g : "+time_g);								
-					}
-					if(item.work_STEP =='Z'){
-						time_z = item.work_TIME;
-						console.log("time_z : "+time_z);								
-					}
-					$('#chart2').append('<tr>');
-					$('#chart2').append('<td>'+time_a+ '</td>');
-					$('#chart2').append('<td>'+time_b+ '</td>');
-					$('#chart2').append('<td>'+time_c+ '</td>');
-					$('#chart2').append('<td>'+time_d+ '</td>');	
-					$('#chart2').append('<td>'+time_e+ '</td>');
-					$('#chart2').append('<td>'+time_f+ '</td>');	
-					$('#chart2').append('<td>'+time_g+ '</td>');	
-					$('#chart2').append('<td>'+time_z+ '</td>');
-					$('#chart2').append('</tr>');														
-				});																	
-			}					
-		});		
 
-		 console.log(time_a +" / "+time_b+" / "+time_c+" / "+time_d+" / "+time_e+" / "+time_f+" / "+time_g); 
-		
-		//실적 그래프 값 가져오기 끝!			
-		
-		//인건비(계획) 그래프 값 가져오기 시작!		
-		$.ajax({
-			url:'/manHour/manHourResultGraphPlanNugae',
-			data:{pjt_cd:pjt_cd},
-			type:'GET',
-			async:false,
-			dataType : "json",
-			success:function(data){
-				console.log("인건비 계획 값들  "+data);
-				$(data).each(function(index,item){
-					$('#chart3').empty();							
-					plan_nugae_a = item.plan_A;
-					plan_nugae_b = item.plan_B;
-					plan_nugae_c = item.plan_C;
-					plan_nugae_d = item.plan_D;
-					plan_nugae_e = item.plan_E;
-					plan_nugae_f = item.plan_F;
-					plan_nugae_g = item.plan_G;		
-					$('#chart3').append('<tr>');
-					$('#chart3').append('<td>'+plan_nugae_a+ '</td>');
-					$('#chart3').append('<td>'+plan_nugae_b+ '</td>');
-					$('#chart3').append('<td>'+plan_nugae_c+ '</td>');
-					$('#chart3').append('<td>'+plan_nugae_d+ '</td>');
-					$('#chart3').append('<td>'+plan_nugae_e+ '</td>');
-					$('#chart3').append('<td>'+plan_nugae_f+ '</td>');
-					$('#chart3').append('<td>'+plan_nugae_g+ '</td>');
-					$('#chart3').append('</tr>');
-					console.log("A : "+plan_nugae_a+ " B : "+ plan_nugae_b+ " C : "+ plan_nugae_c+" D : "+ plan_nugae_d+ " E: "+ plan_nugae_e+ " F : "+ plan_nugae_f+ " G : "+ plan_nugae_g);
-				});
-				
-			}
-								
-		});	
-		//인건비(계획) 그래프 값 가져오기 끝! */
-		
-		//인건비(실적) 그래프 값 가져오기 시작!		
-		$.ajax({
-			url:'/manHour/manHourResultGraphResultNugae',
-			data:{pjt_cd:pjt_cd},
-			type:'GET',
-			async:false,
-			dataType : "json",
-			success:function(data){
-				console.log("인건비 실적 값들  "+data);
-				$(data).each(function(index,item){
+					$(data.nugaeHrGraph).each(function(index,item){
+						$('#chart2').empty();
+						
+						console.log("work_time : "+item.work_TIME +"    work_STEP :  "+item.work_STEP);								
+						//WORK_STEP에 따른 WORK_TIME을 가져오기 위한 조건문							
+						if(item.WORK_STEP =='A'){
+							time_a = item.WORK_TIME;	
+							console.log("time_a : "+time_a);								
+						}
+						if(item.WORK_STEP =='B'){
+							time_b = item.WORK_TIME;
+							console.log("time_b : "+time_b);								
+						}							
+						if(item.WORK_STEP =='C'){
+							time_c = item.WORK_TIME;
+							console.log("time_c : "+time_c);								
+						}
+						if(item.WORK_STEP =='D'){
+							time_d = item.WORK_TIME;
+							console.log("time_d : "+time_d);								
+						}
+						if(item.WORK_STEP =='E'){
+							time_e = item.WORK_TIME;
+							console.log("time_e : "+time_e);								
+						}
+						if(item.WORK_STEP =='F'){
+							time_f = item.WORK_TIME;
+							console.log("time_f : "+time_f);								
+						}
+						if(item.WORK_STEP =='G'){
+							time_g = item.WORK_TIME;
+							console.log("time_g : "+time_g);								
+						}
+						if(item.WORK_STEP =='Z'){
+							time_z = item.WORK_TIME;
+							console.log("time_z : "+time_z);								
+						}
+						$('#chart2').append('<tr>');
 					
-					if(item.work_STEP =='A'){
-						result_nugae_a = item.total;	
-						console.log("result_nugae_a : "+result_nugae_a);								
-					}
-					if(item.work_STEP =='B'){
-						result_nugae_b = item.total;
-						console.log("result_nugae_b : "+result_nugae_b);								
-					}							
-					if(item.work_STEP =='C'){
-						result_nugae_c = item.total;
-						console.log("result_nugae_c : "+result_nugae_c);								
-					}
-					if(item.work_STEP =='D'){
-						result_nugae_d = item.total;
-						console.log("result_nugae_d : "+result_nugae_d);								
-					}
-					if(item.work_STEP =='E'){
-						result_nugae_e = item.total;
-						console.log("result_nugae_e : "+result_nugae_e);								
-					}
-					if(item.work_STEP =='F'){
-						result_nugae_f = item.total;
-						console.log("result_nugae_f : "+result_nugae_f);								
-					}
-					if(item.work_STEP =='G'){
-						result_nugae_g = item.total;
-						console.log("result_nugae_g : "+result_nugae_g);								
-					}
-					if(item.work_STEP =='Z'){
-						result_nugae_z = item.total;
-						console.log("result_nugae_z : "+result_nugae_z);								
-					}
-					$('#chart4').empty();
-					$('#chart4').append('<tr>');
-					$('#chart4').append('<td>'+result_nugae_a+ '</td>');
-					$('#chart4').append('<td>'+result_nugae_b+ '</td>');
-					$('#chart4').append('<td>'+result_nugae_c+ '</td>');
-					$('#chart4').append('<td>'+result_nugae_d+ '</td>');	
-					$('#chart4').append('<td>'+result_nugae_e+ '</td>');
-					$('#chart4').append('<td>'+result_nugae_f+ '</td>');	
-					$('#chart4').append('<td>'+result_nugae_g+ '</td>');	
-					$('#chart4').append('<td>'+result_nugae_z+ '</td>');
-					$('#chart4').append('</tr>');
-					console.log("A : "+plan_nugae_a+ " B : "+ plan_nugae_b+ " C : "+ plan_nugae_c+" D : "+ plan_nugae_d+ " E: "+ plan_nugae_e+ " F : "+ plan_nugae_f+ " G : "+ plan_nugae_g);
-				});
+						$('#chart2').append('<td>'+time_a+ '</td>');
+						$('#chart2').append('<td>'+time_b+ '</td>');
+						$('#chart2').append('<td>'+time_c+ '</td>');
+						$('#chart2').append('<td>'+time_d+ '</td>');	
+						$('#chart2').append('<td>'+time_e+ '</td>');
+						$('#chart2').append('<td>'+time_f+ '</td>');	
+						$('#chart2').append('<td>'+time_g+ '</td>');	
+						$('#chart2').append('<td>'+time_z+ '</td>');
+						$('#chart2').append('</tr>');	
+
+
+					});
+					
+					$(data.planEmployeeGraph).each(function(index,item){
+						$('#chart3').empty();							
+						plan_nugae_a = item.PLAN_A;
+						plan_nugae_b = item.PLAN_B;
+						plan_nugae_c = item.PLAN_C;
+						plan_nugae_d = item.PLAN_D;
+						plan_nugae_e = item.PLAN_E;
+						plan_nugae_f = item.PLAN_F;
+						plan_nugae_g = item.PLAN_G;		
+						$('#chart3').append('<tr>');						
+						$('#chart3').append('<td>'+plan_nugae_a+ '</td>');
+						$('#chart3').append('<td>'+plan_nugae_b+ '</td>');
+						$('#chart3').append('<td>'+plan_nugae_c+ '</td>');
+						$('#chart3').append('<td>'+plan_nugae_d+ '</td>');
+						$('#chart3').append('<td>'+plan_nugae_e+ '</td>');
+						$('#chart3').append('<td>'+plan_nugae_f+ '</td>');
+						$('#chart3').append('<td>'+plan_nugae_g+ '</td>');
+						$('#chart3').append('</tr>');
+						console.log("A : "+plan_nugae_a+ " B : "+ plan_nugae_b+ " C : "+ plan_nugae_c+" D : "+ plan_nugae_d+ " E: "+ plan_nugae_e+ " F : "+ plan_nugae_f+ " G : "+ plan_nugae_g);
+					});
+
+					$(data.nugaeEmployeeGraph).each(function(index,item){
+
+						if(item.WORK_STEP =='A'){
+							result_nugae_a = item.TOTAL;	
+							console.log("result_nugae_a : "+result_nugae_a);								
+						}
+						if(item.WORK_STEP =='B'){
+							result_nugae_b = item.TOTAL;
+							console.log("result_nugae_b : "+result_nugae_b);								
+						}							
+						if(item.WORK_STEP =='C'){
+							result_nugae_c = item.TOTAL;
+							console.log("result_nugae_c : "+result_nugae_c);								
+						}
+						if(item.WORK_STEP =='D'){
+							result_nugae_d = item.TOTAL;
+							console.log("result_nugae_d : "+result_nugae_d);								
+						}
+						if(item.WORK_STEP =='E'){
+							result_nugae_e = item.TOTAL;
+							console.log("result_nugae_e : "+result_nugae_e);								
+						}
+						if(item.WORK_STEP =='F'){
+							result_nugae_f = item.TOTAL;
+							console.log("result_nugae_f : "+result_nugae_f);								
+						}
+						if(item.WORK_STEP =='G'){
+							result_nugae_g = item.TOTAL;
+							console.log("result_nugae_g : "+result_nugae_g);								
+						}
+						if(item.WORK_STEP =='Z'){
+							result_nugae_z = item.TOTAL;
+							console.log("result_nugae_z : "+result_nugae_z);								
+						}
+						$('#chart4').empty();
+						$('#chart4').append('<tr>');
+						$('#chart4').append('<td>'+result_nugae_a+ '</td>');
+						$('#chart4').append('<td>'+result_nugae_b+ '</td>');
+						$('#chart4').append('<td>'+result_nugae_c+ '</td>');
+						$('#chart4').append('<td>'+result_nugae_d+ '</td>');	
+						$('#chart4').append('<td>'+result_nugae_e+ '</td>');
+						$('#chart4').append('<td>'+result_nugae_f+ '</td>');	
+						$('#chart4').append('<td>'+result_nugae_g+ '</td>');	
+						$('#chart4').append('<td>'+result_nugae_z+ '</td>');
+						$('#chart4').append('</tr>');
+						console.log("인건비  A : "+plan_nugae_a+ " B : "+ plan_nugae_b+ " C : "+ plan_nugae_c+" D : "+ plan_nugae_d+ " E: "+ plan_nugae_e+ " F : "+ plan_nugae_f+ " G : "+ plan_nugae_g);
+					});
 				
+
+
 			}
 			
-								
-		});	
+		});
+			
 	
 		let planChart = new Morris.Bar({
              element: 'planChart',  
@@ -288,26 +256,32 @@ function barchart() {
              ykeys: ['value1','value2'],
              labels: ['계획','실적'],
              barColors:['#ff0000','#0000ff']
-         });
-	});	
-	//차트 시작
+		 });
+		 
+		 console.log("나와야할것들!"+plan_nugae_a+"//"+plan_nugae_b+"//"+plan_nugae_c+"//"+plan_nugae_d);
 		let nugaeChart = new Morris.Bar({
+			
              element: 'nugaeChart', 
              data:
                  [ 
                      { step: '기획', value1: plan_nugae_a ,value2: result_nugae_a},
                      { step: '심의', value1: plan_nugae_b ,value2: result_nugae_b},
                      { step: '허가', value1: plan_nugae_c ,value2: result_nugae_c},
-                     { step: '착공', value1: plan_nugae_d ,value2: result_nugae_a},
-                     { step: '실시', value1: plan_nugae_e ,value2: result_nugae_a},
-                     { step: 'A/S',  value1: plan_nugae_f ,value2: result_nugae_a},
-                     { step: '준공', value1: plan_nugae_a ,value2: result_nugae_a}
+                     { step: '착공', value1: plan_nugae_d ,value2: result_nugae_d},
+                     { step: '실시', value1: plan_nugae_e ,value2: result_nugae_e},
+                     { step: 'A/S',  value1: plan_nugae_f ,value2: result_nugae_f},
+                     { step: '준공', value1: plan_nugae_g ,value2: result_nugae_g}
                  ],
              xkey: 'step', 
              ykeys: ['value1','value2'],
              labels: ['계획','실적'],
              barColors:['#ff0000','#0000ff']
-         })
+         });
+
+
+	});	
+	//차트 시작
+	
 
 	//인건비 차트 끝	
 }
@@ -400,7 +374,7 @@ $(document).ready(function() {
 
 					<div class="table-responsive">
 						<div style="overflow: scroll; width: 100%; height: 650px; padding: 10px; background-color:;">
-							<span style="color:gray; float:right;">더블 클릭시 그래프가 나옵니다. </span>
+							<span style="color:gray; float:right;">클릭시 그래프가 나옵니다. </span>
 							<table class="table jambo_table bulk_action">
 								<thead>
 									<tr class="headings">
@@ -450,8 +424,8 @@ $(document).ready(function() {
 						<!-- end of user-activity-graph -->
 						<div class="" data-example-id="togglable-tabs">
 							<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">HR</a></li>
-								<li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">인건비</a></li>	
+								<li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">HR & 인건비</a></li>
+								
 							</ul>
 							<div id="myTabContent" class="tab-content">
 								<!-- 학력사항 -->
@@ -459,7 +433,7 @@ $(document).ready(function() {
 									<div class="col-md-12 col-sm-6 col-xs-12">
 										<div class="x_panel">	
 											<table>
-												<h2>Bar graph <small>MH 계획/실적 그래프(계획:파 실적:빨)</small> 
+												<h3>HOUR 계획/실적 그래프<small>(계획:파 실적:빨)</small> </h3>
 												<div class="x_content" style="overflow:scroll; width:100%; height:388px; padding:10px">
 													<div class="x_content" id="planChart" style="height: 100%; width: 100%;">
 													</div>
@@ -467,7 +441,7 @@ $(document).ready(function() {
 											</table>
 											<!-- 차트 연습 끝 -->
 											<table class="table table-striped jambo_table bulk_action">
-													<thead>
+													<thead id="head1">
 														<tr class="headings">
 															<th class="column-title">기획</th>
 															<th class="column-title">심의</th>
@@ -505,26 +479,23 @@ $(document).ready(function() {
 								</div>
 							</div>
 
-								<!-- 가족사항 -->
 								<div role="tabpanel" class="tab-pane fade in" id="tab_content2" aria-labelledby="tab">
 									
 									<div class="col-md-12 col-sm-6 col-xs-12">
-										<div class="x_panel">	
-
-											<!-- 차트 연습 시작 -->
+										<div class="x_panel">										
 											<table>
 												<div class="col-md-12 col-sm-12 col-xs-20">
 													<div class="x_panel">
 														<table>
-															<h2>Bar graph <small>MH 계획/실적 그래프(계획:파 실적:빨)</small> 
+															<h3>인건비 계획/실적 그래프<small>(계획:파 실적:빨)</small> </h3>
 																<div class="x_content" style="overflow:scroll; width:100%; height:388px; padding:10px">
-																	<div id="nugaeChart" style="height: 100%; width: 100%;">
+																	<div class="x_content" id="nugaeChart" style="height: 100%; width: 100%;"></div>
 																	</div>
 																</div>
 														</table>
 											<!-- 차트 연습 끝 -->
 											<table class="table table-striped jambo_table bulk_action">
-													<thead>
+													<thead id="head2">
 														<tr class="headings">
 															<th class="column-title">기획</th>
 															<th class="column-title">심의</th>
@@ -564,8 +535,7 @@ $(document).ready(function() {
 													</div>
 												</div>
 											</table>
-											</div>
-										</div>
+										</div>																									</div>
 									</div>
 								</div>
 
