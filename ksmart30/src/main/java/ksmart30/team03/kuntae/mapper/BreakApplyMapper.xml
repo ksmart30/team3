@@ -68,6 +68,7 @@
 		      T_HM1000 B
 		WHERE A.EMP_NO = B.EMP_NO
 		  AND A.EMP_NO LIKE '%'+#{EMP_NO}+'%'
+		  AND A.APP_DATE1 LIKE '%'+#{APP_DATE1}+'%'
 		ORDER BY APP_DATE1 DESC, APP_GB
  </select>
   

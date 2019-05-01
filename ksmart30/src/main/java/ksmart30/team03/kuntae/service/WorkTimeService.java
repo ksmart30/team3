@@ -147,12 +147,13 @@ public class WorkTimeService {
 			System.out.println("S : 퇴근 여부 SELECT 결과 : " + checkList.size());
 			// 2.1 출근 값이 없다면
 			if(checkList.size() != 0) {
-				// 2.1 출근 처리 
 				int checkOff = workTimeMapper.updateCheckOff(vo);
 				System.out.println("S : 퇴근 처리 완료 여부 :" + checkOff);
 				result = 1;
 			// 2.1 출근 값이 있다면 
 			}else{
+				// 2.1 출근 처리 
+			
 				result = 2;	
 			}		
 		}

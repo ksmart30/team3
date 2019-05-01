@@ -32,17 +32,18 @@
         });
 	} 
 	// 한 행 클릭 시 detail
-	function detail(emp_NO){
-		console.log('직원번호 '+emp_NO);
+	function detail(emp_NO,app_DATE1){
+		
+		console.log('직원번호 '+emp_NO+'날짜'+app_DATE1);
 		$.ajax({
 			url:'/kuntae/breakApplyView2',
 			type:'GET',
-			data:{EMP_NO:emp_NO},
+			data:{EMP_NO:emp_NO,APP_DATE1:app_DATE1},
 			success:function(data){
 				$('#detail').empty();
 				$(data).each(function(index,item){
 					console.log(data);						
-					$('#detail').append('<tr><td>'+item.APP_DATE1.substring(0,4)+'년'+item.APP_DATE1.substring(4,6)+'월'+item.APP_DATE1.substring(6,8)+'일'+' ~ '+item.APP_DATE2.substring(0,4)+'년'+item.APP_DATE2.substring(4,6)+'월'+item.APP_DATE2.substring(6,8)+'일'+'</td><td>'+item.APP_RMK+'</td><td>'+item.CONFIRM+'</td></tr>');			
+					$('#detail').append('<tr><td>'+item.APP_DATE1.substring(0,4)+'년'+item.APP_DATE1.substring(4,6)+'월'+item.APP_DATE1.substring(6,8)+'일'+' ~ '+item.APP_DATE2.substring(0,4)+'년'+item.APP_DATE2.substring(4,6)+'월'+item.APP_DATE2.substring(6,8)+'일'+'</td><td>'+item.APP_RMK+'</td><td>'+item.CONFIRM+'</td>'+'</td><td>'+item.APP_BIGO+'</td></tr>');			
 					
 					
 				});
@@ -59,23 +60,24 @@
 			//2.2 사원정보가 있으면 세션값 정보로 검색	
 			}else{	
 				detail2(SESSION_EMP_NO);
-				
+				let APP_DATE1 = "";
 				$.ajax({
 					url:'/kuntae/breakApplyView2',
 					type:'GET',
-					data:{EMP_NO:SESSION_EMP_NO},
+					data:{EMP_NO:SESSION_EMP_NO,APP_DATE1:APP_DATE1},
 					success:function(data){	
-						if(SESSION_EMP_NO==''){
-							alert('휴가신청 내역이 없습니다.');
-						}
-					console.log('개인리스트 data =>'+data[0].EMP_NO);
+					if(data==""){
+						alert('휴가신청 내역이 없습니다.');
+					}else{
+					console.log('개인리스트 data 사원번호=>'+data[0].EMP_NO+'날짜=>'+data[0].APP_DATE1);
 					$('#list').empty();
 					$(data).each(function(index,item){	
-						$('#list').append('<tr><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.APP_DATE1.substring(0,4)+'년'+item.APP_DATE1.substring(4,6)+'월'+item.APP_DATE1.substring(6,8)+'일'+' ~ '+item.APP_DATE2.substring(0,4)+'년'+item.APP_DATE2.substring(4,6)+'월'+item.APP_DATE2.substring(6,8)+'일'+'</td>'+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.APP_RMK+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+')">'+item.CONFIRM+'</td></tr>');				
+						$('#list').append('<tr><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+','+item.APP_DATE1+')">'+item.APP_DATE1.substring(0,4)+'년'+item.APP_DATE1.substring(4,6)+'월'+item.APP_DATE1.substring(6,8)+'일'+' ~ '+item.APP_DATE2.substring(0,4)+'년'+item.APP_DATE2.substring(4,6)+'월'+item.APP_DATE2.substring(6,8)+'일'+'</td>'+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+','+item.APP_DATE1+')">'+item.APP_RMK+'</td><td data-toggle="modal" data-target="#ok" onclick="detail('+item.EMP_NO+','+item.APP_DATE1+')">'+item.CONFIRM+'</td></tr>');				
 			
 					});
-					}
-				});
+				}
+			}
+		});
 			
 			console.log('휴가 신청 List 불러오기 ');
 			}
@@ -247,12 +249,14 @@
        <table class="table table-striped table-bordered table-hover" style="text-align:center">	     	
 	     	<thead style="text-align:center">
 				<tr>
+					<th>부서</th>
 	        		<th>직급</th>
 	        		<th>사번</th>
 	        		<th>성명</th>
 	        	</tr>
 			</thead>
 				<tr>
+					<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;" id="DEPT_NM2"></td>
 	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;" id="JIKGUP_NM2"></td>
 	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;" id="EMP_NO2"></td>
 	        		<td><input type="text" style="width: 100px; text-align:center; border: none; background: transparent;" id="KOR_NM2"></td>
@@ -263,8 +267,10 @@
 	        		<th>휴가신청날짜</th>
 	        		<th>사유</th>
 	        		<th>승인여부</th>
+	        		<th>비고</th>
 	        	</tr>	        		        	        		
-	        </thead>		              		
+	        </thead>
+	        		              		
 			<tbody id="detail" style="font-size: 14px; line-height: 25px">						
 			
 			<tbody id="detail2" style="font-size: 14px; line-height: 25px">						
