@@ -8,5 +8,16 @@
 	
 	<th:block layout:fragment="customHead"></th:block>
     <!-- <title>Main</title> -->
+
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script>
+    $(document).ready(function(){
+    	let SESSION_EMP_NO = '[[${session.EMP_NO}]]';
+    	if(SESSION_EMP_NO == ''){
+    		alert('로그인 해주세요.');
+    		location.href="/loginView";
+    	}else{}
+    });
+	</script>
   </head>
 </html>
