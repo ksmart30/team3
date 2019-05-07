@@ -10,10 +10,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  <head>    
 <script>
-function REALENDDAY(index,work_STEP){
+function REALENDDAY(index){
     console.log('종료 일자 나오는 함수실행');  
-    $('#date_table').empty();
-    $('#date_table').append('<tr><td><input type="date" id="DATE" name="DATE"></td></tr>');
+    console.log($('#date_table'+index));
+        if($('#date_table'+index).text()==''){
+        $('#date_table'+index).empty(); 
+        $('#date_table'+index).append('<input type="date" id="DATE" name="DATE">');      
+        }else{
+            $('#date_table'+index).empty();
+            
+        }
+        
+    
+    
     console.log("index 값 확인 : "+index);
 
     //오늘 날짜 DATE에 넣기
@@ -36,21 +45,15 @@ function REALENDDAY(index,work_STEP){
     //체크박스 value 값 가져오기 
     let checkbox_value = $('input:checkbox[id="checkbox_value"]').val();
     console.log('체크박스 값 : '+checkbox_value);
-    console.log("PJT_CD값 : "+PJT_CD+"/"+work_STEP);
-    /* let table_info = document.getElementById("table_info");
-    let index2 = table_info.rows[3].cells[index].innerHTML;
-    console.log('?'+index2); */
-     
-    //입력 버튼 클릭 시 종료일자 ->현재날짜변경, 종료구분 -> 0에서 1로 변경
-    /* $('#btn_insert').click(function(){
-        let checkbox_value = $('input:checkbox[id="checkbox_value"]').val();
-        
-    }) */
+    console.log("PJT_CD값 : "+PJT_CD);
+   
+
 
 }
 
 $(document).ready(function(){
     console.log('실행 확인');   
+
     
 /* 클릭한 pjt_cd에 대한 정보를 오른쪽에 출력 */
 $('#list_table tr').click(function(){
@@ -82,19 +85,20 @@ $('#list_table tr').click(function(){
                     +item.bgcolor+'"><td>'
                     +item.work_STEP_NM+'</td><td>'
                     +item.plan_END_DAY+'</td><td><input type="checkbox" checked="checked"></td><td>'
-                    +item.real_END_DAY+'</td></tr>'); 
+                    +item.real_END_DAY+'</td><td style="display:none;">'+item.work_STEP+'</td><td  style="display:none;">'+item.pjt_CD+'</td></tr>'); 
                 }else if(item.end_YN == "0"){
                     
                     $('#end_table').append('<tr style="background-color:'
                     +item.bgcolor+'"><td>'
                     +item.work_STEP_NM+'</td><td>'                                                                              
-                    +item.plan_END_DAY+'</td><td><input type="checkbox" class="checkbox_value" id="checkbox_value" value="1" onclick="REALENDDAY('+index+','+item.work_STEP+')"></td><td id="date_table">'
-                    +item.real_END_DAY+'</td></tr>');  
+                    +item.plan_END_DAY+'</td><td><input type="checkbox" name="checkbox_value" onclick="REALENDDAY('+index+')"></td><td id="date_table'+index+'"></td>'
+                    +item.real_END_DAY+'</td><td style="display:none;">'+item.work_STEP+'</td><td style="display:none;">'+item.pjt_CD+'</td></tr>');  
                 }
                                          
             });
         }
     });
+    
     //종료구분 select list 출력
    $.ajax({
         url : '/manHour/manHourProjectGbListView',
@@ -118,15 +122,28 @@ $('#list_table tr').click(function(){
     $('#business_manage').empty();
     if(PJT_TYPE == "C" || PJT_TYPE == "F"){  
         $('#project_manage').append('<h5>◎ 사업성검토 종료처리</h5><thead><tr><th>종료구분&nbsp;&nbsp;</th><th><select id="BusinessGB"><option></option></th><th>종료일자<input type="date" id="end_date" max="2050-12-31">종료일자</th></tr></thead>');
-        $('#')
+      
     }else{
         $('#project_manage').append('<h5>◎ 계약 프로젝트 종료처리</h5><thead><tr><th>종료구분&nbsp;&nbsp;</th><th><select id="ProjectGB"><option></option></th><th>종료일자<input type="date" id="end_date" max="2050-12-31">종료일자</th></tr></thead>');
 
     }
-  
 
+
+    /* $('input[name="checkbox_value"]').change(function(){
+        let value = $(this).val();              // value
+        let checked = $(this).prop('checked');  // checked 상태 (true, false)
+        let $label = $(this).next();            // find a label element
+        console.log('체크박스 확인 :'+vlaue+'//'+checked+'//'+$label)
+        if(checked){
+            
+            $('#date_table').append('<td><input type="date" id="DATE" name="DATE"><button class="btn" name="btn_insert_project" id ="btn_insert_project">입력</button></td>');
+        }else{
+            $('#date_table').empty(); 
+        }
+    
+    }); */
+ 
 });
-
 });
 </script>     
 </head>         
