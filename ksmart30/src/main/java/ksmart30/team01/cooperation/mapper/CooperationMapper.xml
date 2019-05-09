@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team01.cooperation.mapper.CooperationMapper">
 
- <!-- 외주관리 - 외주계약서 관리 - 외주계약서 검색 쿼리 -->
-	<select id="cooperationList" 
+ <!--3.1.2 외주관리 - 외주계약서 관리 - 외주계약서 검색 쿼리 -->
+	<select id="getCooperationList" 
 		parameterType="ksmart30.team01.cooperation.domain.CooperationSearchRequest" 
 		resultType="java.util.Map">
 		SELECT 
@@ -69,9 +69,9 @@
    		 AND 
    		 	A.PJT_CD      
    		 		LIKE '%' + #{inPjtCd} +'%' <!-- 프로젝트코드 입력-->
-   		 AND 
+   		 <!-- AND 
    		 	A.PJT_NM      
-   		 		LIKE '%' + #{inPjtNm}  +'%' <!-- 프로젝트네임 입력-->
+   		 		LIKE '%' + #{inPjtNm}  +'%' 프로젝트네임 입력 -->
    		 AND 
    		 	A.OUT_ITEM    
    		 		LIKE '%' + #{inOutItem} + '%' <!--  외주부문(외주분야) 입력-->
@@ -91,27 +91,309 @@
  			A.OUT_CORP
 
 	</select>
-<!-- 외주관리 - 외주계약서 관리 - 외주계약서 검색 쿼리 -->
-	<select id="cooperationInPJTSelect"
+<!--3.1.1 외주관리 - 외주계약서 관리 - 외주계약서 검색 쿼리 -->
+	<!--입력 위한 PJT별 용역 계약현황 검색-->
+	<select id="getCooperationPJT"
 		parameterType="String"
 		resultType="java.util.Map">
-	<!--입력 위한 PJT별 용역 역계약서 검색-->
+	
 		SELECT 
 			 C.LEVEL2_NM as OUT_ITEM_NM <!-- 부문 -->
-			,B.CUST_NM as CUST_NM <!-- 외주처 -->
+			,A.OUT_ITEM
+			,B.CUST_NM as CUST_NM <!-- 외주처 이름 -->
 		 	,A.contract_amt as CONTRACT_AMT <!-- 계약액 -->
-		from 
+		 	,PJT_CD as PJT_CD
+		 	,A.OUT_CORP as OUT_CORP <!-- 외주처 코드 -->
+		FROM 
 			 T_P12000 A <!-- 외주계약서  -->
 			,T_AC0300 B <!-- 계약처(외주처) -->
 			,(SELECT * FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD = '160')C <!-- 부문  -->
 		WHERE 
 			A.out_corp *= B.CUST_CD
-			and
+			AND
 			A.OUT_ITEM *= C.LEVEL2_CD
-			and
-			a.pjt_cd LIKE '%'+#{PJT_CD}+'%'
+			AND
+			A.pjt_cd LIKE '%'+#{PJT_CD}+'%'
 		ORDER BY
 			OUT_ITEM
 	</select>
+<!--3.1.1 입력 위한 PJT별 예산현황 검색-->
+	<select id="getCooperationYesan"
+		parameterType="String"
+		resultType="java.util.Map">
 	
+SELECT
+ 	B.LEVEL2_NM as SCV_NM ,
+ 	A.EX_AMT ,
+ 	A.EX_WORK_AMT
+FROM 
+ 	(SELECT SUM(EX_AMT) as EX_AMT ,ISNULL(SUM(EX_WORK_AMT),0) as EX_WORK_AMT,SCV_PART,PJT_CD FROM T_P11070 GROUP BY PJT_CD,SCV_PART) A 
+ 	,(SELECT * FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD = '160')B
+WHERE 
+ 	 A.SCV_PART = B.LEVEL2_CD
+	AND
+ 	 A.PJT_CD LIKE '%'+#{PJT_CD}+'%'
+ORDER BY
+	SCV_PART
+	</select>
+<!--3.1.1 계약프로젝트 기본 정보 검색(프로젝트,수행부서,PM) -->
+	<select id="getCooperationPJTPM"
+		parameterType="String"
+		resultType="java.util.Map">
+		SELECT 
+			A.PJT_CD as PJT_CD <!-- 프로젝트코드 -->
+			,B.PJT_NM as PJT_NM <!-- 프로젝트 한글명 -->
+			,D.DEPT_CD as DEPT_CD <!-- 수행부서 코드 -->
+			,D.DEPT_NM as DEPT_NM <!-- 수행부서 한글명 -->
+			,C.KOR_NM as PM_NM <!-- PM 한글명 -->
+		FROM 
+			 T_P11000_H A <!-- 프로젝트 히스토리(상세?) -->
+			,T_SM3000 B <!-- 프로젝트 대장 -->
+			,T_HM1000 C <!-- 사원정보 -->
+			,T_SC1010 D <!-- 수행부서 -->
+		WHERE
+			 A.PJT_CD *= B.PJT_CD
+			AND
+			 A.PM_EMP_NO *= C.EMP_NO
+			AND
+			 A.DEPT_CD *= D.DEPT_CD
+			AND
+		  	 A.PJT_CD = #{PJT_CD}
+			AND 
+			 PJT_SEQ = (SELECT max(PJT_SEQ)from T_P11000_H WHERE PJT_CD = #{PJT_CD})
+	</select>
+<!--3.1.1 용역계약서 본문 출력  -->
+	<select id="getCooperationPJTSangse"
+		parameterType="ksmart30.team01.cooperation.domain.CooperationSangseRequest"
+		resultType="java.util.Map">
+		SELECT
+		 	OUT_ITEM	-- 부문 -->
+			,A.OUT_CORP AS OUT_CORP -- 외주처 -->
+			,B.CUST_NM AS OUT_CORP_NM -- 외주처 이름 -->
+			,CONTRACT_NM -- 용역명 -->
+			,CONVERT (DATE, A.CONTRACT_DATE) AS CONTRACT_DATE -- 계약일자 -->
+			,CONVERT (DATE, A.S_DATE) AS S_DATE -- 계약기간 시작 -->
+			,CASE ISNULL(A.E_DATE,'') WHEN '' THEN '' ELSE CONVERT(VARCHAR(10),CONVERT(date,A.E_DATE)) END E_DATE -- 계약기간 끝 -->
+			,E_RMK -- 종료구문(까지) -->
+			,CON_DOC_YN -- 계약서 유무 0 없음 1 있음 -->
+			,CONTRACT_AMT -- 계약액 -->
+			,VAT_YN -- VAT여부 -->
+			,D.VAT_YN_NM
+			,C.E_RMK_NM
+			,E.OUT_ITEM_NM
+		FROM 
+		 	T_P12000 A
+		 	,(SELECT CUST_CD,CUST_NM FROM T_AC0300) B -- 거래처(외주처,발주처) -->
+		 	,(SELECT LEVEL2_CD,LEVEL2_NM as E_RMK_NM FROM T_SC9100 WHERE busi_gb = 'j' and level1_cd = '130') C -- 종료구문(계약기간~까지) -->
+		 	,(SELECT LEVEL2_CD,LEVEL2_NM as VAT_YN_NM FROM T_SC9100 WHERE busi_gb = 'j' and level1_cd = '340') D -- VAT여부 -->
+		 	,(SELECT LEVEL2_CD,LEVEL2_NM as OUT_ITEM_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD = '160') E -- 부문 -->
+		WHERE
+			 A.OUT_ITEM *= E.LEVEL2_CD
+			AND
+			 A.OUT_CORP *= B.CUST_CD
+			AND
+			 A.E_RMK *= C.LEVEL2_CD	
+			AND
+			 A.VAT_YN *= D.LEVEL2_CD
+			AND
+		 	 PJT_CD = #{PJT_CD} 
+			AND 
+		 	 OUT_CORP = #{OUT_CORP} 
+		 	AND
+	 		 OUT_ITEM = #{OUT_ITEM}
+	</select>
+<!--3.1.1 용역계약서 기성단계 출력  -->
+	<select id="getCooperationPJTGisung"
+		parameterType="ksmart30.team01.cooperation.domain.CooperationSangseRequest"
+		resultType="java.util.Map">
+		SELECT
+		 	* 
+		FROM 
+		 	T_P12010 A
+		 	,(SELECT LEVEL2_CD,LEVEL2_NM AS GI_GBN_NM FROM T_SC9100 WHERE busi_gb = 'j' and level1_cd = '150') B <!-- 기성단계 -->
+		WHERE
+			 A.GI_GBN *= B.LEVEL2_CD
+			AND
+		 	 PJT_CD = #{PJT_CD} 
+			AND 
+		 	 OUT_CORP = #{OUT_CORP} 
+		 	AND
+	 		 OUT_ITEM = #{OUT_ITEM}
+	</select>
+<!--3.1.1 용역계약서 용역내용 출력  -->
+	<select id="getCooperationPJTDragon"
+		parameterType="ksmart30.team01.cooperation.domain.CooperationSangseRequest"
+		resultType="java.util.Map">
+		SELECT
+		 	* 
+		FROM 
+		 	T_P12020 A
+		 	,(SELECT LEVEL2_CD,LEVEL2_NM AS CONTRACT_MEMO_NM FROM T_SC9100 WHERE busi_gb = 'j' and level1_cd = '410') B <!-- 용역내용 -->
+		WHERE
+			 A.CONTRACT_MEMO *= B.LEVEL2_CD
+			AND
+		 	 PJT_CD = #{PJT_CD} 
+			AND 
+		 	 OUT_CORP = #{OUT_CORP} 
+		 	AND
+	 		 OUT_ITEM = #{OUT_ITEM}
+	</select>
+<!--3.2.1 외주비 분석현황(용도별) 검색 쿼리 -->
+	<select id="getCooperationDragonHyunhwang"
+		parameterType="ksmart30.team01.cooperation.domain.CooperationDragonHyunhwangRequest"
+		resultType="java.util.Map">
+		SELECT 
+				X.BUILD_NM,X.PJT_NM,   
+				ISNULL(X.BIZ_NM,'') BIZ_NM,   X.CUST_NM,
+				X.G_AREA_P, X.G_YAREA_P, 
+				X.CONTRACT_AMT, X.CONTRACT_DAN, X.CONTRACT_RAT,
+				X.OUT_01, X.DAN_01, -- 건축 01
+				X.OUT_02, X.DAN_02, -- 기계 02
+				X.OUT_03, X.DAN_03, -- 전기 03
+				X.OUT_04, X.DAN_04, -- 구조 04
+				X.OUT_05, X.DAN_05, -- 견적 05
+				X.OUT_08, X.DAN_08, -- 교통영향평가 08
+				X.OUT_11, X.DAN_11, -- 측량 11
+				X.OUT_14, X.DAN_14, -- 소방 14
+				X.OUT_29, X.DAN_29, -- 기타 29
+				X.OUT_04, X.DAN_04, -- 토목 04
+				X.OUT_05, X.DAN_05, -- 조경 05
+				X.OUT_10, X.DAN_10, -- 지질조사 10
+				X.OUT_12, X.DAN_12, -- 흙막이 12
+				X.COST2_01, X.COST2_02, --제조경비1 중 조감도비 , 모형비
+				ISNULL(X.WORK_STEP_NM,'') WORK_STEP_NM,
+				X.COST_AMT1, X.SIL_COST1, X.CHA_COST1,
+				X.PLAN_MH1, X.PLAN_MH2, X.PLAN_TOT,
+				X.SIL_MH1, X.SIL_MH2, X.SIL_TOT,
+				PJT_CD,BUILD_GBN
+		FROM 
+			SF_P01_2400M_SL1(#{STRAT_DATE}, #{END_DATE}, #{BUILD_CD}, #{BIZ_CD}, #{Y_P_STRAT}, #{Y_P_END}, #{DG_P_STRAT}, #{DG_P_END}) X 
+							<!--(시작날짜(필수),끝날짜(필수),		빌드구분,			수주구분,		연면적평시작,		연면적평끝,		대지면적평시작,		대지면적평끝) -->
+		ORDER BY 
+			X.BUILD_GBN, X.YAREA_GBN, X.BIZ_GBN, X.GUBUN, X.GUBUN_SEQ, X.G_YAREA_P, X.PJT_CD
+	
+	</select>
+	
+	
+<!--3.1.1 용역계약서 입력 본문 insert -->
+	<insert id="addCooperationPJTSangse"
+		parameterType="String">
+		INSERT INTO 
+		T_P12000(
+			PJT_CD -- 프로젝트코드
+			,OUT_CORP -- 외주처
+			,CONTRACT_NM -- 외주처이름
+			,DEPT_CD -- 부서코드
+			,OUT_ITEM -- 부문
+			,CONTRACT_DATE -- 계약일자
+			,S_DATE -- 계약기간 시작
+			,E_DATE -- 계약기간 끝
+			,E_RMK -- 종료구분
+			,EX_AMT -- 금액
+			,CONTRACT_AMT --계약금액
+			,VAT_YN -- VAT여부
+			,CON_DOC_YN --계약서 유무
+			,CO_SERVICE --면세근거
+			,CRT_DATE -- 입력날짜
+			) 
+		VALUES (
+			#{PJT_CD} --프로젝트코드
+			,#{OUT_CORP} --외주처 코드(사업자?)
+			,#{CONTRACT_NM} --외주처이름
+			,#{DEPT_CD} --부서코드
+			,#{OUT_ITEM} -- 부문
+			,CONVERT(VARCHAR(8),CONVERT(DATE,#{CONTRACT_DATE}),112) --계약일자
+			,CONVERT(VARCHAR(8),CONVERT(DATE,#{S_DATE}),112) --계약기간 시작
+			,#{E_DATE} --계약기간 끝 입력하지 않아도 됨
+			,#{E_RMK} --종료구분 01 ~ 08
+			,'0' -- 어떤 금액인지 모르겟음
+			,#{CONTRACT_AMT} -- 계약금액 기성 단계 총합과 같아야 됨
+			,#{VAT_YN} -- VAT여부 1,2,3,4
+			,#{CON_DOC_YN} --계약서 유무
+			,'' -- 공백 or 해당없음 (공백도 해당없음 처리) 왜??
+			,CONVERT(VARCHAR(8),GETDATE(),112) -- 현재날짜 문자열로 변환후 입력
+			)	
+	</insert>
+<!--3.1.1 용역계약서 입력 기성단계 insert -->
+	<insert id="addCooperationPJTGisung"
+		parameterType="String">
+		INSERT INTO 
+		T_P12010(
+			PJT_CD
+			,OUT_CORP
+			,CRT_SEQ
+			,OUT_ITEM
+			,GI_GBN
+			,GI_AMT
+			,GI_RATE	
+			) 
+		VALUES (
+			#{PJT_CD} -- 프로젝트코드
+			,#{OUT_CORP} --외주처 코드(사업자?)
+			,#{CRT_SEQ} -- 기성단계 구분 숫자 1~
+			,#{OUT_ITEM} -- 01~27
+			,#{GI_GBN} -- 01 ~ 99
+			,#{GI_AMT} -- 전체 기성 단계 합이 계약 금액과 같아야함
+			,#{GI_RATE} -- % 입력하지 않아도 됨
+			)	
+	</insert>
+<!--3.1.1 용역계약서 입력 용역내용 insert -->
+	<insert id="addCooperationPJTDragon"
+		parameterType="String">
+		INSERT INTO 
+		T_P12020(
+			PJT_CD
+			,OUT_CORP
+			,OUT_ITEM
+			,SEQ
+			,CONTRACT_MEMO
+			) 
+		VALUES (
+			#{PJT_CD} -- 프로젝트코드
+			,#{OUT_CORP} --외주처 코드(사업자?)
+			,#{OUT_ITEM} -- 01~27
+			,#{SEQ} -- 용역 구분 숫자 1~
+			,#{CONTRACT_MEMO} -- 용역 내용코드
+			) 	
+	</insert>
+<!--3.1.1 용역계약서 입력 제조경비예산(예산현황) 입력  insert -->
+	<insert id="addCooperationJEJO"
+		parameterType="String">
+		INSERT INTO
+		T_P11070(
+			PJT_CD --프로젝트 코드
+			,SCV_PART -- 부문
+			,EXCHANGE_NO --외주처
+			,EX_AMT -- 예산
+			,EX_RATE -- 계약 예산
+			,EX_GROUND -- ??
+			,EX_WORK_AMT --실행 예산
+			,BIGO
+		)
+		VALUES(
+			#{PJT_CD} -- 필수
+			,#{OUT_ITEM} -- 필수 
+			,#{OUT_CORP} --필수
+			,'0' -- 계약 외주없체 외 다른 업체입력시 공백
+			,'' -- % 기준이 먼지 몰겟다;;
+			,''
+			,#{CONTRACT_AMT} -- 계약 금액 필수 -- 이거때문에 ㅜㅡ;;
+			,''
+		)
+	</insert>
+<!--3.1.1 용역계약서 입력 제조경비예산(예산현황) 수정  update -->
+	<update id="modifyCooperationJEJO"
+		parameterType="String">
+		UPDATE 
+			T_P11070 
+		SET 
+			EX_WORK_AMT = #{CONTRACT_AMT} -- 계약금액 입력
+		WHERE
+			PJT_CD = #{PJT_CD} -- 프로젝트코드
+			AND
+			SCV_PART = #{OUT_ITEM} --부문
+			AND
+			EXCHANGE_NO = #{OUT_CORP} -- 외주처
+	</update>
+
 </mapper>

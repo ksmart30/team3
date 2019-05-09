@@ -16,10 +16,11 @@
 		FROM T_PS3000	
 		WHERE BUSI_YY LIKE #{BUSI_YY}
 		AND UP_SU BETWEEN #{UP_SU} AND #{UP_SU2}
-		AND YAREA_P BETWEEN #{YAREA_P} AND #{YAREA_P2}		
+		AND YAREA_P BETWEEN #{YAREA_P} AND #{YAREA_P2}
+		ORDER BY PJT_CD	 	
 </select>
 
-<!--사업수행결정서 좌측 목록  -->
+<!-- 1.사업성검토관리 >1.1사업수행결정서관리 >1.1.1사업수행결정서  >1.1.1.1사업수행결정서 좌측 목록  -->
 <select id="getBusinessManageViewList" parameterType="ksmart30.team01.business.domain.BusinessMarket" resultType="java.util.Map">	
 
 		SELECT PJT_CD,PJT_NM
@@ -123,7 +124,6 @@ FROM
   , A.BUILD_GB
   , ISNULL(B.BUSI_RMK,'')  BUSI_RMK
   , ISNULL(B.BUSI_PRO,'')  BUSI_PRO
-  , '20190309'               OPINION_EMP_NO
   , ISNULL(B.MEMBER_DEPT,'')    MEMBER_DEPT
   , ISNULL(B.MEMBER_DEPT_NM,'') MEMBER_DEPT_NM
   , ISNULL(B.MEMBER_PM   ,'')   MEMBER_PM
@@ -193,12 +193,14 @@ DEPT_CD = A.MEMBER_DEPT),'') MEMBER_DEPT_NM
 ) PJT 
 
 WHERE PJT.END_GBN_NM LIKE #{END_GBN}
+AND PJT.PJT_NM LIKE '%'+#{PJT_NM}+'%'
+ORDER BY PJT_CD
 		
 		
 		
 </select>
 
-<!-- 사업수행결정서(승인)프로젝트목록 클릭시 우측에 검색 -->
+<!-- 1.사업성검토관리 >1.1사업수행결정서관리 >1.1.1사업수행결정서  >1.1.1.2 사업수행결정서(승인)프로젝트목록 클릭시 우측에 검색 -->
 <select id="getBusinessManageView" parameterType="ksmart30.team01.business.domain.BusinessMarket" resultType="java.util.Map">
 		SELECT
 		  
@@ -206,8 +208,8 @@ WHERE PJT.END_GBN_NM LIKE #{END_GBN}
 				CUST_CD, <!--발주처 코드  -->
 				CUST_NM, <!--발주처 이름  -->
 				CUST_GBN, <!--발주처구분  --> 
-				PLAN_DATE, <!--완료예정일  -->
-				BUSI_DATE, <!--의뢰 일자  -->
+				CONVERT(date,	PLAN_DATE)PLAN_DATE, <!--완료예정일  -->
+				CONVERT(date,	BUSI_DATE)BUSI_DATE, <!--의뢰 일자  -->
 				CUST_TEL, <!--전화번호  -->
 				BUSI_YY, <!--일련번호 년도  -->
 				BUSI_SEQ, <!--일련번호 번호  -->
@@ -241,10 +243,314 @@ WHERE PJT.END_GBN_NM LIKE #{END_GBN}
 				RMK_5, <!--대표이사 의견  -->
 				BUILD_GB, <!--사업분류 -->
 				CD_REG_DATE, <!--승인일자  -->
-				PJT_CD		 <!--프로젝트코드  -->
+				PJT_CD,		 <!--프로젝트코드  -->
+				MARKET_PM,
+				MARKET_PD,
+				MARKET_EMP_NO,
+				MARKET_MAN,
+				EMP_NO,
+				DEPT_CD,  <!--수행부서  -->
+				ZIP_CD
+				
 			FROM T_PS3000	
 				WHERE PJT_NM LIKE #{PJT_NM}
 
 </select>
+	<!-- 거래처 검색  -->
+<select id="CustCodeList" parameterType="String" resultType="java.util.Map">
+		SELECT  CUST_CD,
+		 		CUST_NM
+		FROM T_AC0300
+		WHERE CUST_CD LIKE '%' + #{cust} + '%' OR CUST_NM LIKE '%' + #{cust} + '%'
+	
+</select>
 
+	<!-- 부서 검색 -->
+	<select id="DeptCodeList" parameterType="String" resultType="java.util.Map">
+		SELECT  DEPT_CD,
+		 		DEPT_NM
+		FROM T_SC1010
+		WHERE DEPT_CD LIKE '%' + #{dept} + '%' OR DEPT_NM LIKE '%' + #{dept} + '%'
+	</select>
+	
+	<!-- 사원 검색 -->
+	
+		<select id="ResultEmpList" parameterType="map" resultType="map">
+
+		SELECT  A.EMP_NO, 
+				A.KOR_NM, 
+		  		B.SHORT_NM DEPT_NM, 
+		  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM
+		FROM	(SELECT * FROM T_HM1000 UNION SELECT* FROM T_HM1000_T) A, 
+				T_SC1010 B
+		WHERE 	A.DEPT_CD = B.DEPT_CD AND
+				<choose>
+					<when test="columnValue != null">
+						<choose>
+							<when test='column.equals("JIKGUP_NM")'>
+								(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) LIKE '%' + #{columnValue} + '%' AND
+							</when>
+							<otherwise>
+								${column} LIKE '%' + #{columnValue} + '%' AND
+							</otherwise>
+						</choose>
+						(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%' + #{EMP_GB} + '%'
+					</when>
+					<when test="columnValue == null">
+						(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%' + #{EMP_GB} + '%'
+					</when>
+					<otherwise>
+
+					</otherwise>
+				</choose>
+		ORDER BY EMP_NO	
+	</select>
+	
+	
+	
+	
+	<!-- 1.사업성검토관리 >1.1사업수행결정서관리 >1.1.1사업수행결정서  >1.1.1.3 사업수행결정서 저장 T_PS3000 -->
+	<insert id="businessManageViewInsert" parameterType="ksmart30.team01.business.domain.BusinessMarket">
+		INSERT INTO 
+			T_PS3000
+				(
+				BUSI_YY,
+				CUST_CD,
+				CUST_NM,
+				YAREA_M,
+				PJT_NM,
+				PJT_CD,
+				CUST_GBN,
+				CUST_CHARGE_NM,
+				CUST_TEL,
+				BIZ_GBN,
+				BIZ_TYPE,
+				BUILD_GB,
+				ADDR,
+				ZIP_CD,
+				BUILD_TYPE,
+				REGION,
+				ZONE1,
+				SCOPE1,
+				REGION2,
+				ZONE2,
+				SCOPE2,
+				UP_SU,
+				DOWN_SU,
+				H_CNT,
+				AREA_M,
+				AREA_P,
+				COVERAGE,
+				YAREA_P,
+				CAPACITY,
+				RMK_1,
+				RMK_2,
+				RMK_3,
+				RMK_4,
+				RMK_5,
+				CD_REG_DATE, <!--사업수행결정서 insert 쿼리 승인전이기때문에 ""값  -->
+				MARKET_FORECAST_AMT,
+				MARKET_CLASS_GBN,
+				REGION3,
+				ZONE3,
+				SCOPE3,
+				LAND_TYPE,
+				GAREA_P,
+				GAREA_M,
+				CAPACITY_M,
+				CUST_REPRE_NM,
+				CUST_ZIP,
+				CUST_ADDR,
+				ADDR2,
+				END_GBN,
+				MARKET_DEPT,
+				DESIGN_MAN,
+				DEPT_CD,
+				END_DATE,
+				CLASS_GBN,
+				FORECAST_AMT,
+				PJT_TYPE,
+				BUSI_DATE,
+				PLAN_DATE,
+				CRT_DATE,
+				UPD_DATE,
+				CRT_DEPT,
+				CRT_MAN,
+				UPD_MAN,
+				BUSI_SEQ,
+				MARKET_PM,
+				MARKET_PD,
+				MARKET_EMP_NO,
+				MARKET_MAN,
+				EMP_NO
+				
+				) 
+			VALUES
+				(
+				CONVERT(VARCHAR(4), GETDATE(), 112), <!--현재시간에서 년도만 추출 -->
+				#{CUST_CD},
+				#{CUST_NM}, 
+				#{YAREA_M},
+				#{PJT_NM},
+				#{PJT_CD},
+				#{CUST_GBN},
+				#{CUST_CHARGE_NM},
+				#{CUST_TEL},
+				#{BIZ_GBN},
+				#{BIZ_TYPE},
+				#{BUILD_GB},
+				#{ADDR},
+				#{ZIP_CD},
+				#{BUILD_TYPE},
+				#{REGION},
+				#{ZONE1},
+				#{SCOPE1},
+				#{REGION2},
+				#{ZONE2},
+				#{SCOPE2},
+				#{UP_SU},
+				#{DOWN_SU},
+				#{H_CNT},
+				#{AREA_M},
+				#{AREA_P},
+				#{COVERAGE},
+				#{YAREA_P},
+				#{CAPACITY},
+				#{RMK_1},
+				#{RMK_2},
+				#{RMK_3},
+				#{RMK_4},
+				#{RMK_5},
+				'',
+				#{MARKET_FORECAST_AMT},
+				#{MARKET_CLASS_GBN},
+				'',
+				'',
+				'',
+				'',
+				'0',
+				'0',
+				'0',    <!--CAPACITY_M  -->
+				'',
+				'',
+				'',
+				'',
+				'',
+				#{MARKET_DEPT},
+				'',
+				'',
+				'',
+				'',
+				'0',
+				#{PJT_TYPE},
+				CONVERT(VARCHAR(8), CONVERT(date,#{BUSI_DATE}), 112),
+				CONVERT(VARCHAR(8), CONVERT(date,#{PLAN_DATE}), 112),
+				CONVERT(VARCHAR(8), GETDATE(), 112),
+				CONVERT(VARCHAR(8), GETDATE(), 112),
+				'1100',      <!-- 로그인사용자 부서   -->
+				'20190007',  <!-- 로그인사용자  -->
+				'20190007',  <!-- 로그인사용자  -->
+				#{BUSI_SEQ},
+				#{MARKET_PM},
+				#{MARKET_PD},
+				#{MARKET_EMP_NO},
+				#{MARKET_MAN},
+				#{EMP_NO}
+				
+				)
+	
+	
+	</insert>
+	
+	
+	<!-- 사업수행결정서 T_PS3000 테이블 행 삭제 -->
+	<delete id="businessManageViewDelete" parameterType="ksmart30.team01.business.domain.BusinessMarket">
+	
+		DELETE FROM T_PS3000 WHERE PJT_NM = #{PJT_NM}
+	
+	
+	
+	</delete>
+	
+	
+	<!--일련번호  -->
+	<select id="numUp" resultType="String">
+	
+	SELECT ISNULL(MAX(BUSI_SEQ) + 1, 1) FROM T_PS3000
+
+	</select>
+	
+	
+	<!-- 사업수행결정서 승인 T_PS3000 업데이트  -->
+	<update id="businessManageSeunginViewUpdate" parameterType="ksmart30.team01.business.domain.BusinessMarket">
+	
+	UPDATE T_PS3000 SET
+					CD_REG_DATE = CONVERT(VARCHAR(8), CONVERT(date,GETDATE()), 112), <!--승인일  -->
+					CLASS_GBN = #{CLASS_GBN}, <!--범위-->
+					FORECAST_AMT = #{FORECAST_AMT}, <!-- 추정계약액 -->
+					END_DATE = CONVERT(VARCHAR(8), CONVERT(date,#{END_DATE}), 112), <!--처리기한  -->
+ 					DEPT_CD = #{DEPT_CD}, <!-- 사업관리실 수행부서  -->
+					DESIGN_MAN = #{DESIGN_MAN},
+					PM_EMP_NO = #{PM_EMP_NO},
+					PJT_CD = #{PJT_CD}		
+	WHERE
+		PJT_NM = #{PJT_NM}
+	
+	
+	</update>
+	
+	
+	<!--사업수행결정서 승인 SM3000  -->
+	<insert id="businessManageSeunginViewInsert1" parameterType="ksmart30.team01.business.domain.BusinessMarket">
+	
+		INSERT INTO 
+			T_SM3000
+			(
+			PJT_CD,
+			PJT_NM,
+			CRT_MAN,
+			CRT_DATE,
+			UPD_MAN,
+			UPD_DATE,
+			PJT_TYPE,
+			COSTOM,
+			REAL_DEPT, <!-- 수행부서 -->
+			S_CUST_NM, <!--사업수행결정서 거래처명  -->
+			S_PJT_TYPE,
+			S_DEPT_CD,
+			S_PM_EMP_NO,
+			S_EMP_NO,
+			S_ZIP_CD,
+			S_ADDR
+			)
+			VALUES
+			(
+			#{PJT_CD},
+			#{PJT_NM},
+			'20190007',
+			CONVERT(VARCHAR(8), GETDATE(), 112),
+			'20190007',	    
+			CONVERT(VARCHAR(8), GETDATE(), 112),  <!-- 로그인사용자  -->
+			#{PJT_TYPE},
+			#{CUST_CD},
+			#{DEPT_CD},
+			#{CUST_NM},
+			#{PJT_TYPE},
+			#{MARKET_DEPT},
+			#{MARKET_PM},
+			#{EMP_NO},
+			#{ZIP_CD},
+			#{ADDR}	
+			)
+			
+	
+	</insert>
+	
+	
+	<!--사업수행결정서 승인PS1000  -->
+	<insert id="businessManageSeunginViewInsert2" parameterType="ksmart30.team01.business.domain.BusinessMarket">
+	
+	</insert>
+	
+	
 </mapper>

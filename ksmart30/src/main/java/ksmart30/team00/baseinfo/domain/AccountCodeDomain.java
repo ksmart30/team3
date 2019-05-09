@@ -57,6 +57,8 @@ public class AccountCodeDomain {
 	private String CR_MUST_YN10;
 	private String DR_FUND_CD;
 	private String CR_FUND_CD;
+	private String DR_FUND_NM;
+	private String CR_FUND_NM;
 	private String BUDG_YN;
 	private String BK_CONT_CD1;
 	private String BK_CONT_CD2;
@@ -71,6 +73,7 @@ public class AccountCodeDomain {
 	private String HIGH_ACC_CD4;
 	private String HIGH_ACC_CD5;
 	private String HIGH_ACC_CD6;
+	private String PRT_SEQ;
 	
 	public String getACC_CD() {
 		return ACC_CD;
@@ -460,32 +463,24 @@ public class AccountCodeDomain {
 	public void setHIGH_ACC_CD6(String hIGH_ACC_CD6) {
 		HIGH_ACC_CD6 = hIGH_ACC_CD6;
 	}
-	@Override
-	public String toString() {
-		return "AccountCodeDomain [ACC_CD=" + ACC_CD + ", ACC_DTL_CD=" + ACC_DTL_CD + ", ACC_LONG_NM=" + ACC_LONG_NM
-				+ ", ACC_SHRT_NM=" + ACC_SHRT_NM + ", ACC_CLAS=" + ACC_CLAS + ", DRCR_GB=" + DRCR_GB + ", ACC_LEVEL="
-				+ ACC_LEVEL + ", SLIP_EXIST_YN=" + SLIP_EXIST_YN + ", DR_CONT_CD1=" + DR_CONT_CD1 + ", DR_CONT_CD2="
-				+ DR_CONT_CD2 + ", DR_CONT_CD3=" + DR_CONT_CD3 + ", DR_CONT_CD4=" + DR_CONT_CD4 + ", DR_CONT_CD5="
-				+ DR_CONT_CD5 + ", DR_CONT_CD6=" + DR_CONT_CD6 + ", DR_CONT_CD7=" + DR_CONT_CD7 + ", DR_CONT_CD8="
-				+ DR_CONT_CD8 + ", DR_CONT_CD9=" + DR_CONT_CD9 + ", DR_CONT_CD10=" + DR_CONT_CD10 + ", DR_MUST_YN1="
-				+ DR_MUST_YN1 + ", DR_MUST_YN2=" + DR_MUST_YN2 + ", DR_MUST_YN3=" + DR_MUST_YN3 + ", DR_MUST_YN4="
-				+ DR_MUST_YN4 + ", DR_MUST_YN5=" + DR_MUST_YN5 + ", DR_MUST_YN6=" + DR_MUST_YN6 + ", DR_MUST_YN7="
-				+ DR_MUST_YN7 + ", DR_MUST_YN8=" + DR_MUST_YN8 + ", DR_MUST_YN9=" + DR_MUST_YN9 + ", DR_MUST_YN10="
-				+ DR_MUST_YN10 + ", CR_CONT_CD1=" + CR_CONT_CD1 + ", CR_CONT_CD2=" + CR_CONT_CD2 + ", CR_CONT_CD3="
-				+ CR_CONT_CD3 + ", CR_CONT_CD4=" + CR_CONT_CD4 + ", CR_CONT_CD5=" + CR_CONT_CD5 + ", CR_CONT_CD6="
-				+ CR_CONT_CD6 + ", CR_CONT_CD7=" + CR_CONT_CD7 + ", CR_CONT_CD8=" + CR_CONT_CD8 + ", CR_CONT_CD9="
-				+ CR_CONT_CD9 + ", CR_CONT_CD10=" + CR_CONT_CD10 + ", CR_MUST_YN1=" + CR_MUST_YN1 + ", CR_MUST_YN2="
-				+ CR_MUST_YN2 + ", CR_MUST_YN3=" + CR_MUST_YN3 + ", CR_MUST_YN4=" + CR_MUST_YN4 + ", CR_MUST_YN5="
-				+ CR_MUST_YN5 + ", CR_MUST_YN6=" + CR_MUST_YN6 + ", CR_MUST_YN7=" + CR_MUST_YN7 + ", CR_MUST_YN8="
-				+ CR_MUST_YN8 + ", CR_MUST_YN9=" + CR_MUST_YN9 + ", CR_MUST_YN10=" + CR_MUST_YN10 + ", DR_FUND_CD="
-				+ DR_FUND_CD + ", CR_FUND_CD=" + CR_FUND_CD + ", BUDG_YN=" + BUDG_YN + ", BK_CONT_CD1=" + BK_CONT_CD1
-				+ ", BK_CONT_CD2=" + BK_CONT_CD2 + ", BK_CONT_CD3=" + BK_CONT_CD3 + ", UN_MANA_YN=" + UN_MANA_YN
-				+ ", UN_MANA_ST=" + UN_MANA_ST + ", UN_CONT_CD1=" + UN_CONT_CD1 + ", UN_CONT_CD2=" + UN_CONT_CD2
-				+ ", HIGH_ACC_CD1=" + HIGH_ACC_CD1 + ", HIGH_ACC_CD2=" + HIGH_ACC_CD2 + ", HIGH_ACC_CD3=" + HIGH_ACC_CD3
-				+ ", HIGH_ACC_CD4=" + HIGH_ACC_CD4 + ", HIGH_ACC_CD5=" + HIGH_ACC_CD5 + ", HIGH_ACC_CD6=" + HIGH_ACC_CD6
-				+ "]";
+	public String getPRT_SEQ() {
+		return PRT_SEQ;
 	}
-	
+	public void setPRT_SEQ(String pRT_SEQ) {
+		PRT_SEQ = pRT_SEQ;
+	}
+	public String getDR_FUND_NM() {
+		return DR_FUND_NM;
+	}
+	public void setDR_FUND_NM(String dR_FUND_NM) {
+		DR_FUND_NM = dR_FUND_NM;
+	}
+	public String getCR_FUND_NM() {
+		return CR_FUND_NM;
+	}
+	public void setCR_FUND_NM(String cR_FUND_NM) {
+		CR_FUND_NM = cR_FUND_NM;
+	}
 	
 	
 }

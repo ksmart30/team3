@@ -34,6 +34,6 @@ AssetClassifyCodeService assetClassifyCodeService;
 		List<AssetClassifyCodeDomain> assetClassifyCode = assetClassifyCodeService.assetClassifyCodeList();
 		System.out.println("assetClassifyCode : " + assetClassifyCode);
 		model.addAttribute("assetClassifyCode", assetClassifyCode);
-		return "baseinfo/assetClassifyCodeView";
+		return "baseInfo/assetClassifyCodeView";
 	}
 }

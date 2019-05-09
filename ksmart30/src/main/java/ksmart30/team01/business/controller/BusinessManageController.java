@@ -1,7 +1,15 @@
 package ksmart30.team01.business.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import ksmart30.team01.business.service.BusinessManageService;
+
 
 @Controller
 public class BusinessManageController {
@@ -26,24 +34,6 @@ public class BusinessManageController {
 		return "business/businessManageListView";
 	}
 	
-	//현황리스트
-	@GetMapping("/business/businessStateHyunhawngView")
-	public String businessStateHyunhawngView() {
-		return "business/businessStateHyunhawngView";
-	}
-	
-	//
-	@GetMapping("/business/businessSuccessRateView")
-	public String businessSuccessRateView() {
-		return "business/businessSuccessRateView";
-	}
-	
-	//
-	@GetMapping("/business/businessOrderHyunhwangView")
-	public String businessOrderHyunhwangView() {
-		return "business/businessOrderHyunhwangView";
-	}
-
 	
 }
 

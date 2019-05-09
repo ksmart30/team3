@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="ksmart30.team01.business.mapper.BusinessYesanSearchMapper">
+<!-- 사업성검토 검색1 -->
+<select id="businessOutputSearch1"
+		resultType="ksmart30.team01.business.domain.BusinessSearch1">
+	SELECT	*
+	FROM (SELECT A.PJT_CD,'['+A.PJT_CD+A.PJT_TYPE+'] '+ ISNULL(A.SVC,'') PJT_NM
+		,ISNULL(A.SVC  ,'')     PJT_NM1
+		,ISNULL(E.SYS_COD ,'*') SYS_COD
+		,ISNULL(E.DEPT_NM ,'' ) DEPT_NM
+		,ISNULL(E.SHORT_NM,'' ) SHORT_NM
+		,ISNULL(D.CUST_NM ,ISNULL(A.CUST_NM,'')) CUST_NM
+		,ISNULL(A.CUST_CD,'')   CUST_CD
+		,ISNULL(B.COST_AMT1, 0) MAN_COST
+		,ISNULL(B.COST_AMT2, 0) COST_AMT
+		,ISNULL(B.COST_AMT3, 0) SCV_AMT
+		,ISNULL(A.END_GBN  ,'') END_GBN
+		,ISNULL(A.ACT_STAT  ,'') ACT_STAT
+		,
+		CASE ISNULL(A.ACT_STAT,'')	WHEN '2' THEN '진행'
+									WHEN '4' THEN '무산'
+									WHEN '5' THEN '계약'
+									ELSE ''
+		END END_GBN_NM
+			,CAST(ISNULL(A.AREA_P ,0) AS DECIMAL(12,2))	AREA_P
+			,CAST(ISNULL(A.YAREA_P,0) AS DECIMAL(12,2))	YAREA_P
+			,ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD = '170' AND LEVEL2_CD = A.BUILD_TYPE),'')	BUILD_TYPE_NM
+			,ISNULL((SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = A.EMP_NO)   , (SELECT KOR_NM FROM T_HM1000_T WHERE EMP_NO = A.EMP_NO))	EMP_NM
+			,ISNULL((SELECT 'red' FROM T_HM1000_T WHERE EMP_NO = A.EMP_NO)   , '')	EMP_COLOR
+			,ISNULL((SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = A.PM_EMP_NO), (SELECT KOR_NM FROM T_HM1000_T WHERE EMP_NO = A.PM_EMP_NO))	PM_EMP_NM
+			,ISNULL((SELECT 'red' FROM T_HM1000_T WHERE EMP_NO = A.PM_EMP_NO)   , '')	PM_EMP_COLOR
+			,ISNULL((SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = A.DESIGN_MAN),(SELECT KOR_NM FROM T_HM1000_T WHERE EMP_NO = A.DESIGN_MAN))	PD_EMP_NM
+			,ISNULL((SELECT 'red' FROM T_HM1000_T WHERE EMP_NO = A.DESIGN_MAN)   , '')	PD_EMP_COLOR
+			,ISNULL((SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = A.MARKET_MAN),(SELECT KOR_NM FROM T_HM1000_T WHERE EMP_NO = A.MARKET_MAN))	MARKET_NM
+			,ISNULL((SELECT 'red' FROM T_HM1000_T WHERE EMP_NO = A.MARKET_MAN)   , '')	MARKET_COLOR
+			,ISNULL(PRODUCT, '')     	PRODUCT
+			,ISNULL(A.DEPT_CD, '')   	DEPT_CD
+			,ISNULL(A.ADDR, '')      	ADDR
+			,ISNULL(A.BUILD_TYPE,'') 	BUILD_TYPE
+			,ISNULL(A.EMP_NO, '')    	EMP_NO
+			,ISNULL(A.PM_EMP_NO, '') 	PM_EMP_NO
+			,ISNULL(A.BIZ_GBN, '')   	BIZ_GBN
+			,ISNULL(A.FORECAST_AMT, 0)	FORECAST_AMT
+			,F.END_EXP_DATE
+			,ISNULL((SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = G.UPD_MAN),(SELECT KOR_NM FROM T_HM1000_T WHERE EMP_NO = G.UPD_MAN))	KOR_NM
+			,ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD = '200' AND LEVEL2_CD = A.CUST_GBN),'')	CUST_GBN_NM
+			,ISNULL((SELECT TOT_CONTRACT_AMT FROM T_P11000 WHERE PJT_CD = A.PJT_CD),0)	CONTRACT_AMT
+			,ISNULL(G.END_GBN,'') PS_END_GBN
+			,
+		CASE WHEN 
+			ISNULL(A.END_BIGO2,'')  = '1' THEN '1' ELSE '0' END PJT_END_S 
+		,CASE WHEN 
+			ISNULL(A.END_BIGO2,'')  = '2' THEN '1' ELSE '0' END PJT_END_E 
+		,CASE WHEN 
+			ISNULL(A.END_BIGO2,'')  = '3' THEN '1' ELSE '0' END PJT_END_G
+		,CASE WHEN 
+			ISNULL(A.END_BIGO2,'')  = '4' THEN '1' ELSE '0' END PJT_END_T
+	FROM	 T_PS1000 A
+			,T_PS1090 B
+			,T_AC0300 D
+			,SF_SC1010('03', '', '','') E
+			, (SELECT PRE_PJT_CD, END_EXP_DATE FROM T_PS1050 WHERE JOB_STEP='작품제출일') F
+			,T_PS3000 G
+	WHERE 
+		A.PRE_PJT_CD *= B.PRE_PJT_CD
+	AND 
+		A.CUST_CD    *= D.CUST_CD
+	AND 
+		A.DEPT_CD     = E.DEPT_CD
+	AND 
+		A.PRE_PJT_CD *= F.PRE_PJT_CD
+	AND 
+		A.PJT_CD     *= G.PJT_CD
+	AND 
+		ISNULL(A.PJT_CD,'')     LIKE '%'+ #{PJT_CD} +'%'
+	AND 
+		ISNULL(A.SVC ,'')       LIKE '%'+ #{PJT_NM} +'%'
+	AND 
+		ISNULL(A.BUILD_TYPE,'') LIKE '%'+ #{BUILD_TYPE_NM} +'%'
+	AND 
+		ISNULL(A.CUST_CD,'')    LIKE '%'+ #{CUST_CD} +'%'
+	AND 
+		ISNULL(A.CUST_GBN,'')   LIKE '%'+ #{CUST_GBN_NM} +'%'
+	AND 
+		ISNULL(A.ADDR,'')       LIKE '%'+ #{ADDR} +'%'
+	AND 
+		ISNULL(A.ACT_STAT,'')   LIKE '%'+ #{END_GBN_NM} +'%'
+	AND 
+		ISNULL(A.CLASS_GBN,'')  LIKE '%'+ #{CLASS_GBN} +'%'
+	AND 
+		A.SVC  IS NOT NULL
+	AND 
+		ISNULL(A.END_BIGO1,'') IN ('', ' ')
+	
+		) X
+	<if test="FORECAST_AMT != '' and FORECAST_AMT2 != ''">
+	WHERE  
+		PS_END_GBN != '%%'
+	AND	
+		DEPT_NM LIKE '%'+ #{DEPT_NM} +'%'
+	AND	
+		BIZ_GBN LIKE '%'+ #{BIZ_GBN} +'%'
+	AND  
+		FORECAST_AMT BETWEEN #{FORECAST_AMT} AND #{FORECAST_AMT2}
+	ORDER BY PJT_CD DESC
+	</if>
+	<if test="FORECAST_AMT == '' and FORECAST_AMT2 == ''">
+	WHERE  
+		PS_END_GBN != '%%'
+	AND	
+		DEPT_NM LIKE '%'+ #{DEPT_NM} +'%'
+	AND	
+		BIZ_GBN LIKE '%'+ #{BIZ_GBN} +'%'
+	AND  
+		FORECAST_AMT LIKE '%%'
+	ORDER BY PJT_CD DESC
+	</if>
+</select>
+<!-- 사업성검토 검색1 부서셀렉트박스 -->
+<select id="businessOutputSearch1Dept"
+		resultType="map">
+	SELECT DISTINCT DEPT_NM
+	FROM 
+		T_SC1010
+	WHERE 
+		DEPT_NM LIKE '설계'+'%'+'본부'
+</select>
+<!-- 사업성검토 검색1 수주구분셀렉트박스 -->
+<select id="businessSujuSearch"
+		resultType="map">
+	SELECT 	 A.LEVEL2_NM
+			,A.LEVEL2_CD
+	FROM 
+		T_SC9100 A 
+	WHERE 
+		A.LEVEL1_CD = '270' 
+
+</select>
+<!-- 건축물용도 셀렉트박스 -->
+<select id="businessGunSearch"
+		resultType="map">
+	SELECT	*
+	FROM 
+		T_SC9100
+	WHERE
+		LEVEL1_CD = '170'
+	AND 
+		BUSI_GB = 'j'
+</select>
+<!-- 발주처 구분 셀렉트박스 -->
+<select id="businessGubunSearch"
+		resultType="map">
+	SELECT	*
+	FROM
+		T_SC9100
+	WHERE
+		BUSI_GB = 'J' 
+	AND 
+		LEVEL1_CD = '200'
+</select>
+<!-- 사업성검도 검색1 프로젝트코드 팝업창전체리스트(코드별,코드명별) -->
+<select id="businessPjtCd"
+		resultType="ksmart30.team01.business.domain.BusinessSearch1">
+	SELECT 
+		CASE 
+			WHEN (D.PJT_CD IS NOT NULL) THEN D.PJT_CD	
+			WHEN (D.PJT_CD IS NULL) THEN (C.PJT_CD + C.PJT_TYPE)
+	END
+		 PJT_CD
+		,C.PJT_NM
+	<![CDATA[ 
+	FROM  
+		(SELECT A.PJT_CD, A.PJT_TYPE, A.SVC AS PJT_NM FROM T_PS1000 A
+	UNION
+		SELECT B.PJT_CD, B.PJT_TYPE, B.PJT_NM FROM T_PS3000 B WHERE B.PJT_CD <> '' ) C
+		LEFT JOIN T_P11000 D ON C.PJT_CD = D.PJT_CD
+	]]>
+
+	<if test="PJT_CD != null">
+	WHERE 
+		C.PJT_CD LIKE '%'+ #{PJT_CD} +'%'
+	</if>
+	<if test="PJT_NM != null">
+	WHERE 
+		C.PJT_NM LIKE '%'+ #{PJT_NM} +'%'
+	</if>
+	
+
+</select>
+<!-- 사업성검토 검색1(발주처검색) -->
+<select id="businessCustList"
+		resultType="ksmart30.team01.business.domain.BusinessSearch1">
+	SELECT CUST_CD
+		   ,CUST_NM
+	FROM 
+		T_AC0300
+	
+	<if test="CUST_CD != null">
+	WHERE 
+		CUST_CD LIKE '%'+ #{CUST_CD} +'%'
+	</if>
+	
+	<if test="CUST_NM != null">
+	WHERE 
+		CUST_NM LIKE '%'+ #{CUST_NM} +'%'
+	</if>
+</select>
+<!-- 사업성검토 검색2 -->
+<select id="businessOutputSearch2"
+		resultType="ksmart30.team01.business.domain.Business">
+	SELECT 	A.PRE_PJT_CD   
+			,A.PJT_CD       
+			,A.PJT_TYPE     
+			,A.SVC          
+			,A.CUST_GBN     
+			,A.CUST_CD      
+			,
+	CASE 
+		WHEN ISNULL(A.CUST_NM, ' ') > ' '	THEN A.CUST_NM
+											ELSE E.CUST_NM
+	END 
+		CUST_NM    
+		,CAST(A.AREA_P AS DECIMAL(13,2)) AREA_P
+		,CAST(A.AREA_M AS DECIMAL(13,2)) AREA_M
+		,CAST(A.YAREA_P AS DECIMAL(13,2)) YAREA_P
+		,CAST(A.YAREA_M AS DECIMAL(13,2)) YAREA_M
+		,A.BIZ_TYPE
+		,A.BIZ_GBN      
+		,CONVERT(VARCHAR(30),'') BIZ_GBN_NM
+		,A.REGION       
+		,CONVERT(VARCHAR(30),'') REGION_NM
+		,A.REGION2       
+		,CONVERT(VARCHAR(30),'') REGION2_NM
+		,A.REGION3       
+		,CONVERT(VARCHAR(30),'') REGION3_NM
+		,A.ZONE1        
+		,CONVERT(VARCHAR(30),'') ZONE1_NM 
+		,A.ZONE2        
+		,CONVERT(VARCHAR(30),'') ZONE2_NM 
+		,A.ZONE3        
+		,CONVERT(VARCHAR(30),'') ZONE3_NM 
+		,A.SCOPE1        
+		,CONVERT(VARCHAR(30),'') SCOPE1_NM 
+		,A.SCOPE2        
+		,CONVERT(VARCHAR(30),'') SCOPE2_NM 
+		,A.SCOPE3        
+		,CONVERT(VARCHAR(30),'') SCOPE3_NM 
+		,A.ZIP_CD       
+		,A.ADDR         
+		,A.BUILD_TYPE   
+		,CONVERT(VARCHAR(30),'') BUILD_TYPE_NM
+		,A.DEPT_CD      
+		,B.SHORT_NM DEPT_NM      
+		,A.ACT_STAT     
+		,A.END_DATE     
+		,
+	CASE 
+		WHEN A.CRT_DATE >'20060101' THEN A.CRT_DATE
+									ELSE A.CD_REG_DATE
+	END 
+		CD_REG_DATE  
+		,A.CRT_MAN      
+		,A.CRT_DATE     
+		,A.UPD_MAN      
+		,A.UPD_DATE     
+		,A.EST_AMT      
+		,A.END_BIGO1    
+		,A.END_BIGO2    
+		,A.RMK          
+		,A.FORECAST_AMT 
+		,
+	CASE A.ACT_STAT	WHEN '1' THEN '미승인'
+					WHEN '2' THEN '진행'
+					WHEN '4' THEN '(' + SUBSTRING(A.END_DATE,1,4) + '/' + SUBSTRING(A.END_DATE,5,2) + '/' + SUBSTRING(A.END_DATE,7,2) + ' 무산)'
+					WHEN '5' THEN '(' + SUBSTRING(A.END_DATE,1,4) + '/' + SUBSTRING(A.END_DATE,5,2) + '/' + SUBSTRING(A.END_DATE,7,2) + ' 계약)'
+	END APPROVAL
+		,
+	CASE A.ACT_STAT	WHEN '1' THEN 'black'
+					WHEN '2' THEN 'green'
+					WHEN '3' THEN 'blue'
+					WHEN '4' THEN 'magenta'
+					WHEN '5' THEN 'red'
+	END COLOR
+		,A.UP_SU
+		,A.DOWN_SU
+		,A.H_CNT
+		,A.CAPACITY
+		,A.COVERAGE
+		,
+	CASE A.CLASS_GBN	WHEN '11' THEN 'A'
+						WHEN '12' THEN 'B'
+						WHEN '13' THEN 'C'
+						WHEN '14' THEN 'D'
+						WHEN '15' THEN 'E'
+						WHEN '21' THEN 'B1'
+						WHEN '22' THEN 'B2'
+						WHEN '23' THEN 'B3'
+						WHEN '24' THEN 'B4'
+						WHEN '25' THEN 'B5'
+						WHEN '31' THEN 'C1'
+						WHEN '32' THEN 'C2'
+						WHEN '33' THEN 'C3'
+						WHEN '34' THEN 'C4'
+						WHEN '35' THEN 'C5'
+						ELSE ''
+	END CLASS_GBN
+		,A.BUILD_GB
+		,A.PRINT_YN
+		,A.PRINT_CNT
+		,
+	CASE G.CLASS_GBN	WHEN '11' THEN 'A :  현상,PF,TK,기술제안 등 경쟁프로젝트'
+						WHEN '12' THEN 'B :  계약전 외주비(제조1,2) 발생'
+						WHEN '13' THEN 'C :  사업성 검토 외주비(제조1) 발생'
+						WHEN '14' THEN 'D :  사업성검토 인건비 발생'
+						WHEN '15' THEN 'X :  DROP 프로젝트'
+						ELSE ''
+	END CLASS_DESCR  
+	
+	FROM T_PS1000 A
+	INNER JOIN 
+		T_SC1010 B ON A.DEPT_CD = B.DEPT_CD 
+	LEFT OUTER JOIN 
+		T_AC0300 E ON A.CUST_CD = E.CUST_CD 
+	LEFT OUTER JOIN 
+		T_PS3000 G ON A.PJT_CD = G.PJT_CD 
+	LEFT OUTER JOIN 
+		T_HM1000 H ON A.EMP_NO = H.EMP_NO AND A.MARKET_MAN = H.EMP_NO AND A.DESIGN_MAN = H.EMP_NO AND A.PM_EMP_NO = H.EMP_NO AND A.INFO_EMP_NO = H.EMP_NO
+	WHERE 
+		PRE_PJT_CD LIKE '%'+ #{PRE_PJT_CD} +'%'
+	AND 
+		A.AREA_P BETWEEN #{AREA_P} and #{AREA_P2}
+	AND 
+		A.UP_SU BETWEEN #{UP_SU} and #{UP_SU2}
+</select>
+</mapper>

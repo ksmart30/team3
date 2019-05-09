@@ -11,7 +11,12 @@ public class SlipHeaderDomain {
 	private String SLIP_NO;
 	private String INIT_DATE;
 	private String INIT_DEPT_CD;
+	private String INIT_DEPT_NM;
 	private String INIT_EMP_NO;
+	private String INIT_EMP_NM;
+	private String CONFIRM_YN;
+	private String DR_AMT;
+	
 	public String getSLIP_CASH_GB() {
 		return SLIP_CASH_GB;
 	}
@@ -47,12 +52,40 @@ public class SlipHeaderDomain {
 	}
 	public void setINIT_EMP_NO(String iNIT_EMP_NO) {
 		INIT_EMP_NO = iNIT_EMP_NO;
+	}	
+	public String getCONFIRM_YN() {
+		return CONFIRM_YN;
+	}
+	public void setCONFIRM_YN(String cONFIRM_YN) {
+		CONFIRM_YN = cONFIRM_YN;
+	}
+	public String getDR_AMT() {
+		return DR_AMT;
+	}
+	public void setDR_AMT(String dR_AMT) {
+		DR_AMT = dR_AMT;
+	}
+	
+	public String getINIT_DEPT_NM() {
+		return INIT_DEPT_NM;
+	}
+	public void setINIT_DEPT_NM(String iNIT_DEPT_NM) {
+		INIT_DEPT_NM = iNIT_DEPT_NM;
+	}
+	public String getINIT_EMP_NM() {
+		return INIT_EMP_NM;
+	}
+	public void setINIT_EMP_NM(String iNIT_EMP_NM) {
+		INIT_EMP_NM = iNIT_EMP_NM;
 	}
 	@Override
 	public String toString() {
 		return "SlipHeaderDomain [SLIP_CASH_GB=" + SLIP_CASH_GB + ", SLIP_DATE=" + SLIP_DATE + ", SLIP_NO=" + SLIP_NO
-				+ ", INIT_DATE=" + INIT_DATE + ", INIT_DEPT_CD=" + INIT_DEPT_CD + ", INIT_EMP_NO=" + INIT_EMP_NO + "]";
+				+ ", INIT_DATE=" + INIT_DATE + ", INIT_DEPT_CD=" + INIT_DEPT_CD + ", INIT_DEPT_NM=" + INIT_DEPT_NM
+				+ ", INIT_EMP_NO=" + INIT_EMP_NO + ", INIT_EMP_NM=" + INIT_EMP_NM + ", CONFIRM_YN=" + CONFIRM_YN
+				+ ", DR_AMT=" + DR_AMT + "]";
 	}
+	
 
 	
 }

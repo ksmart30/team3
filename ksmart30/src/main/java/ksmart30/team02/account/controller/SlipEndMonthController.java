@@ -9,7 +9,7 @@ public class SlipEndMonthController {
 		@GetMapping("/acc/slipEndMonthView")
 		public String slipEndMonthView() {
 			System.out.println("전표마감 (월) slipEndMonthIn SlipEndDayController.java");
-			return "/account/slip/endmonth/slipendmonth_in";
+			return "/account/slipendmonth_in";
 		}
 	}
 

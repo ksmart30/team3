@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SlipDetailMapper {
+	List<Map<String, String>> getAccountFirm();
+	
 	List<Map<String, String>> getAccountCodeList(String account);
 	
 	List<Map<String, String>> getDeptCodeList(String dept);

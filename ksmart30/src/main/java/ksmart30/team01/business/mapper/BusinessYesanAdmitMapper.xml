@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team01.business.mapper.BusinessYesanAdmitMapper">
+	<select id="getDeptList" resultType="map">
+		<![CDATA[
+		SELECT B.DEPT_CD, B.DEPT_NM
+		FROM (SELECT CASE WHEN CONVERT(FLOAT,A.DEPT_CD)/100=(CONVERT(INT,SUBSTRING(A.DEPT_CD,1,2))) THEN A.DEPT_CD END DEPT_CD,
+					 CASE WHEN CONVERT(FLOAT,A.DEPT_CD)/100=(CONVERT(INT,SUBSTRING(A.DEPT_CD,1,2))) THEN A.DEPT_NM END DEPT_NM 
+					 FROM T_SC1010 A
+					 WHERE A.DEPT_CD > 7400 AND A.DEPT_CD<8000) B
+		WHERE B.DEPT_CD IS NOT NULL;
+		]]>
+	</select>
+	<select id="getProjectList" parameterType="map" resultType="map">
+		SELECT CASE WHEN (D.PJT_CD IS NOT NULL) THEN D.PJT_CD
+				WHEN (D.PJT_CD IS NULL) THEN (C.PJT_CD + C.PJT_TYPE) END PJT_CD,
+				C.PJT_NM
+		FROM  (SELECT A.PJT_CD, A.PJT_TYPE, A.SVC AS PJT_NM FROM T_PS1000 A
+				 UNION
+				 SELECT B.PJT_CD, B.PJT_TYPE, B.PJT_NM FROM T_PS3000 B WHERE B.PJT_CD <![CDATA[<>]]> '' ) C
+		       LEFT JOIN T_P11000 D ON C.PJT_CD = D.PJT_CD
+		<choose>
+			<when test="columnValue != null">
+				<choose>
+					<when test='column.equals("PJT_CD")'>
+						WHERE (C.PJT_CD+C.PJT_TYPE) LIKE '%'+#{columnValue}+'%'
+					</when>
+					<otherwise>
+						WHERE C.PJT_NM LIKE '%'+#{columnValue}+'%'
+					</otherwise>
+				</choose>
+			</when>
+			<when test="columnValue == null">
+				WHERE (C.PJT_CD+C.PJT_TYPE) LIKE '%%' AND C.PJT_NM LIKE '%%'
+			</when>
+			<otherwise>
+				
+			</otherwise>
+		</choose>
+	</select>
+	<select id="getResultProjectList" parameterType="map" resultType="map">
+		
+		SELECT (A.PJT_CD+A.PJT_TYPE) AS PJT_CD,
+				A.SVC AS PJT_NM,
+				CASE A.ACT_STAT WHEN '1' THEN 'black'
+		                       	WHEN '2' THEN 'green'
+		                       	WHEN '3' THEN 'blue'
+		                       	WHEN '4' THEN 'magenta'
+		                       	WHEN '5' THEN 'red'
+       			END COLOR
+		FROM 	T_PS1000 A
+				INNER JOIN T_SC1010 B ON A.DEPT_CD = B.DEPT_CD
+				LEFT OUTER JOIN T_AC0300 E ON A.CUST_CD = E.CUST_CD
+				LEFT OUTER JOIN T_HM1000 H ON A.EMP_NO = H.EMP_NO AND A.MARKET_MAN = H.EMP_NO AND A.DESIGN_MAN = H.EMP_NO AND A.PM_EMP_NO = H.EMP_NO AND A.INFO_EMP_NO = H.EMP_NO
+				LEFT OUTER JOIN (SELECT * FROM T_PS9200 WHERE REG_YY=YEAR(CONVERT(DATE,#{DateYear}))) F ON A.CLASS_GBN = F.CLASS_GBN
+				LEFT OUTER JOIN T_PS3000 G ON A.PJT_CD = G.PJT_CD
+		WHERE 	A.ACT_STAT LIKE '%' + #{ACT_STAT} + '%'
+				AND (A.PJT_CD+A.PJT_TYPE) LIKE '%' + #{PJT_CD} + '%'
+				AND A.SVC LIKE '%' + #{PJT_NM} + '%'
+				AND ISNULL(A.END_BIGO1,'') IN ('', ' ')
+				AND ISNULL(G.END_GBN, '') != '22'
+				AND G.CRT_DATE BETWEEN #{FIRSTDATE} AND #{ENDDATE}
+		ORDER BY (CASE WHEN SUBSTRING(A.PJT_CD,1,2)<![CDATA[ <]]> '70' THEN '20' + A.PJT_CD  ELSE '19' + A.PJT_CD END ) 
+	</select>
+	
+	<select id="getResultProject" parameterType="String" resultType="hashmap">
+		SELECT 	(A.PJT_CD+A.PJT_TYPE) AS PJT_CD,<!-- 프로젝트 코드 -->
+			A.SVC AS PJT_NM,<!-- 프로젝트명 -->
+			CASE WHEN A.CRT_DATE >'20060101' THEN A.CRT_DATE ELSE A.CD_REG_DATE
+			END CD_REG_DATE  , <!--코드발행일 -->
+			CASE A.ACT_STAT WHEN '1' THEN '미승인'
+								 WHEN '2' THEN '진행'
+								 WHEN '4' THEN '(' + SUBSTRING(A.END_DATE,1,4) + '/' + SUBSTRING(A.END_DATE,5,2) + '/' + SUBSTRING(A.END_DATE,7,2) + ' 무산)'
+								 WHEN '5' THEN '(' + SUBSTRING(A.END_DATE,1,4) + '/' + SUBSTRING(A.END_DATE,5,2) + '/' + SUBSTRING(A.END_DATE,7,2) + ' 계약)'
+			END APPROVAL,
+			CASE A.ACT_STAT WHEN '1' THEN 'black'
+								 WHEN '2' THEN 'green'
+								 WHEN '3' THEN 'blue'
+								 WHEN '4' THEN 'magenta'
+								 WHEN '5' THEN 'red'
+			END COLOR,
+			<!-- 상세내역 -->
+			CASE WHEN ISNULL(A.CUST_NM, ' ') > ' ' THEN A.CUST_NM ELSE E.CUST_NM
+			END CUST_NM    ,<!-- 발주처명 -->
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='200' AND LEVEL2_CD = A.CUST_GBN),'') AS CUST_GBN, <!-- 발주처 구분 -->
+			A.ZIP_CD       , <!-- 대지위치 코드 -->
+			A.ADDR         , <!-- 대지위치 주소 -->
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='320' AND LEVEL2_CD = A.REGION),'') AS REGION1_NM,
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='320' AND LEVEL2_CD = A.REGION2),'') AS REGION2_NM,
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='320' AND LEVEL2_CD = A.REGION3),'') AS REGION3_NM,
+
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='330' AND LEVEL2_CD = A.ZONE1),'') AS ZONE1_NM,
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='330' AND LEVEL2_CD = A.ZONE2),'') AS ZONE2_NM,
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='330' AND LEVEL2_CD = A.ZONE3),'') AS ZONE3_NM,
+
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='330' AND LEVEL2_CD = A.SCOPE1),'') AS SCOPE1_NM,
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='330' AND LEVEL2_CD = A.SCOPE2),'') AS SCOPE2_NM,			
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='330' AND LEVEL2_CD = A.SCOPE3),'') AS SCOPE3_NM,						
+
+			ISNULL((SELECT LEVEL2_SHORT_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='272' AND LEVEL2_CD = A.BIZ_TYPE),'') AS BIZ_TYPE,<!-- 민간 -->
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='270' AND LEVEL2_CD = A.BIZ_GBN),'') AS BIZ_GBN,<!-- 현상설계 코드 -->
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='171' AND LEVEL2_CD = A.BUILD_GB),'') AS BUILD_GB,
+			ISNULL((SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD='170' AND LEVEL2_CD = A.BUILD_TYPE),'') AS BUILD_TYPE,<!-- 건축물용도 코드 -->
+
+			ISNULL(CONVERT(VARCHAR, CAST(A.AREA_M AS DECIMAL(13,2))),'') AS AREA_M,<!-- 대지면적 메다 -->
+			ISNULL(CONVERT(VARCHAR, CAST(A.AREA_P AS DECIMAL(13,2))),'') AS AREA_P,<!-- 대지면적 평 -->
+			
+			ISNULL(CONVERT(VARCHAR, A.DOWN_SU),'') AS DOWN_SU,<!-- EX)값:1 규모 지하 1층 -->
+			ISNULL(CONVERT(VARCHAR, A.UP_SU),'') AS UP_SU,<!-- EX)값:5 규모 지상 1층 -->
+			ISNULL(CONVERT(VARCHAR, A.H_CNT),'') AS H_CNT,<!-- EX)값:0 세대수 -->
+			
+			ISNULL(CONVERT(VARCHAR, CAST(A.YAREA_M AS DECIMAL(13,2))),'') AS YAREA_M,<!-- 연면적 메다 -->
+			ISNULL(CONVERT(VARCHAR, CAST(A.YAREA_P AS DECIMAL(13,2))),'') AS YAREA_P,<!-- 연면적 평 -->
+			
+			ISNULL(CONVERT(VARCHAR, CAST(A.COVERAGE AS DECIMAL)),'') AS COVERAGE, <!-- EX)값:20 비율 건폐율 % -->
+			ISNULL(CONVERT(VARCHAR, CAST(A.CAPACITY AS DECIMAL)),'') AS CAPACITY, <!-- EX)값:120 비율 용적율 % -->
+			B.SHORT_NM AS DEPT_NM      , --<!-- 수행부서명 -->
+			ISNULL((SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = A.INFO_EMP_NO UNION SELECT KOR_NM FROM T_HM1000_T WHERE EMP_NO = A.INFO_EMP_NO),'') AS INFO_EMP_NO, <!-- 정보취득자 -->
+			CASE A.CLASS_GBN WHEN '11' THEN 'A'
+								  WHEN '12' THEN 'B'
+								  WHEN '13' THEN 'C'
+								  WHEN '14' THEN 'D'
+								  WHEN '15' THEN 'E'
+								  WHEN '21' THEN 'B1'
+								  WHEN '22' THEN 'B2'
+								  WHEN '23' THEN 'B3'
+								  WHEN '24' THEN 'B4'
+								  WHEN '25' THEN 'B5'
+								  WHEN '31' THEN 'C1'
+								  WHEN '32' THEN 'C2'
+								  WHEN '33' THEN 'C3'
+								  WHEN '34' THEN 'C4'
+								  WHEN '35' THEN 'C5'
+								  ELSE ''
+			END CLASS_GBN, <!-- 업무범위/수준 -->
+			ISNULL((SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = A.PM_EMP_NO UNION SELECT KOR_NM FROM T_HM1000_T WHERE EMP_NO = A.PM_EMP_NO),'') AS PM_EMP_NO,
+			ISNULL((SELECT KOR_NM FROM T_HM1000 WHERE EMP_NO = A.DESIGN_MAN UNION SELECT KOR_NM FROM T_HM1000_T WHERE EMP_NO = A.DESIGN_MAN),'') AS DESIGN_MAN,
+
+			CASE WHEN (A.PRODUCT='' OR A.PRODUCT IS NULL) THEN F.PRODUCT ELSE A.PRODUCT
+			END PRODUCT, <!-- 납품성과물 -->
+			A.FORECAST_AMT, <!-- 추정계약액 -->
+			(I.COST_AMT1 + I.COST_AMT2 + I.COST_AMT3 + I.DIV_AMT20 + I.DIV_AMT30 + I.DIV_AMT10 + I.DIV_AMT40) AS TOTAL_AMT,--<!-- 예산총계 -->
+			A.PRINT_CNT,	<!-- 출력횟수 -->
+			A.PRINT_YN,
+			CASE G.CLASS_GBN WHEN '11' THEN 'A :  현상,PF,TK,기술제안 등 경쟁프로젝트'
+								  WHEN '12' THEN 'B :  계약전 외주비(제조1,2) 발생'
+								  WHEN '13' THEN 'C :  사업성 검토 외주비(제조1) 발생'
+								  WHEN '14' THEN 'D :  사업성검토 인건비 발생'
+								  WHEN '15' THEN 'X :  DROP 프로젝트'
+								  ELSE ''
+			END CLASS_DESCR
+
+		FROM 	T_PS1000 A
+				INNER JOIN T_SC1010 B ON A.DEPT_CD = B.DEPT_CD
+				LEFT OUTER JOIN T_AC0300 E ON A.CUST_CD = E.CUST_CD
+				LEFT OUTER JOIN T_HM1000 H ON A.EMP_NO = H.EMP_NO AND A.MARKET_MAN = H.EMP_NO AND A.DESIGN_MAN = H.EMP_NO AND A.PM_EMP_NO = H.EMP_NO AND A.INFO_EMP_NO = H.EMP_NO
+				LEFT OUTER JOIN (SELECT * FROM T_PS9200 WHERE REG_YY=YEAR(GETDATE())) F ON A.CLASS_GBN = F.CLASS_GBN
+				LEFT OUTER JOIN T_PS3000 G ON A.PJT_CD = G.PJT_CD
+				LEFT OUTER JOIN T_PS1090 I ON I.PRE_PJT_CD = A.PRE_PJT_CD
+				
+		WHERE (A.PJT_CD+A.PJT_TYPE) LIKE '%' + #{PJT_CD} + '%'
+				AND ISNULL(A.END_BIGO1,'') IN ('', ' ')
+				AND ISNULL(G.END_GBN, '') != '22'
+		<![CDATA[ORDER BY (CASE WHEN SUBSTRING(A.PJT_CD,1,2) < '70' THEN '20' + A.PJT_CD  ELSE '19' + A.PJT_CD END )]]>
+	</select>
+	
+	<select id="getResultEmpList" parameterType="map" resultType="map">
+		
+		SELECT  A.EMP_NO, 
+				A.KOR_NM, 
+		  		B.SHORT_NM DEPT_NM, 
+		  		(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) JIKGUP_NM
+		FROM	(SELECT * FROM T_HM1000 UNION SELECT* FROM T_HM1000_T) A, 
+				T_SC1010 B
+		WHERE 	A.DEPT_CD = B.DEPT_CD AND
+				<choose>
+					<when test="columnValue != null">
+						<choose>
+							<when test='column.equals("JIKGUP_NM")'>
+								(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'H' AND LEVEL1_CD = '110' AND LEVEL2_CD = A.JIKGUP_CD) LIKE '%' + #{columnValue} + '%' AND
+							</when>
+							<otherwise>
+								${column} LIKE '%' + #{columnValue} + '%' AND
+							</otherwise>
+						</choose>
+						(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%' + #{EMP_GB} + '%'
+					</when>
+					<when test="columnValue == null">
+						(CASE WHEN A.OUT_DT ='' THEN '재직자' WHEN A.OUT_DT IS NOT NULL THEN '퇴직자' END) LIKE '%' + #{EMP_GB} + '%'
+					</when>
+					<otherwise>
+						
+					</otherwise>
+				</choose>
+		ORDER BY EMP_NO	
+	</select>
+	<select id="getProjectSchedule" parameterType="String" resultType="hashmap">
+		SELECT 	A.SEQ,
+				A.JOB_STEP,
+				(	SELECT CASE WHEN COUNT(*) = 0 THEN COUNT(*) ELSE COUNT(*)-1 END
+					FROM T_PS1050_H
+					WHERE PRE_PJT_CD = A.PRE_PJT_CD AND SEQ = A.SEQ) UPD_COUNT,
+				A.END_EXP_DATE,
+				RTRIM(A.END_DATE) END_DATE,
+				A.BIGO
+		FROM T_PS1050 A
+		WHERE A.PRE_PJT_CD LIKE '%' + #{PJT_CD} + '%'
+	</select>
+	<select id="getProjectMhPlan" parameterType="String" resultType="hashmap">
+		SELECT 	(ROW_NUMBER() OVER (ORDER BY B.LEVEL2_CD)) as NUM,
+				B.LEVEL2_CD,
+				B.LEVEL2_NM,
+				C.INWON_1,
+				C.MD_PLAN_1,
+				C.INWON_2,
+				C.MD_PLAN_2,
+				C.INWON,
+				ISNULL(A.MD_PLAN,'0') MD_PLAN,
+				ISNULL(A.YEA_AMT,'0') YEA_AMT,
+				C.BIGO
+		FROM SF_P01_1210M_SL4 (#{PJT_CD},'','S') A RIGHT OUTER JOIN T_SC9100 B ON B.LEVEL2_CD = A.JIKGUP_CD
+		LEFT OUTER JOIN T_PS1010 C ON B.LEVEL2_CD = C.JIKGUB 
+		WHERE B.LEVEL1_CD = '110' AND B.BUSI_GB = 'H' AND B.LEVEL2_CD > '130' AND B.LEVEL2_CD <![CDATA[< ]]> '800' AND C.PRE_PJT_CD LIKE '%' + #{PJT_CD} + '%'
+		ORDER BY  B.LEVEL2_CD
+	</select>
+	<select id="getProjectJejo1Left" parameterType="String" resultType="hashmap">
+		SELECT (ROW_NUMBER() OVER (ORDER BY A.COST_CD)) as NUM,
+			   ISNULL(A.PRE_PJT_CD, '20'+ #{PJT_CD}) PRE_PJT_CD,
+		       ISNULL(A.COST_CD   , B.LEVEL2_CD)    COST_CD,
+		       CASE A.COST_CD WHEN '021' THEN '시내교통비'
+		                      WHEN '031' THEN '인지세'
+		                      WHEN '051' THEN '교제비'
+		                      WHEN '062' THEN '도서등록비'
+		                                 ELSE B.LEVEL2_NM END COST_NM,
+		       ISNULL(A.PJT_CD,'')  PJT_CD,
+		       ISNULL(A.COST_AMT,0) COST_AMT,
+		       ISNULL(A.COST_CD,B.LEVEL2_CD) OLD_COST_CD,
+		       ISNULL(A.BIGO,'') BIGO,
+		       CASE SUBSTRING(B.REF2_NM,1,1) WHEN 'A' THEN 'red'
+		       ELSE '' END COLOR
+		  FROM T_PS1020 A,
+		       T_SC9100 B
+		 WHERE B.BUSI_GB    = 'J'
+		   AND B.LEVEL1_CD  = '180'
+		   AND SUBSTRING(B.REF2_NM,1,1) = 'A'
+		   AND ((ISNULL((SELECT CD_REG_DATE FROM T_PS1000 WHERE PRE_PJT_CD = '20'+ #{PJT_CD}),'20030000') <![CDATA[< ]]>  '20030000' AND B.LEVEL2_CD NOT IN ('081','012')) OR
+		        (ISNULL((SELECT CD_REG_DATE FROM T_PS1000 WHERE PRE_PJT_CD = '20'+ #{PJT_CD}),'20030000') >= '20030000' ))
+		   AND A.COST_CD    =* B.LEVEL2_CD
+		   AND A.PRE_PJT_CD = '20'+ #{PJT_CD}
+		ORDER BY COST_CD
+	</select>
+	<select id="getProjectJejo1Right" parameterType="String" resultType="hashmap">
+		SELECT 	(ROW_NUMBER() OVER (ORDER BY A.COST_CD)) as NUM,
+				ISNULL(A.PRE_PJT_CD, '20'+ #{PJT_CD}) PRE_PJT_CD,
+		       	ISNULL(A.COST_CD, B.LEVEL2_CD)  COST_CD,
+		       	ISNULL(B.LEVEL2_NM, '')         COST_NM,
+		       	ISNULL(A.PJT_CD,'')  PJT_CD,
+		       	ISNULL(A.COST_AMT,0) COST_AMT,
+		       	ISNULL(A.COST_CD,B.LEVEL2_CD) OLD_COST_CD,
+		       	ISNULL(A.BIGO,'') BIGO,
+		       	'' COLOR
+		FROM 		T_PS1020 A,
+		       	T_SC9100 B
+		WHERE 	B.BUSI_GB    = 'J'
+		   		AND B.LEVEL1_CD  = '180'
+	<![CDATA[	AND (SUBSTRING(B.REF2_NM,1,1) <> 'A' OR B.LEVEL2_CD IN ('081','012'))
+		   		AND ((ISNULL((SELECT CD_REG_DATE FROM T_PS1000 WHERE PRE_PJT_CD = '20'+ #{PJT_CD}),'20030000') <  '20030000') OR]]>
+		        		 (ISNULL((SELECT CD_REG_DATE FROM T_PS1000 WHERE PRE_PJT_CD = '20'+ #{PJT_CD}),'20030000') >= '20030000' AND B.LEVEL2_CD NOT IN ('081','012')))   
+		   		AND A.PRE_PJT_CD = '20'+ #{PJT_CD}
+		   		AND A.COST_CD    =* B.LEVEL2_CD
+		ORDER BY A.COST_CD
+	</select>
+	<select id="getProjectJejo2" parameterType="String" resultType="hashmap">
+		SELECT 	(ROW_NUMBER() OVER (ORDER BY ACC_CD)) as NUM,*
+		FROM	(SELECT DISTINCT A.ACC_CD,
+						A.ACC_DTL_CD,
+		       			A.ACC_LONG_NM,
+		       			A.YEA_AMT,
+				       	B.BIGO,
+				       	CASE WHEN A.CHA_AMT <![CDATA[< ]]>0 THEN 'red' ELSE 'black'
+				       	END COLOR
+				 FROM 	SF_P21_4100M_JEJO2 (#{PJT_CD},'','S') A LEFT OUTER JOIN T_PS1030 B ON B.PRE_PJT_CD LIKE '%' + #{PJT_CD} + '%') C
+		ORDER BY C.ACC_DTL_CD
+	</select>
+	<select id="getProjectReport" parameterType="String" resultType="hashmap">
+		SELECT PRE_PJT_CD AS PJT_CD, 
+		       COST_AMT1 AS LABOR_COST, 
+		       COST_AMT2 AS MANU_COST1,
+		       COST_AMT3 AS MANU_COST2,
+		       (COST_AMT1 + COST_AMT2 + COST_AMT3) AS SELF_SUM,
+		       DIV_AMT40 AS COMMON_COST1,
+		       DIV_AMT44 AS COMMON_COST_BU, 
+		       (DIV_AMT41+DIV_AMT42) AS COMMON_COST_BON,
+			   (DIV_AMT45+DIV_AMT46) AS COMMON_COST_DEPT,
+			   DIV_AMT10 AS INDIREC_COST,
+		       DIV_AMT11 AS BUILDING_COST,
+		       DIV_AMT13 AS TELE_COST,
+		       DIV_AMT12 AS NET_COST,
+			   DIV_AMT20 AS COMMON_COST2,
+		       DIV_AMT30 AS MANAGE_COST,
+		       (DIV_AMT20 + DIV_AMT30+ DIV_AMT10 + DIV_AMT40) AS DIV_AMT,
+		       (COST_AMT1 + COST_AMT2 + COST_AMT3 + DIV_AMT20 + DIV_AMT30 + DIV_AMT10 + DIV_AMT40) AS COST_AMT    	 
+	  FROM T_PS1090 A
+	 WHERE A.PRE_PJT_CD = '20'+ #{PJT_CD}
+	</select>
+	
+	<update id="admitProcess" parameterType="String">
+		UPDATE T_PS1000 SET ACT_STAT='2' WHERE PJT_CD = #{PJT_CD}
+	</update>
+</mapper>

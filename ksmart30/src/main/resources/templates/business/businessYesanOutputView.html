@@ -4,174 +4,325 @@
 	layout:decorator="layout/main">
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
+	<!-- Datatables -->
+    <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+	
 	<title>2.2.3 승인된 승인 사업수행 결정서 예산 출력</title>
 	<th:block th:include="layout/customHead"></th:block>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script>
+		//엔터키방지!!
+		$(document).keypress((e)=>{
+			if(e.keyCode == 13){
+				r.preventDefault();
+			}
+		});
+		//엔터키방지끝
+		
+		//라디오버튼 클릭시 결과에맞는 값으로 리스트보기
+		$(document).ready(()=>{
+				$(':radio[name=radioSelect]').click(()=>{
+				console.log('라디오라오~');
+				const ACT_STAT = $(':radio[name=radioSelect]:checked').val();
+				const PRE_PJT_CD = $('#year').val();
+				const DEPT_NM = $('#DEPT_NM').val();
+				console.log(ACT_STAT+' <--ACT_STAT~');
+				$.ajax({
+					url : '/businessYesanList2',
+					type : 'GET',
+					data : {ACT_STAT:ACT_STAT,PRE_PJT_CD:PRE_PJT_CD,DEPT_NM:DEPT_NM},
+					success : (list)=>{
+						console.log(list);
+						let tr = '';
+						$('#list').empty();
+						$(list).each((index,item)=>{
+							let index1 = index+1;
+								tr += '<tr>';
+								tr += '<td>'+index1+'</td>';
+								tr += '<td>'+item.dept_NM+'</td>';
+								tr += '<td>'+item.pjt_CD+'</td>';
+								tr += '<td>'+item.svc+'</td>';
+								tr += '<td><input type="checkbox" value="item.print_YN"></td>';	
+								tr += '</tr>';
+						});
+						$('#list').append(tr);
+					}
+				});
+				
+			});
+			//조회버튼 클릭시 년도,부서에맞게 전체리스트 보기
+			$('#insertList').click(()=>{
+				console.log('눌렸나요?');
+				const PRE_PJT_CD = $('#year').val();
+				const DEPT_NM = $('#DEPT_NM').val();
+				const PJT_CD = $('#pjCode').val();
+				const SVC = $('#pjName').val();
+				console.log(PRE_PJT_CD+'PRE_PJT_CD 받아오나연~');
+				console.log(DEPT_NM+'DEPT_NM 받아오나연~');
+				console.log(PJT_CD+'PJT_CD 받아오나연~');
+				console.log(SVC+'SVC 받아오나연~');
+				$.ajax({
+					url : '/businessYesanList',
+					type : 'GET',
+					data : {PRE_PJT_CD:PRE_PJT_CD,DEPT_NM:DEPT_NM,PJT_CD:PJT_CD,SVC:SVC},
+					success : (list)=>{
+						console.log(JSON.stringify(list));
+						/* let tr = ''; */
+						let t = $('#myTable').DataTable({
+							dom: 'Blfrtip',
+							buttons: [
+								{
+								  extend: "copy",
+								  className: "btn-sm"
+								},
+								{
+								  extend: "csv",
+								  className: "btn-sm"
+								},
+								{
+								  extend: "excel",
+								  className: "btn-sm"
+								},
+								{
+								  extend: "pdfHtml5",
+								  className: "btn-sm"
+								},
+								{
+								  extend: "print",
+								  className: "btn-sm"
+								},
+							  ],
+							searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				data:list,
+		    				columns: [
+		    			        {data: 'dept_NM'},
+		    			        {data: 'pjt_CD'},
+		    			        {data: 'svc'},
+		    			        {data: 'print_YN'}
+		    			    ]
+						});
+						/* t.on('order.dt search.dt', function () {
+						    t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+						        
+						    	cell.innerHTML = i+1;
+						    });
+						    t.column(4, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+						        cell.innerHTML = '<input type="checkbox" value="confirmYN">'
+						    });
+						}).draw(); */
+						
+					}
+				});
+			});
+			//계정과목 코드와 네임 팝업창에서 불러 화면에 보기
+			$('#btnBusinessSearch').click(()=>{
+				console.log('눌려라요~~');
+				const PJT_CD = $('#PJT_CD').val();
+				const businessSelect = $('#businessSelect').val();
+				if(businessSelect == '프로젝트코드'){
+					$.ajax({
+						url : '/businessYesanOutputView',
+	 					type : 'GET',
+	 					data : {PJT_CD:PJT_CD},
+						success:(businessList)=>{
+							console.log(businessList);
+							let tr='';
+							$(businessList).each((index,item)=>{
+								$('#businessList').empty();
+								tr += '<tr>';
+								tr += '<td>'+item.pjt_CD+'</td>';
+								tr += '<td>'+item.pjt_NM+'</td>';
+								tr += '</tr>';
+							});
+							$('#businessList').append(tr);
+						}
+					});
+				}else if(businessSelect == '프로젝트명'){
+					$.ajax({
+						url : '/businessYesanOutputView',
+	 					type : 'GET',
+	 					data : {PJT_NM:PJT_CD},
+						success:(businessList)=>{
+							console.log(businessList);
+							let tr='';
+							$(businessList).each((index,item)=>{
+								$('#businessList').empty();
+								tr += '<tr>';
+								tr += '<td>'+item.pjt_CD+'</td>';
+								tr += '<td>'+item.pjt_NM+'</td>';
+								tr += '</tr>';
+							});
+							$('#businessList').append(tr);
+						}
+					});
+				}
+				
+			});
+			$('#businessList').delegate('tr', 'dblclick', function(){
+				let tr = $(this);
+				let td = tr.children();
+				$('#pjCode').val(td.eq(0).text());
+				$('#pjName').val(td.eq(1).text());
+				$('#PJT_CD').val('');
+				$('#accountModal').click();
+			});
+				
+		});
+		
+		
+		
+	</script>
 </th:block>
 <th:block layout:fragment="customBody">
-
 	<!-- 검색 폼 -->
-	<h3>검색 조건</h3>
-	<form id="demo-form" action="/project/cooperation/dragon_hyunhwang"
-		method="post">
-
-		<table class="table">
-
-			<tr>
-				<td width="150"><label>⊙ 부서 : </label></td>
-				<td>
-					<div class="col-md-12 col-sm-12 col-xs-12 ">
-						<select class="form-control">
-							<option value="">전 사</option>
-							<option value="1">설계1본부</option>
-							<option value="2">설계2본부</option>
-							<option value="3">설계3본부</option>
-							<option value="1">설계4본부</option>
-							<option value="2">설계5본부</option>
-						</select>
+	<div class="col-md-9 col-xs-12" style="color:black;">
+		<div class="page-title">
+			<div class="title_left">
+				<h2><b>사업성검토 예산출력</b></h2>
+				<h5><b>1.사업성검토 관리&nbsp;>&nbsp;&nbsp;1.2사업성검토예산 관리&nbsp;>&nbsp;&nbsp;1.2.3사업성검토 예산출력</b></h5>	
+			</div>
+		</div>
+	</div>
+	<div class="x_content" style="text-align: right">
+		<div class="btn-group" >
+			<button class="btn btn-default" type="reset" id="insertList">조회</button>
+			<button class="btn btn-default" type="button">입력</button>
+			<button class="btn btn-default" type="button">수정</button>
+			<button class="btn btn-default" type="button">삭제</button>
+			<button class="btn btn-default" type="button">저장</button>
+			<button class="btn btn-default" type="button" id="outPut">출력</button>
+		</div>
+	</div>
+	<div class="col-md-12 col-xs-12" style="color:black;">
+		<form method="post">
+			<div class="x_panel">
+				<div class="table-responsive">
+					⊙ 검색조건　　
+					⊙년도
+					<input type="number" value="2019" id="year">
+					⊙ 부서 :
+					<select id="DEPT_NM">
+						<option value="">All</option>
+						<th:block th:each="e : ${list}">
+							<option>[[${e.DEPT_NM}]]</option>
+						</th:block>
+					</select>　　
+					⊙ 코드명 :
+					<input type="text" name="test" id="pjCode" style="width:50px;">
+						<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg1"><i class="fa fa-search"></i></button>
+					<input type="text" name="test" id="pjName" style="width:400px;">
+					<div class="modal fade bs-example-modal-lg1" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<form class="form-horizontal">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" id="accountModal"><span aria-hidden="true">×</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel"><b>프로젝트코드조회</b></h4><br>
+										<!-- <div class="table-responsive"> -->
+											<table class="table table-bordered">
+												<tbody>
+													<tr>
+														<td><label class="control-label">검색항목</label></td>
+														<td>
+															<select class="form-control" style="width: 40%" id="businessSelect">
+																<option>프로젝트코드</option>
+																<option>프로젝트명</option>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td><label class="control-label">검색조건</label></td>
+														<td>
+															<input type="text" id="PJT_CD">
+															<button id="btnBusinessSearch" type="button"><i class="fa fa-search"></i></button>																	
+														</td>
+													</tr>
+												</tbody>																	
+											</table>
+										<!-- </div> -->
+									</div>
+									<div class="modal-body">
+										<div class="table-responsive" style="overflow: auto; height: 400px;">
+										<table class="table table-striped table-bordered table-hover jambo_table">
+											<thead>
+												<tr>
+													<th>코드</th>
+													<th>프로젝트명</th>
+												</tr>
+											</thead>
+											<tbody id="businessList">
+											</tbody>																	
+										</table>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
 					</div>
-				</td>
-
-				<td width="100"><label>⊙ 코드명 : </label></td>
-				<td>
-					<div class="col-md-12 col-sm-12 col-xs-12 ">
-						<input type="text" name="test" class="form-control">
-					</div>
-					
-				</td>
-				<td><div><button class="btn">검색</button></div></td>
-				<td>
-					<div class="col-md-15 col-sm-15 col-xs-15 ">
-						<input type="text" name="test" class="form-control">
-					</div>
-				</td>
-			</tr>
-		</table>
-	</form>
+					<input type="radio" name="radioSelect" value="1">미승인　
+					<input type="radio" name="radioSelect" value="2">진행　
+					<input type="radio" name="radioSelect" value="4">무산　
+					<input type="radio" name="radioSelect" value="5">계약　
+					<input type="radio" name="radioSelect" value="">ALL　
+				</div>
+			</div>
+		</form>
+	</div>
 	<!-- 검색폼 끝 -->
-
-
+	
 	<!-- 출력 리스트 검색 시작 -->
-
 	<div class="x_panel">
 		<div class="x_title">
-			<h2>
-				사업성검토 예산 출력 <small>Custom design</small>
-			</h2>
-			<ul class="nav navbar-right panel_toolbox">
-				<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-				</li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" role="button" aria-expanded="false"><i
-						class="fa fa-wrench"></i></a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Settings 1</a></li>
-						<li><a href="#">Settings 2</a></li>
-					</ul></li>
-				<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-			</ul>
 			<div class="clearfix"></div>
 		</div>
 
 		<div class="x_content">
-
-			<p>
-				Add class
-				<code>bulk_action</code>
-				to table for bulk actions options on row select
-			</p>
-
 			<div class="table-responsive">
-				<table class="table table-striped jambo_table bulk_action">
+				<div style="overflow:scroll; width:100%; height:600px; padding:10px; background-color:;">
+				<table class="table table-striped jambo_table bulk_action" id="myTable" >
 					<thead>
 						<tr class="headings">
-							<th>
-								<!-- <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; visibility: hidden;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> -->
-							</th>
-							<th class="column-title">No.</th>
+							<!-- <th class="column-title">No.</th> -->
 							<th class="column-title">부서</th>
 							<th class="column-title">PJT코드</th>
 							<th class="column-title">프로젝트명</th>
 							<th class="column-title">출력</th>
-							<!-- <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i> -->
-							</a>
-							</th>
 						</tr>
 					</thead>
-
-					<tbody>
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" "><input type="checkbox"></td>
-						</tr>
-
-						<tr class="odd pointer">
-							<td class="a-center "></td>
-							<td class=" ">2</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19010F</td>
-							<td class=" ">01_프로젝트_주선태극기</td>
-							<td class=" "><input type="checkbox"></td>
-						</tr>
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">3</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19015F</td>
-							<td class=" ">KDY TEST사업</td>
-							<td class=" "><input type="checkbox"></td>
-						</tr>
-						<tr class="odd pointer">
-							<td class="a-center "></td>
-							<td class=" ">4</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19016F</td>
-							<td class=" ">오란씨</td>
-							<td class=" "><input type="checkbox"></td>
-						</tr>
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">5</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19017F</td>
-							<td class=" ">성수산자연 휴양림 호텔 건축 공사</td>
-							<td class=" "><input type="checkbox"></td>
-						</tr>
-						<tr class="odd pointer">
-							<td class="a-center "></td>
-							<td class=" ">6</td>
-							<td class=" ">설계3본부 2소</td>
-							<td class=" ">19012F</td>
-							<td class=" ">EBS건물신축공사</td>
-							<td class=" "><input type="checkbox"></td>
-						</tr>
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">7</td>
-							<td class=" ">설계4본부 1소</td>
-							<td class=" ">19003F</td>
-							<td class=" ">J프로젝트</td>
-							<td class=" "><input type="checkbox"></td>
-						</tr>
-						<tr class="odd pointer">
-							<td class="a-center "></td>
-							<td class=" ">8</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19019F</td>
-							<td class=" ">문효균TEST</td>
-							<td class=" "><input type="checkbox"></td>
-						</tr>
+					<tbody id="list">
+					
 					</tbody>
 				</table>
-				<!-- 출력 리스트 검색 끝 -->
+				</div>
 			</div>
 		</div>
 	</div>
 </th:block>
 <th:block layout:fragment="customJquery">
 	<th:block th:include="layout/customJquery"></th:block>
+	<!-- Datatables -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
 </th:block>
 </html>

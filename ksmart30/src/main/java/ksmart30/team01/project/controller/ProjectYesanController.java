@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import ksmart30.team01.project.service.ProjectYesanService;
 
@@ -49,27 +50,32 @@ public class ProjectYesanController {
 		return "project/yesan/sangse/jejo_two_in";
 	}		
 	
-	//2.2.2 프로젝트예산 승인
+	//2.2.2. 프로젝트예산 승인 화면(프로젝트예산 개요 및 상세보기)
 	@GetMapping("/project/projectYesanSeunginView")
 	public String projectYesanSeungin() {
+		System.out.println("/project/projectYesanSeungin 프로젝트 예산 승인화면 요청 Controller get");
 		return "project/projectYesanSeunginView";
 	}
+		
 	
 	//2.2.3 프로젝트예산 출력
 	@GetMapping("/project/projectYesanOutputView")
 	public String projectYesanOutput() {
+		System.out.println("/project/projectYesanOutputView 프로젝트예산 출력화면 요청 Controller get");
 		return "project/projectYesanOutputView";
 	}
 	
 	//2.2.4 프로젝트예산 검색
 	@GetMapping("/project/projectYesanSearchView")
 	public String projectYesanSearch() {
+		System.out.println("/project/projectYesanSearchView 프로젝트예산 검색화면 요청 Controller get");
 		return "project/projectYesanSearchView";
 	}
 	
 	//2.2.5 계약프로젝트List
 	@GetMapping("/project/projectYesanListView")
 	public String projectYesanList() {
+		System.out.println("/project/projectYesanSearchView 계약프로젝트List화면 요청 Controller get");
 		return "project/projectYesanListView";
 	}	
 	

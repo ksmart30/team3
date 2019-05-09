@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ksmart30.team02.account.mapper.UnpaidMapper">
 	<select id="getUnpaidContentsList" parameterType="String" resultType="ksmart30.team02.account.domain.UnpaidDomain">
+	
+	<!--
+		   @file    UnpaidMapper.xml
+		   @brief   미지급금 XML
+		   @author  ksmart30 윤예찬
+	-->
 		SELECT D.SLIP_DATE AS SLIP_DATE,
 				 D.JS_CODE AS JS_CODE,
 				 D.SLIP_NO AS SLIP_NO,

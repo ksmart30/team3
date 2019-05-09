@@ -21,6 +21,10 @@ import ksmart30.team02.account.mapper.SlipDetailMapper;
 public class SlipDetailService {
 	@Autowired private SlipDetailMapper slipdetailmapper;
 	
+	public List<Map<String, String>> getAccountFirm(){
+		return slipdetailmapper.getAccountFirm();
+	}
+	
 	// 8.2 전표상세검색
 	/* @param   String account
 	 * @brief   SlipDetailMapper 인터페이스 메서드 호출(계정과목리스트)후 List<Map<String,String>> controller에 객체 전달

@@ -9,6 +9,6 @@ public class SlipEndYearController {
 	@GetMapping("/acc/slipEndYearView")
 	public String slipEndYearView(){
 		System.out.println("전표마감(년) slipEndYearIn SlipEndYearController.java");
-		return "/account/slip/endyear/slipendyear_in";
+		return "/account/slipendyear_in";
 	}
 }

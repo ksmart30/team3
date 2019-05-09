@@ -7,7 +7,59 @@
 	<title>거래처코드 등록</title>
 	<th:block th:include="layout/customHead"></th:block>
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	
+	<!-- 우편 시스템 -->
+	
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script>
+		    function sample6_execDaumPostcode() {
+		        new daum.Postcode({
+		            oncomplete: function(data) {
+		                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+		
+		                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+		                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+		                var addr = ''; // 주소 변수
+		                var extraAddr = ''; // 참고항목 변수
+		
+		                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+		                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+		                    addr = data.roadAddress;
+		                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+		                    addr = data.jibunAddress;
+		                }
+		
+		                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+		                if(data.userSelectedType === 'R'){
+		                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+		                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+		                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+		                        extraAddr += data.bname;
+		                    }
+		                    // 건물명이 있고, 공동주택일 경우 추가한다.
+		                    if(data.buildingName !== '' && data.apartment === 'Y'){
+		                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+		                    }
+		                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+		                    if(extraAddr !== ''){
+		                        extraAddr = ' (' + extraAddr + ')';
+		                    }
+		                    // 조합된 참고항목을 해당 필드에 넣는다.
+		                    document.getElementById("sample6_extraAddress").value = extraAddr;
+		                
+		                } else {
+		                    document.getElementById("sample6_extraAddress").value = '';
+		                }
+		
+		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		                document.getElementById('zip_CD').value = data.zonecode;
+		                document.getElementById("addr").value = addr;
+		                // 커서를 상세주소 필드로 이동한다.
+		                document.getElementById("sample6_address").focus();//원본값 sample6_detailAddress
+		            }
+		        }).open();
+		    }
+	
 	function somicall(cust_CD){
 		console.log('somicall실행'+cust_CD);
 			$.ajax({
@@ -55,27 +107,122 @@
 			}	
 		});
 	}
+	
+	function searchCall(){
+		var BUSI_TYPE = $('#BUSI_TYPE').val();//고객구분
+		var CUST_NM = $('#CUST_NM').val();//고객명
+		var CUST_CD = $('#CUST_CD').val(); //사업자등록번호 3가지 검색조건에 맞는 
+        $.ajax({
+            url:'/baseInfo/clientView', //호출할 메소드 호출 
+            type:'POST',//송신 POST 방식
+            data:{BUSI_TYPE:BUSI_TYPE,CUST_NM:CUST_NM,CUST_CD:CUST_CD},//넘길 데이터(조건)
+            success:function(data){//받은 데이터
+            	console.log(data);
+            	let str = '';
+            	
+                $('#searchBody').empty();//삭제 
+                $(data).each((index,item)=>{//반복문으로 데이터값이 있는 만큼 추가
+                	str = item.cust_CD;
+                	$('#searchBody').append('<tr onclick="somicall('+str+')"><td style="background-color: #fff9df">'+item.cust_CD+'</td><td>'
+                			+item.cust_NM+'</td></tr>'
+                	);//append추가	                	
+                });              
+            }
+        });
+	}
+	
 	$(document).ready(function(){
 		
+		searchCall();
 		//왼쪽 거래처검색화면에서 검색button이 클릭
 		$('#clientSearch').on('click',function(){  
-			var BUSI_TYPE = $('#BUSI_TYPE').val();//고객구분
-			var CUST_NM = $('#CUST_NM').val();//고객명
-			var CUST_CD = $('#CUST_CD').val(); //사업자등록번호 3가지 검색조건에 맞는 
-	        $.ajax({
-	            url:'/baseInfo/clientView', //호출할 메소드 호출 
-	            type:'POST',//송신 POST 방식
-	            data:{BUSI_TYPE:BUSI_TYPE,CUST_NM:CUST_NM,CUST_CD:CUST_CD},//넘길 데이터(조건)
-	            success:function(data){//받은 데이터
-	            	console.log(data);
-	                $('#searchBody').empty();//삭제 
-	                $(data).each((index,item)=>{//반복문으로 데이터값이 있는 만큼 추가
-	                	$('#searchBody').append('<tr onclick="somicall('+item.cust_CD+')"><td style="background-color: #fff9df">'+item.cust_CD+'</td><td>'
-	                			+item.cust_NM+'</td></tr>'
-	                	);//append추가	                	
-	                });              
-	            }
-	        });
+			searchCall();
+		})
+		
+		//선택 색상 변경
+  	 $("#searchBody").on('click','tr',function(){
+  		$("#searchBody tr").css("background-color", "#ffffff");
+  		$(this).css( "background-color", "#fdd2df" );
+  	 });
+		
+		$('#clientIn').click(()=>{
+			console.log("clientInsert시작 저장");
+			let CUST_CD = $('#cust_cd').val();
+			let CUST_NM = $('#cust_NM').val();
+			let CUST_PW = $('#cust_PW').val();
+			let CUST_FULL_NM = $('#cust_FULL_NM').val();
+			let BUSI_TYPE = $('input[name=busy_TYPE2]:checked').val();
+			let CUST_GBN = $('#cust_GBN').val();
+			let REPRE_NM = $('#repre_NM').val();
+			let ZIP_CD = $('#zip_CD').val();
+			let ADDR = $('#addr').val();
+			let TEL_NO = $('#tel_NO').val();
+			let FAX_NO = $('#fax_NO').val();
+			let BIZ_STAT = $('#biz_STAT').val();
+			let BIZ_ITEM = $('#biz_ITEM').val();
+			let REPRE_CUST_CD = $('#repre_CUST_CD').val();
+			let ESTAB_DT = $('#estab_DT').val();
+			let INFOM_EMP = $('#infom_EMP').val();
+			let HOMEPAGE = $('#homepage').val();
+			let USE_YN = $('#use_YN').val();
+			let AUDIT_ID = $('#audit_ID').val();
+			let BUPIN = $('#bupin').val();
+			let FUND = $('#fund').val();
+			let BOND = $('#bond').val();
+			let EMAIL = $('#email').val();
+			let DAM_NM = $('#dam_NM').val();
+			let ISO = $('#iso').val();
+			let CO_YN = $('#co_YN').val();
+			let CEL_NO = $('#cel_NO').val();
+			let REGISTER_NO = $('#register_NO').val();
+			let BANK_CD = $('#bank_CD').val();
+			let BANK_ACCNO = $('#bank_ACCNO').val();
+			let BANK_OWN = $('#bank_OWN').val();
+			let CO_SERVICE = $('#co_SERVICE').val();
+			
+			$.ajax({
+				url:'/baseInfo/clientViewInsert',
+				type:'POST',
+				data:{
+					CUST_CD:CUST_CD
+					,CUST_NM:CUST_NM
+					,CUST_PW:CUST_PW		
+					,BUSI_TYPE:BUSI_TYPE
+					,CUST_GBN:CUST_GBN
+					,REPRE_NM:REPRE_NM
+					,ZIP_CD:ZIP_CD
+					,ADDR:ADDR
+					,TEL_NO:TEL_NO
+					,FAX_NO:FAX_NO
+					,BIZ_STAT:BIZ_STAT
+					,BIZ_ITEM:BIZ_ITEM
+					,REPRE_CUST_CD:REPRE_CUST_CD
+					,ESTAB_DT:ESTAB_DT
+					,INFOM_EMP:INFOM_EMP
+					,HOMEPAGE:HOMEPAGE
+					,USE_YN:USE_YN
+					,AUDIT_ID:AUDIT_ID
+					,BUPIN:BUPIN
+					,FUND:FUND
+					,BOND:BOND
+					,EMAIL:EMAIL
+					,DAM_NM:DAM_NM
+					,ISO:ISO
+					,CO_YN:CO_YN
+					,CEL_NO:CEL_NO
+					,REGISTER_NO:REGISTER_NO
+					,BANK_CD:BANK_CD
+					,BANK_ACCNO:BANK_ACCNO
+					,BANK_OWN:BANK_OWN
+					,CO_SERVICE:CO_SERVICE	
+					,CUST_FULL_NM:CUST_FULL_NM
+				},
+				success:function(){
+	                alert('거래처 등록 성공');
+	        	}
+				
+			})
+
 		})
 	});
 	
@@ -99,10 +246,10 @@
 	<font color="black">
 		<div class="x_content" style="text-align: right">
 			<div class="btn-group">
-				<button class="btn btn-default" type="reset">입력</button>
+				<a href="/baseInfo/clientView"><button class="btn btn-default" type="reset" >입력</button></a>
 				<button class="btn btn-default" type="button">수정</button>
 				<button class="btn btn-default" type="button">삭제</button>
-				<button class="btn btn-default" type="button">저장</button>
+				<button class="btn btn-default" type="button" id="clientIn">저장</button>
 				<button class="btn btn-default" type="button">출력</button>
 			</div>
 		</div> <!-- 검색부분 start -->
@@ -144,6 +291,7 @@
 
 					<div class="x_title"></div>
 <!-- 결과부분 start -->
+<div class="x_content" style="overflow:scroll; width:100%; height:450px; background-color:;">
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -160,6 +308,7 @@
 				</div>
 			</div>
 		</div> 
+		</div>
 <!-- start -->
 		<div class="col-md-9 col-sm-6 col-xs-12">
 			<div class="x_panel">
@@ -186,14 +335,14 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="cust_cd">
+													id="cust_cd" value="">
 											</div>
 										</td>
 										<td style="background-color: #f3f3f3" width="15%">고객명</td>
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="cust_NM">
+													id="cust_NM"  value="">
 											</div>
 										</td>
 									</tr>
@@ -203,7 +352,7 @@
 										<td colspan="20">
 											<div class="col-md-20 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="cust_FULL_NM">
+													id="cust_FULL_NM"  value="">
 											</div>
 										</td>
 									</tr>
@@ -226,16 +375,23 @@
 											</div>
 										</td>
 
+									
+								
+								
 										<td style="background-color: #f3f3f3" width="10%">거래유형</td>
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 
-												<input type="radio" name="chk_info" value="1">매입 <input
-													type="radio" name="chk_info" value="2">매출 <input
-													type="radio" name="chk_info" value="3">기타
+												<input type="radio" name="busy_TYPE2" value="1" >매입 
+												<input type="radio" name="busy_TYPE2" value="2" >매출 
+												<input type="radio" name="busy_TYPE2" value="3" >기타
 											</div>
 										</td>
+										
+									
+									
 									</tr>
+									
 <!-- 법인구분  BUPIN Value 알아보기  -->
 <!-- 4 -->
 									<tr>
@@ -254,27 +410,30 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="repre_NM">
+													id="repre_NM" value="">
 											</div>
 										</td>
 									</tr>
-<!-- 우편번호 검색 기능 알아보기 -->
+<!-- 우편번호 검색 기능 -->
 <!-- 5 -->
 									<tr>
 										<td style="background-color: #f3f3f3">주소</td>
 										<td>
 											<div class="col-md-7 col-sm-7 col-xs-7 ">
-												<input type="text" name="test" class="form-control"
-													id="zip_CD">
+												<input type="text" class="form-control"
+													id="zip_CD" value="">
 
 											</div>
-											<button>
-												<i class="fa fa-search"></i>
-											</button>
+										<button class="btn" onclick="sample6_execDaumPostcode()">
+											<i class="fa fa-search" id="pjt_s" value=""></i>
+										</button>
 										<td colspan="6">
 											<div class="col-md-20 col-sm-20 col-xs-20 ">
-												<input type="text" name="test" class="form-control"
+												<input type="text"  class="form-control"
 													id="addr">
+									<input type="hidden" id="sample6_postcode" placeholder="우편번호">
+									<input type="hidden" id="sample6_detailAddress" placeholder="상세주소">
+									<input type="hidden" id="sample6_extraAddress" placeholder="참고항목">
 											</div>
 										</td>
 									</tr>
@@ -284,14 +443,14 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="tel_NO">
+													id="tel_NO" value="">
 											</div>
 										</td>
 										<td style="background-color: #f3f3f3" width="15%">팩스번호</td>
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="fax_NO">
+													id="fax_NO" value="">
 											</div>
 
 										</td>
@@ -302,14 +461,14 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="biz_STAT">
+													id="biz_STAT" value="">
 											</div>
 										</td>
 										<td style="background-color: #f3f3f3" width="15%">업종</td>
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="biz_ITEM">
+													id="biz_ITEM" value="">
 											</div>
 
 										</td>
@@ -320,7 +479,7 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="repre_CUST_CD">
+													id="repre_CUST_CD" value="">
 											</div>
 
 										</td>
@@ -414,7 +573,7 @@
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="bank_ACCNO">
+													id="bank_ACCNO" value="">
 											</div>
 										</td>
 									</tr>
@@ -424,7 +583,7 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="bank_OWN">
+													id="bank_OWN" value="">
 											</div>
 										</td>
 									</tr>
@@ -434,14 +593,14 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="fund">
+													id="fund" value="0">
 											</div>
 										</td>
 										<td style="background-color: #f3f3f3">채권한도액</td>
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="bond">
+													id="bond" value="0">
 											</div>
 										</td>
 									</tr>
@@ -451,7 +610,7 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="estab_DT">
+													id="estab_DT" value="">
 											</div>
 										</td>
 									</tr>
@@ -461,14 +620,14 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="dam_NM">
+													id="dam_NM" value="">
 											</div>
 										</td>
 										<td style="background-color: #f3f3f3">E-MAIL</td>
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="email">
+													id="email" value="">
 											</div>
 										</td>
 									</tr>
@@ -477,16 +636,20 @@
 										<td style="background-color: #f3f3f3" width="10%">정보담당자</td>
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
-												<input type="text" name="test" class="form-control">
+												<input type="text" name="test" class="form-control"  value="">
 											</div>
 										</td>
+									
+										
 										<td style="background-color: #f3f3f3">사용유무 타절</td>
 										<td colspan="4">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
-												<input type="radio" name="chk_info" value="매입">유 <input
-													type="radio" name="chk_info" value="매출">무
+												<input type="radio" name="use_YN" value="매입">유
+												 <input type="radio" name="use_YN" value="매출" >무
 											</div>
 										</td>
+									
+									
 									</tr>
 <!-- 15 -->
 									<tr>
@@ -494,7 +657,7 @@
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="homepage">
+													id="homepage"  value="">
 											</div>
 										<td>
 											<div>
@@ -510,14 +673,14 @@
 										<td colspan="2">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="audit_ID">
+													id="audit_ID" value="">
 											</div>
 										</td>
 										<td style="background-color: #f3f3f3">등록일자</td>
 										<td colspan="6">
 											<div class="col-md-12 col-sm-12 col-xs-12 ">
 												<input type="text" name="test" class="form-control"
-													id="audit_TM">
+													id="audit_TM" value="">
 											</div>
 										</td>
 									</tr>

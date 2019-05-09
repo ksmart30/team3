@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>진행/종료 현황</title>
+		<!-- Bootstrap -->
+	    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Font Awesome -->
+	    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	    <!-- NProgress -->
+	    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+	    <!-- iCheck -->
+	    <link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	
+	    <!-- Custom Theme Style -->
+	    <link href="/build/css/custom.min.css" rel="stylesheet">
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script>
+			$(document).ready(()=>{
+//진행현황 - ***본부 사업성 검토 제목			
+				let tr = $('#businessList tr')
+				let td = tr.children();			
+				$('#businessReview').text(td.eq(4).text() + ' 사업성 검토');	
+//진행현황 - 수주구분별&진행상태별 제목				
+				let listTr = $('#list tr')
+				let listTd = listTr.children();
+				$('#jinhaengSangtae').text('진행상태별 [' + listTd.eq(4).text() + ']');
+//진행현황 - 수주구분별&진행상태별 리스트		
+				$('#businessList').delegate('tr', 'click', function(){
+					let tr = $(this);
+					let td = tr.children();
+					$('#jinhaengSangtae').text('수주구분별 [' + td.eq(0).text() + ']');
+					console.log('눌렀다욤' + td);
+					let LEVEL2_NM = td.eq(0).text();
+					let SYS_COD = td.eq(4).text();
+					let BIZ1 = td.eq(2).text();
+					let BIZ2 = td.eq(3).text();
+					$('#list').empty();
+					let sujuTr = '';
+					$.ajax({
+						url : '/business/sujuGubunListProcess',
+						type : 'POST',
+						data : {LEVEL2_NM:LEVEL2_NM, BIZ1:BIZ1, BIZ2:BIZ2, SYS_COD:SYS_COD},
+						success :(map)=>{
+							$(map.sujuGubunList).each((index,item)=>{
+								sujuTr += '<tr>';
+								sujuTr += '<td>' +item.dept_NM+ '</td>';
+								sujuTr += '<td>' +item.svc+ '</td>';
+								sujuTr += '<td>' +item.cust_NM+ '</td>';
+								sujuTr += '<td>' +item.biz_GBN_NM+ '</td>';
+								sujuTr += '<td style="display:none;">' +item.act_STAT_NM+ '</td>';
+								sujuTr += '<td style="display:none;">' +item.dept_CD+ '</td>';			
+							});
+							$('#list').append(sujuTr);
+						}
+					});	
+				});			
+//진행현황 - 본부별 사업성 검토 원형그래프				
+				$.ajax({
+					url : '/business/hyunjaeJinhaengInfoProcess',
+					type : "GET",
+					success : (map) =>{
+						let bizNm = new Array();
+						let bizCnt = new Array();
+						$(map.hyunjaeInfo).each((index, item)=>{
+							bizNm.push(item.biz_NM);
+							bizCnt.push(item.biz_CNT);
+						})
+						console.log("bizNm :" + bizNm);
+						console.log("bizCnt :" + bizCnt);
+						let bizCnt1 = bizCnt.pop(0);
+						let bizCnt2 = bizCnt.pop(1);
+						let bizCnt3 = bizCnt.pop(2);
+						let bizCnt4 = bizCnt.pop(3);
+						let bizCnt5 = bizCnt.pop(4);
+						let bizCnt6 = bizCnt.pop(5);
+						let bizCnt7 = bizCnt.pop(6);
+						let bizCnt8 = bizCnt.pop(7);
+						let bizCnt9 = bizCnt.pop(8);
+						let bizCnt10 = bizCnt.pop(9);
+						let bizNm1 = bizNm.pop(0);
+						let bizNm2 = bizNm.pop(1);
+						let bizNm3 = bizNm.pop(2);
+						let bizNm4 = bizNm.pop(3);
+						let bizNm5 = bizNm.pop(4);
+						let bizNm6 = bizNm.pop(5);
+						let bizNm7 = bizNm.pop(6);
+						let bizNm8 = bizNm.pop(7);
+						let bizNm9 = bizNm.pop(8);
+						let bizNm10 = bizNm.pop(9);
+						if ($('#businessPie').length ){  
+							  
+							  var echartPie = echarts.init(document.getElementById('businessPie'));
+
+							  echartPie.setOption({
+								tooltip: {
+								  trigger: 'item',
+								  formatter: "{asdfasdf} <br/>{b} : {c} ({d}%)"
+								},
+								legend: {
+								  x: 'bottom',
+								  y: 'bottom',
+								  data: [bizNm1, bizNm2, bizNm3, bizNm4, bizNm5, bizNm6, bizNm7, bizNm8, bizNm9, bizNm10]
+								},
+								toolbox: {
+								  show: true,
+								  feature: {
+									magicType: {
+									  show: true,
+									  type: ['pie', 'funnel'],
+									  option: {
+										funnel: {
+										  x: '25%',
+										  width: '50%',
+										  funnelAlign: 'left',
+										  max: 1548
+										}
+									  }
+									},
+									restore: {
+									  show: false,
+									  title: "Restore"
+									},
+									saveAsImage: {
+									  show: false,
+									  title: "Save Image"
+									}
+								  }
+								},
+								calculable: true,
+								series: [{
+								  
+								  type: 'pie',
+								  radius: '55%',
+								  center: ['50%', '50%'],
+								  data: [{
+									value: bizCnt1,
+									name: bizNm1 + ', ' + bizCnt1
+								  }, {
+									value: bizCnt2,
+									name: bizNm2 + ', ' + bizCnt2
+								  }, {
+									value: bizCnt3,
+									name: bizNm3 + ', ' + bizCnt3
+								  }, {
+									value: bizCnt4,
+									name: bizNm4 + ', ' + bizCnt4
+								  }, {
+									value: bizCnt5,
+									name: bizNm5 + ', ' + bizCnt5
+								  }, {
+									value: bizCnt6,
+									name: bizNm6 + ', ' + bizCnt6
+								  }, {
+									value: bizCnt7,
+									name: bizNm7 + ', ' + bizCnt7
+								  }, {
+									value: bizCnt8,
+									name: bizNm8 + ', ' + bizCnt8
+								  }, {
+									value: bizCnt9,
+									name: bizNm9 + ', ' + bizCnt9
+								  }, {
+									value: bizCnt10,
+									name: bizNm10 + ', ' + bizCnt10	
+								  }]
+								}]
+							  });
+
+							  var dataStyle = {
+								normal: {
+								  label: {
+									show: true
+								  },
+								  labelLine: {
+									show: true
+								  }
+								}
+							  };
+
+							  var placeHolderStyle = {
+								normal: {
+								  color: 'rgba(0,0,0,0)',
+								  label: {
+									show: true
+								  },
+								  labelLine: {
+									show: true
+								  }
+								},
+								emphasis: {
+								  color: 'rgba(0,0,0,0)'
+								}
+							  };
+
+							} 
+						}				
+					})
+//진행현황 - 본부별 사업성 검토 막대그래프						
+				let tr2 = $('#sumBusinessList tr')
+				let td2 = tr2.children();
+				let sumTotl1 = td2.eq(1).text();	
+				let sumTotl2 = td2.eq(4).text();	
+				let sumTotl3 = td2.eq(5).text();	
+				let sumTotl4 = td2.eq(6).text();	
+				let sumTotl5 = td2.eq(7).text();				
+				let businessGraph = new Morris.Bar({
+	                element: 'businessGraph',  
+					data:
+						[ 
+							{ dept: '설계1본부', value: sumTotl1  },
+							{ dept: '설계2본부', value: sumTotl2  },
+							{ dept: '설계3본부', value: sumTotl3  },
+							{ dept: '설계4본부', value: sumTotl4  },
+							{ dept: '설계5본부', value: sumTotl5  }                             
+						],
+					xkey: 'dept', 
+					ykeys: ['value'],
+					labels: ['건수'],
+					barColors: function (row, series, type) {
+					console.log("--> "+row.label, series, type);
+					if(row.label == "설계1본부") return "#AD1D28";
+					else if(row.label == "설계2본부") return "#FF5E00";
+					else if(row.label == "설계3본부") return "#fec04c";
+					else if(row.label == "설계4본부") return "#1AB244";
+					else if(row.label == "설계5본부") return "#0000FF";
+					}				
+//진행현황 - 막대그래프 클릭시 본부 사업성 검토 리스트 & 진행상태별 리스트 출력									
+				}).on('click', function(i){
+					console.log("i : " + i);           		
+	//진행현황 - 설계1본부	사업성 검토 리스트							
+					if(i == '0'){              			
+						$('#businessList').empty();
+						let tr4 = '';						
+						$.ajax({               				
+							url : '/business/businessListProcess',             				
+							type : 'POST',
+							success :(map)=>{
+								$(map.list1).each((index,item)=>{
+									tr4 += '<tr>';
+									tr4 += '<td>'+item.level2_NM+'</td>';
+									tr4 += '<td>'+item.totl+'</td>';
+									tr4 += '<td>'+item.biz1+'</td>';
+									tr4 += '<td>'+item.biz2+'</td>'; 
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '</tr>'
+								});
+								$('#businessList').append(tr4);
+								let tr5 = $('#businessList tr');
+								let td5 = tr5.children();
+								let tr6 = '';	
+								$('#businessReview').text(td5.eq(4).text() + ' 사업성 검토');
+								$('#sumBusinessList').empty();
+								tr6 += '<tr>';
+								tr6 += '<td>'+'합 계'+'</td>';
+								tr6 += '<td>'+map.sumTotl1+'</td>';
+								tr6 += '<td>'+map.sumBiz11+'</td>';
+								tr6 += '<td>'+map.sumBiz21+'</td>';                      	
+								tr6 += '</tr>';
+								$('#sumBusinessList').append(tr6);
+	//진행현황 - 설계1본부	진행상태별[진행중] 리스트							
+								if(map.sumBiz11 == "0"){
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7500';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.jinhaengSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										}
+									});
+	//진행현황 - 설계1본부	진행상태별[미승인] 리스트							
+								} else {
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7500';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.meSeunginSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										}
+									});
+								}
+							}	
+						});
+	//진행현황 - 설계1본부 본부별 진행상태별 사업성검토 원형 그래프						
+						let DEPT_CD = '7500';
+						$.ajax({
+							url : "/business/jinhaengInfoProcess",
+							type : 'POST',
+							data : {DEPT_CD:DEPT_CD},
+							success : (map)=>{	
+								let bizCnt = new Array();
+								let actNm = new Array();
+								let deptNm = new Array();
+								$(map.jinhaengInfo).each((index, item)=>{
+									bizCnt.push(item.biz_CNT);
+									actNm.push(item.biz_NM);
+									deptNm.push(item.dept_NM);
+								})
+								let jinhaengCnt1 = bizCnt.pop(0);
+								let jinhaengCnt2 = bizCnt.pop(1);
+								let jinhaengNm1 = actNm.pop(0);
+								let jinhaengNm2 = actNm.pop(1);
+								$('#jinhaengBonbu').text('설계1본부 사업성 검토 [진행상태별]');
+								if ($('#businessPie2').length ){  							  
+									  var echartPie = echarts.init(document.getElementById('businessPie2'));
+									  echartPie.setOption({
+										tooltip: {
+										  trigger: 'item',
+										  formatter: "{a} <br/>{b} : {c} ({d}%)"
+										},
+										legend: {
+										  x: 'bottom',
+										  y: 'bottom',
+										  data: [jinhaengCnt1, jinhaengCnt2]
+										},
+										toolbox: {
+										  show: true,
+										  feature: {
+											magicType: {
+											  show: true,
+											  type: ['pie', 'funnel'],
+											  option: {
+												funnel: {
+												  x: '25%',
+												  width: '50%',
+												  funnelAlign: 'left',
+												  max: 1548
+												}
+											  }
+											},
+											restore: {
+											  show: false,
+											  title: "Restore"
+											},
+											saveAsImage: {
+											  show: false,
+											  title: "Save Image"
+											}
+										  }
+										},
+										calculable: true,
+										series: [{
+										  
+										  type: 'pie',
+										  radius: '55%',
+										  center: ['50%', '50%'],
+										  data: [{
+											value: jinhaengCnt1,
+											name: jinhaengNm1 + ', ' + jinhaengCnt1
+										  }, {
+											value: jinhaengCnt2,
+											name: jinhaengNm2 + ', ' + jinhaengCnt2
+										  }]
+										}]
+									  });
+									  var dataStyle = {
+										normal: {
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										}
+									  };
+									  var placeHolderStyle = {
+										normal: {
+										  color: 'rgba(0,0,0,0)',
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										},
+										emphasis: {
+										  color: 'rgba(0,0,0,0)'
+										}
+									  };
+								}
+							}
+						});	
+//진행현황 - 설계2본부	사업성 검토 리스트								
+					} else if(i == '1'){              			
+					$('#businessList').empty();
+					let tr4 = '';
+					$('#sumBusinessList').empty();
+					let tr6 = '';
+						$.ajax({               				
+							url : '/business/businessListProcess',             				
+							type : 'POST',
+							success :(map)=>{
+								$(map.list2).each((index,item)=>{
+									tr4 += '<tr>';
+									tr4 += '<td>'+item.level2_NM+'</td>';
+									tr4 += '<td>'+item.totl+'</td>';
+									tr4 += '<td>'+item.biz1+'</td>';
+									tr4 += '<td>'+item.biz2+'</td>'; 
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '</tr>'
+								});
+								$('#businessList').append(tr4);
+								let tr5 = $('#businessList tr');
+								let td5 = tr5.children();
+								$('#businessReview').text(td5.eq(4).text() + ' 사업성 검토');
+								tr6 += '<tr>';
+								tr6 += '<td>'+'합 계'+'</td>';
+								tr6 += '<td>'+map.sumTotl2+'</td>';
+								tr6 += '<td>'+map.sumBiz12+'</td>';
+								tr6 += '<td>'+map.sumBiz22+'</td>';                      	
+								tr6 += '</tr>';
+								$('#sumBusinessList').append(tr6);
+	//진행현황 - 설계2본부	진행상태별[진행중] 리스트								
+								if(map.sumBiz12 == "0"){
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7600';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.jinhaengSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										}
+									});
+	//진행현황 - 설계2본부	진행상태별[미승인] 리스트								
+								} else {
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7600';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.meSeunginSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										}
+									});
+								}
+							}
+						});
+	//진행현황 - 설계2본부 본부별 진행상태별 사업성검토 원형 그래프					
+						let DEPT_CD = '7600';
+						$.ajax({
+							url : "/business/jinhaengInfoProcess",
+							type : 'POST',
+							data : {DEPT_CD:DEPT_CD},
+							success : (map)=>{	
+								let bizCnt = new Array();
+								let actNm = new Array();
+								let deptNm = new Array();
+								$(map.jinhaengInfo).each((index, item)=>{
+									bizCnt.push(item.biz_CNT);
+									actNm.push(item.biz_NM);
+									deptNm.push(item.dept_NM);
+								})
+								let jinhaengCnt1 = bizCnt.pop(0);
+								let jinhaengCnt2 = bizCnt.pop(1);
+								let jinhaengNm1 = actNm.pop(0);
+								let jinhaengNm2 = actNm.pop(1);
+								$('#jinhaengBonbu').text('설계2본부 사업성 검토 [진행상태별]');
+								if ($('#businessPie2').length ){  							  
+									  var echartPie = echarts.init(document.getElementById('businessPie2'));
+									  echartPie.setOption({
+										tooltip: {
+										  trigger: 'item',
+										  formatter: "{a} <br/>{b} : {c} ({d}%)"
+										},
+										legend: {
+										  x: 'bottom',
+										  y: 'bottom',
+										  data: [jinhaengCnt1, jinhaengCnt2]
+										},
+										toolbox: {
+										  show: true,
+										  feature: {
+											magicType: {
+											  show: true,
+											  type: ['pie', 'funnel'],
+											  option: {
+												funnel: {
+												  x: '25%',
+												  width: '50%',
+												  funnelAlign: 'left',
+												  max: 1548
+												}
+											  }
+											},
+											restore: {
+											  show: false,
+											  title: "Restore"
+											},
+											saveAsImage: {
+											  show: false,
+											  title: "Save Image"
+											}
+										  }
+										},
+										calculable: true,
+										series: [{
+										  
+										  type: 'pie',
+										  radius: '55%',
+										  center: ['50%', '50%'],
+										  data: [{
+											value: jinhaengCnt1,
+											name: jinhaengNm1 + ', ' + jinhaengCnt1
+										  }, {
+											value: jinhaengCnt2,
+											name: jinhaengNm2 + ', ' + jinhaengCnt2
+										  }]
+										}]
+									  });
+
+									  var dataStyle = {
+										normal: {
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										}
+									  };
+
+									  var placeHolderStyle = {
+										normal: {
+										  color: 'rgba(0,0,0,0)',
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										},
+										emphasis: {
+										  color: 'rgba(0,0,0,0)'
+										}
+									  };
+
+									} 
+							}
+						});
+	//진행현황 - 설계3본부	사업성 검토 리스트								
+					} else if(i == '2'){	              			
+					$('#businessList').empty();
+					let tr4 = '';
+					$('#sumBusinessList').empty();
+					let tr6 = '';
+						$.ajax({               				
+							url : '/business/businessListProcess',             				
+							type : 'POST',
+							success :(map)=>{
+								$(map.list3).each((index,item)=>{
+									tr4 += '<tr>';
+									tr4 += '<td>'+item.level2_NM+'</td>';
+									tr4 += '<td>'+item.totl+'</td>';
+									tr4 += '<td>'+item.biz1+'</td>';
+									tr4 += '<td>'+item.biz2+'</td>'; 
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '</tr>'
+								});
+								$('#businessList').append(tr4);
+								let tr5 = $('#businessList tr');
+								let td5 = tr5.children();
+								$('#businessReview').text(td5.eq(4).text() + ' 사업성 검토');
+								tr6 += '<tr>';
+								tr6 += '<td>'+'합 계'+'</td>';
+								tr6 += '<td>'+map.sumTotl3+'</td>';
+								tr6 += '<td>'+map.sumBiz13+'</td>';
+								tr6 += '<td>'+map.sumBiz23+'</td>';                      	
+								tr6 += '</tr>';
+								$('#sumBusinessList').append(tr6);
+	//진행현황 - 설계3본부	진행상태별[진행중] 리스트							
+								if(map.sumBiz13 == "0"){
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7700';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.jinhaengSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');;
+										}
+									});
+	//진행현황 - 설계3본부	진행상태별[미승인] 리스트							
+								} else {
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7700';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.meSeunginSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										}
+									});
+								}
+							}
+						});
+	//진행현황 - 설계3본부 본부별 진행상태별 사업성검토 원형 그래프						
+						let DEPT_CD = '7700';
+						$.ajax({
+							url : "/business/jinhaengInfoProcess",
+							type : 'POST',
+							data : {DEPT_CD:DEPT_CD},
+							success : (map)=>{	
+								let bizCnt = new Array();
+								let actNm = new Array();
+								let deptNm = new Array();
+								$(map.jinhaengInfo).each((index, item)=>{
+									bizCnt.push(item.biz_CNT);
+									actNm.push(item.biz_NM);
+									deptNm.push(item.dept_NM);
+								})
+								let jinhaengCnt1 = bizCnt.pop(0);
+								let jinhaengCnt2 = bizCnt.pop(1);
+								let jinhaengNm1 = actNm.pop(0);
+								let jinhaengNm2 = actNm.pop(1);								
+								$('#jinhaengBonbu').text('설계3본부 사업성 검토 [진행상태별]');
+								if ($('#businessPie2').length ){  							  
+									  var echartPie = echarts.init(document.getElementById('businessPie2'));
+									  echartPie.setOption({
+										tooltip: {
+										  trigger: 'item',
+										  formatter: "{a} <br/>{b} : {c} ({d}%)"
+										},
+										legend: {
+										  x: 'bottom',
+										  y: 'bottom',
+										  data: [jinhaengCnt1, jinhaengCnt2]
+										},
+										toolbox: {
+										  show: true,
+										  feature: {
+											magicType: {
+											  show: true,
+											  type: ['pie', 'funnel'],
+											  option: {
+												funnel: {
+												  x: '25%',
+												  width: '50%',
+												  funnelAlign: 'left',
+												  max: 1548
+												}
+											  }
+											},
+											restore: {
+											  show: false,
+											  title: "Restore"
+											},
+											saveAsImage: {
+											  show: false,
+											  title: "Save Image"
+											}
+										  }
+										},
+										calculable: true,
+										series: [{
+										  
+										  type: 'pie',
+										  radius: '55%',
+										  center: ['50%', '50%'],
+										  data: [{
+											value: jinhaengCnt1,
+											name: jinhaengNm1 + ', ' + jinhaengCnt1
+										  }, {
+											value: jinhaengCnt2,
+											name: jinhaengNm2 + ', ' + jinhaengCnt2
+										  }]
+										}]
+									  });
+
+									  var dataStyle = {
+										normal: {
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										}
+									  };
+
+									  var placeHolderStyle = {
+										normal: {
+										  color: 'rgba(0,0,0,0)',
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										},
+										emphasis: {
+										  color: 'rgba(0,0,0,0)'
+										}
+									  };
+
+									} 
+							}
+						});
+	//진행현황 - 설계4본부	사업성 검토 리스트								
+					} else if(i == '3'){	              			
+					$('#businessList').empty();
+					let tr4 = '';
+					$('#sumBusinessList').empty();
+					let tr6 = '';
+						$.ajax({               				
+							url : '/business/businessListProcess',             				
+							type : 'POST',
+							success :(map)=>{
+								$(map.list4).each((index,item)=>{
+									tr4 += '<tr>';
+									tr4 += '<td>'+item.level2_NM+'</td>';
+									tr4 += '<td>'+item.totl+'</td>';
+									tr4 += '<td>'+item.biz1+'</td>';
+									tr4 += '<td>'+item.biz2+'</td>'; 
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '</tr>'
+								});
+								$('#businessList').append(tr4);
+								let tr5 = $('#businessList tr');
+								let td5 = tr5.children();
+								$('#businessReview').text(td5.eq(4).text() + ' 사업성 검토');
+								tr6 += '<tr>';
+								tr6 += '<td>'+'합 계'+'</td>';
+								tr6 += '<td>'+map.sumTotl4+'</td>';
+								tr6 += '<td>'+map.sumBiz14+'</td>';
+								tr6 += '<td>'+map.sumBiz24+'</td>';                      	
+								tr6 += '</tr>';
+								$('#sumBusinessList').append(tr6);
+	//진행현황 - 설계4본부	진행상태별[진행중] 리스트							
+								if(map.sumBiz14 == "0"){
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7800';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.jinhaengSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');;
+										}
+									});
+	//진행현황 - 설계4본부	진행상태별[미승인] 리스트							
+								} else {
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7800';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.meSeunginSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										}
+									});
+								}
+							}
+						});
+	//진행현황 - 설계4본부 본부별 진행상태별 사업성검토 원형 그래프						
+						let DEPT_CD = '7800';
+						$.ajax({
+							url : "/business/jinhaengInfoProcess",
+							type : 'POST',
+							data : {DEPT_CD:DEPT_CD},
+							success : (map)=>{	
+								let bizCnt = new Array();
+								let actNm = new Array();
+								let deptNm = new Array();
+								$(map.jinhaengInfo).each((index, item)=>{
+									bizCnt.push(item.biz_CNT);
+									actNm.push(item.biz_NM);
+									deptNm.push(item.dept_NM);
+								})
+								let jinhaengCnt1 = bizCnt.pop(0);
+								let jinhaengCnt2 = bizCnt.pop(1);
+								let jinhaengNm1 = actNm.pop(0);
+								let jinhaengNm2 = actNm.pop(1);
+								$('#jinhaengBonbu').text('설계4본부 사업성 검토 [진행상태별]');
+								if ($('#businessPie2').length ){  							  
+									  var echartPie = echarts.init(document.getElementById('businessPie2'));
+									  echartPie.setOption({
+										tooltip: {
+										  trigger: 'item',
+										  formatter: "{a} <br/>{b} : {c} ({d}%)"
+										},
+										legend: {
+										  x: 'bottom',
+										  y: 'bottom',
+										  data: [jinhaengCnt1, jinhaengCnt2]
+										},
+										toolbox: {
+										  show: true,
+										  feature: {
+											magicType: {
+											  show: true,
+											  type: ['pie', 'funnel'],
+											  option: {
+												funnel: {
+												  x: '25%',
+												  width: '50%',
+												  funnelAlign: 'left',
+												  max: 1548
+												}
+											  }
+											},
+											restore: {
+											  show: false,
+											  title: "Restore"
+											},
+											saveAsImage: {
+											  show: false,
+											  title: "Save Image"
+											}
+										  }
+										},
+										calculable: true,
+										series: [{
+										  
+										  type: 'pie',
+										  radius: '55%',
+										  center: ['50%', '50%'],
+										  data: [{
+											value: jinhaengCnt1,
+											name: jinhaengNm1 + ', ' + jinhaengCnt1
+										  }, {
+											value: jinhaengCnt2,
+											name: jinhaengNm2 + ', ' + jinhaengCnt2
+										  }]
+										}]
+									  });
+
+									  var dataStyle = {
+										normal: {
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										}
+									  };
+
+									  var placeHolderStyle = {
+										normal: {
+										  color: 'rgba(0,0,0,0)',
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										},
+										emphasis: {
+										  color: 'rgba(0,0,0,0)'
+										}
+									  };
+
+									} 
+							}
+						});
+	//진행현황 - 설계5본부 사업성 검토 리스트									
+					} else if(i == '4'){              			
+					$('#businessList').empty();
+					let tr4 = '';
+					$('#sumBusinessList').empty();
+					let tr6 = '';
+						$.ajax({               				
+							url : '/business/businessListProcess',             				
+							type : 'POST',
+							success :(map)=>{
+								$(map.list5).each((index,item)=>{
+									tr4 += '<tr>';
+									tr4 += '<td>'+item.level2_NM+'</td>';
+									tr4 += '<td>'+item.totl+'</td>';
+									tr4 += '<td>'+item.biz1+'</td>';
+									tr4 += '<td>'+item.biz2+'</td>'; 
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '<td style="display:none;">'+item.sys_COD+'</td>';
+									tr4 += '</tr>'
+								});
+								$('#businessList').append(tr4);
+								let tr5 = $('#businessList tr');
+								let td5 = tr5.children();
+								$('#businessReview').text(td5.eq(4).text() + ' 사업성 검토');
+								tr6 += '<tr>';
+								tr6 += '<td>'+'합 계'+'</td>';
+								tr6 += '<td>'+map.sumTotl5+'</td>';
+								tr6 += '<td>'+map.sumBiz15+'</td>';
+								tr6 += '<td>'+map.sumBiz25+'</td>';                      	
+								tr6 += '</tr>';
+								$('#sumBusinessList').append(tr6);
+	//진행현황 - 설계5본부	진행상태별[진행중] 리스트								
+								if(map.sumBiz15 == "0"){	
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7900';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.jinhaengSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										}
+									});
+	//진행현황 - 설계5본부	진행상태별[미승인] 리스트							
+								} else {
+									let tr7 = '';
+									$('#list').empty();	 
+									let DEPT_CD = '7900';	
+									$.ajax({
+										url : '/business/jinhaengSangtaeListProcess',
+										type : 'POST',
+										data : {DEPT_CD:DEPT_CD},
+										success : (map)=>{																		
+											$(map.meSeunginSangtaeList).each((index, item)=>{
+												tr7 += '<tr>';
+												tr7 += '<td>'+item.dept_NM+'</td>';
+												tr7 += '<td>'+item.svc+'</td>';
+												tr7 += '<td>'+item.cust_NM+'</td>';
+												tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+												tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+												tr7 += '</tr>'; 
+											});
+											$('#list').append(tr7);
+											let listTr = $('#list tr')
+											let listTd = listTr.children();
+											$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										}
+									});
+								}		
+							}
+						});
+	//진행현황 - 설계5본부 본부별 진행상태별 사업성검토 원형 그래프				
+						let DEPT_CD = '7900';
+						$.ajax({
+							url : "/business/jinhaengInfoProcess",
+							type : 'POST',
+							data : {DEPT_CD:DEPT_CD},
+							success : (map)=>{	
+								let bizCnt = new Array();
+								let actNm = new Array();
+								let deptNm = new Array();
+								$(map.jinhaengInfo).each((index, item)=>{
+									bizCnt.push(item.biz_CNT);
+									actNm.push(item.biz_NM);
+									deptNm.push(item.dept_NM);
+								})
+								let jinhaengCnt1 = bizCnt.pop(0);
+								let jinhaengCnt2 = bizCnt.pop(1);
+								let jinhaengNm1 = actNm.pop(0);
+								let jinhaengNm2 = actNm.pop(1);
+								$('#jinhaengBonbu').text('설계5본부 사업성 검토 [진행상태별]');
+								if ($('#businessPie2').length ){  							  
+									  var echartPie = echarts.init(document.getElementById('businessPie2'));
+									  echartPie.setOption({
+										tooltip: {
+										  trigger: 'item',
+										  formatter: "{a} <br/>{b} : {c} ({d}%)"
+										},
+										legend: {
+										  x: 'bottom',
+										  y: 'bottom',
+										  data: [jinhaengCnt1, jinhaengCnt2]
+										},
+										toolbox: {
+										  show: true,
+										  feature: {
+											magicType: {
+											  show: true,
+											  type: ['pie', 'funnel'],
+											  option: {
+												funnel: {
+												  x: '25%',
+												  width: '50%',
+												  funnelAlign: 'left',
+												  max: 1548
+												}
+											  }
+											},
+											restore: {
+											  show: false,
+											  title: "Restore"
+											},
+											saveAsImage: {
+											  show: false,
+											  title: "Save Image"
+											}
+										  }
+										},
+										calculable: true,
+										series: [{
+										  
+										  type: 'pie',
+										  radius: '55%',
+										  center: ['50%', '50%'],
+										  data: [{
+											value: jinhaengCnt1,
+											name: jinhaengNm1 + ', ' + jinhaengCnt1
+										  }, {
+											value: jinhaengCnt2,
+											name: jinhaengNm2 + ', ' + jinhaengCnt2
+										  }]
+										}]
+									  });
+
+									  var dataStyle = {
+										normal: {
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										}
+									  };
+
+									  var placeHolderStyle = {
+										normal: {
+										  color: 'rgba(0,0,0,0)',
+										  label: {
+											show: true
+										  },
+										  labelLine: {
+											show: true
+										  }
+										},
+										emphasis: {
+										  color: 'rgba(0,0,0,0)'
+										}
+									  };
+
+									} 
+							}
+						});
+					} 
+				});				
+	//진행현황 - 본부별 진행상태별 사업성검토 원형 그래프		
+				$.ajax({
+					url : "/business/jinhaengInfoProcess",
+					type : 'POST',
+					success : (map)=>{	
+						let bizCnt = new Array();
+						let actNm = new Array();
+						let deptNm = new Array();
+						$(map.jinhaengInfo).each((index, item)=>{
+							bizCnt.push(item.biz_CNT);
+							actNm.push(item.biz_NM);
+							deptNm.push(item.dept_NM);
+						})
+						let jinhaengCnt1 = bizCnt.pop(0);
+						let jinhaengCnt2 = bizCnt.pop(1);
+						let jinhaengNm1 = actNm.pop(0);
+						let jinhaengNm2 = actNm.pop(1);
+						let jinhaengBonbu = deptNm.pop(0);
+						$('#jinhaengBonbu').text(jinhaengBonbu + ' 사업성 검토 [진행상태별]');
+						if ($('#businessPie2').length ){  							  
+							  var echartPie = echarts.init(document.getElementById('businessPie2'));
+							  echartPie.setOption({
+								tooltip: {
+								  trigger: 'item',
+								  formatter: "{name} <br/>{data} : {c} ({d}%)"
+								},
+								legend: {
+								  x: 'bottom',
+								  y: 'bottom',
+								  data: [jinhaengCnt1, jinhaengCnt2]
+								},
+								toolbox: {
+								  show: true,
+								  feature: {
+									magicType: {
+									  show: true,
+									  type: ['pie', 'funnel'],
+									  option: {
+										funnel: {
+										  x: '25%',
+										  width: '50%',
+										  funnelAlign: 'left',
+										  max: 1548
+										}
+									  }
+									},
+									restore: {
+									  show: false,
+									  title: "Restore"
+									},
+									saveAsImage: {
+									  show: false,
+									  title: "Save Image"
+									}
+								  }
+								},
+								calculable: true,
+								series: [{
+								  name: 'plz',
+								  type: 'pie',
+								  radius: '55%',
+								  center: ['50%', '50%'],
+								  data: [{
+									value: jinhaengCnt1,
+									name: jinhaengNm1 + ', ' + jinhaengCnt1
+								  }, {
+									value: jinhaengCnt2,
+									name: jinhaengNm2 + ', ' + jinhaengCnt2
+								  }]
+								}]
+							  });
+							  
+							  echartPie.on('click', function (i) {
+								  console.log('i :' + encodeURIComponent(i.dataIndex));
+								  if(encodeURIComponent(i.dataIndex) == 0){
+									  let index = '2';
+									  let deptNm = $('#jinhaengBonbu').text();
+									  console.log('진행');
+									  $.ajax({
+										 url : '/business/jinhaengSangtaeListProcess',
+										 type : 'POST',
+										 data : {DEPT_NM:deptNm, ACT_STAT:index},
+										 success :(map)=>{
+											 let tr7 = '';
+												$('#list').empty();	
+											 $(map.jinhaengSangtaeList).each((index, item)=>{
+													tr7 += '<tr>';
+													tr7 += '<td>'+item.dept_NM+'</td>';
+													tr7 += '<td>'+item.svc+'</td>';
+													tr7 += '<td>'+item.cust_NM+'</td>';
+													tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+													tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+													tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+													tr7 += '</tr>'; 
+												});
+												$('#list').append(tr7);
+												let listTr = $('#list tr')
+												let listTd = listTr.children();
+												$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										 }										 
+									  });
+								  } else {
+									  let index = encodeURIComponent(i.dataIndex);
+									  let deptNm = $('#jinhaengBonbu').text();
+									  console.log('미진행');
+									  $.ajax({
+										 url : '/business/jinhaengSangtaeListProcess',
+										 type : 'POST',
+										 data : {DEPT_NM:deptNm, ACT_STAT:index},
+										 success :(map)=>{
+											 let tr7 = '';
+												$('#list').empty();	
+											 $(map.meSeunginSangtaeList).each((index, item)=>{
+													tr7 += '<tr>';
+													tr7 += '<td>'+item.dept_NM+'</td>';
+													tr7 += '<td>'+item.svc+'</td>';
+													tr7 += '<td>'+item.cust_NM+'</td>';
+													tr7 += '<td>'+item.biz_GBN_NM+'</td>';
+													tr7 += '<td style="display:none;">'+item.act_STAT_NM+'</td>';
+													tr7 += '<td style="display:none;">'+item.dept_CD+'</td>';                      	
+													tr7 += '</tr>'; 
+												});
+												$('#list').append(tr7);
+												let listTr = $('#list tr')
+												let listTd = listTr.children();
+												$('#jinhaengSangtae').text('진행상태별 ['+listTd.eq(4).text()+']');
+										 }										 
+									  });
+								  }
+								});
+							  var dataStyle = {
+								normal: {
+								  label: {
+									show: true
+								  },
+								  labelLine: {
+									show: true
+								  }
+								}
+							  };
+
+							  var placeHolderStyle = {
+								normal: {
+								  color: 'rgba(0,0,0,0)',
+								  label: {
+									show: true
+								  },
+								  labelLine: {
+									show: true
+								  }
+								},
+								emphasis: {
+								  color: 'rgba(0,0,0,0)'
+								}
+							  };
+
+							} 
+					}
+				});
+//종료현황 - 본부별 사업성 검토 리스트					
+				$.ajax({
+					url : '/business/bonbuBusinessEndListProcess',
+					type : "GET",
+					success : (map)=>{
+						let tr = '';						
+						$('#businessEndList').empty();
+						$(map.businessEndList1).each((index, item)=>{
+							tr += '<tr>';
+							tr += '<td>' +item.biz_NM+ '</td>';
+							tr += '<td>' +item.totl+ '</td>';
+							tr += '<td>' +item.biz1+ '</td>';
+							tr += '<td>' +item.biz2+ '</td>';							
+							tr += '<td style="display:none;">' +item.dept_CD+ '</td>';
+							tr += '<td style="display:none;">' +item.dept_NM+ '</td>';
+							tr += '</tr>';
+						});
+						$('#businessEndList').append(tr);
+						let tr1 = $('#businessEndList tr');
+						let td1	= tr1.children();
+						$('#businessReviewEnd').text(td1.eq(5).text() + ' 사업성 검토');		
+						$('#sumBusinessEndList').empty();
+						let tr2 = '';
+						tr2 += '<tr>';
+						tr2 += '<td>' +'**합 계**'+ '</td>';
+						tr2 += '<td>' +map.sumTotl1+ '</td>';
+						tr2 += '<td>' +map.sumBiz11+ '</td>';
+						tr2 += '<td>' +map.sumBiz21+ '</td>';						
+						tr2 += '</tr>';
+						$('#sumBusinessEndList').append(tr2)
+						let businessEndGraph2 = new Morris.Bar({
+			                element: 'businessEndGraph2',
+							data:
+								[ 
+									{ dept: '설계1본부', value: map.sumTotl1  },
+									{ dept: '설계2본부', value: map.sumTotl2  },
+									{ dept: '설계3본부', value: map.sumTotl3  },
+									{ dept: '설계4본부', value: map.sumTotl4  },
+									{ dept: '설계5본부', value: map.sumTotl5  }                             
+								],
+							xkey: 'dept', 
+							ykeys: ['value'],
+							labels: ['건수'],
+							barColors: function (row, series, type) {
+							console.log("--> "+row.label, series, type);
+							if(row.label == "설계1본부") return "#AD1D28";
+							else if(row.label == "설계2본부") return "#FF5E00";
+							else if(row.label == "설계3본부") return "#fec04c";
+							else if(row.label == "설계4본부") return "#1AB244";
+							else if(row.label == "설계5본부") return "#0000FF";
+							}												
+						})					
+						if($(map.sumBiz11) == 0){
+							let actStat = '4';
+							let deptCd = '7500';
+							$.ajax({
+								url : '/business/jinhaengSangtaeEndListProcess',
+								type : "POST",
+								data : {ACT_STAT:actStat, DEPT_CD:deptCd},
+								success : (map)=>{
+									let tr = '';
+									$('#jinhaengEndList').empty();
+									$(map.jinhaengEndList).each((index, item)=>{
+										tr += '<tr>';
+										tr += '<td>' +item.dept_NM+ '</td>';
+										tr += '<td>' +item.svc+ '</td>';
+										tr += '<td>' +item.cust_NM+ '</td>';
+										tr += '<td>' +item.biz_GBN_NM+ '</td>';	
+										tr += '<td>' +item.end_GBN_NM+ '</td>';	
+										tr += '<td style="display:none;">' +item.dept_CD+ '</td>';									
+										tr += '</tr>'; 
+									});
+									$('#jinhaengEndList').append(tr);
+									let tr1 = $('#jinhaengEndList tr');
+									let td1= tr1.children();
+									$('#jinhaengSangtaeEnd').text('진행상태별 [' + td1.eq(4).text() + ']');
+								}
+							});
+						} else {
+							let actStat = '5';
+							let deptCd = '7500';
+							$.ajax({
+								url : '/business/jinhaengSangtaeEndListProcess',
+								type : "POST",
+								data : {ACT_STAT:actStat, DEPT_CD:deptCd},
+								success : (map)=>{
+									let tr = '';
+									$('#jinhaengEndList').empty();
+									$(map.jinhaengEndList).each((index, item)=>{
+										tr += '<tr>';
+										tr += '<td>' +item.dept_NM+ '</td>';
+										tr += '<td>' +item.svc+ '</td>';
+										tr += '<td>' +item.cust_NM+ '</td>';
+										tr += '<td>' +item.biz_GBN_NM+ '</td>';	
+										tr += '<td>' +item.end_GBN_NM+ '</td>';	
+										tr += '<td style="display:none;">' +item.dept_CD+ '</td>';									
+										tr += '</tr>'; 
+									});
+									$('#jinhaengEndList').append(tr);
+									let tr1 = $('#jinhaengEndList tr');
+									let td1= tr1.children();
+									$('#jinhaengSangtaeEnd').text('진행상태별 [' + td1.eq(4).text() + ']');
+								}
+							});
+						}
+						let bizGbn = new Array();
+						let bizCnt = new Array();
+						let bizNm = new Array();
+						$(map.yearlyBusinessList).each((index, item)=>{
+							bizGbn += item.biz_GBN;
+							bizCnt += item.biz_CNT;
+							bizNm += item.biz_NM;
+						});
+						if ($('#businessPie3').length ){  							  
+							  var echartPie = echarts.init(document.getElementById('businessPie3'));
+							  echartPie.setOption({
+								tooltip: {
+								  trigger: 'item',
+								  formatter: "{a} <br/>{b} : {c} ({d}%)"
+								},
+								legend: {
+								  x: 'bottom',
+								  y: 'bottom',
+								  data: [jinhaengCnt1, jinhaengCnt2]
+								},
+								toolbox: {
+								  show: true,
+								  feature: {
+									magicType: {
+									  show: true,
+									  type: ['pie', 'funnel'],
+									  option: {
+										funnel: {
+										  x: '25%',
+										  width: '50%',
+										  funnelAlign: 'left',
+										  max: 1548
+										}
+									  }
+									},
+									restore: {
+									  show: false,
+									  title: "Restore"
+									},
+									saveAsImage: {
+									  show: false,
+									  title: "Save Image"
+									}
+								  }
+								},
+								calculable: true,
+								series: [{
+								  
+								  type: 'pie',
+								  radius: '55%',
+								  center: ['50%', '50%'],
+								  data: [{
+									value: jinhaengCnt1,
+									name: jinhaengNm1 + ', ' + jinhaengCnt1
+								  }, {
+									value: jinhaengCnt2,
+									name: jinhaengNm2 + ', ' + jinhaengCnt2
+								  }]
+								}]
+							  });
+
+							  var dataStyle = {
+								normal: {
+								  label: {
+									show: true
+								  },
+								  labelLine: {
+									show: true
+								  }
+								}
+							  };
+
+							  var placeHolderStyle = {
+								normal: {
+								  color: 'rgba(0,0,0,0)',
+								  label: {
+									show: true
+								  },
+								  labelLine: {
+									show: true
+								  }
+								},
+								emphasis: {
+								  color: 'rgba(0,0,0,0)'
+								}
+							  };
+
+							} 
+						
+					}					
+				 
+				});			
+			});			
+		</script>
+		<th:block th:include="layout/customHead"></th:block>
+	</th:block>
+	<th:block layout:fragment="customBody">
+	<div class="col-md-12 col-sm-6 col-xs-12" style="width:100%;color:black;">
+    	<div class="x_panel">               
+        	<div class="col-md-6 col-sm-6 col-xs-12">
+		            <h1>진행/종료 현황</h1>	                   	
+		            <h5 style="color:gray;"><b>1.사업성검토 관리&nbsp;>&nbsp;&nbsp;1.3.사업성검토분석 현황&nbsp;>&nbsp;&nbsp;1.3.1.진행/종료 현황</b></h5> 	                    
+	        </div><br><br>
+            <div class="col-md-6 col-sm-6 col-xs-12">    
+            	<div class="x_content" style="text-align: right">
+					<div class="btn-group" >
+						<button class="btn btn-default" type="button" id="search">조회</button>
+						<button class="btn btn-default" type="reset">입력</button>
+						<button class="btn btn-default" type="button">수정</button>
+						<button class="btn btn-default" type="button">삭제</button>
+						<button class="btn btn-default" type="button">저장</button>
+						<button class="btn btn-default" type="button">출력</button>
+					</div>							
+				</div>
+			</div>	                                                  
+        </div>
+	</div>		
+<!-- 탭 메뉴 -->    
+    <div class="col-md-12 col-sm-12 col-xs-12">
+	    <div class="x_panel">	      
+	    	<div class="x_content">	
+	        	<div class="" role="tabpanel" data-example-id="togglable-tabs">
+	          		<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+	            		<li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">진행현황</a>
+	            		</li>
+	            		<li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">진행종료</a>
+	            		</li>            
+	          		</ul>
+	          		<div id="myTabContent" class="tab-content">
+<!-- 첫번째 탭 - 메뉴 -->	            			            		
+	            		<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">              			
+	<!--  첫번째 탭 - 첫번째줄 제목 -->	              				
+	              			<div class="col-md-12 col-sm-12 col-xs-12">	
+	              				<div class="col-md-4 col-sm-4 col-xs-12" style="color:black;">
+	              					<th:block th:text="${time}">	              				
+	              				</div>
+	              				<div class="col-md-8 col-sm-4 col-xs-12" style="color:black;">
+	              					본부별 사업성 검토	              				
+	              				</div>              				
+	              			</div>
+		<!--  첫번째 탭 - 원형 그래프 1~2 -->
+	              			<div class="col-md-4 col-sm-4 col-xs-4">             				
+				                <div class="x_panel" style="height:150px;">			
+				                	<canvas id="businessPie"></canvas>
+				                </div>
+				                <div id="jinhaengBonbu" style="color:black;"></div>
+				                <div class="x_panel" style="height:150px;">	
+				                	<canvas id="businessPie2"></canvas>
+				                </div>
+              				</div>
+		<!--  첫번째 탭 - 막대 그래프 -->
+              				<div class="col-md-8 col-sm-8 col-xs-8">
+                				<div class="x_panel">
+                					<div id="businessGraph" style="height:313px;width:100%;"></div>
+                				</div>         
+                			</div>           
+<!--  첫번째 탭 - 가운데줄 -->           					         					
+           					<div class="col-md-12 col-sm-12 col-xs-12" style="color:black;">
+           						<div class="x_panel" style="text-align:center;">
+           							chart를 click하시면 해당본부의 세부자료가 조회됩니다.
+           						</div>
+           					</div>
+<!--  첫번째 탭 - 두번째줄 제목 -->
+							<div class="col-md-12 col-sm-12 col-xs-12">								
+								<div class="col-md-4 col-sm-4 col-xs-12" id="businessReview" style="color:black;">	              			             					
+	              				</div>											              											
+								<div class="col-md-8 col-sm-8 col-xs-12" id="jinhaengSangtae" style="color:black;">												             				
+								</div>								
+							</div>	 							
+<!--  첫번째 탭 - 테이블 -->
+      						<div class="col-md-4 col-sm-4 col-xs-4" style="color:black;">						    	                                                       
+						        <div class="x_content">
+									
+						            	<table class="table table-striped table-bordered table-hover jambo_table" id="table">                  
+											<thead>
+												<tr>
+													<td>수주구분</td>
+													<td>합계</td>
+													<td>미승인</td>
+													<td>진행</td>														
+												</tr>
+											</thead>							
+											<tbody id="businessList">
+											<th:block th:each="l : ${map.list1}">
+												<tr>
+													<td th:text="${l.LEVEL2_NM}"></td><!-- 0 -->
+													<td th:text="${l.TOTL}"></td><!-- 1 -->
+													<td th:text="${l.BIZ1}"></td><!-- 2 -->
+													<td th:text="${l.BIZ2}"></td><!-- 3 -->
+													<td th:text="${l.SYS_COD}" style="display:none;"></td><!-- 4 -->
+																																																
+												</tr>
+											</th:block>
+											<tbody id="businessList">
+											<th:block th:each="l : ${map.list2}">
+												<tr>
+													<td th:text="${l.LEVEL2_NM}" style="display:none;"></td><!-- 0 -->
+													<td th:text="${l.TOTL}" style="display:none;"></td><!-- 1 -->
+													<td th:text="${l.BIZ1}" style="display:none;"></td><!-- 2 -->
+													<td th:text="${l.BIZ2}" style="display:none;"></td><!-- 3 -->
+													<td th:text="${l.SYS_COD}" style="display:none;"></td><!-- 4 -->
+																																																		
+												</tr>
+											</th:block>
+											<tbody id="businessList">
+											<th:block th:each="l : ${map.list3}">
+												<tr>
+													<td th:text="${l.LEVEL2_NM}" style="display:none;"></td><!-- 0 -->
+													<td th:text="${l.TOTL}" style="display:none;"></td><!-- 1 -->
+													<td th:text="${l.BIZ1}" style="display:none;"></td><!-- 2 -->
+													<td th:text="${l.BIZ2}" style="display:none;"></td><!-- 3 -->
+													<td th:text="${l.SYS_COD}" style="display:none;"></td><!-- 4 -->
+																																																
+												</tr>
+											</th:block>
+											<tbody id="businessList">
+											<th:block th:each="l : ${map.list4}">
+												<tr>
+													<td th:text="${l.LEVEL2_NM}" style="display:none;"></td><!-- 0 -->
+													<td th:text="${l.TOTL}" style="display:none;"></td><!-- 1 -->
+													<td th:text="${l.BIZ1}" style="display:none;"></td><!-- 2 -->
+													<td th:text="${l.BIZ2}" style="display:none;"></td><!-- 3 -->
+													<td th:text="${l.SYS_COD}" style="display:none;"></td><!-- 4 -->
+																																																		
+												</tr>
+											</th:block>
+											<tbody id="businessList">
+											<th:block th:each="l : ${map.list5}">
+												<tr>
+													<td th:text="${l.LEVEL2_NM}" style="display:none;"></td><!-- 0 -->
+													<td th:text="${l.TOTL}" style="display:none;"></td><!-- 1 -->
+													<td th:text="${l.BIZ1}" style="display:none;"></td><!-- 2 -->
+													<td th:text="${l.BIZ2}" style="display:none;"></td><!-- 3 -->
+													<td th:text="${l.SYS_COD}" style="display:none;"></td><!-- 4 -->
+																																																				
+												</tr>
+											</th:block>																														
+											</tbody>
+											<tbody id="sumBusinessList">	
+												<tr>														
+													<th>합 계</th>					<!-- 0 -->																			
+													<th th:text="${map.sumTotl1}"></th><!-- 1 -->
+													<th th:text="${map.sumBiz11}"></th><!-- 2 -->
+													<th th:text="${map.sumBiz21}"></th>	<!-- 3 -->
+													<th th:text="${map.sumTotl2}" style="display:none;"></th><!-- 4 -->
+													<th th:text="${map.sumTotl3}" style="display:none;"></th><!-- 5 -->
+													<th th:text="${map.sumTotl4}" style="display:none;"></th><!-- 6 -->
+													<th th:text="${map.sumTotl5}" style="display:none;"></th>	<!-- 7 -->					
+												</tr>
+											</tbody>			
+										</table>
+									
+						      	</div>						    	
+							</div>
+<!--  첫번째 탭 - 진행상태별 & 수주구분별 리스트 -->         					
+           					<div class="col-md-8 col-sm-6 col-xs-12" style="color:black;">						    	                                                    
+								<div class="x_content">
+									
+										<table class="table table-striped table-bordered table-hover jambo_table" id="table">                  
+											<thead>
+												<tr>
+													<td>부서명</td>
+													<td>프로젝트코드명</td>
+													<td>발 주 처</td>
+													<td>구분</td>														
+												</tr>
+											</thead>
+											<tbody id="list">	
+												<th:block th:each="j : ${map.jinhaengList}">							
+													<tr>
+														<td th:text="${j.DEPT_NM}"></td> <!--0-->
+														<td th:text="${j.SVC}"></td> <!--1-->
+														<td th:text="${j.CUST_NM}"></td> <!--2-->
+														<td th:text="${j.BIZ_GBN_NM}"></td> <!--3-->
+														<td style="display:none;" th:text="${j.ACT_STAT_NM}"></td> <!--4-->
+														<td style="display:none;" th:text="${j.DEPT_CD}"></td> <!--5-->
+													</tr>
+												</th:block>																													
+											</tbody>																
+										</table>
+									
+				        		</div>					      		
+							</div>   
+            			</div>
+<!-- 두번째 탭 메뉴 -->	            		
+	            		<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">	              	           	 		
+	<!-- 두번째 탭 - 년도메뉴 -->           	 			
+	           	 			<div class="x_panel">
+	           	 				<button class="btn" style="color:black">2019</button>
+	           	 				<button class="btn" style="color:black">2018</button>
+	           	 				<button class="btn" style="color:black">2017</button>
+	           	 				<button class="btn" style="color:black">2016 이전</button>
+	           	 			</div>
+	<!-- 두번째 탭 - 첫째줄 제목 -->          	 			
+	           	 			<div class="col-md-12 col-sm-12 col-xs-12" style="color:black;">	           	 			
+	       	 					<div class="col-md-4 col-sm-4 col-xs-4" style="color:black;">1
+	       	 					</div>
+	       	 					<div class="col-md-8 col-sm-8 col-xs-8" style="color:black;">2
+	       	 					</div>           	 				
+	           	 			</div>
+	<!-- 두번째 탭 - 첫째줄 내용 -->          	 		
+	           	 				           	 			
+       	 					<div class="col-md-4 col-sm-12 col-xs-12" style="color:black;">
+       	 						<div class="x_panel">
+       	 							<canvas id="businessPie3"></canvas>
+       	 						</div>
+       	 						<div class="x_panel">
+       	 						</div>
+       	 					</div>
+       	 					<div class="col-md-8 col-sm-12 col-xs-12" style="color:black;">
+       	 						<div class="x_panel">
+       	 							<div id="businessEndGraph2" style="height:313px;width:600px;"></div>
+       	 						</div>
+       	 					</div>           	 				
+	           	 			
+	<!-- 두번째 탭 - 가운데 줄 -->           	 			
+	           	 			<div class="x_panel" style="text-align:center;color:black;">
+           							chart를 click하시면 해당본부의 세부자료가 조회됩니다.
+           					</div>
+	<!-- 두번째 탭 - 두번째줄 제목 -->          	 			
+	           	 				           	 			
+       	 					<div class="col-md-4 col-sm-4 col-xs-4" style="color:black;" id="businessReviewEnd">
+       	 					</div>
+       	 					<div class="col-md-8 col-sm-8 col-xs-8" style="color:black;" id="jinhaengSangtaeEnd">
+       	 					</div>           	 				
+	           	 			 
+	<!-- 두번째 탭 - 두번째줄 내용 -->          	 		
+	           	 			           	 			
+      	 					<div class="col-md-4 col-sm-4 col-xs-4" style="color:black;">   	 							
+   	 							<table class="table table-striped table-bordered table-hover jambo_table">
+   	 								<thead>
+   	 									<tr>
+   	 										<th>수주구분</th>
+   	 										<th>합계</th>
+   	 										<th>계약</th>
+   	 										<th>무산</th>
+   	 									</tr>
+   	 								</thead>
+   	 								<tbody id="businessEndList">
+   	 								</tbody>
+   	 								<tbody id="sumBusinessEndList">
+   	 								</tbody>
+   	 							</table>      	 						
+      	 					</div>
+      	 					<div class="col-md-8 col-sm-8 col-xs-8" style="color:black;">
+      	 						<table class="table table-striped table-bordered table-hover jambo_table">
+      	 							<thead>
+      	 								<tr>
+	      	 								<th>부서명</th>
+	      	 								<th>프로젝트명</th>
+	      	 								<th>발주처</th>
+	      	 								<th>구분</th>
+	      	 								<th>종료구분</th>
+	      	 							</tr>	
+      	 							</thead>
+      	 							<tbody id="jinhaengEndList">
+      	 							
+      	 							</tbody>
+      	 						</table>
+      	 					</div>           	 				
+	           	 			          	 			          	 		
+	           	 		</div>            	          		
+	          		</div>
+	        	</div>	
+	      	</div>
+	    </div>
+   	</div>               
+	</th:block>
+	<th:block layout:fragment="customJquery">
+    <!-- jQuery -->
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/vendors/nprogress/nprogress.js"></script>
+     <!-- ECharts -->
+    <script src="/vendors/echarts/dist/echarts.min.js"></script>
+    <script src="/vendors/echarts/map/js/world.js"></script>
+  	    <!-- morris.js -->
+    <script src="../vendors/raphael/raphael.min.js"></script>
+    <script src="../vendors/morris.js/morris.min.js"></script>
+   
+
+	
+    <!-- Custom Theme Scripts -->
+    <script src="/build/js/custom.min.js"></script>
+    </th:block>
+</html>

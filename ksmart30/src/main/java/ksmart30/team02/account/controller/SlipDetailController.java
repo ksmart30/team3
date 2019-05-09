@@ -1,10 +1,12 @@
 package ksmart30.team02.account.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,8 @@ public class SlipDetailController {
 	 * @return  String(view이름)
 	 */
 	@GetMapping("/acc/slipSearchView")
-	public String slipSearchView() {
+	public String slipSearchView(Model model) {
+		model.addAttribute("accountFirm", slipdetailservice.getAccountFirm());
 		return "account/slipSearchView";
 	}
 	
@@ -83,6 +86,7 @@ public class SlipDetailController {
 	public @ResponseBody List<Map<String, Object>> slipSearchList(@RequestBody Map<String,Object> searchMap) throws JsonProcessingException{
 		System.out.println("slipSearchList 호출");
 		System.out.println(searchMap);
+		
 		return slipdetailservice.getSlipList(searchMap);
 	}
 }

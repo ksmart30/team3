@@ -11,9 +11,11 @@ public class SlipDetailDomain {
 	private String SLIP_NO;
 	private String JS_CODE;
 	private String SLIP_SEQ;
+	private String ACC_NM;
 	private String ACC_CD;
 	private String ACC_DTL_CD;
 	private String BELONG_DEPT_CD;
+	private String BELONG_DEPT_NM;
 	private String DRCR_GB;
 	private String ACC_AMT;
 	private String DESCR;
@@ -68,6 +70,13 @@ public class SlipDetailDomain {
 	public void setSLIP_SEQ(String sLIP_SEQ) {
 		SLIP_SEQ = sLIP_SEQ;
 	}
+	
+	public String getACC_NM() {
+		return ACC_NM;
+	}
+	public void setACC_NM(String aCC_NM) {
+		ACC_NM = aCC_NM;
+	}
 	public String getACC_CD() {
 		return ACC_CD;
 	}
@@ -85,6 +94,13 @@ public class SlipDetailDomain {
 	}
 	public void setBELONG_DEPT_CD(String bELONG_DEPT_CD) {
 		BELONG_DEPT_CD = bELONG_DEPT_CD;
+	}
+	
+	public String getBELONG_DEPT_NM() {
+		return BELONG_DEPT_NM;
+	}
+	public void setBELONG_DEPT_NM(String bELONG_DEPT_NM) {
+		BELONG_DEPT_NM = bELONG_DEPT_NM;
 	}
 	public String getDRCR_GB() {
 		return DRCR_GB;
@@ -227,13 +243,16 @@ public class SlipDetailDomain {
 	@Override
 	public String toString() {
 		return "SlipDetailDomain [ACC_UNIT=" + ACC_UNIT + ", SLIP_DATE=" + SLIP_DATE + ", SLIP_NO=" + SLIP_NO
-				+ ", JS_CODE=" + JS_CODE + ", SLIP_SEQ=" + SLIP_SEQ + ", ACC_CD=" + ACC_CD + ", ACC_DTL_CD="
-				+ ACC_DTL_CD + ", BELONG_DEPT_CD=" + BELONG_DEPT_CD + ", DRCR_GB=" + DRCR_GB + ", ACC_AMT=" + ACC_AMT
-				+ ", DESCR=" + DESCR + ", CONT_CD1=" + CONT_CD1 + ", CONT_CD2=" + CONT_CD2 + ", CONT_CD3=" + CONT_CD3
-				+ ", CONT_CD4=" + CONT_CD4 + ", CONT_CD5=" + CONT_CD5 + ", CONT_CD6=" + CONT_CD6 + ", CONT_CD7="
-				+ CONT_CD7 + ", CONT_CD8=" + CONT_CD8 + ", CONT_CD9=" + CONT_CD9 + ", CONT_CD10=" + CONT_CD10
-				+ ", CONT_NM1=" + CONT_NM1 + ", CONT_NM2=" + CONT_NM2 + ", CONT_NM3=" + CONT_NM3 + ", CONT_NM4="
-				+ CONT_NM4 + ", CONT_NM5=" + CONT_NM5 + ", CONT_NM6=" + CONT_NM6 + ", CONT_NM7=" + CONT_NM7
-				+ ", CONT_NM8=" + CONT_NM8 + ", CONT_NM9=" + CONT_NM9 + ", CONT_NM10=" + CONT_NM10 + "]";
-	}			
+				+ ", JS_CODE=" + JS_CODE + ", SLIP_SEQ=" + SLIP_SEQ + ", ACC_NM=" + ACC_NM + ", ACC_CD=" + ACC_CD
+				+ ", ACC_DTL_CD=" + ACC_DTL_CD + ", BELONG_DEPT_CD=" + BELONG_DEPT_CD + ", BELONG_DEPT_NM="
+				+ BELONG_DEPT_NM + ", DRCR_GB=" + DRCR_GB + ", ACC_AMT=" + ACC_AMT + ", DESCR=" + DESCR + ", CONT_CD1="
+				+ CONT_CD1 + ", CONT_CD2=" + CONT_CD2 + ", CONT_CD3=" + CONT_CD3 + ", CONT_CD4=" + CONT_CD4
+				+ ", CONT_CD5=" + CONT_CD5 + ", CONT_CD6=" + CONT_CD6 + ", CONT_CD7=" + CONT_CD7 + ", CONT_CD8="
+				+ CONT_CD8 + ", CONT_CD9=" + CONT_CD9 + ", CONT_CD10=" + CONT_CD10 + ", CONT_NM1=" + CONT_NM1
+				+ ", CONT_NM2=" + CONT_NM2 + ", CONT_NM3=" + CONT_NM3 + ", CONT_NM4=" + CONT_NM4 + ", CONT_NM5="
+				+ CONT_NM5 + ", CONT_NM6=" + CONT_NM6 + ", CONT_NM7=" + CONT_NM7 + ", CONT_NM8=" + CONT_NM8
+				+ ", CONT_NM9=" + CONT_NM9 + ", CONT_NM10=" + CONT_NM10 + "]";
+	}
+	
+	
 }

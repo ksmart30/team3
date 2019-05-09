@@ -8,6 +8,6 @@ public class SlipEndDayController {
 	@GetMapping("/acc/slipEndDayView")
 	public String slipEndDayView() {
 		System.out.println("전표마감(일) slipEndDayIn SlipEndDayController.java");
-		return "/account/slip/endday/slipendday_in";
+		return "/account/slipendday_in";
 	}
 }

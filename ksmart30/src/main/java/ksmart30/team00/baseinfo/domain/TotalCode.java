@@ -17,6 +17,11 @@ public class TotalCode {
 	private String id;
 	private String pid;
 	private String name;
+	private String BIZ1;
+	private String BIZ2;
+	private String TOTL;
+	private String SYS_COD;
+	
 	public String getBUSI_NM() {
 		return BUSI_NM;
 	}
@@ -113,14 +118,39 @@ public class TotalCode {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getBIZ1() {
+		return BIZ1;
+	}
+	public void setBIZ1(String bIZ1) {
+		BIZ1 = bIZ1;
+	}
+	public String getBIZ2() {
+		return BIZ2;
+	}
+	public void setBIZ2(String bIZ2) {
+		BIZ2 = bIZ2;
+	}
+	public String getTOTL() {
+		return TOTL;
+	}
+	public void setTOTL(String tOTL) {
+		TOTL = tOTL;
+	}
+	public String getSYS_COD() {
+		return SYS_COD;
+	}
+	public void setSYS_COD(String sYS_COD) {
+		SYS_COD = sYS_COD;
+	}
 	@Override
 	public String toString() {
 		return "TotalCode [BUSI_GB=" + BUSI_GB + ", BUSI_NM=" + BUSI_NM + ", LEVEL1_CD=" + LEVEL1_CD + ", LEVEL1_NM="
 				+ LEVEL1_NM + ", LEVEL2_CODE_LEN=" + LEVEL2_CODE_LEN + ", LEVEL2_NAME_LEN=" + LEVEL2_NAME_LEN
 				+ ", REF1_LEN=" + REF1_LEN + ", REF2_LEN=" + REF2_LEN + ", REF1_EXPENSES=" + REF1_EXPENSES
 				+ ", REF2_EXPENSES=" + REF2_EXPENSES + ", LEVEL2_CD=" + LEVEL2_CD + ", LEVEL2_NM=" + LEVEL2_NM
-				+ ", LEVEL2_SHORT_NM=" + LEVEL2_SHORT_NM + ", id=" + id + ", pid=" + pid + ", name=" + name + "]";
+				+ ", LEVEL2_SHORT_NM=" + LEVEL2_SHORT_NM + ", id=" + id + ", pid=" + pid + ", name=" + name + ", BIZ1="
+				+ BIZ1 + ", BIZ2=" + BIZ2 + ", TOTL=" + TOTL + ", SYS_COD=" + SYS_COD + "]";
 	}
 	
-		
 }

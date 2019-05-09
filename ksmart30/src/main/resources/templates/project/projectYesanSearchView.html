@@ -4,16 +4,141 @@
 		<meta charset="UTF-8">
 	<title>프로젝트 예산 검색</title>
 	<th:block th:include="layout/customHead"></th:block>	
+	
+	<!-- AJAX를 사용하기 위한 스크립트 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- jquery를 사용하기 위한 스크립트 -->
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+	<script>
+	
+	function dateCall() {
+		//날짜 초기화(적용하기)
+		let today = new Date();
+		let dd = today.getDate();
+		let mm = today.getMonth()+1; //January is 0!
+		let yyyy = today.getFullYear();
+		if(dd<10) {//2자리수만들기
+		    dd='0'+dd
+		} 
+		if(mm<10) {
+		    mm='0'+mm
+		} 
+		today = yyyy + '-' + mm + '-' + dd;
+		$('#END_DATE').val(today);
+	}
+
+	
+	function listCall(){
+		// 필드로 입력받은 값들을 변수에 저장
+		//let START_DATE = $('#START_DATE').val();
+		//let END_DATE = $('#END_DATE').val();
+		
+		//console.log(START_DATE);
+		//console.log(END_DATE);
+		
+		$.ajax({
+	        url:'/project/projectYesanSearchView',	//url을 요청하고
+	        type:'POST',	//검색조건을 담아서 post 방식으로 보낸다
+	    	//data:{START_DATE:START_DATE, END_DATE:END_DATE, G_AREA_P_LOW:G_AREA_P_LOW, G_AREA_P_HIGH:G_AREA_P_HIGH, B_UP_SU:B_UP_SU, B_DOWN_SU:B_DOWN_SU},	//넘길 데이터
+	        success:(data)=>{	//받은 데이터
+	        	console.log(data);		
+	            $('#list').empty();	//리스트를 비우고	               
+	            $(data).each((index,item)=>{
+	                $('#list').append('<tr><td>'+item.DEPT_NM+'</td><td>'	//부서명
+	                		+item.PJT_NM+'</td><td>'	//프로젝트명
+	                		+item.CUST_NM+'</td><td>'	//발주처명
+	                		+item.PM_EMP_NM+'</td><td>'	//PM이름
+	                		+item.PYUNG_DAN+'</td><td>'	//평당단가
+	                		+item.G_YAREA_P+'</td><td>'	//연면적
+	                		+item.TOT_CONTRACT_AMT+'</td><td>'	//매출액
+	                		+item.COST_TOT+'</td><td>'	//매출원가합계
+	                		+item.COST_TOT_YUL+'</td><td>'	//매출원가비율
+	                		+item.COST_AMT+'</td><td>'	//자체비용
+	                		+item.COST_AMT_YUL+'</td><td>'	//자체비용비율
+	                		+item.DIV_AMT+'</td><td>'	//배부비용
+	                		+item.DIV_AMT_YUL+'</td><td>'	//배부비용비율
+	                		+item.PROFIT_TOT+'</td><td>'	//영업이익
+	                		+item.PROFIT_TOT_YUL+'</td></tr>');	//영업이익비율            
+	            });
+	           	//리스트의 길이
+	            $('#listLength').empty();
+	            $('#listLength').append(data.length);
+	    	}
+		});		
+	}
+	
+	// 모달에서 발주처 선택
+	function modalCustOneBtn(CUST_NM) {
+		console.log('발주처 모달 선택완료!');
+		console.log(CUST_NM);
+		$('#CUST_NM_VAL').empty();
+		$('#CUST_NM_VAL').attr('value', CUST_NM);
+		$('#custExitModal').click();
+	}
+	
+	//문서가 준비되면
+	$(document).ready(()=>{
+		dateCall();	//날짜를 초기화하는 함수를 호출	
+		listCall();	//조회
+		
+		// 발주처 검색 모달
+		$('#custSearchBtn').click(()=>{
+			let column = $('#selectedCustItem option:selected').val();
+			let columnValue = $('#custValue').val();
+			console.log('검색 값 : ');
+    		console.log(columnValue);
+    		$.ajax({
+				url:'/project/projectYesanCustSearch',
+			    type:'POST',
+				data:{column:column, columnValue:columnValue},
+				success:(data)=>{
+					console.log(data);
+					$('#custSearchList').empty();
+					$(data).each((index, item) =>{
+					$('#custSearchList').append('<tr onclick="modalCustOneBtn(&#39'+item.CUST_NM+'&#39)"><td>'+item.CUST_CD+'</td><td>'+item.CUST_NM+'</td></tr>');
+					});
+				}
+    		});
+		}); 		
+		
+		$('#list_btn').click(()=>{ //list_btn(조회버튼)을 클릭하면
+			listCall();
+		});
+	});	
+	
+	
+	</script>
+
+
 	</th:block>
 	
 	<th:block layout:fragment="customBody">
-	<!-- 검색화면 start -->
-	<div class="x_panel" style="color: black;">
-
-		<div class="x_title">
-			<h3>프로젝트예산 검색</h3>
-			<div class="clearfix"></div>
+	<font color="black">	
+	
+	<!-- 목차 상단에 추가 -->
+	<div class="col-md-12 col-xs-12">
+		<div class="page-title">
+			<div class="title_left">
+			 <h2><b>프로젝트예산 검색</b></h2>
+			<h5><font color="gray"><b>2. 계약프로젝트 관리&nbsp;&gt; 2.2 프로젝트예산 관리&nbsp;&gt; 2.2.4 프로젝트예산 검색&nbsp;&nbsp;</b></font></h5>				
+			</div>
 		</div>
+		<div class="x_content" style="text-align: right">
+			<div class="btn-group">
+			<button class="btn btn-default" type="reset" id="list_btn">조회</button>
+			<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
+			<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+			<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+			<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+			<button class="btn btn-default" type="button">출력</button>
+			</div>
+		</div>
+	</div>
+	<!-- 목차 상단에 추가 end -->			
+	
+	<!-- 검색화면 start -->
+	<div class="x_panel">
 
 		<div class="x_content">
 			<br>
@@ -40,14 +165,14 @@
 						<tr role="row">
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 30%;" aria-sort="ascending"
 								aria-label="First name: activate to sort column descending">
-								<label class="control-label">년도</label> 
-								<input type="number" style="width: 20%">
+								<label class="control-label">기간</label> 
+								<input type="date" style="width: 40%" id="START_DATE"> ~ <input type="date" style="width: 40%" id="END_DATE">
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 8%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
 								<label class="control-label">평당단가</label>
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 22%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-								<input type="text" style="width: 40%"> ~ <input type="text" style="width: 40%">
+								<input type="number" min="0" style="width: 40%"> ~ <input type="number" min="0" style="width: 40%">
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 40%;" aria-sort="ascending"	aria-label="First name: activate to sort column descending">
 								<div class="radio">
@@ -61,7 +186,8 @@
 
 						<tr role="row">
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 30%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-								<label class="control-label">부서 <select>
+								<label class="control-label">부서 
+								<select>
 										<option>전 사</option>
 										<option>설계1본부</option>
 										<option>설계2본부</option>
@@ -72,14 +198,14 @@
 							</label>
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 8%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-								<label class="control-label">연면적</label>
+								<label class="control-label">대지면적(평)</label>
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 22%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-								<input type="text" style="width: 40%"> ~ <input type="text" style="width: 40%">
+								<input type="number" min="0" style="width: 40%"> ~ <input type="number" min="0" style="width: 40%">
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 40%;" aria-sort="ascending"	aria-label="First name: activate to sort column descending">
 								<div class="radio">
-									<label style="padding-left: 50px;"><input type="radio">연면적</label>
+									<label style="padding-left: 50px;"><input type="radio">대지면적(평)</label>
 									<label style="padding-left: 50px;"><input type="radio">매출액</label>
 									<label style="padding-left: 50px;"><input type="radio">매출원가</label>
 									<label style="padding-left: 50px;"><input type="radio">영업이익</label>
@@ -90,22 +216,137 @@
 						<tr role="row">
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 30%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
 								<label class="control-label">발주처명</label> 
-								<input type="text" style="width: 20%">
-								<button><i class="fa fa-search"></i></button> 
+								<input type="text" style="width: 20%" id="CUST_NM_VAL">
+								<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg1"><i class="fa fa-search"></i></button> 
+								<!------------------------------------------ 발주처 조회 modal--------------------------------------------------- -->
+ 								<div class="modal fade bs-example-modal-lg1" tabindex="-1" role="dialog" aria-hidden="true">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content">
+											<form class="form-horizontal ">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" id="custExitModal"><span aria-hidden="true">X</span>
+													</button>
+													<h4 class="modal-title" id="myModalLabel"><b>발주처코드조회</b></h4><br>
+													<div class="table-responsive">
+														<table class="table table-bordered">
+															<tbody>
+																<tr>
+																	<td><label class="control-label">검색항목</label></td>
+																	<td>
+																		<select class="form-control" style="width: 40%" id="selectedCustItem">
+																			<option selected="selected" value="CUST_CD">발주처코드</option>
+																			<option value="CUST_NM">발주처명</option>
+																		</select>
+																	</td>
+																</tr>
+																<tr>
+																	<td><label class="control-label">검색조건</label></td>
+																	<td>
+																		<input type="text" id="custValue">
+																		<button type="button" id="custSearchBtn"><i class="fa fa-search"></i></button>																	
+																	</td>
+																</tr>
+															</tbody>																	
+														</table>
+													</div>
+												</div>
+												<div class="modal-body">
+													<div class="table-responsive" style="overflow: auto; height: 400px;">
+														<table class="table table-striped table-bordered table-hover">
+															<thead>
+																<tr>
+																	<th>발주처코드</th>
+																	<th>발주처명</th>
+																</tr>
+															</thead>
+															<tbody id="custSearchList">
+															</tbody>																	
+														</table>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div> 
+								<!-- 발주처 조회 modal 끝 -->								
+								
 								<label class="control-label" style="padding-left: 20px">PM</label> 
 								<input type="text" style="width: 20%">
-								<button><i class="fa fa-search"></i></button>
-							</td>
+				 				<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg7"><i class="fa fa-search"></i></button>							
+				 	<!------------------------------------------ PM 조회 modal--------------------------------------------------- -->
+						<div class="modal fade bs-example-modal-lg7" tabindex="-1" role="dialog" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<form class="form-horizontal">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" id="empModalExit1"><span aria-hidden="true">X</span>
+											</button>
+											<h4 class="modal-title" id="myModalLabel"><b>직원조회</b></h4><br>
+											<div class="table-responsive">
+												<table class="table table-bordered">
+													<tbody>
+														<tr>
+															<td><label class="control-label">구분</label></td>
+															<td>
+																<select class="form-control" style="width: 40%" id="empGbn">
+																	<option value="PJT_CD" selected="selected" >재직자</option>
+																	<option value="PJT_CD">퇴직자</option>
+																</select>
+															</td>
+														</tr>
+														<tr>
+															<td><label class="control-label">검색항목</label></td>
+															<td>
+																<select class="form-control" style="width: 40%" id="empItem">
+																	<option value="PJT_CD" selected="selected" >성명</option>
+																	<option value="PJT_CD">사번</option>
+																	<option value="PJT_CD">부서명</option>
+																	<option value="PJT_CD">직급명</option>
+																</select>
+															</td>
+														</tr>
+														<tr>
+															<td><label class="control-label">검색조건</label></td>
+															<td>
+																<input type="text" id="pjtValue">
+																<button type="button" id="empSearchBtn"><i class="fa fa-search"></i></button>																	
+															</td>
+														</tr>
+													</tbody>																	
+												</table>
+											</div>
+										</div>
+										<div class="modal-body">
+											<div class="table-responsive" style="overflow: auto; height: 400px;">
+												<table class="table table-striped table-bordered table-hover">
+													<thead>
+														<tr>
+															<th>사원번호</th>
+															<th>성명</th>
+															<th>부서명</th>
+															<th>직급명</th>
+														</tr>
+													</thead>
+													<tbody id="empSearchList">
+													</tbody>																	
+												</table>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- PM 조회 끝 -->		
+						</td>						
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 8%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
 								<label class="control-label">매출액</label>
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 22%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-								<input type="text" style="width: 40%"> ~ <input	type="text" style="width: 40%">
+								<input type="number" min="0" style="width: 40%"> ~ <input type="number" min="0" style="width: 40%">
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 40%;" aria-sort="ascending"	aria-label="First name: activate to sort column descending">
 								<div class="radio">
 									<label style="padding-left: 50px; padding-right: 50px;"><input type="radio">부서</label>
-									<button>이체명세 엑셀출력</button>
 								</div>
 							</td>
 						</tr>
@@ -120,43 +361,27 @@
 	<div class="x_panel">
 			<div class="x_title">
 				<h2>
-					프로젝트예산 검색 <small>Custom design</small>
+					프로젝트예산 검색 <small>더블클릭 시 상세보기</small>
 				</h2>
 				<ul class="nav navbar-right panel_toolbox">
-					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i>숨기기</a>
 					</li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Settings 1</a></li>
-							<li><a href="#">Settings 2</a></li>
-						</ul></li>
-					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
 				</ul>
 				<div class="clearfix"></div>
 			</div>
 	
 			<div class="x_content">
 	
-				<p>
-					Add class
-					<code>bulk_action</code>
-					to table for bulk actions options on row select
-				</p>
-	
 				<div class="table-responsive">
 					<table class="table table-striped jambo_table bulk_action">
 						<thead>
-							<tr class="headings">
-								<!-- <th>
-									<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; visibility: hidden;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-								</th> -->
-							
+							<tr class="headings">							
 								<th class="column-title" rowspan="2">부서명</th>
 								<th class="column-title" rowspan="2">프로젝트코드명</th>
 								<th class="column-title" rowspan="2">발주처</th>
 								<th class="column-title" rowspan="2">PM</th>								
 								<th class="column-title" rowspan="2">평당단가</th>
-								<th class="column-title" rowspan="2">연면적</th>
+								<th class="column-title" rowspan="2">대지면적(평)</th>
 								<th class="column-title" rowspan="2">매출액</th>
 								<th class="column-title" colspan="6">매출원가</th>		
 								<th class="column-title" colspan="2">영업이익</th>																						
@@ -169,34 +394,20 @@
 								<th class="column-title">배부비용</th>
 								<th class="column-title">%</th>
 								<th class="column-title">금액</th>
-								<th class="column-title">%</th>								
-								<!-- <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i> -->			
+								<th class="column-title">%</th>										
 							</tr>
 						</thead>
-							<tr>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-							</tr>
-						<tbody>
+						<tbody id="list">
 						</tbody>
+						<tr>
+							<th colspan="15" id="listLength" style="text-align: right"></th>
+						</tr>
 					</table>
 					<!-- 출력 리스트 검색 끝 -->
 				</div>
 			</div>
 		</div>	
+		</font>
 	</th:block>
 	
 	<th:block layout:fragment="customJquery">

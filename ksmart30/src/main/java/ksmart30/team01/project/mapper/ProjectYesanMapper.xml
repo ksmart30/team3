@@ -3,107 +3,89 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace = "ksmart30.team01.project.mapper.ProjectYesanMapper">
+ 	
  	<!-- 2.2.1. 프로젝트예산입력을 위해 프로젝트 대장에서 프로젝트코드와 프로젝트명을 보여주는 쿼리문 -->
  	<select id="getProjcetYesanSearchList" parameterType="ksmart30.team01.project.domain.ProjectYesanSearchRequest" resultType="java.util.Map">
 		SELECT B.PJT_CD,
-		       A.PJT_NM
-		  FROM T_SM3000 A,
-		       T_P11000 B
+				A.PJT_NM
+		FROM T_SM3000 A,
+			(
+			SELECT 	
+				B.PJT_CD,
+				A.PJT_NM,
+				B.DEPT_CD,
+				B.CONTRACT_DATE,
+				CASE 			
+					WHEN B.PJT_YEA_YN = 'T' THEN '4'	<!-- 승인 --> 
+					WHEN B.PJT_E_GBN > '' AND B.PJT_E_DATE > '' THEN '5'	<!-- 종료 -->	  
+			      	WHEN C.MD>0 AND D.PN>0 THEN '3'	<!-- 미승인 -->	     
+				   	ELSE '2'	<!-- 계약 -->
+				END GUBUN		
+			FROM 
+				T_SM3000 A,
+				T_P11000 B,
+				(SELECT PJT_CD, COUNT(*) MD FROM T_P11050 GROUP BY PJT_CD) C,
+				(SELECT PJT_CD, COUNT(*) PN FROM T_P11080 GROUP BY PJT_CD) D		
+			 WHERE 
+			 		B.PJT_CD  = A.PJT_CD
+			   AND 
+					B.PJT_CD *= C.PJT_CD
+			   AND 
+					B.PJT_CD *= D.PJT_CD
+			) B
 		WHERE B.PJT_CD = A.PJT_CD
-			AND B.CONTRACT_DATE like #{CONTRACT_DATE}+'%'
+			AND B.CONTRACT_DATE LIKE '%'+#{CONTRACT_DATE_INPUT}+'%'
+			AND B.DEPT_CD LIKE '%'+#{DEPT_CD}+'%'
+			AND B.PJT_CD LIKE '%'+#{PJT_CD}+'%'
+			AND B.GUBUN LIKE '%'+#{radioValue}+'%'
 		ORDER BY B.PJT_CD DESC;
   	</select>
  	
- 	<!-- 2.2.1.1 프로젝트코드에 해당하는 프로젝트 개요를 보여주는 쿼리문 -->
+ 	<!-- 2.2.1. 프로젝트코드에 해당하는 프로젝트 개요를 보여주는 쿼리문 -->
    	<select id="getProjectYesanSangse" parameterType="String" resultType="java.util.Map">
 		SELECT  A.PJT_CD,
 		        A.PJT_NM,
-		        B.DEPT_CD,
-		        E.SHORT_NM DEPT_NM,
-		        (SELECT CUST_NM FROM T_AC0300 WHERE CUST_CD = C.CUST_CD) + CASE WHEN C.CNT > 1 THEN + '외' + CONVERT(VARCHAR(4), C.CNT) + '건'
-		                                                                                       ELSE '' END CUST_NM,
-		        SUBSTRING(B.CONTRACT_DATE,1,4)+'/'+SUBSTRING(B.CONTRACT_DATE,5,2)+'/'+SUBSTRING(B.CONTRACT_DATE,7,2)  CONTRACT_DATE,
-		        B.TOT_CONTRACT_AMT,
+		        B.PRINT_CNT,
+		        CASE B.PJT_YEA_YN WHEN 'T' THEN '승인'
+		                        WHEN 'F' THEN '미승인' 
+										ELSE '미승인' END PJT_YEA_YN,
+				  (SELECT LEVEL2_NM 
+				  	FROM T_SC9100 
+				  	WHERE LEVEL2_CD = B.BUILD_TYPE 
+				  		AND LEVEL1_CD = '170' 
+				  		AND BUSI_GB = 'J') BUILD_NM,	
+				  (SELECT DEPT_NM 
+				  	FROM T_SC1010 
+				  	WHERE DEPT_CD = B.DEPT_CD) DEPT_NM,	  		
+				  B.CONTRACT_DATE,
+				  B.CRT_DATE,					
+		        B.PM_EMP_NO,
+		        (SELECT KOR_NM FROM T_HM1000 WHERE B.PM_EMP_NO = EMP_NO) KOR_NM,   		        
+				  B.TOT_CONTRACT_AMT,
 		        CAST(B.G_AREA_P AS DECIMAL(14,2)) G_AREA_P,
 		        CAST(B.G_AREA_M AS DECIMAL(14,2)) G_AREA_M,
 		        CAST(B.G_YAREA_P AS DECIMAL(14,2)) G_YAREA_P,
 		        CAST(B.G_YAREA_M AS DECIMAL(14,2)) G_YAREA_M,
-		        B.BUILD_TYPE,
-		        (SELECT LEVEL2_NM FROM T_SC9100 WHERE LEVEL2_CD = B.BUILD_TYPE AND LEVEL1_CD = '170' AND BUSI_GB = 'J') BUILD_NM,
-		        B.PJT_YEA_YN,
-		        B.PJT_CD PJT_CCD,
-		        B.CRT_DATE,
-		        '1' TYPE_GB,
-		        (SELECT LEVEL2_NM FROM T_SC9100 WHERE LEVEL2_CD = B.PJT_E_GBN AND LEVEL1_CD = '25A' AND BUSI_GB = 'J') PJT_E_GBN,
-		        CASE ISNULL(B.PJT_E_DATE,'') WHEN ''  THEN ''
-		                                     WHEN ' ' THEN ''
-		                                              ELSE SUBSTRING(B.PJT_E_DATE,1,4)+'/'+SUBSTRING(B.PJT_E_DATE,5,2)+'/'+SUBSTRING(B.PJT_E_DATE,7,2)
-		        END PJT_E_DATE,
-		        SUBSTRING(B.CRT_DATE,1,4)+'/'+SUBSTRING(B.CRT_DATE,5,2)+'/'+SUBSTRING(B.CRT_DATE,7,2) + ' ~ ' +
+		        SUBSTRING(B.CONTRACT_DATE,1,4)+'/'+SUBSTRING(B.CONTRACT_DATE,5,2)+'/'+SUBSTRING(B.CONTRACT_DATE,7,2) + ' ~ ' +
 		        SUBSTRING(B.PJT_E_DATE,1,4)+'/'+SUBSTRING(B.PJT_E_DATE,5,2)+'/'+SUBSTRING(B.PJT_E_DATE,7,2)  FROM_TO,
-		        0 YEA_TOT,
-		        0 SIL_TOT,
-		        0 CHA_AMT
+		        ISNULL((SELECT LEVEL2_NM 
+		        		FROM T_SC9100 
+		        		WHERE LEVEL2_CD = B.CONTRACT_PRI3 
+		        			AND LEVEL1_CD = '130' 
+		        			AND BUSI_GB = 'J'), '') PJT_E_GBN,
+		        B.ZIP_CD,
+       			B.PJT_ADDR
 		   FROM T_SM3000 A,
-		 T_P11000 B,
-		        (SELECT PJT_CD, MIN(CUST_CD) CUST_CD, COUNT(*)-1 CNT
-		           FROM T_P11010
-		          WHERE PJT_CD = #{PJT_CD}
-		          GROUP BY PJT_CD) C,
-		 SF_SC1010('03', '', '', '') E
+				T_P11000 B,
+		   		T_SC1010 C
 		 WHERE B.PJT_CD   = A.PJT_CD
-		   AND B.PJT_CD  *= C.PJT_CD
-		   AND B.DEPT_CD  = E.DEPT_CD
+		   AND B.DEPT_CD  = C.DEPT_CD
 		/*   AND (SELECT COUNT(J_PJT_CD) FROM T_P13000 WHERE J_PJT_CD = B.PJT_CD) = 1 */
-		   AND B.PJT_CD = #{PJT_CD}
-		
-		UNION ALL
-		
-		SELECT  F.G_PJT_CD PJT_CD,
-		        A.PJT_NM,
-		        F.G_DEPT_CD,
-		        E.SHORT_NM,
-		        (SELECT CUST_NM FROM T_AC0300 WHERE CUST_CD = C.CUST_CD) + CASE WHEN C.CNT > 1 THEN + '외' + CONVERT(VARCHAR(4), C.CNT) + '건'
-		                                                                                       ELSE '' END CUST_NM,
-		        SUBSTRING(B.CONTRACT_DATE,1,4)+'/'+SUBSTRING(B.CONTRACT_DATE,5,2)+'/'+SUBSTRING(B.CONTRACT_DATE,7,2)  CONTRACT_DATE,
-		        (F.DAN_A+F.DAN_B+F.DAN_C+F.DAN_D+F.DAN_E+F.DAN_F+F.DAN_G) TOT_CONTRACT_AMT,
-		        CAST(B.G_AREA_P AS DECIMAL(14,2)) G_AREA_P,
-		        CAST(B.G_AREA_M AS DECIMAL(14,2)) G_AREA_M,
-		        CAST(B.G_YAREA_P AS DECIMAL(14,2)) G_YAREA_P,
-		        CAST(B.G_YAREA_M AS DECIMAL(14,2)) G_YAREA_M,
-		        B.BUILD_TYPE,
-		        (SELECT LEVEL2_NM FROM T_SC9100 WHERE LEVEL2_CD = B.BUILD_TYPE AND LEVEL1_CD = '170' AND BUSI_GB = 'J') BUILD_NM,
-		        CASE F.YESAN_YN WHEN '1' THEN 'T'
-		                        WHEN '0' THEN 'F' END PJT_YEA_YN,
-		        B.PJT_CD PJT_CCD,
-		        B.CRT_DATE,
-		        '2' TYPE_GB,
-		        (SELECT LEVEL2_NM FROM T_SC9100 WHERE LEVEL2_CD = B.PJT_E_GBN AND LEVEL1_CD = '25A' AND BUSI_GB = 'J') PJT_E_GBN,
-		        CASE ISNULL(B.PJT_E_DATE,'') WHEN ''  THEN ''
-		                                     WHEN ' ' THEN ''
-		                                              ELSE SUBSTRING(B.PJT_E_DATE,1,4)+'/'+SUBSTRING(B.PJT_E_DATE,5,2)+'/'+SUBSTRING(B.PJT_E_DATE,7,2)
-		        END PJT_E_DATE,
-		        SUBSTRING(B.CRT_DATE,1,4)+'/'+SUBSTRING(B.CRT_DATE,5,2)+'/'+SUBSTRING(B.CRT_DATE,7,2) + ' ~ ' +
-		        SUBSTRING(B.PJT_E_DATE,1,4)+'/'+SUBSTRING(B.PJT_E_DATE,5,2)+'/'+SUBSTRING(B.PJT_E_DATE,7,2)  FROM_TO,
-		        0 YEA_TOT,
-		        0 SIL_TOT,
-		        0 CHA_AMT
-		   FROM T_SM3000 A,
-		        T_P11000 B,
-		        (SELECT PJT_CD, MIN(CUST_CD) CUST_CD, COUNT(*)-1 CNT
-		           FROM T_P11010
-		          WHERE PJT_CD = #{PJT_CD}
-		          GROUP BY PJT_CD) C,
-		        SF_SC1010('03', '', '', '') E,
-		        T_P13000 F
-		 WHERE B.PJT_CD    = F.J_PJT_CD
-		   AND B.PJT_CD    = A.PJT_CD
-		   AND F.G_DEPT_CD = E.DEPT_CD
+		   AND B.PJT_CD = #{PJT_CD}		   
 		/*   AND (SELECT COUNT(J_PJT_CD) FROM T_P13000 WHERE J_PJT_CD = B.PJT_CD) > 1 */
-		   AND F.G_PJT_CD = #{PJT_CD}
   	</select>
   	
-  	<!-- 2.2.1.2 발주처를 조회하는 쿼리문 -->
+  	<!-- 2.2.1. 발주처를 조회하는 쿼리문 -->
   	<select id="getProjectYesanSangseCustNm" parameterType="String" resultType="java.util.Map">  	
   	SELECT CUST_NM
   		FROM T_P11010 A,
@@ -111,5 +93,507 @@
   		WHERE A.CUST_CD = B.CUST_CD
   			AND PJT_CD = #{PJT_CD}
   	</select>
+
+  	<!-- 2.2.1.1. 프로젝트코드를 입력받아 프로젝트 일정계획을 보여주는 쿼리문 -->
+  	<select id="getProjectYesanSangseWorkStep" parameterType="String" resultType="java.util.Map">  	
+		SELECT A.PJT_CD,
+			A.WORK_STEP,
+			B.LEVEL2_NM WORK_STEP_NM,
+			CASE A.START_DAY WHEN '' THEN ''
+			ELSE CONVERT(VARCHAR(10), CONVERT(date, A.START_DAY)) END START_DAY, -- VIEW에서 DATE타입으로 입력해서 DATE타입으로 변환해줌 -->
+			CASE A.PLAN_END_DAY WHEN '' THEN ''
+			ELSE CONVERT(VARCHAR(10), CONVERT(date, A.PLAN_END_DAY)) END PLAN_END_DAY,	--공백으로 결과값을 얻고싶어서 varchar타입으로 한 번 더 변환해줌
+			A.NEED_TERM,
+			CASE A.REAL_END_DAY WHEN '' THEN ''
+			ELSE CONVERT(VARCHAR(10), CONVERT(date, A.REAL_END_DAY)) END REAL_END_DAY,
+			(SELECT COUNT(*) FROM T_P11080_H
+			WHERE PJT_CD = A.PJT_CD AND WORK_STEP = A.WORK_STEP) UPD_COUNT,
+			'' RMK
+		FROM T_P11080 A,
+			(SELECT LEVEL2_NM,LEVEL2_CD FROM T_SC9100 WHERE BUSI_GB = 'J'
+			AND LEVEL1_CD = '110')B
+		WHERE A.WORK_STEP = B.LEVEL2_CD
+			AND A.PJT_CD = #{PJT_CD}
+		/*  ORDER BY A.START_DAY, A.PLAN_END_DAY, A.WORK_STEP */
+		ORDER BY
+			A.WORK_STEP
+  	</select>
   	
+  	<!-- 2.2.1.1.1. 프로젝트코드를 입력받아 프로젝트 일정변경 로그를 보여주는 쿼리문 -->
+  	<select id="getProjectYesanViewWorkStepLog" parameterType="ksmart30.team01.project.domain.ProjectYesanWorkStepLogRequest" resultType="java.util.Map">  	
+		SELECT
+			B.LEVEL2_NM WORK_STEP_NM,
+			A.PJT_SEQ,
+			ISNULL((SELECT PLAN_END_DAY FROM T_P11080_H
+				WHERE PJT_CD = A.PJT_CD 
+					AND WORK_STEP = A.WORK_STEP
+					AND PJT_SEQ = A.PJT_SEQ-1), '') PLAN_END_DAY1,
+			ISNULL(A.PLAN_END_DAY, '') PLAN_END_DAY2,
+			A.RMK
+		FROM T_P11080_H A , T_SC9100 B
+		WHERE A.WORK_STEP = B.LEVEL2_CD
+		AND B.BUSI_GB = 'J'
+		AND B.LEVEL1_CD = '110'
+		AND A.PJT_CD = #{PJT_CD}
+		AND WORK_STEP = #{WORK_STEP}
+		 ORDER BY PJT_SEQ
+  	</select>  	
+  	
+  	<!-- 2.2.1.2. 프로젝트코드를 입력받아 프로젝트 MH계획을 보여주는 쿼리문 -->
+  	<select id="getProjectYesanSangseMH" parameterType="String" resultType="java.util.Map">  	
+		SELECT 
+			B.LEVEL2_NM,
+			A.INWON_1, A.PLAN_A_1, A.PLAN_B_1, A.PLAN_C_1, A.PLAN_D_1, A.PLAN_E_1, A.PLAN_F_1, A.PLAN_G_1, A.TOT_MD_1, 
+			A.INWON_2, A.PLAN_A_2, A.PLAN_B_2, A.PLAN_C_2, A.PLAN_D_2, A.PLAN_E_2, A.PLAN_F_2, A.PLAN_G_2, A.TOT_MD_2 
+		FROM T_P11050 A, T_SC9100 B
+		WHERE A.JIKGUB = B.LEVEL2_CD
+		   	AND B.BUSI_GB = 'H'
+		  	AND B.LEVEL1_CD = '110'
+			AND A.PJT_CD = #{PJT_CD}		
+  	</select> 
+	
+  	<!-- 2.2.1.2.1 MH계획에서 인건비소계와 점유율을 조회하는 쿼리문 -->
+  	<select id="getProjectYesanSangseMHTotal" parameterType="String" resultType="java.util.Map">  	
+		SELECT 
+			SUM(DANGA*TOT_MD) INGUN_AMT,
+			ROUND(SUM(DANGA*TOT_MD)/(SELECT TOT_CONTRACT_AMT FROM T_P11000 WHERE PJT_CD = #{PJT_CD}), 4) JUMYU 
+		FROM T_P11050 
+		WHERE PJT_CD = #{PJT_CD}
+		GROUP BY PJT_CD	
+  	</select> 	
+  	
+  	<!-- 2.2.1.3. 프로젝트코드를 입력받아 프로젝트 상세 내용 중 제조경비1 오른쪽을 조회하는 쿼리문 -->
+  	<select id="getProjectYesanSangseJejo1R" parameterType="String" resultType="java.util.Map">  
+		SELECT ISNULL(A.PJT_CD,'18009') PJT_CD,
+		       B.LEVEL2_CD COST_ITEM,
+		       B.LEVEL2_NM COST_NM,
+		       ISNULL(A.COST_AMT,0) COST_AMT,
+		       ISNULL(A.COST_RATE,0) COST_RATE,
+		       ISNULL(A.OUTPUT_GROUND,'') OUTPUT_GROUND,
+		       (SELECT TOT_CONTRACT_AMT FROM T_P11000 WHERE PJT_CD = #{PJT_CD}) TOT_CONTRACT_AMT
+		  FROM T_SC9100 B,
+		       T_P11060 A
+		 WHERE B.LEVEL2_CD *= A.COST_ITEM
+		   AND B.BUSI_GB   = 'A'
+		   AND B.LEVEL1_CD = '22'
+		   AND SUBSTRING(B.REF1_NM,1,1) != 'Y'
+		   AND A.PJT_CD = #{PJT_CD}
+	</select>	 
+
+  	<!-- 2.2.1.3. 프로젝트코드를 입력받아 프로젝트 상세 내용 중 제조경비1 왼쪽을 조회하는 쿼리문 -->
+  	<select id="getProjectYesanSangseJejo1L" parameterType="String" resultType="java.util.Map">  	
+		SELECT A.PJT_CD,
+		       A.COST_ITEM,
+		       B.LEVEL2_NM COST_NM,
+		       A.COST_AMT,
+		       A.COST_RATE,
+		       A.OUTPUT_GROUND,
+		       (SELECT TOT_CONTRACT_AMT FROM T_P11000 WHERE PJT_CD = A.PJT_CD) TOT_CONTRACT_AMT,
+		       CASE WHEN SUBSTRING(B.REF1_NM,1,1) = 'Y' THEN '#FF0000FF'
+		                                                ELSE CASE A.COST_ITEM WHEN 'Z9999999' THEN '#FF0000FF' ELSE '#000000FF' END
+		       END COLOR
+		  FROM T_P11060 A,
+		       T_SC9100 B
+		 WHERE A.COST_ITEM = B.LEVEL2_CD
+		   AND B.BUSI_GB = 'A'
+		   AND B.LEVEL1_CD = '22'
+		   AND (SUBSTRING(B.REF1_NM,1,1) = 'Y' OR A.COST_ITEM = 'Z99999999')
+		   AND A.PJT_CD = #{PJT_CD}
+		UNION ALL
+		SELECT A.PJT_CD,
+		       A.COST_ITEM,
+		       CASE A.COST_ITEM WHEN 'Z9999999' THEN '예비비'
+		                                        ELSE C.LEVEL2_NM END,
+		       A.COST_AMT,
+		       A.COST_RATE,
+		       ISNULL(A.OUTPUT_GROUND,''),
+		       (SELECT TOT_CONTRACT_AMT FROM T_P11000 WHERE PJT_CD = A.PJT_CD) TOT_CONTRACT_AMT,
+		       CASE WHEN SUBSTRING(C.REF1_NM,1,1) = 'Y' THEN '#FF0000FF'
+		                                                ELSE CASE A.COST_ITEM WHEN 'Z9999999' THEN '#FF0000FF' ELSE '#000000FF' END
+		       END COLOR
+		  FROM T_P11060 A,
+		       T_SC9100 C
+		 WHERE A.COST_ITEM *= C.LEVEL2_CD
+		   AND C.BUSI_GB = 'A'
+		   AND C.LEVEL1_CD = '22'
+		   AND NOT EXISTS (SELECT *
+		                     FROM T_SC9100
+		                    WHERE BUSI_GB   = 'A'
+		                      AND LEVEL1_CD = '22'
+		                      AND LEVEL2_CD = A.COST_ITEM)
+		   AND A.PJT_CD = #{PJT_CD}
+	</select>	   
+
+  	<!-- 2.1.1.4. 프로젝트코드를 입력받아 제조경비2를 조회하는 쿼리문 -->
+  	<select id="getProjectYesanSangseJejo2" parameterType="String" resultType="java.util.Map">   
+		SELECT AA.PJT_CD,  
+			AA.SCV_PART, 
+			AA.EXCHANGE_NO,
+			AA.EX_AMT,
+		 	ROUND(((AA.R_EX_AMT / E.TOT_CONTRACT_AMT) * 100), 2) EX_RATE,
+		 	AA.EX_GROUND, 
+		 	AA.SCV_PART_NM, 
+		 	AA.R_EX_AMT, 
+		 	ISNULL(AA.EX_WORK_AMT, 0) EX_WORK_AMT,
+		 	ISNULL(AA.EXCHANGE_NM, '') EXCHANGE_NM
+		FROM
+		 (
+		 SELECT A.PJT_CD,
+		        A.SCV_PART,
+		        A.EXCHANGE_NO,
+		        A.EX_AMT,
+		        A.EX_RATE,
+		        A.EX_GROUND,
+		        B.LEVEL2_NM SCV_PART_NM,
+		  'R_EX_AMT'=A.EX_AMT,
+		/*  'R_EX_AMT'=
+		  CASE WHEN D.D_EX_AMT >= D.D_EX_WORK_AMT
+		       THEN ISNULL(A.EX_AMT,0)
+		       ELSE
+		   CASE
+		           WHEN ISNULL(A.EX_AMT,0) = 0 THEN ISNULL(A.EX_AMT,0)
+		           ELSE D.D_EX_WORK_AMT 
+		   END
+		  END,*/
+		        A.EX_WORK_AMT,
+		        A.BIGO,
+		        C.CUST_NM EXCHANGE_NM,
+			(CASE
+		  WHEN A.SCV_PART = '99' THEN 'red'
+		  ELSE '#000000FF'
+		  END) COLOR   
+		   FROM T_P11070 A,
+		        T_SC9100 B,
+		        T_AC0300 C,
+		  (
+		  SELECT PJT_CD, SCV_PART, ISNULL(SUM(EX_AMT),0) D_EX_AMT,
+		   ISNULL(SUM(EX_WORK_AMT),0) D_EX_WORK_AMT
+		  FROM T_P11070
+		  WHERE PJT_CD = #{PJT_CD}
+		  GROUP BY PJT_CD, SCV_PART
+		  ) D
+		  WHERE A.SCV_PART    *= B.LEVEL2_CD
+		    AND A.EXCHANGE_NO *= C.CUST_CD
+		    AND B.BUSI_GB     = 'J'
+		    AND B.LEVEL1_CD   = '160'
+		    AND A.PJT_CD      = #{PJT_CD}
+		    AND A.PJT_CD      = D.PJT_CD
+		    AND A.SCV_PART    = D.SCV_PART
+		 ) AA,
+		 T_P11000 E,
+		 (SELECT ORDER_YY, ORDER_SEQ, PJT_CD, OUT_ITEM, CUST_CD, RMK FROM T_P16000 WHERE PJT_CD = #{PJT_CD}) F
+		WHERE AA.PJT_CD = E.PJT_CD
+		AND AA.PJT_CD *= F.PJT_CD
+		AND AA.EXCHANGE_NO *= F.CUST_CD
+		AND AA.SCV_PART *= F.OUT_ITEM
+		ORDER BY AA.PJT_CD, AA.SCV_PART, AA.R_EX_AMT DESC, AA.EXCHANGE_NO
+	</select>
+	
+  	<!-- 2.2.1.5. 프로젝트코드를 입력받아 기성단계를 조회하는 쿼리문 -->
+  	<select id="getProjectYesanSangseGiseong" parameterType="String" resultType="java.util.Map">	  	
+		SELECT  A.PJT_CD,
+			A.RM_STEP,
+		 	B.LEVEL2_NM,
+		 	A.RM_AMT,
+		 	ROUND(A.RM_AMT/C.TOT_CONTRACT_AMT, 4)*100 RM_RATE,
+		 	ISNULL(CASE WHEN C.BILL_COND = 1 THEN '현금'
+		 		WHEN C.BILL_COND = 2 THEN '어음'
+		 		WHEN C.BILL_COND = 3 THEN '현금/어음'
+				END, '') BILL_COND,	 	
+		 	ISNULL(C.BILL_DAY, '') BILL_DAY,
+		 	A.SALE_STEP,
+		 	D.LEVEL2_NM SALE_STEP_NM
+		FROM T_P11030 A,
+			T_SC9100 B,
+		    T_P11000 C,
+		    T_SC9100 D
+		WHERE A.RM_STEP = B.LEVEL2_CD
+		  AND A.PJT_CD = C.PJT_CD
+		  AND A.SALE_STEP = D.LEVEL2_CD
+		  AND D.BUSI_GB = 'J'
+		  AND D.LEVEL1_CD = '110'
+		  AND B.BUSI_GB = 'J'
+		  AND B.LEVEL1_CD = '150' 
+		  AND A.PJT_CD = #{PJT_CD}
+		ORDER BY SALE_STEP, RM_STEP
+	</select>
+
+  	<!-- 2.2.1.6. 프로젝트코드를 입력받아 추정손익계산서(사업성검토 제외)를 조회하는 쿼리문 -->
+  	<select id="getProjectYesanSangseSonik" parameterType="String" resultType="java.util.Map">	  	
+		SELECT 
+			B.TOT_CONTRACT_AMT,	<!-- 매출액 -->
+			ROUND((B.TOT_CONTRACT_AMT/B.TOT_CONTRACT_AMT)*100, 2) TOT_RATE,
+			A.COST_AMT1,	<!-- 인건비 -->
+			ROUND((A.COST_AMT1/B.TOT_CONTRACT_AMT)*100, 2) COST_RATE1,
+			A.COST_AMT2,	<!-- 제조경비1 -->
+			ROUND((A.COST_AMT2/B.TOT_CONTRACT_AMT)*100, 2) COST_RATE2,
+			A.COST_AMT3,	<!-- 제조경비2 -->
+			ROUND((A.COST_AMT3/B.TOT_CONTRACT_AMT)*100, 2) COST_RATE3,
+			(A.COST_AMT1+A.COST_AMT2+A.COST_AMT3) JACHE_TOT,	<!-- 자체비용소계 -->
+			ROUND(((A.COST_AMT1+A.COST_AMT2+A.COST_AMT3)/B.TOT_CONTRACT_AMT)*100, 2) JACHE_RATE,
+			
+			A.DIV_AMT44,	<!-- 부문장 -->
+			ROUND((A.DIV_AMT44/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE44,
+			A.DIV_AMT41,	<!-- 본부장 -->
+			ROUND((A.DIV_AMT41/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE41,
+			A.DIV_AMT43,	<!-- 지원부서 -->
+			ROUND((A.DIV_AMT43/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE43,
+			A.DIV_AMT42,	<!-- 기타 -->
+			ROUND((A.DIV_AMT42/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE42,
+			A.DIV_AMT40,	<!-- 공통비1소계 -->
+			ROUND((A.DIV_AMT40/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE40,
+			
+			A.DIV_AMT11,	<!-- 빌딩 -->
+			ROUND((A.DIV_AMT11/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE11,
+			A.DIV_AMT12,	<!-- 통신 -->
+			ROUND((A.DIV_AMT12/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE12,
+			A.DIV_AMT13,	<!-- 전산 -->
+			ROUND((A.DIV_AMT13/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE13,
+			A.DIV_AMT10,	<!-- 간접비소계 -->
+			ROUND((A.DIV_AMT10/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE10,
+			
+			A.DIV_AMT20,	<!-- 공통비2 -->
+			ROUND((A.DIV_AMT20/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE20,
+			A.DIV_AMT30,	<!-- 관리부문비 -->
+			ROUND((A.DIV_AMT30/B.TOT_CONTRACT_AMT)*100, 2) DIV_RATE30,
+			(A.DIV_AMT40+A.DIV_AMT10+A.DIV_AMT20+A.DIV_AMT30) BAEBU_TOT,	<!-- 배부비용소계 -->
+			ROUND(((A.DIV_AMT40+A.DIV_AMT10+A.DIV_AMT20+A.DIV_AMT30)/B.TOT_CONTRACT_AMT)*100, 2) BAEBU_RATE,
+			
+			(A.COST_AMT1+A.COST_AMT2+A.COST_AMT3+A.DIV_AMT40+A.DIV_AMT10+A.DIV_AMT20+A.DIV_AMT30) COST_TOT,	<!-- 비용합계 -->
+			ROUND(((A.COST_AMT1+A.COST_AMT2+A.COST_AMT3+A.DIV_AMT40+A.DIV_AMT10+A.DIV_AMT20+A.DIV_AMT30)/B.TOT_CONTRACT_AMT)*100, 2) COST_RATE,
+			(B.TOT_CONTRACT_AMT-(A.COST_AMT1+A.COST_AMT2+A.COST_AMT3+A.DIV_AMT40+A.DIV_AMT10+A.DIV_AMT20+A.DIV_AMT30)) OPERATING_INCOME,	<!-- 영업이익 -->
+			ROUND(((B.TOT_CONTRACT_AMT-(A.COST_AMT1+A.COST_AMT2+A.COST_AMT3+A.DIV_AMT40+A.DIV_AMT10+A.DIV_AMT20+A.DIV_AMT30))/B.TOT_CONTRACT_AMT)*100, 2) OPERATING_INCOME_RATE
+		FROM T_P11090 A, T_P11000 B
+		WHERE A.PJT_CD = B.PJT_CD
+			AND A.PJT_CD=#{PJT_CD}
+	</select>
+
+  	<!-- 2.2.1.6. 프로젝트코드를 입력받아 추정손익계산서(사업성검토)를 조회하는 쿼리문 -->
+  	<select id="getProjectYesanSangseSonikBiz" parameterType="String" resultType="java.util.Map">  	
+		SELECT
+			A.COST_AMT1,
+			ROUND(A.COST_AMT1/ISNULL(B.TOT_CONTRACT_AMT,0)*100, 2) COST_RATE1,
+			A.COST_AMT2,
+			ROUND(A.COST_AMT2/ISNULL(B.TOT_CONTRACT_AMT,0)*100, 2) COST_RATE2,
+			A.COST_AMT3,
+			ROUND(A.COST_AMT3/ISNULL(B.TOT_CONTRACT_AMT,0)*100, 2) COST_RATE3,
+			A.DIV_AMT,
+			ROUND(A.DIV_AMT/ISNULL(B.TOT_CONTRACT_AMT,0)*100, 2) DIV_RATE,
+			A.BIZ_TOTAL,
+			ROUND(A.BIZ_TOTAL/ISNULL(B.TOT_CONTRACT_AMT,0)*100, 2) BIZ_RATE
+		FROM
+			(SELECT
+				PJT_CD,
+				ISNULL(SUM(COST_AMT1),0) COST_AMT1,	<!-- 인건비 -->
+				ISNULL(SUM(COST_AMT2),0) COST_AMT2,   <!-- 제조경비1 -->
+				ISNULL(SUM(COST_AMT3),0) COST_AMT3,   <!-- 제조경비2 -->
+				(ISNULL(SUM(DIV_AMT10),0) + ISNULL(SUM(DIV_AMT20),0) + ISNULL(SUM(DIV_AMT30),0) + ISNULL(SUM(DIV_AMT40),0)) DIV_AMT,  <!-- 간접비외 -->
+				(ISNULL(SUM(COST_AMT1),0) + ISNULL(SUM(COST_AMT2),0) + ISNULL(SUM(COST_AMT3),0) 
+				+ ISNULL(SUM(DIV_AMT10),0) + ISNULL(SUM(DIV_AMT20),0) + ISNULL(SUM(DIV_AMT30),0) + ISNULL(SUM(DIV_AMT40),0)) BIZ_TOTAL	<!-- 사업성검토소계 -->			
+			FROM T_AC6220
+			WHERE SUBSTRING(PJT_CD,6,1) IN ('C','F','G','H','I','J','K')
+			GROUP BY PJT_CD)A, T_P11000 B						
+		WHERE
+		SUBSTRING(A.PJT_CD,1,5) = B.PJT_CD
+		AND A.PJT_CD LIKE #{PJT_CD}+'%'			
+  	</select>
+
+  	<!-- 2.2.2. 프로젝트코드를 입력받아 해당 프로젝트를 승인하는 쿼리문 -->
+  	<update id="modifyProjectYesanSeungin" parameterType="String" >  	
+		UPDATE T_P11000
+		SET PJT_YEA_YN = 'T', PJT_YEA_DATE = CONVERT(VARCHAR(8), CONVERT(date, SYSDATETIME()), 112)
+		WHERE PJT_CD = #{PJT_CD}
+  	</update>	
+
+  	<!-- 2.2.2. 프로젝트코드를 입력받아 해당 프로젝트를 승인 취소하는 쿼리문 -->
+  	<update id="modifyProjectYesanSeunginCancel" parameterType="String" >  	
+		UPDATE T_P11000
+		SET PJT_YEA_YN = 'F', PJT_YEA_DATE = CONVERT(VARCHAR(8), CONVERT(date, SYSDATETIME()), 112)
+		WHERE PJT_CD = #{PJT_CD}
+  	</update>	
+
+  	<!-- 2.2.3. 프로젝트예산 출력을 위한 프로젝트리스트 조회 -->
+  	<select id="getprojectYesanOutputList" parameterType="ksmart30.team01.project.domain.ProjectYesanOutputListRequest" resultType="java.util.Map">  	
+		SELECT B.PJT_CD,
+				A.PJT_NM
+		FROM T_SM3000 A,
+			(
+			SELECT 	
+				B.PJT_CD,
+				A.PJT_NM,
+				B.DEPT_CD,
+				B.CONTRACT_DATE,
+				CASE 			
+					WHEN B.PJT_YEA_YN = 'T' THEN '4'	<!-- 승인 --> 
+					WHEN B.PJT_E_GBN > '' AND B.PJT_E_DATE > '' THEN '5'	<!-- 종료 -->	  
+			      	WHEN C.MD>0 AND D.PN>0 THEN '3'	<!-- 미승인 -->	     
+				   	ELSE '2'	<!-- 계약 -->
+				END GUBUN		
+			FROM 
+				T_SM3000 A,
+				T_P11000 B,
+				(SELECT PJT_CD, COUNT(*) MD FROM T_P11050 GROUP BY PJT_CD) C,
+				(SELECT PJT_CD, COUNT(*) PN FROM T_P11080 GROUP BY PJT_CD) D		
+			 WHERE 
+			 		B.PJT_CD  = A.PJT_CD
+			   AND 
+					B.PJT_CD *= C.PJT_CD
+			   AND 
+					B.PJT_CD *= D.PJT_CD
+			) B
+		WHERE B.PJT_CD = A.PJT_CD	
+ 			${START_DATE}${END_DATE}
+			AND B.DEPT_CD LIKE '%'+#{DEPT_CD}+'%'
+			AND B.PJT_CD LIKE '%'+#{PJT_CD}+'%' 
+			AND B.GUBUN LIKE '%'+#{radioValue}+'%'
+		ORDER BY B.PJT_CD DESC	
+  	</select>
+	
+  	<!-- 2.2.3.1 프로젝트예산 출력하기 전에 조건에 맞는 프로젝트를 검색하는 모달의 쿼리문 -->
+  	<select id="getProjectYesanOutputPjtList" parameterType="ksmart30.team01.project.domain.ProjectYesanOutputCodeSearch" resultType="java.util.Map">  	
+		SELECT 
+			A.*
+		FROM
+			(SELECT
+				'20'+SUBSTRING(B.PJT_CD,1,2) CONTRACT_DATE_YY,
+				B.PJT_CD,
+				A.PJT_NM,
+				E.DEPT_CD,
+				E.DEPT_NM	
+			FROM 
+				T_SM3000 A,
+				T_P11000 B,
+				T_SC1010 E		
+			 WHERE 
+			 	B.PJT_CD  = A.PJT_CD
+				AND B.DEPT_CD = E.DEPT_CD) A	   
+		WHERE 
+			A.CONTRACT_DATE_YY LIKE '%' + #{CONTRACT_DATE_YY} + '%'
+			AND A.${selectedOption} LIKE '%' + #{inputValue} + '%'		
+  	</select>	
+
+  	<!-- 2.2.4. 승인된 프로젝트예산을 조건별로 검색하는 쿼리문 -->
+  	<select id="getProjectYesanSearch" resultType="java.util.Map">  	
+		SELECT 
+	    	A.PJT_CD,	--프로젝트코드
+	        A.PJT_NM,	--프로젝트명
+	        A.DEPT_CD,	--부서코드
+	        A.DEPT_NM,	--부서명
+	        A.SYS_COD,	--시스템코드
+	        A.CONTRACT_DATE,	--계약일
+	        A.CUST_CD,	--사업자번호
+	        A.CUST_NM,	--발주처
+	        A.PM_EMP_NO,	--PM사원번호
+	        A.PM_EMP_NM,	--PM이름
+	        A.PYUNG_DAN,	--평당단가
+	        A.G_YAREA_P,	--연면적
+	        A.TOT_CONTRACT_AMT,	--매출액
+	        A.COST_TOT,	--매출원가합계
+	        ROUND((CASE WHEN A.COST_TOT <![CDATA[<>]]> 0 AND A.TOT_CONTRACT_AMT <![CDATA[<>]]> 0 THEN (A.COST_TOT / A.TOT_CONTRACT_AMT) * 100
+	        	ELSE 0 END),1) COST_TOT_YUL,
+	        A.COST_AMT,	--자체비용
+	        ROUND((CASE WHEN A.COST_AMT <![CDATA[<>]]> 0 AND A.TOT_CONTRACT_AMT <![CDATA[<>]]> 0 THEN (A.COST_AMT / A.TOT_CONTRACT_AMT) * 100
+	        	ELSE 0 END),1) COST_AMT_YUL,
+	        A.DIV_AMT,	--배부비용
+	        ROUND((CASE WHEN A.DIV_AMT <![CDATA[<>]]> 0 AND A.TOT_CONTRACT_AMT <![CDATA[<>]]> 0 THEN (A.DIV_AMT / A.TOT_CONTRACT_AMT) * 100
+	        	ELSE 0 END),1) DIV_AMT_YUL,
+	        (CASE WHEN A.TOT_CONTRACT_AMT = A.PROFIT_TOT THEN 0 
+	        	ELSE  A.PROFIT_TOT END) PROFIT_TOT,	--영업이익
+	        ROUND((CASE WHEN A.TOT_CONTRACT_AMT = A.PROFIT_TOT THEN 0
+	        	ELSE (CASE WHEN A.PROFIT_TOT <![CDATA[<>]]> 0 AND A.TOT_CONTRACT_AMT <![CDATA[<>]]> 0 THEN (A.PROFIT_TOT * 100 / A.TOT_CONTRACT_AMT)
+	            	ELSE 0 END)	END),1) PROFIT_TOT_YUL,
+	        A.COLOR
+		    FROM (
+		    	SELECT A.PJT_CD, 
+		        	'['+A.PJT_CD+'] '+ISNULL((SELECT PJT_NM FROM T_SM3000 WHERE T_SM3000.PJT_CD  = A.PJT_CD),'*') PJT_NM,
+		            A.DEPT_CD,
+		            D.DEPT_NM,               
+		            D.SHORT_NM,
+		            D.SYS_COD,
+		            A.CONTRACT_DATE,
+		            C.CUST_CD,
+		            ISNULL((SELECT CUST_NM FROM T_AC0300 WHERE T_AC0300.CUST_CD = C.CUST_CD),' ') CUST_NM,
+		            A.PM_EMP_NO,
+		            ISNULL(H.KOR_NM,'') PM_EMP_NM,
+		            A.PYUNG_DAN,
+		            A.G_YAREA_P,
+		            (CASE WHEN A.BALANCE_AMT > 0 THEN A.BALANCE_AMT
+				     	ELSE ISNULL(A.TOT_CONTRACT_AMT,0)
+		                	END) TOT_CONTRACT_AMT,
+		                ISNULL(B.COST_AMT1,0) + ISNULL(B.COST_AMT2,0) + ISNULL(B.COST_AMT3,0) + ISNULL(B.DIV_AMT11,0) + ISNULL(B.DIV_AMT12,0)
+		                + ISNULL(B.DIV_AMT13,0) + ISNULL(B.DIV_AMT20,0) + ISNULL(B.DIV_AMT30,0) + ISNULL(B.DIV_AMT40,0) COST_TOT,
+		                ISNULL(B.COST_AMT1,0) + ISNULL(B.COST_AMT2,0) + ISNULL(B.COST_AMT3,0) + ISNULL(B.DIV_AMT11,0) 
+		                + ISNULL(B.DIV_AMT12,0) + ISNULL(B.DIV_AMT13,0) + ISNULL(B.DIV_AMT40,0) COST_AMT,
+		                ISNULL(B.DIV_AMT20,0) + ISNULL(B.DIV_AMT30,0)  DIV_AMT,
+		                (CASE  WHEN A.BALANCE_AMT > 0 THEN
+		 	            	ISNULL(A.BALANCE_AMT,0) - (ISNULL(B.COST_AMT1,0) + ISNULL(B.COST_AMT2,0) + ISNULL(B.COST_AMT3,0) 
+		                	+ ISNULL(B.DIV_AMT11,0) + ISNULL(B.DIV_AMT12,0) + ISNULL(B.DIV_AMT13,0) + ISNULL(B.DIV_AMT20,0) 
+		        	        + ISNULL(B.DIV_AMT30,0) + ISNULL(B.DIV_AMT40,0)) 
+				        ELSE 
+			                ISNULL(A.TOT_CONTRACT_AMT,0) - (ISNULL(B.COST_AMT1,0) + ISNULL(B.COST_AMT2,0) + ISNULL(B.COST_AMT3,0) 
+		                	+ ISNULL(B.DIV_AMT11,0) + ISNULL(B.DIV_AMT12,0)
+			                + ISNULL(B.DIV_AMT13,0) + ISNULL(B.DIV_AMT20,0) 
+		        	        + ISNULL(B.DIV_AMT30,0) + ISNULL(B.DIV_AMT40,0))
+		                END) PROFIT_TOT,
+		                H.COLOR
+		            FROM T_P11000 A,
+		                 T_P11090 B,
+		                 (SELECT  B.PJT_CD, ISNULL(MIN(A.CUST_CD),'') CUST_CD
+		                 	FROM  T_P11010 A,
+		                         (SELECT DISTINCT(B.PJT_CD) PJT_CD, 
+		                                 ISNULL(MAX(A.N_RATE),0) N_RATE
+		                          FROM T_P11010 A, T_P11000 B
+		                          WHERE  B.PJT_CD *= A.PJT_CD
+		                          GROUP BY B.PJT_CD) B 
+		                   WHERE  B.PJT_CD *= A.PJT_CD
+		                     AND  B.N_RATE *= A.N_RATE
+		                   GROUP  BY B.PJT_CD) C,
+		                 T_SC1010 D,
+		                 (SELECT *,'' COLOR  FROM T_HM1000 UNION SELECT *, 'red' COLOR FROM T_HM1000_T) H
+		           WHERE A.PJT_CD    *=  B.PJT_CD 
+		             AND A.PJT_CD    *=  C.PJT_CD 
+		             AND A.PM_EMP_NO *=  H.EMP_NO
+		             AND A.DEPT_CD    =  D.DEPT_CD
+		             AND A.PJT_YEA_YN = 'T'
+					) A	
+  	</select>	
+	
+	<!-- 2.2.4.1. 전체 발주처를 조회하는 쿼리문 modal -->
+  	<select id="getProjectYesanCustList" parameterType="String" resultType="java.util.Map">   
+		SELECT
+			CUST_CD,
+			CUST_NM
+		FROM
+			T_AC0300
+		WHERE
+			${column} LIKE '%'+#{columnValue}+'%'
+			
+   </select>	
+	
+	<!-- 2.2.5. 계약프로젝트List를 조회하는 쿼리문 -->
+  	<select id="getProjectYesanList" parameterType="ksmart30.team01.project.domain.ProjectYesanListRequest" resultType="java.util.Map">   
+		SELECT A.PJT_CD,
+		       B.PJT_NM,
+		       ISNULL(C.CUST_NM, '') CUST_NM,
+		       CAST(A.G_AREA_P AS DECIMAL(14,2)) G_AREA_P,
+		       CAST(A.G_YAREA_P AS DECIMAL(14,2)) G_YAREA_P,
+		       A.B_UP_SU,
+		       A.B_DOWN_SU,
+		       A.CONTRACT_PRI1,
+		       A.CONTRACT_PRI2
+		FROM T_P11000 A, T_SM3000 B, T_AC0300 C,
+	        (SELECT PJT_CD, MIN(CUST_CD) CUST_CD
+	         FROM T_P11010
+	         GROUP BY PJT_CD) D
+		WHERE A.PJT_CD = B.PJT_CD
+			AND A.PJT_CD  = D.PJT_CD
+		 	AND D.CUST_CD *= C.CUST_CD
+		 	AND A.CONTRACT_PRI1 <![CDATA[>=]]> CONVERT(VARCHAR(8), CONVERT(DATE, #{START_DATE}), 112)
+		 	AND A.CONTRACT_PRI2 <![CDATA[<=]]> CONVERT(VARCHAR(8), CONVERT(DATE, #{END_DATE}), 112)
+		 	AND A.B_DOWN_SU <![CDATA[>=]]> ${B_DOWN_SU}	--문자열이 아니라 숫자
+		 	AND A.B_UP_SU <![CDATA[<=]]> ${B_UP_SU} 
+		 	AND CAST(A.G_AREA_P AS DECIMAL(14,2)) BETWEEN ${G_AREA_P_LOW} AND ${G_AREA_P_HIGH}	--문자열이 아니라 숫자
+			ORDER BY B.PJT_CD
+   </select>
+  		
  </mapper> 	

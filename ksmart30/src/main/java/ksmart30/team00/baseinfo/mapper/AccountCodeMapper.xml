@@ -8,11 +8,12 @@
 	   @brief   계정과목코드 XML
 	   @author  ksmart30 박찬업
 	-->
-	<!-- 10.2.5.계정과목코드
+	
+	<!-- 10.2.5.계정과목코드-계정과목리스트 조회
 		  @brief    계정과목리스트 SELECT쿼리문
 		  @return  ksmart30.team00.baseinfo.domain.AccountCodeDomain
 	-->
-	<select id="selectAccountCodeList"
+	<select id="getAccountCodeList"
 			resultType="ksmart30.team00.baseinfo.domain.AccountCodeDomain">
 		SELECT 
 			ACC_CD,
@@ -65,6 +66,8 @@
 			CR_MUST_YN10,
 			DR_FUND_CD,
 			CR_FUND_CD,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE DR_FUND_CD=LEVEL2_CD AND BUSI_GB='A' AND LEVEL1_CD='09') AS DR_FUND_NM,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE CR_FUND_CD=LEVEL2_CD AND BUSI_GB='A' AND LEVEL1_CD='09') AS CR_FUND_NM,
 			BUDG_YN,
 			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=BK_CONT_CD1) AS BK_CONT_CD1,
 			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=BK_CONT_CD2) AS BK_CONT_CD2,
@@ -78,15 +81,17 @@
 			HIGH_ACC_CD3,
 			HIGH_ACC_CD4,
 			HIGH_ACC_CD5,
-			HIGH_ACC_CD6	
+			HIGH_ACC_CD6,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE LEVEL1_CD = '21' AND BUSI_GB = 'A' AND LEVEL2_CD = PRT_SEQ) AS PRT_SEQ	
 		 FROM
 			T_AC0100
 	</select>
-	<!-- 10.2.5.계정과목코드
+	
+	<!-- 10.2.5.계정과목코드-관리항목코드리스트 조회
 		  @brief    관리항목코드리스트 SELECT쿼리문
 		  @return  ksmart30.team00.baseinfo.domain.ControlItemCodeDomain
 	-->
-	<select id="selectControlItemCodeList"
+	<select id="getControlItemCodeList"
 			resultType="ksmart30.team00.baseinfo.domain.ControlItemCodeDomain">
 		SELECT 
 			CONT_CD, 
@@ -94,4 +99,144 @@
 		FROM t_ac0200
 	</select>
 	
+	<!-- 10.2.5.계정과목코드-계정코드조회
+		  @brief    계정코드 search SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.AccountCodeDomain
+	-->
+	<select id="getAccountCodeInfo"
+			resultType="ksmart30.team00.baseinfo.domain.AccountCodeDomain">
+		SELECT 
+			ACC_CD,
+			ACC_DTL_CD,
+			ACC_LONG_NM,
+			ACC_SHRT_NM,
+			ACC_CLAS,
+			DRCR_GB,
+			ACC_LEVEL,
+			SLIP_EXIST_YN,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD1) AS DR_CONT_CD1,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD2) AS DR_CONT_CD2,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD3) AS DR_CONT_CD3,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD4) AS DR_CONT_CD4,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD5) AS DR_CONT_CD5,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD6) AS DR_CONT_CD6,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD7) AS DR_CONT_CD7,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD8) AS DR_CONT_CD8,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD9) AS DR_CONT_CD9,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=DR_CONT_CD10) AS DR_CONT_CD10,
+			DR_MUST_YN1,
+			DR_MUST_YN2,
+			DR_MUST_YN3,
+			DR_MUST_YN4,
+			DR_MUST_YN5,
+			DR_MUST_YN6,
+			DR_MUST_YN7,
+			DR_MUST_YN8,
+			DR_MUST_YN9,
+			DR_MUST_YN10,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD1) AS CR_CONT_CD1,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD2) AS CR_CONT_CD2,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD3) AS CR_CONT_CD3,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD4) AS CR_CONT_CD4,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD5) AS CR_CONT_CD5,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD6) AS CR_CONT_CD6,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD7) AS CR_CONT_CD7,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD8) AS CR_CONT_CD8,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD9) AS CR_CONT_CD9,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=CR_CONT_CD10) AS CR_CONT_CD10,
+			CR_MUST_YN1,
+			CR_MUST_YN2,
+			CR_MUST_YN3,
+			CR_MUST_YN4,
+			CR_MUST_YN5,
+			CR_MUST_YN6,
+			CR_MUST_YN7,
+			CR_MUST_YN8,
+			CR_MUST_YN9,
+			CR_MUST_YN10,
+			DR_FUND_CD,
+			CR_FUND_CD,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE DR_FUND_CD=LEVEL2_CD AND BUSI_GB='A' AND LEVEL1_CD='09') AS DR_FUND_NM,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE CR_FUND_CD=LEVEL2_CD AND BUSI_GB='A' AND LEVEL1_CD='09') AS CR_FUND_NM,
+			BUDG_YN,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=BK_CONT_CD1) AS BK_CONT_CD1,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=BK_CONT_CD2) AS BK_CONT_CD2,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=BK_CONT_CD3) AS BK_CONT_CD3,
+			UN_MANA_YN,
+			UN_MANA_ST,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=UN_CONT_CD1) AS UN_CONT_CD1,
+			(SELECT CONT_NM FROM T_AC0200 WHERE CONT_CD=UN_CONT_CD2) AS UN_CONT_CD2,
+			HIGH_ACC_CD1,
+			HIGH_ACC_CD2,
+			HIGH_ACC_CD3,
+			HIGH_ACC_CD4,
+			HIGH_ACC_CD5,
+			HIGH_ACC_CD6,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE LEVEL1_CD = '21' AND BUSI_GB = 'A' AND LEVEL2_CD = PRT_SEQ) AS PRT_SEQ	
+		FROM 
+			T_AC0100
+		WHERE 		
+			ACC_CD LIKE '%' + #{ACC_CD} + '%'
+		AND
+			ACC_DTL_CD LIKE '%' + #{ACC_DTL_CD} + '%'
+		AND	
+   			ACC_LONG_NM LIKE '%' + #{ACC_LONG_NM} + '%'
+   		AND
+   			SLIP_EXIST_YN LIKE '%' + #{SLIP_EXIST_YN} + '%'
+   		AND
+   			UN_MANA_YN LIKE '%' + #{UN_MANA_YN} + '%'	
+   		
+   		<if test="DR_FUND_CD != '' and PRT_SEQ != ''">  						
+  			AND	
+  				PRT_SEQ NOT LIKE ''
+  			AND	
+  				(DR_FUND_CD NOT LIKE ''  
+  			OR
+  				CR_FUND_CD NOT LIKE '')			
+   		</if>
+   		<if test="DR_FUND_CD != ''">  						
+  			AND	
+  				(DR_FUND_CD NOT LIKE ''  
+  			OR
+  				CR_FUND_CD NOT LIKE '')			
+   		</if>
+   		<if test="PRT_SEQ != ''">  						
+  			AND	
+  				PRT_SEQ NOT LIKE ''	
+   		</if>		
+	</select>
+	
+	<!-- 10.2.5.계정과목코드-자산코드조회
+		  @brief    자산코드 SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.TotalCode
+	-->
+	<select id="getAssetCodeInfo"
+			resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+		SELECT 
+			LEVEL2_NM 
+		FROM 
+			T_SC9100 
+		WHERE 
+			LEVEL1_CD = '09' 
+		AND 
+			BUSI_GB = 'A'
+	</select>
+	
+	<!-- 10.2.5.계정과목코드-비용유형조회
+		  @brief    자산코드 SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.TotalCode
+	-->
+	<select id="getCostTypeInfo"
+			resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+		SELECT 
+			LEVEL2_NM 
+		FROM 
+			T_SC9100 
+		WHERE 
+			LEVEL1_CD = '21' 
+		AND 
+			BUSI_GB = 'A'
+		AND
+			LEVEL2_NM != '매출'
+	</select>
 </mapper>

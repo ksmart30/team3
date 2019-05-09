@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+		<title>은행지점별 계좌번호등록</title>
+		
+		<!-- Bootstrap -->
+		<link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Font Awesome -->
+		<link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<!-- NProgress -->
+		<link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+		<!-- iCheck -->
+		<link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+		<!-- Datatables -->
+		<link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+		<link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+		<link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+		<link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+		<link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+	
+		<!-- Custom Theme Style -->
+	   <link href="/build/css/custom.min.css" rel="stylesheet">
+	   
+	   <link rel="stylesheet" type="text/css" href="/build/css/zTreeStyle/zTreeStyle.css"/>
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script>
+			//트리형식 리스트 뿌리기
+			const setting = {
+			    data: {
+			        simpleData: {
+			            enable: true
+			        }
+			    },
+			    callback: {
+					beforeClick: beforeClick
+				},
+				view: {
+					fontCss: getFont,
+					nameIsHTML: true
+				}
+			}
+			
+			function getFont(treeId, node) {
+				return node.font ? node.font : {};
+			}
+			
+			function beforeClick(treeId, treeNode, clickFlag) {
+				let codeName = treeNode.name;
+				$('#list2').empty();
+				$.when(
+						$.ajax({
+							url:'/jsttreeselected',
+							type:'GET',
+							data:{BANK_BRCH_CD:codeName}
+						})).done((selected)=>{
+							console.log(selected[0].acnt_NO+'<--나와라요~~!');
+							$('#BRCH_LONG_NM').val(selected[0].brch_LONG_NM);
+							$('#BANK_BRCH_CD').val(selected[0].bank_BRCH_CD);
+							$('#BRCH_SHRT_NM').val(selected[0].brch_SHRT_NM);
+							$('#TEL_NO').val(selected[0].tel_NO);
+							$('#FAX_NO').val(selected[0].fax_NO);
+							
+							let tr = '';
+							let checkloop = 0;
+							$(selected).each((index,item)=>{
+								
+								checkloop++;
+								tr += '<tr>';
+								tr += '<td></td>';
+								tr += '<td><input type="text" name="ACNT_NO' + checkloop + '" value="' + item.acnt_NO + '"></td>';								
+								if(item.acnt_KIND == 01){
+									tr += '<td><input type="text" name="ACNT_KIND' + checkloop + '" value="'+ '보통예금' + '"></td>';
+								}else if(item.acnt_KIND == 02){
+									tr += '<td><input type="text" name="ACNT_KIND' + checkloop + '" value="'+ '정기예금' + '"></td>';
+								}else if(item.acnt_KIND == 03){
+									tr += '<td><input type="text" name="ACNT_KIND' + checkloop + '" value="'+ '기업자유예금' + '"></td>';
+								}else if(item.acnt_KIND == 04){
+									tr += '<td><input type="text" name="ACNT_KIND' + checkloop + '" value="'+ '신탁예금' + '"></td>';
+								}else if(item.acnt_KIND == 05){
+									tr += '<td><input type="text" name="ACNT_KIND' + checkloop + '" value="'+ '정기적금' + '"></td>';
+								}else if(item.acnt_KIND == 06){
+									tr += '<td><input type="text" name="ACNT_KIND' + checkloop + '" value="'+ '대출' + '"></td>';
+								}
+								tr += '<td><input type="text" name="ACNT_OWNER' + checkloop + '" value="' + item.acnt_OWNER + '"></td>';
+								tr += '<td><input type="text" name="ACNT_NM' + checkloop + '" value="' + item.acnt_NM + '"></td>';
+								tr += '<td><input type="text" name="ABLE_YN' + checkloop + '" value="' + item.able_YN + '"></td>';
+								tr += '<td><input type="text" name="INT_RATE' + checkloop + '" value="' + item.int_RATE + '"></td>';
+								tr += '<td><input type="text" name="STR_DATE' + checkloop + '" value="' + item.str_DATE + '"></td>';
+								tr += '<td><input type="text" name="END_DATE' + checkloop + '" value="' + item.end_DATE + '"></td>';
+								tr += '<td><input type="text" name="REM' + checkloop + '" value="' + item.rem + '"></td>';	
+								tr += '</tr>';
+							});
+							/* if(checkloop <= 15){
+								for(let i = checkloop; i<1; i++){
+									tr += '<tr>';
+									tr += '<td></td>';
+									tr += '<td><input type="text" name="ACNT_NO' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="ACNT_KIND' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="ACNT_OWNER' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="ACNT_NM' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="ABLE_YN' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="INT_RATE' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="STR_DATE' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="END_DATE' + checkloop + '"></td>';
+									tr += '<td><input type="text" name="REM' + checkloop + '"></td>';
+									tr += '</tr>';
+								}
+							} */
+							$('#list2').append(tr);
+						});
+				$('#test1').val(treeNode.name);
+				return (treeNode.click != false);
+			}
+			function getFont(treeId, node) {
+				return node.font ? node.font : {};
+			}
+			$(document).ready(()=>{
+				
+				$.ajax({
+		            url:'/jsttreemenu',
+		            type:'GET',
+		            
+		            success:(tree)=>{
+		            	let treelist =[
+		            		{ id : "1", name:"신한은행"},
+		            		{ id : "2", name:"우리은행"},
+		            		{ id : "3", name:"기업은행"},
+		            		{ id : "4", name:"국민은행"},
+		            		{ id : "5", name:"KEB하나은행"},
+		            		{ id : "6", name:"농협"},
+		            		{ id : "7", name:"산업은행"},
+		            		{ id : "8", name:"KEB하나은행(구 외환)"},
+		            		{ id : "9", name:"엔지니어링공제조합"},
+		            		{ id : "10", name:"김상희"},
+		            		{ id : "11", name:"미래에셋생명보험"},
+		            		{ id : "12", name:"제일은행"},
+		            		{ id : "13", name:"동양증권"},
+		            		{ id : "14", name:"폭스바겐파이낸셜"}
+		            	];
+		            	$(tree).each((index,item)=>{
+		            		treelist.push({ id : item.id, pId : item.pid, name:item.name});
+		            	});
+		            	$.fn.zTree.init($("#treeDemo"), setting, treelist);
+		            }
+		        });
+			
+			  $('#account').click(()=> {
+			    $('#tableaccount > tbody:first').append('<tr><td></td><td><input type="text"></td><td><select style="width:100%"><option></option><option>보통예금</option><option>정기예금</option><option>기업자유예금</option><option>신탁예금</option><option>정기예금</option><option>대출</option></select></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>');
+			  });
+			  
+			});
+		</script>
+	</th:block>
+	
+	<th:block layout:fragment="customBody">
+		<div class="col-md-9 col-xs-12" style="color:black;">
+        <div class="page-title">
+	<div class="title_left">
+	 <h2><b>은행지점별 계좌번호등록</b></h2>
+	<h5><fontcolor="gray"><b>10.기준정보관리&nbsp;>&nbsp;&nbsp;10.2회계관리&nbsp;>&nbsp;&nbsp;10.2.3은행지점별 계좌번호등록</b></font></h5>		
+	</div>
+	</div>
+        </div>
+        <div class="x_content" style="text-align: right">
+			<div class="btn-group" >
+				<button class="btn btn-default" type="reset">입력</button>
+				<button class="btn btn-default" type="button">수정</button>
+				<button class="btn btn-default" type="button">삭제</button>
+				<button class="btn btn-default" type="button">저장</button>
+				<button class="btn btn-default" type="button">출력</button>
+			</div>
+		</div>
+		<!----------------------------------- 은행리스트----------------------------------------- -->
+		<div class="col-md-4 col-xs-12">
+			<div class="x_panel" style="height: 750px; color: black; width:100%;">
+				<div class="x_title">
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content"><br>
+				<div style="overflow:scroll; width:100%; height:680px; padding:10px; background-color:;">
+					<ul id="treeDemo" class="ztree" style="width:100%;  overflow:auto; height:1000px;"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!----------------------------------- 은행지점코드관리----------------------------------------- -->
+    	<div class="col-md-8 col-xs-12">
+			<div class="x_panel" style=" color: black;">
+				<div class="x_title">
+				<h3>은행지점코드관리</h3>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content"><br>
+					<form class="form-horizontal form-label-left">
+						<div class="form-group">
+							<table class="table table-bordered">
+								<tr>
+									<th>지점코드</th>
+									<th colspan="3"><input type="text" name="BANK_BRCH_CD" id="BANK_BRCH_CD"></th>
+								</tr>
+								<tr>
+									<th>은행약식명</th>
+									<th><input type="text" name="BRCH_LONG_NM" id="BRCH_LONG_NM" ></th>
+									<th>지점명칭</th>
+									<th><input type="text" name="BRCH_SHRT_NM" id="BRCH_SHRT_NM"></th>
+								</tr>
+								<tr>
+									<th>전화번호</th>
+									<th><input type="text" name="TEL_NO" id="TEL_NO"></th>
+									<th>Fax 번호</th>
+									<th><input type="text" name="FAX_NO" id="FAX_NO"></th>
+								</tr>
+							</table>
+						</div>
+					</form>
+				</div>    	
+			</div>
+			<!----------------------------------- 계좌번호관리----------------------------------------- -->
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel" style=" color: black;">
+					<div class="x_title">
+						<h2>계좌번호 관리</h2>
+						<div class="x_content" style="text-align: right">
+							<button class="btn" style="color:black" id="account">>계좌번호추가</button>
+						</div>                 
+					<ul class="nav navbar-right panel_toolbox">
+					</ul>
+					<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<div style="overflow:scroll;  width:100%; height:350px; padding:10px; background-color:;">
+							<table class="table table-striped jambo_table bulk_action" id="tableaccount">
+								<thead>
+									<tr>
+										<th class="column-title"></th>
+										<th class="column-title">계좌번호</th>
+										<th class="column-title">예금종류</th>
+										<th class="column-title">예금주</th>
+										<th class="column-title">예금명칭</th>
+										<th class="column-title">사용여부</th>
+										<th class="column-title">이름</th>
+										<th class="column-title">가입일</th>
+										<th class="column-title">만기일</th>
+										<th class="column-title">　　비고　　</th>
+									</tr>	
+								</thead>
+								<tbody id="list2">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="customJquery">
+			<!-- jQuery -->
+		<script src="/vendors/jquery/dist/jquery.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+		<!-- FastClick -->
+		<script src="/vendors/fastclick/lib/fastclick.js"></script>
+		<!-- NProgress -->
+		<script src="/vendors/nprogress/nprogress.js"></script>
+		<!-- iCheck -->
+		<script src="/vendors/iCheck/icheck.min.js"></script>
+		<!-- Datatables -->
+		<script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+		<script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+		<script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+		<script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+		<script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+		<script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+		<script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+		<script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+		<script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+		<script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+		<script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+		<script src="/vendors/jszip/dist/jszip.min.js"></script>
+		<script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+		<script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+	
+	<!-- Custom Theme Scripts -->
+	 <script src="/build/js/custom.min.js"></script>
+	 <script type="text/javascript" src="/build/js/jquery.ztree.core.min.js"></script>
+	</th:block>
+</html>

@@ -1,1107 +1,1287 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/main">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 <th:block layout:fragment="customHead">
 	<meta charset="UTF-8">
-	<title>2.2.2 승인된 사업수행 결정서 예산 승인</title>
-	<th:block th:include="layout/customHead"></th:block>
+	<title>2.2.1 사업수행결정서 승인 List</title>
+	
+	<!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+	<link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- Datatables -->
+	<link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+	<link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+	<link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+	<link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+	<link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+   
+    <!-- Custom Theme Style -->
+    <link href="/build/css/custom.min.css" rel="stylesheet">
+	<!-- <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"> -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script>
+		/* =============================엔터키 방지================================= */
+		$(document).keypress((e)=>{
+			if (e.keyCode == 13){
+				e.preventDefault();
+			}
+		});
+		/* =============================날짜 초기화================================= */
+		let today = new Date();
+		let dd = today.getDate();
+		let mm = today.getMonth()+1; //January is 0!
+		let yyyy = today.getFullYear();
+		if(dd<10) {
+		    dd='0'+dd
+		} 
+		if(mm<10) {
+		    mm='0'+mm
+		} 
+		today = yyyy+'-' + mm + '-' + dd;
+		MonthInit = yyyy+'-' + mm + '-01';
+		/* =============================날짜 초기화 end================================= */
+		
+		/* =============================금액 쉼표 ==================================== */
+		function amtCommas(x) {
+    		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		/* =============================금액 쉼표 end================================= */
+		
+		/* ============================= 숫자 쉼표================================= */
+		function numberCommas(n) {
+		    let parts=n.toString().split(".");
+		    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (parts[1] ? "." + parts[1] : "");
+		}
+		/* =============================숫자 쉼표 end================================= */
+		function runAjax(PJT_CD){
+			console.log(PJT_CD+'<- ajax 받았다.');
+			$.ajax({
+				contentType:'application/json',
+				dataType:'json',
+	            url:'/businessYesanAdmitGetResultProject ',
+	            type:'POST',
+	            data:PJT_CD,
+	            success:(result)=>{
+	            	/* console.log(JSON.stringify(result)); */
+	            	let date =result.CD_REG_DATE.substring(0,4)+'-'+result.CD_REG_DATE.substring(4,6)+'-'+result.CD_REG_DATE.substring(6,8)
+	            	PJT_CD = result.PJT_CD;
+	            	$('#LPJT_CD').text(result.PJT_CD);
+	            	$('#LPJT_NM').text(result.PJT_NM);
+	            	$('#LCRT_DATE').text(date);
+	            	$('#LACT_STAT').text(result.APPROVAL);
+	            	$('#LACT_STAT').css('color',result.COLOR);/* COLOR  */
+	            	$('#LCUST_NM').text(result.CUST_NM);
+	            	$('#LCUST_GBN').text(result.CUST_GBN);
+	            	$('#LZIP_CD').text(result.ZIP_CD);
+	            	$('#LADDR').text(result.ADDR);
+	            	$('#LREGION_NM').text(result.REGION1_NM +' / '+ result.REGION2_NM +' / '+ result.REGION3_NM);
+	            	$('#LZONE_NM').text(result.ZONE1_NM +' / '+ result.ZONE2_NM +' / '+ result.ZONE3_NM);
+	            	$('#LSCOPE_NM').text(result.SCOPE1_NM +' / '+ result.SCOPE2_NM +' / '+ result.SCOPE3_NM);
+	            	$('#LBIZ_TYPE').text(result.BIZ_TYPE);
+	            	$('#LBIZ_GBN').text(result.BIZ_GBN);
+	            	$('#LBUILD_GB').text(result.BUILD_GB);
+	            	$('#LBUILD_TYPE_NM').text(result.BUILD_TYPE);
+	            	$('#LAREA_M').text(numberCommas(result.AREA_M));
+	            	$('#LAREA_P').text(numberCommas(result.AREA_P));
+	            	$('#LDOWN_SU').text(result.DOWN_SU);
+	            	$('#LUP_SU').text(result.UP_SU);
+	            	$('#LH_CNT').text(result.H_CNT);
+	            	$('#LYAREA_M').text(numberCommas(result.YAREA_M));
+	            	$('#LYAREA_P').text(numberCommas(result.YAREA_P));
+	            	$('#LCOVERAGE').text(result.COVERAGE);
+	            	$('#LCAPACITY').text(result.CAPACITY);
+	            	$('#LDEPT_NM').text(result.DEPT_NM);
+	            	$('#LINFO_EMP_NO').text(result.INFO_EMP_NO);
+	            	$('#LCLASS_GBN').text(result.CLASS_GBN);
+	            	$('#PmName').val(result.PM_EMP_NO);
+	            	$('#PdName').val(result.DESIGN_MAN);
+	            	$('#TPRODUCT').val(result.PRODUCT);
+	            	
+	            	$('#LFORECAST_AMT').text(amtCommas(result.FORECAST_AMT)+' 원');
+	            	$('#LTOTAL_AMT').text(amtCommas(result.TOTAL_AMT)+' 원');
+	            }
+			});
+			/* =============================일정계획 tab================================= */
+			SPJT_CD = PJT_CD.replace(/[a-z]/gi,"");
+			console.log(PJT_CD+'<--입력값');
+			console.log(SPJT_CD+'<--입력값');
+			$.when(
+					$.ajax({
+						contentType:'application/json',
+	    				dataType:'json',
+			            url:'/businessYesanAdmitGetResultDetail',
+			            type:'POST',
+			            data:SPJT_CD}
+		           )).done((data)=>{
+		        	  
+		        	   $('#schedulePlanList').DataTable({
+		        		   	searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				paging: false,
+		    				info:false,
+		    				data:[data.schedule],
+		    				columns: [
+		    			        {data: 'SEQ'},
+		    			        {data: 'JOB_STEP'},
+		    			        {data: 'UPD_COUNT'},
+		    			        {data: 'END_EXP_DATE'},
+		    			        {data: 'END_DATE'},
+		    			        {data: 'BIGO'}
+		    			    ]
+		        	   });
+		        	 	console.log(JSON.stringify(data.mhPlan));
+		        	   $('#MhPlanList').DataTable({
+		        		    searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				paging: false,
+		    				info:false,
+		    				data:data.mhPlan,
+		    				columns: [
+		    			        {data: 'NUM'},
+		    			        {data: 'LEVEL2_NM'},
+		    			        {data: 'INWON_1'},
+		    			        {data: 'MD_PLAN_1'},
+		    			        {data: 'INWON_2'},
+		    			        {data: 'MD_PLAN_2'},
+		    			        {data: 'INWON'},
+		    			        {data: 'MD_PLAN'},
+		    			        {data: 'YEA_AMT'},
+		    			        {data: 'BIGO'}
+		    			    ],
+		    			    footerCallback: function(row, data, start, end, display) {
+		    			    	  let api = this.api();
+		    			    	  columnsApi(api, 2, '#MhINWON_1Total');
+		    			    	  columnsApi(api, 3, '#MhMD_PLAN_1Total');
+		    			    	  columnsApi(api, 4, '#MhINWON_2Total');
+		    			    	  columnsApi(api, 5, '#MhMD_PLAN_2Total');
+		    			    	  columnsApi(api, 6, '#MhINWONTotal');
+		    			    	  columnsApi(api, 7, '#MhMD_PLANTotal');
+		    			    	  columnsApi(api, 8, '#MhYEA_AMTTotal');		    			    	  
+		    			    },
+		        	   		columnDefs:[
+		        	   				{
+			        	   				targets: [2],
+			        	   				className: 'text-right',
+			        	   				render: function ( data, type, row ) {
+	                                        return amtCommas(row.INWON_1);
+                                    	}
+		        	   				},
+                                    {
+    		        	   				targets: [3],
+    		        	   				className: 'text-right',
+    		        	   				render: function ( data, type, row ) {
+                                            return amtCommas(row.MD_PLAN_1);
+                                    	}
+                                    },
+                                    {
+    		        	   				targets: [4],
+    		        	   				className: 'text-right',
+    		        	   				render: function ( data, type, row ) {
+                                            return amtCommas(row.INWON_2);
+                                    	}
+                                    },
+                                    {
+    		        	   				targets: [5],
+    		        	   				className: 'text-right',
+    		        	   				render: function ( data, type, row ) {
+                                            return amtCommas(row.MD_PLAN_2);
+                                    	}
+                                    },
+                                    {
+    		        	   				targets: [6],
+    		        	   				className: 'text-right',
+    		        	   				render: function ( data, type, row ) {
+                                            return amtCommas(row.INWON);
+                                    	}
+                                    },
+                                    {
+    		        	   				targets: [7],
+    		        	   				className: 'text-right',
+    		        	   				render: function ( data, type, row ) {
+                                            return amtCommas(row.MD_PLAN);
+                                    	}
+                                    },
+                                    {
+    		        	   				targets: [8],
+    		        	   				className: 'text-right',
+    		        	   				render: function ( data, type, row ) {
+                                            return amtCommas(row.YEA_AMT);
+                                    	}
+		        	   		}]
+		        	   });
+		        	   
+		        	   let Manufacture1Total = 0;
+		        	   
+		        	   $('#manufacture1Left').DataTable({
+		        		    searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				paging: false,
+		    				info:false,
+		    				data:data.manufacture1Left,
+		    				columns: [
+		    					{data: 'NUM'},
+		    			        {data: 'COST_NM'},
+		    			        {data: 'COST_AMT'}
+		    			    ],
+		    			    footerCallback: function(row, data, start, end, display) {
+		    			    	  let api = this.api();
+		    			    	  let sum = columnsApi(api, 2, '#Manufacture1LeftTotal');
+		    			    	  Manufacture1Total += sum;
+		    			    	 /*  let Manufacture1Total = ($('#Manufacture1LeftTotal').text()*1)+($('#Manufacture1RightTotal').text()*1);
+		    						$('#Manufacture1Total').text(Manufacture1Total); */
+		    			    },
+		        	   		columnDefs:[{
+		        	   				targets: [2],
+		        	   				className: 'text-right',
+		        	   				render: function ( data, type, row ) {
+                                       return amtCommas(row.COST_AMT);
+                                   }
+		        	   		}]
+		        	   });
+		        	   
+		        	   $('#manufacture1Right').DataTable({
+		        		    searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				paging: false,
+		    				info:false,
+		    				data:data.manufacture1Right,
+		    				columns: [
+		    					{data: 'NUM'},
+		    			        {data: 'COST_NM'},
+		    			        {data: 'COST_AMT'}
+		    			    ],
+		    			    footerCallback: function(row, data, start, end, display) {
+		    			    	  let api = this.api();
+		    			    	  let sum = columnsApi(api, 2, '#Manufacture1RightTotal');
+		    			    	  Manufacture1Total += sum;
+		    			    },
+		        	   		columnDefs:[{
+		        	   				targets: [2],
+		        	   				className: 'text-right',
+		        	   				render: function ( data, type, row ) {
+                                      return amtCommas(row.COST_AMT);
+                                  }
+		        	   		}]
+		        	   });
+		        	   
+		        	   $('#Manufacture1Total').text(amtCommas(Manufacture1Total)+' 원');
+		        	   
+		        	   $(data.manufacture2).each((index,item)=>{
+		        		   data.manufacture2[index].EM = '';
+		        		});
+		        	  
+		        	   $('#manufacture2').DataTable({
+		        		    searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				paging: false,
+		    				info:false,
+		    				data:data.manufacture2,
+		    				columns: [
+		    					{data: 'EM'},
+		    			        {data: 'NUM'},
+		    			        {data: 'ACC_LONG_NM'},
+		    			        {data: 'YEA_AMT'},
+		    			        {data: 'BIGO'}
+		    			    ],
+		    			    footerCallback: function(row, data, start, end, display) {
+		    			    	  let api = this.api();
+		    			    	  columnsApi(api, 3, '#jejo2Total');
+		    			    },
+		        	   		columnDefs:[{
+		        	   				targets: [3],
+		        	   				className: 'text-right',
+		        	   				render: function ( data, type, row ) {
+                                        return amtCommas(row.YEA_AMT);
+                                    }
+		        	   		}]
+		        	   });
+		        	   /* console.log(JSON.stringify(data.bizReport)); */
+		        	   $('#LABOR_COST').text(amtCommas(data.bizReport.LABOR_COST));
+		        	   $('#MANU_COST1').text(amtCommas(data.bizReport.MANU_COST1));
+		        	   $('#MANU_COST2').text(amtCommas(data.bizReport.MANU_COST2));
+		        	   $('#SELF_SUM').text(amtCommas(data.bizReport.SELF_SUM));
+		        	   $('#COMMON_COST1').text(amtCommas(data.bizReport.COMMON_COST1));
+		        	   $('#INDIREC_COST').text(amtCommas(data.bizReport.INDIREC_COST));
+		        	   $('#COMMON_COST2').text(amtCommas(data.bizReport.COMMON_COST2));
+		        	   $('#MANAGE_COST').text(amtCommas(data.bizReport.MANAGE_COST));
+		        	   $('#DIV_AMT').text(amtCommas(data.bizReport.DIV_AMT));
+		        	   $('#COST_AMT').text(amtCommas(data.bizReport.COST_AMT));
+		        	   $('#BUILDING_COST').text(amtCommas(data.bizReport.BUILDING_COST));
+		        	   $('#TELE_COST').text(amtCommas(data.bizReport.TELE_COST));
+		        	   $('#NET_COST').text(amtCommas(data.bizReport.NET_COST));
+		        	   $('#INDIREC_COST_SUM').text(amtCommas(data.bizReport.INDIREC_COST));
+		        	   $('#COMMON_COST_BU').text(amtCommas(data.bizReport.COMMON_COST_BU));
+		        	   $('#COMMON_COST_BON').text(amtCommas(data.bizReport.COMMON_COST_BON));
+		        	   $('#COMMON_COST_DEPT').text(amtCommas(data.bizReport.COMMON_COST_DEPT));
+		        	   $('#COMMON_COST1_SUM').text(amtCommas(data.bizReport.COMMON_COST1));
+		        	   
+		        	   
+		        	   
+		        	   
+		           });
+			
+			/* =============================일정계획 tab end================================= */
+		};
+		
+		function columnsApi(api,index, labelName){
+			let sum;
+			api.columns(index, {
+	    	    page: 'current'
+	    	  }).every(function() {
+	    	    sum = this
+	    	      .data()
+	    	      .reduce(function(a, b) {
+	    	        var x = parseFloat(a) || 0;
+	    	        var y = parseFloat(b) || 0;
+	    	        return x + y;
+	    	      }, 0);
+	    	    console.log(sum); //alert(sum);
+	    	    $(labelName).text(amtCommas(sum));
+	    	  });
+			return sum;
+		};
+		
+		$(document).ready(()=>{
+			
+			$('#FIRSTDATE').val(MonthInit);
+			$('#ENDDATE').val(today);
+			
+			$("input:radio[name=ACT_STAT]").click(()=>{
+				if($(':radio[name="ACT_STAT"]:checked').val() == '1'){
+					$('#btnBizInput').removeAttr('disabled');
+				}else{
+					$('#btnBizInput').attr('disabled','disabled');
+				}
+				$('#btnBizSearch').click();
+			});
+			
+			/* =============================프로젝트 코드조회 모달 테이블================================= */
+			$('#btnProjectSearch').click(()=>{
+				let searchArr = {
+								column:$('#selectedProject option:selected').val(),
+								columnValue:$('#PJT_Value').val()
+							};
+				/* console.log(JSON.stringify(searchArr)); */
+				$.ajax({
+    				contentType:'application/json',
+    				dataType:'json',
+		            url:'/businessYesanAdmitGetProjectList',
+		            type:'POST',
+		            data:JSON.stringify(searchArr),
+		            success:(data)=>{
+		            	console.log(JSON.stringify(data));
+		            	$('#ProjectList').DataTable({
+		            		searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				data:data,
+		    				columns: [
+		    			        {data: 'PJT_CD'},
+		    			        {data: 'PJT_NM'}
+		    			    ]
+	        			});
+		            }
+				});
+			});
+			$('#ProjectList').delegate('tr','dblclick',function(){
+				let tr = $(this);
+				let td = tr.children();
+				$('#PJT_CD').val(td.eq(0).text());
+				$('#PJT_NM').val(td.eq(1).text());
+				$('#PJT_Value').val('');
+				$('#projectModal').click();
+			});
+			/* =============================프로젝트 코드조회 모달 테이블 end================================= */
+				
+			
+			/* =============================조회버튼 클릭시 검색 결과 프로젝트 리스트 ================================= */
+			$('#btnBizSearch').click(()=>{
+				$('#ResultProjectListBody').empty();
+				
+				let subStringYear = $('#FIRSTDATE').val().substring(2,4);
+				let subStringDept = $('#deptSelect option:selected').val().substring(0,1);
+				
+				let searchArr = {
+						DateYear: $('#FIRSTDATE').val(),
+						DEPT_CD:subStringDept,
+						PJT_CD:$('#PJT_CD').val(),
+						PJT_NM:$('#PJT_NM').val(),
+						ACT_STAT:$(':radio[name="ACT_STAT"]:checked').val(),
+						FIRSTDATE:$('#FIRSTDATE').val().replace(/-/gi, ''),
+						ENDDATE:$('#ENDDATE').val().replace(/-/gi, '')
+					};
+				
+				console.log(JSON.stringify(searchArr));
+				
+				let init_PJT = '';
+				$.ajax({
+    				contentType:'application/json',
+    				dataType:'json',
+		            url:'/businessYesanAdmitGetResultProjectList',
+		            type:'POST',
+		            data:JSON.stringify(searchArr),
+		            success:(list)=>{
+		            	console.log(JSON.stringify(list));
+		            	if(list.length == 0){
+		            		let result = $(list).length;
+			            	$('#ResultCount').text(result);
+		            	}else{
+			            	let tr = '';
+			            	let result = $(list).length;
+			            	$('#ResultCount').text(result);
+			            	init_PJT = list[0].PJT_CD;
+			            	console.log(init_PJT + '<--이게 들어와야한다.')
+			            	$(list).each((index,item)=>{
+			            		
+			            		tr += '<tr>';
+			            		tr += '<td style="width:5%;"></td>';
+								tr += '<td style="width:30%;">'+item.PJT_CD+'</td>';
+								tr += '<td style="width:65%; overflow:hidden; text-overflow:ellipsis; color:'+item.COLOR+'" title="'+item.PJT_NM+'"><nobr>'+item.PJT_NM+'</nobr></td>';
+								tr += '</tr>';
+			            	});
+			            	$('#ResultProjectListBody').append(tr);
+			            	runAjax(init_PJT);
+		            	}
+	            	}
+				});
+			});
+			/* =============================조회버튼 클릭시 검색 결과 프로젝트 리스트 end================================= */
+			$('#ResultProjectList').delegate('tr','click',function(){
+				let tr = $(this);
+				let td = tr.children();
+				let PJT_CD = td.eq(1).text();
+				console.log(JSON.stringify(PJT_CD)+'<-- 클릭시 반응');
+				runAjax(PJT_CD);
+			});
+			/*=========승인처리===========  */
+			$('#admitProcess').click(()=>{
+				let PJT_CD = $('#LPJT_CD').text();
+				/* console.log(PJT_CD+'<-- 승인시 필요한 pjt_cd'); */
+				let data = PJT_CD.replace(/[a-z]/gi,"");
+				/* console.log(data+'<-- 승인시 가공한 pjt_cd'); */
+				$.ajax({
+					contentType:'application/json',
+					dataType:'json',
+			        url:'/businessYesanAdmitProcess',
+			        type:'POST',
+			        data:data,
+			        success:(data)=>{
+			        	console.log(JSON.stringify(data));
+			        }
+				});
+			});
+			/* =============================PM 모달 테이블================================= */
+			$('#btnPMSearch').click(()=>{
+				let searchArr = {
+						column:$('#selectedEmpPMItem option:selected').val(),
+						columnValue:$('#PMValue').val(),
+						EMP_GB:$('#selectedEmpPMGB option:selected').val()
+						}; 
+				console.log(JSON.stringify(searchArr));
+				$.ajax({
+    				contentType:'application/json',
+    				dataType:'json',
+		            url:'/businessYesanAdmitGetResultEmpList',
+		            type:'POST',
+		            data:JSON.stringify(searchArr),
+		            success:(data)=>{
+		            	console.log(JSON.stringify(data));
+		            	
+		    			$('#EmpPMList').DataTable({
+		    				searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				data:data,
+		    				columns: [
+		    			        {data: 'EMP_NO'},
+		    			        {data: 'KOR_NM'},
+		    			        {data: 'DEPT_NM'},
+		    			        {data: 'JIKGUP_NM'}
+		    			    ]
+	        			}); 
+	            	}
+				});
+			});
+			$('#EmpPMList').delegate('tr','dblclick',function(){
+				let tr = $(this);
+				let td = tr.children();
+				$('#PmName').val(td.eq(1).text());
+				$('#PmModal').click();
+			});
+			/* =============================PM 모달 테이블 end================================= */
+			
+			/* =============================PD 모달 테이블================================= */
+			$('#btnPDSearch').click(()=>{
+				let searchArr = {
+						column:$('#selectedEmpPDItem option:selected').val(),
+						columnValue:$('#PdValue').val(),
+						EMP_GB:$('#selectedEmpPDGB option:selected').val()
+						}; 
+				console.log(JSON.stringify(searchArr));
+				$.ajax({
+    				contentType:'application/json',
+    				dataType:'json',
+		            url:'/businessYesanAdmitGetResultEmpList',
+		            type:'POST',
+		            data:JSON.stringify(searchArr),
+		            success:(data)=>{
+		            	/* $('#accSearchList').destroy(); */
+		            	/* console.log(JSON.stringify(data)); */
+		    			$('#EmpPDList').DataTable({
+		    				searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				data:data,
+		    				columns: [
+		    			        {data: 'EMP_NO'},
+		    			        {data: 'KOR_NM'},
+		    			        {data: 'DEPT_NM'},
+		    			        {data: 'JIKGUP_NM'}
+		    			    ]
+	        			}); 
+	            	}
+				});
+			});
+			$('#EmpPDList').delegate('tr','dblclick',function(){
+				let tr = $(this);
+				let td = tr.children();
+				$('#PdName').val(td.eq(1).text());
+				$('#PdModal').click();
+			});
+			/* =============================PM 모달 테이블 end================================= */
+			init_pjtList();
+		});
+		
+
+		/* =============================페이지 초기화================================= */
+		let init_pjtList = ()=>{
+			$(':radio[name="ACT_STAT"]:checked').trigger('click');
+			$('#btnProjectSearch').trigger('click');
+			$('#btnPMSearch').trigger('click');
+			$('#btnPDSearch').trigger('click');
+			
+		}
+		/* =============================페이지 초기화 end================================= */
+	</script>
 </th:block>
+
 <th:block layout:fragment="customBody">
-	<!-- 검색부분 start -->
-	<div class="col-md-3 col-sm-6 col-xs-12">
-		<div class="x_panel">
-			<div class="x_content">
-				<label for="ex3">검색조건</label><br>
-				<table>
-					<tr>
-						<td>년도</td>
-						<td><input type="number"></td>
-					</tr>
-					<tr>
-						<td>부서</td>
-						<td><select>
-								<option>전 사</option>
-								<option>설계1본부</option>
-								<option>설계2본부</option>
-								<option>설계3본부</option>
-								<option>설계4본부</option>
-								<option>설계5본부</option>
-						</select></td>
-					</tr>
-					<tr>
-						<td>코드명</td>
-
-						<td><div>
-								<button class="btn">검색</button>
-							</div></td>
-
-					</tr>
-				</table>
-				<!-- 검색부분 end -->
-				<div class="x_title"></div>
-				<!-- 결과부분 start -->
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>PJT코드</th>
-							<th>프로젝트명</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td style="background-color: #fff9df">19005</td>
-							<td>ksmart1팀</td>
-						</tr>
-						<tr>
-							<td style="background-color: #fff9df">19009</td>
-							<td>bonobonoPorori</td>
-						</tr>
-					</tbody>
-				</table>
-				<!-- 결과부분 end -->
-				<div class="x_title"></div>
-			</div>
-		</div>
-	</div>
-
-	<!-- 프로젝트 start -->
-	<div class="col-md-9 col-sm-6 col-xs-12">
-		<div class="x_panel">
-			<div class="x_content">
-				<div class="x_panel">
-					<div class="x_title">
-						<h2>
-							사업성검토 예산 승인 <small>Bordered table subtitle</small>
-						</h2>
-						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown" role="button" aria-expanded="false"><i
-									class="fa fa-wrench"></i></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">Settings 1</a></li>
-									<li><a href="#">Settings 2</a></li>
-								</ul></li>
-							<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-							<button class="btn">승인</button>
-						</ul>
-						<div class="clearfix"></div>
-					</div>
-					<div class="x_content">
-
-						<table class="table table-bordered">
-
-							<tr>
-								<th>프로젝트</th>
-								<th>19019F 문효균TEST</th>
-								<th>(코드발행일:2019/03/13)</th>
-								<th>미승인</th>
-							</tr>
-
-						</table>
-
-						<table class="table table-bordered">
-
-							<tr>
-								<th>발주처</th>
-								<th>에이원건축(법인전환)</th>
-								<th>(발주처구분: 건설사)</th>
-								<th></th>
-							</tr>
-							<tr>
-								<th>대지위치</th>
-								<th>54923 전북 전주시 덕진구 거북바우로1(금암동)</th>
-								<th></th>
-								<th></th>
-							</tr>
-							<tr>
-								<th>지역/지구/구역</th>
-								<th>전용주거지역(1층) / 전용주거지역(2층) / 자연관광지구</th>
-								<th></th>
-								<th></th>
-							</tr>
-							<tr>
-								<th>수주구분</th>
-								<th>민간-발주의뢰(사업분류:신축)</th>
-								<th>건축물용도</th>
-								<th>단독주택</th>
-							</tr>
-							<tr>
-								<th>대지면적</th>
-								<th>에이원건축(법인전환)</th>
-								<th>(발주처구분: 건설사)</th>
-								<th></th>
-							</tr>
-							<tr>
-								<th>대지면적</th>
-								<th>7m2 2.12평</th>
-								<th>규모</th>
-								<th>지하 7층 지상 7층 세대수 7</th>
-							</tr>
-							<tr>
-								<th>연면적</th>
-								<th>7m2 2.12평</th>
-								<th>규모</th>
-								<th>건폐율 7% 용적율 7%</th>
-							</tr>
-
-						</table>
-
-						<table class="table table-bordered">
-
-							<tr>
-								<th>수행부서</th>
-								<th>설계5본부 2소</th>
-								<th>정보취득자</th>
-								<th>문효균</th>
-								<th>업무범위/수준</th>
-								<th>A</th>
-							</tr>
-
-							<tr>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th>예산총계</th>
-								<th>0원</th>
-							</tr>
-
-						</table>
-
-
-
-
-					</div>
+	<div class="">
+		<!----------------------------------페이지 타이틀--------------------------------------------->
+		<div class="col-md-8 col-sm-12 col-xs-12" style="color:black;">
+			<div class="page-title">
+				<div class="title_left">
+					<h2><b>사업성검토 예산 승인</b></h2>
+					<h5><font color="gray"><b>1. 사업성검토 관리&nbsp;>&nbsp;&nbsp;1.2.1 사업성검토 예산 승인</b></font></h5>
+					<br>
 				</div>
 			</div>
-
-			<!-- 프로젝트 예산 입력 start -->
+		</div>
+		<!----------------------------------페이지 타이틀 end--------------------------------------------->
+		<!----------------------------------고정 버튼 -------------------------------------------------->
+		<div class="col-md-4 col-sm-12 col-xs-12" style="color:black;">
+			<div class="page-title">
+				<div class="btn-group">
+					<br>
+					<button class="btn btn-default" type="button" id="btnBizSearch">조회</button>
+					<button class="btn btn-default" type="reset" disabled="disabled">입력</button>
+					<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+					<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+					<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+					<button class="btn btn-default" type="button">출력</button>
+					<br>
+				</div>
+			</div>
+		</div>
+	    <!-----------------------------------고정 버튼 end----------------------------------------------->	
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="col-md-4 col-sm-12 col-xs-12">
 			<div class="x_panel">
-				<div class="x_title">
-					<div class="x_title">
-						<h2>
-							<i class="fa fa-bars"></i> Tabs <small>입력 수정 삭제 버튼을 추가할
-								지도 몰라 남겨둠</small>
-						</h2>
-						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown" role="button" aria-expanded="false"><i
-									class="fa fa-wrench"></i></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">Settings 1</a></li>
-									<li><a href="#">Settings 2</a></li>
-								</ul></li>
-							<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-						</ul>
-						<div class="clearfix"></div>
-					</div>
-					<div class="" role="tabpanel" data-example-id="togglable-tabs">
-						<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-							<li role="presentation" class="active"><a
-								href="#tab_content1" id="home-tab" role="tab" data-toggle="tab"
-								aria-expanded="true">일정계획</a></li>
-							<li role="presentation" class=""><a href="#tab_content2"
-								role="tab" id="profile-tab" data-toggle="tab"
-								aria-expanded="false">M/H계획</a></li>
-							<li role="presentation" class=""><a href="#tab_content3"
-								role="tab" id="profile-tab2" data-toggle="tab"
-								aria-expanded="false">제조경비I</a></li>
-							<li role="presentation" class=""><a href="#tab_content4"
-								role="tab" id="profile-tab3" data-toggle="tab"
-								aria-expanded="false">제조경비II</a></li>
-							<li role="presentation" class=""><a href="#tab_content5"
-								role="tab" id="profile-tab4" data-toggle="tab"
-								aria-expanded="false">기성단계</a></li>
-							<li role="presentation" class=""><a href="#tab_content6"
-								role="tab" id="profile-tab5" data-toggle="tab"
-								aria-expanded="false">추정손익계산서</a></li>
-						</ul>
-
-						<div id="myTabContent" class="tab-content">
-							<!-- 일정계획 start -->
-							<div role="tabpanel" class="tab-pane fade active in"
-								id="tab_content1" aria-labelledby="home-tab">
-								<p>
-								<div class="col-md-12 col-sm-6 col-xs-12">
-									<div class="x_panel">
-										<div class="x_title">
-											<h2>
-												Boardered table <small>입력 수정 삭제 버튼을 위해 남겨둠</small>
-											</h2>
-											<ul class="nav navbar-right panel_toolbox">
-												<li><a class="collapse-link"><i
-														class="fa fa-chevron-up"></i></a></li>
-												<li class="dropdown"><a href="#"
-													class="dropdown-toggle" data-toggle="dropdown"
-													role="button" aria-expanded="false"><i
-														class="fa fa-wrench"></i></a>
-													<ul class="dropdown-menu" role="menu">
-														<li><a href="#">Settings 1</a></li>
-														<li><a href="#">Settings 2</a></li>
-													</ul></li>
-												<li><a class="close-link"><i class="fa fa-close"></i></a>
-												</li>
-											</ul>
-											<div class="clearfix"></div>
+				<div class="x_content" style="color:black;">
+					<form class="form-horizontal">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td colspan="3"><b><label class="control-label">검색조건</label></b></td>
+								</tr>
+								<tr>
+									<td><label class="control-label">년도</label></td>
+									<td colspan="2">
+										<input type="date" id="FIRSTDATE" max="2100-12-31"> <b>-</b> 
+										<input type="date" id="ENDDATE" max="2100-12-31">
+									</td>
+								</tr>
+								<tr>
+									<td><label class="control-label">부서</label></td>
+									<td colspan="2">
+										<select class="form-control" id="deptSelect">
+											<option selected="selected" value="">전 사</option>
+											<th:block th:each="d : ${list}">
+												<option th:value="${d.DEPT_CD}">[[${d.DEPT_NM}]]</option>
+											</th:block>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 20%"><label class="control-label" >코드명</label></td>
+									<td>
+										<input type="text" id="PJT_CD" style="width: 25%"> &nbsp;
+										<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg1"><i class="fa fa-search"></i></button>
+										<input type="text" id="PJT_NM">
+										<!------------------------------------------ 프로젝트코드 조회 modal--------------------------------------------------- -->
+										
+										<div class="modal fade bs-example-modal-lg1" tabindex="-1" role="dialog" aria-hidden="true">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" id="projectModal"><span aria-hidden="true">×</span>
+														</button>
+														<h4 class="modal-title" id="myModalLabel"><b>프로젝트코드조회</b></h4><br>
+														<table class="table table-bordered">
+															<tbody>
+																<tr>
+																	<td><label class="control-label">검색항목</label></td>
+																	<td>
+																		<select class="form-control" style="width: 40%" id="selectedProject">
+																			<option value="PJT_CD">프로젝트코드</option>
+																			<option selected="selected" value="PJT_NM">프로젝트명</option>
+																		</select>
+																	</td>
+																</tr>
+																<tr>
+																	<td><label class="control-label">검색조건</label></td>
+																	<td>
+																		<input type="text" id="PJT_Value">
+																		<button id="btnProjectSearch" type="button"><i class="fa fa-search"></i></button>																	
+																	</td>
+																</tr>
+															</tbody>																	
+														</table>
+													</div>
+													<div class="modal-body">
+														
+														<table id="ProjectList" class="table table-striped table-bordered table-hover jambo_table" style="width: 100%">
+															<thead>
+																<tr>
+																	<th>코드</th>
+																	<th>프로젝트명</th>
+																</tr>
+															</thead>																	
+														</table>
+														
+													</div>
+												</div>
+											</div>
 										</div>
-
-										<div class="x_content">
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th scope="col">단계</th>
-														<th>변경</th>
-														<th>착수일</th>
-														<th>완료예정일</th>
-														<th>소요기간(Day)</th>
-														<th>종료일</th>
-														<th>사유입력</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td scope="row">기획</td>
-														<td></td>
-														<td><input type="date"></td>
-														<td><input type="date"></td>
-														<td>완료예정일-착수일</td>
-														<td></td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td scope="row">심의</td>
-														<td></td>
-														<td><input type="date"></td>
-														<td><input type="date"></td>
-														<td>완료예정일-착수일</td>
-														<td></td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td scope="row">허가</td>
-														<td></td>
-														<td><input type="date"></td>
-														<td><input type="date"></td>
-														<td>완료예정일-착수일</td>
-														<td></td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td scope="row">착공</td>
-														<td></td>
-														<td><input type="date"></td>
-														<td><input type="date"></td>
-														<td>완료예정일-착수일</td>
-														<td></td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td scope="row">실시</td>
-														<td></td>
-														<td><input type="date"></td>
-														<td><input type="date"></td>
-														<td>완료예정일-착수일</td>
-														<td></td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td scope="row">A/S</td>
-														<td></td>
-														<td><input type="date"></td>
-														<td><input type="date"></td>
-														<td>완료예정일-착수일</td>
-														<td></td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td scope="row">준공</td>
-														<td></td>
-														<td><input type="date"></td>
-														<td><input type="date"></td>
-														<td>완료예정일-착수일</td>
-														<td></td>
-														<td><input type="text"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-
-									</div>
-								</div>
-							</div>
-							<!-- 일정계획 end -->
-
-							<!-- M/H계획 start -->
-							<div role="tabpanel" class="tab-pane fade" id="tab_content2"
-								aria-labelledby="profile-tab">
-								<table class="table table-bordered">
-									<tr>
-										<th rowspan="12">주관부서</th>
-										<th scope="col" width="50">직급</th>
-										<th>인원</th>
-										<th>A. 기획</th>
-										<th>B. 심의</th>
-										<th>C. 허가</th>
-										<th>D. 착공</th>
-										<th>E. 실시</th>
-										<th>F. A/S</th>
-										<th>G. 준공</th>
-										<th width="50">합계</th>
-									</tr>
-									<tr>
-										<td scope="row">전무</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">상무</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">이사</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">실장</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">팀장</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">대리</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">사원</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">소계</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-									</tr>
-								</table>
-
-
-								<table class="table table-bordered">
-									<tr>
-										<th rowspan="12">지원부서</th>
-										<th scope="col" width="50">직급</th>
-										<th>인원</th>
-										<th>A. 기획</th>
-										<th>B. 심의</th>
-										<th>C. 허가</th>
-										<th>D. 착공</th>
-										<th>E. 실시</th>
-										<th>F. A/S</th>
-										<th>G. 준공</th>
-										<th width="50">합계</th>
-									</tr>
-									<tr>
-										<td scope="row">전무</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">상무</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">이사</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">실장</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">팀장</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">대리</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">사원</td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td><input type="text" class="form-control"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td scope="row">소계</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-									</tr>
-								</table>
-							</div>
-							<!-- M/H계획 end -->
-
-							<!-- 제조경비1 start -->
-							<div role="tabpanel" class="tab-pane fade" id="tab_content3"
-								aria-labelledby="profile-tab">
-								<p>
-								<div class="col-md-6 col-sm-6 col-xs-12">
-									<div class="x_panel">
-										<div class="x_title">
-											<h2>
-												좌 <small>제조경비1</small>
-											</h2>
-											<ul class="nav navbar-right panel_toolbox">
-												<li><a class="collapse-link"><i
-														class="fa fa-chevron-up"></i></a></li>
-												<li class="dropdown"><a href="#"
-													class="dropdown-toggle" data-toggle="dropdown"
-													role="button" aria-expanded="false"><i
-														class="fa fa-wrench"></i></a>
-													<ul class="dropdown-menu" role="menu">
-														<li><a href="#">Settings 1</a></li>
-														<li><a href="#">Settings 2</a></li>
-													</ul></li>
-												<li><a class="close-link"><i class="fa fa-close"></i></a>
-												</li>
-											</ul>
-											<div class="clearfix"></div>
-										</div>
-										<div class="x_content">
-
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th>계정과목</th>
-														<th>금액</th>
-														<th>%</th>
-														<th>비고</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<th scope="row">프로젝트</th>
-														<td>(프로젝트번호)</td>
-														<td><input type="text"></td>
-														<td></td>
-													</tr>
-												</tbody>
-											</table>
-
-										</div>
-									</div>
-								</div>
-
-
-								<div class="col-md-6 col-sm-6 col-xs-12">
-									<div class="x_panel">
-										<div class="x_title">
-											<h2>
-												우 <small>제조경비1</small>
-											</h2>
-											<ul class="nav navbar-right panel_toolbox">
-												<li><a class="collapse-link"><i
-														class="fa fa-chevron-up"></i></a></li>
-												<li class="dropdown"><a href="#"
-													class="dropdown-toggle" data-toggle="dropdown"
-													role="button" aria-expanded="false"><i
-														class="fa fa-wrench"></i></a>
-													<ul class="dropdown-menu" role="menu">
-														<li><a href="#">Settings 1</a></li>
-														<li><a href="#">Settings 2</a></li>
-													</ul></li>
-												<li><a class="close-link"><i class="fa fa-close"></i></a>
-												</li>
-											</ul>
-											<div class="clearfix"></div>
-										</div>
-										<div class="x_content">
-
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th>계정과목</th>
-														<th>금액</th>
-														<th>%</th>
-														<th>비고</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>국내출장비</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td>국외출장비</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td>보증보험료</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td>합사운영비</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td>인쇄비</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td>지급수수료</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td>모형비</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td>조감도</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-													<tr>
-														<td>국내출장비</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td><input type="text"></td>
-													</tr>
-												</tbody>
-											</table>
-
-										</div>
-									</div>
-								</div>
-
-								<div class="clearfix"></div>
-							</div>
-							<!-- 제조경비1 end -->
-
-							<!-- 제조경비2 start -->
-							<div role="tabpanel" class="tab-pane fade" id="tab_content4"
-								aria-labelledby="profile-tab">
-								<p>
-								<div class="col-md-12 col-sm-12 col-xs-12">
-									<div class="x_panel">
-										<div class="x_title">
-											<h2>
-												테이블 <small>제조경비2</small>
-											</h2>
-											<ul class="nav navbar-right panel_toolbox">
-												<li><a class="collapse-link"><i
-														class="fa fa-chevron-up"></i></a></li>
-												<li class="dropdown"><a href="#"
-													class="dropdown-toggle" data-toggle="dropdown"
-													role="button" aria-expanded="false"><i
-														class="fa fa-wrench"></i></a>
-													<ul class="dropdown-menu" role="menu">
-														<li><a href="#">Settings 1</a></li>
-														<li><a href="#">Settings 2</a></li>
-													</ul></li>
-												<li><a class="close-link"><i class="fa fa-close"></i></a>
-												</li>
-											</ul>
-											<div class="clearfix"></div>
-										</div>
-
-										<div class="x_content">
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th>계정과목</th>
-														<th>금액</th>
-														<th>%</th>
-														<th>거래처</th>
-														<th>실행예산</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td scope="row">프로젝트</td>
-														<td><input type="text"></td>
-														<td>0.00</td>
-														<td></td>
-														<td></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-								</p>
-							</div>
-							<!-- 제조경비2 end -->
-
-							<!-- 기성단계 start -->
-							<div role="tabpanel" class="tab-pane fade" id="tab_content5"
-								aria-labelledby="profile-tab">
-								<p>
-								<div class="col-md-12 col-sm-12 col-xs-12">
-									<div class="x_panel">
-										<div class="x_title">
-											<h2>
-												테이블 <small>기성단계</small>
-											</h2>
-											<ul class="nav navbar-right panel_toolbox">
-												<li><a class="collapse-link"><i
-														class="fa fa-chevron-up"></i></a></li>
-												<li class="dropdown"><a href="#"
-													class="dropdown-toggle" data-toggle="dropdown"
-													role="button" aria-expanded="false"><i
-														class="fa fa-wrench"></i></a>
-													<ul class="dropdown-menu" role="menu">
-														<li><a href="#">Settings 1</a></li>
-														<li><a href="#">Settings 2</a></li>
-													</ul></li>
-												<li><a class="close-link"><i class="fa fa-close"></i></a>
-												</li>
-											</ul>
-											<div class="clearfix"></div>
-										</div>
-
-										<div class="x_content">
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th>기성단계</th>
-														<th>단계등급</th>
-														<th>금액</th>
-														<th>수금율(%)</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>계약체결시</td>
-														<td>기획</td>
-														<td>385,000,000</td>
-														<td>50.00</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-								</p>
-							</div>
-							<!-- 기성단계 end -->
-
-							<!-- 추정손익계산서 start -->
-							<div role="tabpanel" class="tab-pane fade" id="tab_content6"
-								aria-labelledby="profile-tab">
-								<p>
-								<div class="col-md-7 col-sm-6 col-xs-12">
-									<div class="x_panel">
-										<div class="x_title">
-											<h2>
-												좌 <small>합계내역</small>
-											</h2>
-											<ul class="nav navbar-right panel_toolbox">
-												<li><a class="collapse-link"><i
-														class="fa fa-chevron-up"></i></a></li>
-												<li class="dropdown"><a href="#"
-													class="dropdown-toggle" data-toggle="dropdown"
-													role="button" aria-expanded="false"><i
-														class="fa fa-wrench"></i></a>
-													<ul class="dropdown-menu" role="menu">
-														<li><a href="#">Settings 1</a></li>
-														<li><a href="#">Settings 2</a></li>
-													</ul></li>
-												<li><a class="close-link"><i class="fa fa-close"></i></a>
-												</li>
-											</ul>
-											<div class="clearfix"></div>
-										</div>
-										<div class="x_content">
-
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th colspan="2">과목</th>
-														<th>금액</th>
-														<th>%</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td colspan="2">매출액</td>
-														<td>770,000,000</td>
-														<td>100.0</td>
-													</tr>
-													<tr>
-														<td rowspan="4">자체비용
-														<td>인 건비</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>제조경비1</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>제조경비2</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>소계</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td rowspan="5">배부비용</td>
-														<td>공통비1</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>간접비</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>공통비2</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>관리부문비</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>소계</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td colspan="2">비용합계</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td colspan="2">영업이익</td>
-														<td>770,000,000</td>
-														<td>100</td>
-													</tr>
-													<tr>
-														<td rowspan="5">사업성검토</td>
-														<td>인건비</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>제조경비1</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>공통비2</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>관리부문비</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>소계</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-
-
-												</tbody>
-											</table>
-
-										</div>
-									</div>
-								</div>
-
-
-								<div class="col-md-5 col-sm-6 col-xs-12">
-									<div class="x_panel">
-										<div class="x_title">
-											<h2>
-												우 <small>간접비</small>
-											</h2>
-											<ul class="nav navbar-right panel_toolbox">
-												<li><a class="collapse-link"><i
-														class="fa fa-chevron-up"></i></a></li>
-												<li class="dropdown"><a href="#"
-													class="dropdown-toggle" data-toggle="dropdown"
-													role="button" aria-expanded="false"><i
-														class="fa fa-wrench"></i></a>
-													<ul class="dropdown-menu" role="menu">
-														<li><a href="#">Settings 1</a></li>
-														<li><a href="#">Settings 2</a></li>
-													</ul></li>
-												<li><a class="close-link"><i class="fa fa-close"></i></a>
-												</li>
-											</ul>
-											<div class="clearfix"></div>
-										</div>
-										<div class="x_content">
-
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th>항목</th>
-														<th>배부금액</th>
-														<th>배부율</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>빌딩</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>통신</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>전산</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>합계</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-												</tbody>
-											</table>
-
-										</div>
-									</div>
-								</div>
-
-								<div class="col-md-5 col-sm-6 col-xs-12">
-									<div class="x_panel">
-										<div class="x_title">
-											<h2>
-												우 <small>공통비1</small>
-											</h2>
-											<ul class="nav navbar-right panel_toolbox">
-												<li><a class="collapse-link"><i
-														class="fa fa-chevron-up"></i></a></li>
-												<li class="dropdown"><a href="#"
-													class="dropdown-toggle" data-toggle="dropdown"
-													role="button" aria-expanded="false"><i
-														class="fa fa-wrench"></i></a>
-													<ul class="dropdown-menu" role="menu">
-														<li><a href="#">Settings 1</a></li>
-														<li><a href="#">Settings 2</a></li>
-													</ul></li>
-												<li><a class="close-link"><i class="fa fa-close"></i></a>
-												</li>
-											</ul>
-											<div class="clearfix"></div>
-										</div>
-										<div class="x_content">
-
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th>항목</th>
-														<th>배부금액</th>
-														<th>배부율</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>부문장</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>본부장</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>지원부서</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>기타</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-													<tr>
-														<td>합계</td>
-														<td>0</td>
-														<td>0</td>
-													</tr>
-												</tbody>
-											</table>
-
-										</div>
-									</div>
-								</div>
-
-								<div class="clearfix"></div>
-							</div>
-
-						</div>
-
-					</div>
+									<!------------------------------------------ 프로젝트 코드 조회 modal end--------------------------------------------------- -->
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="text-align: center;">
+										<input type="radio" name="ACT_STAT" value="1">미승인 &emsp;&emsp;
+										<input type="radio" name="ACT_STAT" value="2">진행 &emsp;&emsp;
+										<input type="radio" name="ACT_STAT" value="4">무산 &emsp;&emsp;
+										<input type="radio" name="ACT_STAT" value="5">계획 &emsp;&emsp;
+										<input type="radio" name="ACT_STAT" checked="checked" value="">ALL
+									</td>
+								</tr>
+							</tbody>					
+						</table>
+					</form>
 				</div>
-
 			</div>
-			<!-- 프로젝트 예산 입력 end -->
-
+			<div class="x_panel">
+				<div class="x_content" style="color:black;">
+					<form class="form-horizontal" style="overflow: auto; height: 870px;">
+						<table id="ResultProjectList" class="table table-striped table-bordered table-hover jambo_table" style="width: 100%; table-layout: fixed;">
+							<thead>
+								<tr>
+									<th style="width: 5%"></th>
+									<th style="width: 30%">PJT코드</th>
+									<th style="width: 65%">프로젝트명</th>
+								</tr>
+							</thead>
+							<tbody id="ResultProjectListBody">
+								<!-- <th:block th:each="num: ${#numbers.sequence(1,22)}">
+									<tr>
+										<td><label class="control-label"> </label></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</th:block> -->
+							</tbody>
+							<tfoot style="background-color: #FFFFB6" id="ResultProjectListFoot">
+								<tr>
+									<td colspan="3" style="text-align: right"><label id="ResultCount"></label></td>
+								</tr>
+							</tfoot>
+						</table>
+					</form>
+				</div>
+			</div>
 		</div>
+		<div class="col-md-8 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_content" style="color:black;">
+					<form class="form-horizontal">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td style="background-color: #E8F0FA">프로젝트</td>
+									<td><label id="LPJT_CD"></label></td>
+									<td colspan="2"><label id="LPJT_NM"></label></td>
+									<td>(코트발행일: <label id="LCRT_DATE"></label>)</td>
+									<td style="background-color: #E8F0FA" id="LACT_STAT_COLOR"><label id="LACT_STAT"></label></td>
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">발주처</td>
+									<td colspan="3"><label id="LCUST_NM"></label></td>
+									<td colspan="2">(발주처 구분 : &emsp;<label id="LCUST_GBN"></label>&emsp;)</td>
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">대지위치</td>
+									<td colspan="5">&emsp;( <label id="LZIP_CD"></label> )&emsp;&emsp;<label id="LADDR"></label></td>
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">지역/지구/구역</td>
+									<td colspan="5">
+										<label id="LREGION_NM"></label> &emsp;||&emsp;
+										<label id="LZONE_NM"></label> &emsp;||&emsp;
+										<label id="LSCOPE_NM"></label>
+									</td>
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">수주구분</td>
+									<td><label id="LBIZ_TYPE"></label> - <label id="LBIZ_GBN"></label></td>
+									<td>( 사업분류: <label id="LBUILD_GB"></label> )</td>
+									<td style="background-color: #E8F0FA">건축물용도</td>
+									<td colspan="2"><label id="LBUILD_TYPE_NM"></label></td>
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">대지면적</td>
+									<td><label id="LAREA_M"></label> ㎡</td>
+									<td><label id="LAREA_P"></label> 평</td>
+									<td style="background-color: #E8F0FA">규모</td>
+									<td colspan="2">지하  &emsp;<label id="LDOWN_SU"></label> 층&emsp;&emsp; 지상 &emsp;<label id="LUP_SU"></label> 층 &emsp;&emsp;세대수&emsp;<label id="LH_CNT"></label></td>
+									
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">연면적</td>
+									<td><label id="LYAREA_M"></label> ㎡</td>
+									<td><label id="LYAREA_P"></label> 평</td>
+									<td style="background-color: #E8F0FA">비율</td>
+									<td>건폐율&emsp;&emsp;<label id="LCOVERAGE"></label>&emsp;%</td>
+									<td>용적율&emsp;&emsp;<label id="LCAPACITY"></label>&emsp;%</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+			<div class="x_panel">
+				<div class="x_content" style="color:black;">
+					<form class="form-horizontal">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td style="background-color: #E8F0FA">수행부서</td>
+									<td><label id="LDEPT_NM"></label></td>
+									<td style="background-color: #E8F0FA">정보취득자</td>
+									<td style="width: 20%"><label id="LINFO_EMP_NO"></label></td>
+									<td style="background-color: #E8F0FA">업무범위/수준</td>
+									<td><label id="LCLASS_GBN"></label></td>
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">PM</td>
+									<td>
+										<input type="text" id="PmName">
+										<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg2"><i class="fa fa-search"></i></button>
+										<!------------------------------------------ PM 조회 modal--------------------------------------------------- -->
+										
+										<div class="modal fade bs-example-modal-lg2" tabindex="-1" role="dialog" aria-hidden="true">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" id="PmModal"><span aria-hidden="true">×</span>
+														</button>
+														<h4 class="modal-title" id="myModalLabel"><b>직원조회</b></h4><br>
+														<table class="table table-bordered">
+															<tbody>
+																<tr>
+																	<td><label class="control-label">구분</label></td>
+																	<td>
+																		<select class="form-control" style="width: 40%" id="selectedEmpPMGB">
+																			<option selected="selected" value="재직">재직자</option>
+																			<option value="퇴직">퇴직자</option>
+																		</select>
+																	</td>
+																</tr>
+																<tr>
+																	<td><label class="control-label">검색항목</label></td>
+																	<td>
+																		<select class="form-control" style="width: 40%" id="selectedEmpPMItem">
+																			<option selected="selected" value="KOR_NM">성명</option>
+																			<option value="EMP_NO">사번</option>
+																			<option value="DEPT_NM">부서명</option>
+																			<option value="JIKGUP_NM">직급명</option>
+																		</select>
+																	</td>
+																</tr>
+																<tr>
+																	<td><label class="control-label">검색조건</label></td>
+																	<td>
+																		<input type="text" id="PMValue">
+																		<button id="btnPMSearch" type="button"><i class="fa fa-search"></i></button>																	
+																	</td>
+																</tr>
+															</tbody>																	
+														</table>
+													</div>
+													<div class="modal-body">
+														<div class="table-responsive" style="overflow: auto; height: 450px;">
+															<table id="EmpPMList" class="table table-striped table-bordered table-hover jambo_table">
+																<thead>
+																	<tr>
+																		<th>사원번호</th>
+																		<th>성명</th>
+																		<th>부서명</th>
+																		<th>직급명</th>
+																	</tr>
+																</thead>																
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!------------------------------------------ PM 코드 조회 modal end--------------------------------------------------- -->
+									</td>
+									<td rowspan="2" style="background-color: #E8F0FA; vertical-align: middle;">납품성과물</td>
+									<td colspan="3" rowspan="2">
+										<textarea id="TPRODUCT" class="form-control" rows="2" style="width: 100%; overflow: scroll; resize: none;" ></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">PD</td>
+									<td>
+										<input type="text" id="PdName">
+										<button type="button" data-toggle="modal" data-target=".bs-example-modal-lg3"><i class="fa fa-search"></i></button>
+										<!------------------------------------------ PD 조회 modal--------------------------------------------------- -->
+										
+										<div class="modal fade bs-example-modal-lg3" tabindex="-1" role="dialog" aria-hidden="true">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" id="PdModal"><span aria-hidden="true">×</span>
+														</button>
+														<h4 class="modal-title" id="myModalLabel"><b>직원</b></h4><br>
+														<table class="table table-bordered">
+															<tbody>
+																<tr>
+																	<td><label class="control-label">구분</label></td>
+																	<td>
+																		<select class="form-control" style="width: 40%" id="selectedEmpPDGB">
+																			<option selected="selected" value="재직">재직자</option>
+																			<option value="퇴직">퇴직자</option>
+																		</select>
+																	</td>
+																</tr>
+																<tr>
+																	<td><label class="control-label">검색항목</label></td>
+																	<td>
+																		<select class="form-control" style="width: 40%" id="selectedEmpPDItem">
+																			<option selected="selected" value="KOR_NM">성명</option>
+																			<option value="EMP_NO">사번</option>
+																			<option value="DEPT_NM">부서명</option>
+																			<option value="JIKGUP_NM">직급명</option>
+																		</select>
+																	</td>
+																</tr>
+																<tr>
+																	<td><label class="control-label">검색조건</label></td>
+																	<td>
+																		<input type="text" id="PdValue">
+																		<button id="btnPDSearch" type="button"><i class="fa fa-search"></i></button>																	
+																	</td>
+																</tr>
+															</tbody>																	
+														</table>
+													</div>
+													<div class="modal-body">
+														<div class="table-responsive" style="overflow: auto; height: 400px;">
+															<table id="EmpPDList" class="table table-striped table-bordered table-hover jambo_table">
+																<thead>
+																	<tr>
+																		<th>사원번호</th>
+																		<th>성명</th>
+																		<th>부서명</th>
+																		<th>직급명</th>
+																	</tr>
+																</thead>																
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<!------------------------------------------ PD 코드 조회 modal end--------------------------------------------------- -->
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" rowspan="2"></td>
+									<td style="background-color: #E8F0FA">추정계약액</td>
+									<td colspan="2"><label id="LFORECAST_AMT"></label></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td style="background-color: #E8F0FA">예산총계</td>
+									<td colspan="2"><label id="LTOTAL_AMT"></label></td>
+									<td><button id="admitProcess" type="button" class="btn" style="color: black;">승인처리</button></td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+			<div class="x_panel">
+				<div class="x_content" style="color:black; height: 530px">
+					<form class="form-horizontal">
+						<div class="" role="tabpanel" data-example-id="togglable-tabs">
+							<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+								<li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">일정계획</a>
+								</li>
+								<li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">M/H계획</a>
+								</li>
+								<li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">제조경비I</a>
+								</li>
+								<li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab3" data-toggle="tab" aria-expanded="false">제조경비II</a>
+								</li>
+								<li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab4" data-toggle="tab" aria-expanded="false">사업성검토예산합계내역</a>
+								</li>
+							</ul>
+						</div>
+						<div id="myTabContent" class="tab-content">
+							<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+								<table id="schedulePlanList" class="table table-striped table-bordered table-hover jambo_table">
+									<thead>
+										<tr>
+											<th>순번</th>
+											<th>작업단계</th>
+											<th>변경</th>
+											<th>완료예정일</th>
+											<th>종료일자</th>
+											<th>사유</th>
+										</tr>
+									</thead>
+																								
+								</table>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab1">
+								<table id="MhPlanList" class="table table-striped table-bordered table-hover jambo_table" style="width: 100%">
+									<thead>
+										<tr>
+											<th rowspan="2">순번</th>
+											<th rowspan="2">직급</th>
+											<th colspan="2">주관부서</th>
+											<th colspan="2">지원부서</th>
+											<th colspan="2">합계</th>
+											<th rowspan="2">금액</th>
+											<th rowspan="2">비고</th>
+										</tr>
+										<tr>
+											<th>인원</th>
+											<th>계획MH</th>
+											<th>인원</th>
+											<th>계획MH</th>
+											<th>인원</th>
+											<th>계획MH</th>
+										</tr>
+									</thead>
+									<tfoot style="background-color: #FFFFB6">
+										<tr>
+											<td></td>
+											<td>소계</td>
+											<td><label id="MhINWON_1Total"></label></td>
+											<td><label id="MhMD_PLAN_1Total"></label></td>
+											<td><label id="MhINWON_2Total"></label></td>
+											<td><label id="MhMD_PLAN_2Total"></label></td>
+											<td><label id="MhINWONTotal"></label></td>
+											<td><label id="MhMD_PLANTotal"></label></td>
+											<td><label id="MhYEA_AMTTotal"></label></td>
+											<td></td>
+										</tr>
+									</tfoot>																
+								</table>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="home-tab">
+								<div class="col-md-6 col-sm-12 col-xs-12">
+									<table id="manufacture1Left" class=" table-striped table-bordered table-hover jambo_table" style="width: 100%">
+										<thead>
+											<tr>
+												<th>순번</th>
+												<th>계정과목</th>
+												<th>금액</th>
+												
+											</tr>
+										</thead>
+										<tfoot style="background-color: #FFFFB6">
+											<tr>
+												<td></td>
+												<td>소계</td>
+												<td><label id="Manufacture1LeftTotal"></label></td>
+											</tr>
+										</tfoot>															
+									</table>
+								</div>
+								<div class="col-md-6 col-sm-12 col-xs-12">
+									<table id="manufacture1Right" class="table table-striped table-bordered table-hover jambo_table" style="width: 100%">
+										<thead>
+											<tr>
+												<th>순번</th>
+												<th>계정과목</th>
+												<th>금액</th>
+												
+											</tr>
+										</thead>
+										<tfoot style="background-color: #FFFFB6">
+											<tr>
+												<td></td>
+												<td>소계</td>
+												<td><label id="Manufacture1RightTotal"></label></td>
+											</tr>
+										</tfoot>																	
+									</table>
+								</div>
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>예산범위</td>
+											<td>0원</td>
+											<td>제조경비 1</td>
+											<td>합계:</td>
+											<td><label id="Manufacture1Total"></label></td>
+										</tr>
+									</tbody>																
+								</table>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="home-tab">
+								<table id="manufacture2" class="table table-striped table-bordered table-hover jambo_table" style="width: 100%">
+									<thead>
+										<tr>
+											<th></th>
+											<th>순번</th>
+											<th>계정과목</th>
+											<th>금액</th>
+											<th>비고</th>
+										</tr>
+									</thead>
+									<tfoot style="background-color: #FFFFB6">
+										<tr>
+											<td></td>
+											<td></td>
+											<td>합계</td>
+											<td><label id="jejo2Total"></label></td>
+											<td></td>
+										</tr>
+									</tfoot>																	
+								</table>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="home-tab">
+								<div class="col-md-6 col-sm-12 col-xs-12">
+									<label class="control-label" style="padding-bottom: 10px">⊙ 예산합계내역</label>
+									<table class="table table-striped table-bordered table-hover jambo_table">
+										<thead>
+											<tr>
+												<th colspan="2">과목</th>
+												<th>금액</th>
+												<th>%</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td rowspan="4">자체비용</td>
+												<td>인건비</td>
+												<td style="text-align: right"><label id="LABOR_COST"></label></td>
+												<td style="text-align: right"><label id="LABOR_COST_PER"></label></td>
+											</tr>
+											<tr>
+												<td>제조경비I</td>
+												<td style="text-align: right"><label id="MANU_COST1"></label></td>
+												<td style="text-align: right"><label id="MANU_COST1_PER"></label></td>
+											</tr>
+											<tr>
+												<td>제조경비II</td>
+												<td style="text-align: right"><label id="MANU_COST2"></label></td>
+												<td style="text-align: right"><label id="MANU_COST2_PER"></label></td>
+											</tr>
+											<tr>
+												<td>소계</td>
+												<td style="text-align: right"><label id="SELF_SUM"></label></td>
+												<td style="text-align: right"><label id="SELF_SUM_PER"></label></td>
+											</tr>
+											<tr>
+												<td rowspan="5">배부비용</td>
+												<td>공통비I</td>
+												<td style="text-align: right"><label id="COMMON_COST1"></label></td>
+												<td style="text-align: right"><label id="COMMON_COST1_PER"></label></td>
+											</tr>
+											<tr>
+												<td>간접비</td>
+												<td style="text-align: right"><label id="INDIREC_COST"></label></td>
+												<td style="text-align: right"><label id="INDIREC_COST_PER"></label></td>
+											</tr>
+											<tr>
+												<td>공통비II</td>
+												<td style="text-align: right"><label id="COMMON_COST2"></label></td>
+												<td style="text-align: right"><label id="COMMON_COST2_PER"></label></td>
+											</tr>
+											<tr>
+												<td>관리부문비</td>
+												<td style="text-align: right"><label id="MANAGE_COST"></label></td>
+												<td style="text-align: right"><label id="MANAGE_COST_PER"></label></td>
+											</tr>
+											<tr>
+												<td>소계</td>
+												<td style="text-align: right"><label id="DIV_AMT"></label></td>
+												<td style="text-align: right"><label id="DIV_AMT_PER"></label></td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td colspan="2">비용합계</td>
+												<td style="text-align: right"><label id="COST_AMT"></label></td>
+												<td style="text-align: right"><label id="COST_AMT_PER"></label></td>
+											</tr>
+										</tfoot>															
+									</table>
+								</div>
+								<div class="col-md-6 col-sm-12 col-xs-12">
+									<label class="control-label" style="padding-bottom:10px;">⊙ 간접비</label>
+									<table class="table table-striped table-bordered table-hover jambo_table" style="padding-bottom: 5px">
+										<thead>
+											<tr>
+												<th>항목</th>
+												<th>배부금액</th>
+												<th>배부율</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>빌딩</td>
+												<td style="text-align: right"><label id="BUILDING_COST"></label></td>
+												<td style="text-align: right"><label id="BUILDING_COST_PER"></label></td>
+											</tr>
+											<tr>
+												<td>통신</td>
+												<td style="text-align: right"><label id="TELE_COST"></label></td>
+												<td style="text-align: right"><label id="TELE_COST_PER"></label></td>
+											</tr>
+											<tr>
+												<td>전산</td>
+												<td style="text-align: right"><label id="NET_COST"></label></td>
+												<td style="text-align: right"><label id="NET_COST_PER"></label></td>
+											</tr>
+										</tbody>
+										<tfoot style="background-color: #FFFFB6">
+											<tr>
+												<td>합계</td>
+												<td style="text-align: right"><label id="INDIREC_COST_SUM"></label></td>
+												<td style="text-align: right"><label id="INDIREC_COST_SUM_PER"></label></td>
+											</tr>
+										</tfoot>																	
+									</table>
+									
+									<label class="control-label" style="padding-bottom: 10px;">⊙ 공통비</label>
+									<table class="table table-striped table-bordered table-hover jambo_table">
+										<thead>
+											<tr>
+												<th>항목</th>
+												<th>배부금액</th>
+												<th>배부율</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>부문장</td>
+												<td style="text-align: right"><label id="COMMON_COST_BU"></label></td>
+												<td style="text-align: right"><label id="COMMON_COST_BU_PER"></label></td>
+											</tr>
+											<tr>
+												<td>본부장</td>
+												<td style="text-align: right"><label id="COMMON_COST_BON"></label></td>
+												<td style="text-align: right"><label id="COMMON_COST_BON_PER"></label></td>
+											</tr>
+											<tr>
+												<td>지원부서</td>
+												<td style="text-align: right"><label id="COMMON_COST_DEPT"></label></td>
+												<td style="text-align: right"><label id="COMMON_COST_DEPT_PER"></label></td>
+											</tr>
+										</tbody>
+										<tfoot style="background-color: #FFFFB6">
+											<tr>
+												<td>합계</td>
+												<td style="text-align: right"><label id="COMMON_COST1_SUM"></label></td>
+												<td style="text-align: right"><label id="COMMON_COST1_SUM_PER"></label></td>
+											</tr>
+										</tfoot>																	
+									</table>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>	
 	</div>
-
-	<!-- 프로젝트 end -->
 </th:block>
 <th:block layout:fragment="customJquery">
-	<th:block th:include="layout/customJquery"></th:block>
+	<!-- jQuery -->
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/vendors/nprogress/nprogress.js"></script>
+    <!-- iCheck -->
+    <script src="/vendors/iCheck/icheck.min.js"></script>
+    <!-- Datatables -->
+	<script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+	<script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+	<script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+	<script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+	<script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+	<script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+	<script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+	<script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+	<script src="/vendors/jszip/dist/jszip.min.js"></script>
+	<script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+	<script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="/build/js/custom.min.js"></script>
+	<!-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
 </th:block>
 </html>

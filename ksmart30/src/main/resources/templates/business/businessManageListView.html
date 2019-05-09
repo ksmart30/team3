@@ -1,83 +1,119 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/main">
-<th:block layout:fragment="customHead">
-
-	<meta charset="UTF-8">
-	<title>2.1.4 사업성검토 List</title>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+	<th:block layout:fragment="customHead">
+		<meta charset="UTF-8">
+	<title>1.1.3 사업수행 승인 현황</title>	
 	<th:block th:include="layout/customHead"></th:block>
-	</th:block>
-	<th:block layout:fragment="customBody">
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script>
 $(document).ready(function(){	
-	
+	console.log("안녕1");
 	//검색
 	$('#businessManageSearch').on('click',function(){
-		
+		console.log("안녕2");
 		var BUSI_YY = $('#BUSI_YY').val(); //년도
-		var UP_SU = $('#UP_SU').val();	   //지상층
-		var YAREA_P = $('#YAREA_P').val(); //연면적
+		var UP_SU = $('#UP_SU').val();
+		var UP_SU2 = $('#UP_SU2').val();//지상층
+		var YAREA_P = $('#YAREA_P').val();
+		var YAREA_P2 = $('#YAREA_P2').val();//연면적
 		//var inDeptCd = $('#inDeptCd').val(); //예 /project/cooperation/search
 		$.ajax({
-			url:'/business/manage/list',//호출할 메소드
+			url:'/business/businessManageListView',//호출할 메소드
             type:'POST',//송신 방식 
-            data:{BUSI_YY:BUSI_YY,UP_SU:UP_SU,YAREA_P:YAREA_P},//넘길 데이터
+            data:{BUSI_YY:BUSI_YY,UP_SU:UP_SU,UP_SU2:UP_SU2,YAREA_P:YAREA_P,YAREA_P2:YAREA_P2},//넘길 데이터
             success:function(data){//받은 데이터
             	console.log(data);
                 $('#searchBody').empty();//삭제 
                 $(data).each((index,item)=>{
-                	$('#searchBody').append('<tr>');
-                	$('#searchBody').append('<td>'+item.PJT_CD+'</td>');// 프로젝트코드
-                	$('#searchBody').append('<td>'+item.PJT_NM+'</td>');// 프로젝트이름
-                	$('#searchBody').append('<td>'+item.CUST_NM+'</td>');//발주처
-                	$('#searchBody').append('<td>'+item.UP_SU+'</td>');  //지상층
-                	$('#searchBody').append('<td>'+item.DOWN_SU+'</td>'); //지하
-                	$('#searchBody').append('<td>'+item.AREA_P+'</td>'); //대지면적
-                	$('#searchBody').append('<td>'+item.YAREA_P+'</td>'); //연면적평
-                	$('#searchBody').append('</tr>');
+                	$('#searchBody').append('<tr><td style="background-color: #fff9df">'+item.PJT_CD+'</td><td>'
+                			+item.PJT_NM+'</td><td>'
+                			+item.CUST_NM+'</td><td>'
+                			+item.AREA_P+'</td><td>'
+                			+item.YAREA_P+'</td><td>'
+                			+item.UP_SU+'</td><td>'
+                			+item.DOWN_SU+'</td></tr>'
+                	);
+                	
                 });              
             }
         });
     });
     
 });
-	
 	</script>	
 	
+	</th:block>
+	<th:block layout:fragment="customBody">
 	
-</th:block>
-<th:block layout:fragment="customBody">
+	<div class="col-md-9 col-xs-12" style="color:black;">
+        <div class="page-title">
+	<div class="title_left">
+	 <h2><b>사업수행결정 승인현황</b></h2>
+	<h5><font color="gray"><b>1.사업성검토관리&nbsp;>&nbsp;&nbsp;1.1사업수행결정서관리&nbsp;>&nbsp;&nbsp;1.1.3승인현황</b></font></h5>
+					
+	</div>
+	</div>
+        </div>
+	<div class="x_content" style="text-align: right">
+<div class="btn-group" >
+<button class="btn btn-default" type="btn" id="businessManageSearch">조회</button>
+<button class="btn btn-default" type="reset">입력</button>
+<button class="btn btn-default" type="button">수정</button>
+<button class="btn btn-default" type="button">삭제</button>
+<button class="btn btn-default" type="button">저장</button>
+<button class="btn btn-default" type="button">출력</button>
+</div>
 
-<!-- 검색 폼 -->
-	<h3>검색 조건</h3>
+</div>
 	
+	<font color="black">
 
-		<table class="table">
+	
+	<!-- 검색 폼 -->
+	<div class="x_panel">
+		<div class="x_title">
 
-			<tr>
-				<td width="250"><label>⊙ 년도 : </label><input type="number"></td>
-				<td><button class="btn" id="BUSI_YY" name="BUSI_YY" >조회</button></td>
-			</tr>
 			
-			<tr>
-				<td width="10"><label>⊙ 연면적(평) :</label>					
-						<td><input type="number" name="UP_SU" id="UP_SU" class="form-control"></td>
 
-				</td>
-		
+			
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
 
-
-
-				<td><label>⊙지상층 : </label></td>
-				<td>
-						<td><input type="number" name="YAREA_P" id="YAREA_P" class="form-control"></td>
-
-					</div>
-				</td>
-		</table>
-	</form>
+			<!-- 검색 폼 -->
+			<h3>★ 검색 조건</h3>PJT코드가 없는 프로젝트는 승인X
+				<div align="right" style="right: 100% ">
+				
+				
+				
+				
+				</div>
+				<table class="table">
+					<tr>
+						<td width="7%"><label>⊙ 년도 : </label></td>
+						<td width="15%">
+							<div class="col-md-10 col-sm-10 col-xs-10 ">
+								<input type="number" name="BUSI_YY" id="BUSI_YY" class="form-control" value="2019">
+							</div>
+						</td>
+						<td width="7%"><label>⊙ 연면적:</label></td>
+						<td>
+							<div class="col-md-14 col-sm-14 col-xs-14 ">
+								<input type="text" name="YAREA_P" id="YAREA_P" class="form-control" value="0">
+								<td>~</td>
+								<td><input type="text" name="YAREA_P2" id="YAREA_P2" class="form-control" value="9999999"></td>
+							</div>
+						</td>
+						<td width="10%"><label>⊙ 지상층 :</label></td>
+						<td>
+						<div class="col-md-14 col-sm-14 col-xs-14 ">
+								<input type="text" name="UP_SU" id="UP_SU" class="form-control" value="0">
+								<td>~</td>
+								<td><input type="text" name="UP_SU2" id="UP_SU2" class="form-control" value="999"></td>
+							</div>
+						</td>
+					</tr>
+	
 	<!-- 검색폼 끝 -->
 
 
@@ -86,26 +122,7 @@ $(document).ready(function(){
 
 
 
-<div class="x_panel">
-                  <div class="x_title">
-                    <h2>사업수행결정 승인 현황<small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
+
                   
                   <div class="x_content">
                <div class="table-responsive">
@@ -113,15 +130,16 @@ $(document).ready(function(){
                         <thead>
                           <tr class="headings">
 
-                            <th class="column-title">코드명</th>
+                            <th class="column-title">PJT번호</th>
 							<th class="column-title">프로젝트명</th>
 							<th class="column-title">발주자</th>
 							<th class="column-title">대지면적(평)</th>
 							<th class="column-title">연면적(평)</th>
 							<th class="column-title">지상층</th>
 							<th class="column-title">지하층</th>
-                              <!-- <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i> --></a>
-                            </th>
+
+                              
+                            
                           </tr>
                         </thead>
 
@@ -134,8 +152,12 @@ $(document).ready(function(){
                     </div>
                   </div>
                 </div>
-                	</th:block>
+                </font>
+	</th:block>
 	<th:block layout:fragment="customJquery">
 		<th:block th:include="layout/customJquery"></th:block>
     </th:block>
 </html>
+
+
+

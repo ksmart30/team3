@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ksmart30.team01.business.mapper.BusinessStateHyunhwangMapper">
+	<!--  01.03.05.사업성분석검토현황-진행/종료 현황
+	   @file   BusinessStateHyunhwangMapper.xml
+	   @brief   사업성검토현황 진행/종료현황 XML
+	   @author  ksmart30 박찬업
+	-->
+	
+	<!-- 01.03.05.사업성분석검토현황-진행/종료 현황
+		  @brief    설계본부1 사업성검토 리스트 SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.TotalCode
+	-->
+	<select id="getBusinessState1BonbuHyunhwangInfo"
+			resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+				SELECT 
+					'설계1본부'     SYS_COD
+					,A.LEVEL2_CD
+					,A.LEVEL2_NM
+					,ISNULL(B.BIZ1,0) BIZ1
+					,ISNULL(B.BIZ2,0) BIZ2
+					,ISNULL(B.TOTL,0) TOTL
+				FROM 
+					T_SC9100 A LEFT OUTER JOIN (
+					SELECT 
+						A.BIZ_GBN
+						,SUM(CASE A.ACT_STAT WHEN '1' THEN 1 ELSE 0   END) BIZ1
+						,SUM(CASE A.ACT_STAT WHEN '2' THEN 1 ELSE 0   END) BIZ2
+						,COUNT(A.ACT_STAT)                                 TOTL
+					FROM 
+						T_PS1000 A
+						INNER JOIN 
+							SF_SC1010 ('03','','7500','') B
+						ON 
+							A.DEPT_CD = B.DEPT_CD
+					<![CDATA[
+					WHERE 
+						A.ACT_STAT IN ('1','2') AND A.CRT_DATE <= 'now()'
+					]]>
+					GROUP BY 
+						A.BIZ_GBN  ) B
+					ON 
+						A.LEVEL2_CD = B.BIZ_GBN
+				WHERE 
+					A.BUSI_GB ='J'
+				AND   
+					A.LEVEL1_CD ='270'	
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-진행/종료 현황
+		  @brief    설계본부2 사업성검토 리스트 SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.TotalCode
+	-->
+	<select id="getBusinessState2BonbuHyunhwangInfo"
+			resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+				SELECT 
+					'설계2본부'     SYS_COD
+					,A.LEVEL2_CD
+					,A.LEVEL2_NM
+					,ISNULL(B.BIZ1,0) BIZ1
+					,ISNULL(B.BIZ2,0) BIZ2
+					,ISNULL(B.TOTL,0) TOTL
+				FROM 
+					T_SC9100 A LEFT OUTER JOIN (
+					SELECT 
+						A.BIZ_GBN
+						,SUM(CASE A.ACT_STAT WHEN '1' THEN 1 ELSE 0   END) BIZ1
+						,SUM(CASE A.ACT_STAT WHEN '2' THEN 1 ELSE 0   END) BIZ2
+						,COUNT(A.ACT_STAT)                                 TOTL
+					FROM 
+						T_PS1000 A
+						INNER JOIN 
+							SF_SC1010 ('03','','7600','') B
+						ON 
+							A.DEPT_CD = B.DEPT_CD
+					<![CDATA[
+					WHERE 
+						A.ACT_STAT IN ('1','2') AND A.CRT_DATE <= 'now()'
+					]]>
+					GROUP BY 
+						A.BIZ_GBN  ) B
+					ON 
+						A.LEVEL2_CD = B.BIZ_GBN
+				WHERE 
+					A.BUSI_GB ='J'
+				AND   
+					A.LEVEL1_CD ='270'	
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-진행/종료 현황
+		  @brief    설계본부3 사업성검토 리스트 SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.TotalCode
+	-->
+	<select id="getBusinessState3BonbuHyunhwangInfo"
+			resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+				SELECT 
+					'설계3본부'     SYS_COD
+					,A.LEVEL2_CD
+					,A.LEVEL2_NM
+					,ISNULL(B.BIZ1,0) BIZ1
+					,ISNULL(B.BIZ2,0) BIZ2
+					,ISNULL(B.TOTL,0) TOTL
+				FROM 
+					T_SC9100 A LEFT OUTER JOIN (
+					SELECT 
+						A.BIZ_GBN
+						,SUM(CASE A.ACT_STAT WHEN '1' THEN 1 ELSE 0   END) BIZ1
+						,SUM(CASE A.ACT_STAT WHEN '2' THEN 1 ELSE 0   END) BIZ2
+						,COUNT(A.ACT_STAT)                                 TOTL
+					FROM 
+						T_PS1000 A
+						INNER JOIN 
+							SF_SC1010 ('03','','7700','') B
+						ON 
+							A.DEPT_CD = B.DEPT_CD
+					<![CDATA[
+					WHERE 
+						A.ACT_STAT IN ('1','2') AND A.CRT_DATE <= 'now()'
+					]]>
+					GROUP BY 
+						A.BIZ_GBN  ) B
+					ON 
+						A.LEVEL2_CD = B.BIZ_GBN
+				WHERE 
+					A.BUSI_GB ='J'
+				AND   
+					A.LEVEL1_CD ='270'	
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-진행/종료 현황
+		  @brief    설계본부4 사업성검토 리스트 SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.TotalCode
+	-->
+	<select id="getBusinessState4BonbuHyunhwangInfo"
+			resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+				SELECT 
+					'설계4본부'     SYS_COD
+					,A.LEVEL2_CD
+					,A.LEVEL2_NM
+					,ISNULL(B.BIZ1,0) BIZ1
+					,ISNULL(B.BIZ2,0) BIZ2
+					,ISNULL(B.TOTL,0) TOTL
+				FROM 
+					T_SC9100 A LEFT OUTER JOIN (
+					SELECT 
+						A.BIZ_GBN
+						,SUM(CASE A.ACT_STAT WHEN '1' THEN 1 ELSE 0   END) BIZ1
+						,SUM(CASE A.ACT_STAT WHEN '2' THEN 1 ELSE 0   END) BIZ2
+						,COUNT(A.ACT_STAT)                                 TOTL
+					FROM 
+						T_PS1000 A
+						INNER JOIN 
+							SF_SC1010 ('03','','7800','') B
+						ON 
+							A.DEPT_CD = B.DEPT_CD
+					<![CDATA[
+					WHERE 
+						A.ACT_STAT IN ('1','2') AND A.CRT_DATE <= 'now()'
+					]]>
+					GROUP BY 
+						A.BIZ_GBN  ) B
+					ON 
+						A.LEVEL2_CD = B.BIZ_GBN
+				WHERE 
+					A.BUSI_GB ='J'
+				AND   
+					A.LEVEL1_CD ='270'	
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-진행/종료 현황
+		  @brief    설계본부5 사업성검토 리스트 SELECT쿼리문
+		  @return  ksmart30.team00.baseinfo.domain.TotalCode
+	-->
+	<select id="getBusinessState5BonbuHyunhwangInfo"
+			resultType="ksmart30.team00.baseinfo.domain.TotalCode">
+				SELECT 
+					'설계5본부'     SYS_COD
+					,A.LEVEL2_CD
+					,A.LEVEL2_NM
+					,ISNULL(B.BIZ1,0) BIZ1
+					,ISNULL(B.BIZ2,0) BIZ2
+					,ISNULL(B.TOTL,0) TOTL
+				FROM 
+					T_SC9100 A LEFT OUTER JOIN (
+					SELECT 
+						A.BIZ_GBN
+						,SUM(CASE A.ACT_STAT WHEN '1' THEN 1 ELSE 0   END) BIZ1
+						,SUM(CASE A.ACT_STAT WHEN '2' THEN 1 ELSE 0   END) BIZ2
+						,COUNT(A.ACT_STAT)                                 TOTL
+					FROM 
+						T_PS1000 A
+						INNER JOIN 
+							SF_SC1010 ('03','','7900','') B
+						ON 
+							A.DEPT_CD = B.DEPT_CD
+					<![CDATA[
+					WHERE 
+						A.ACT_STAT IN ('1','2') AND A.CRT_DATE <= 'now()'
+					]]>
+					GROUP BY 
+						A.BIZ_GBN  ) B
+					ON 
+						A.LEVEL2_CD = B.BIZ_GBN
+				WHERE 
+					A.BUSI_GB ='J'
+				AND   
+					A.LEVEL1_CD ='270'	
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-진행/종료 현황
+		  @brief    설계본부1 사업성검토 진행 리스트 SELECT쿼리문
+		  @return  ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain
+	-->
+	<select id="getBusinessStateJinhaengHyunhwangInfo"
+			resultType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain">
+				SELECT 
+					DEPT_CD       
+				   ,DEPT_NM       
+				   ,SYS_COD       
+				   ,SYS_COD2      
+				   ,PRE_PJT_CD    
+				   ,PJT_CD        
+				   ,SVC          
+				   ,CUST_NM       
+				   ,BIZ_GBN_NM    
+				   ,END_EXP_DATE  
+				   ,EMP_NM        
+				   ,PM_EMP_NM     
+				   ,INGUN_AMT     
+				   ,COST_AMT      
+				   ,SCV_AMT       
+				   ,TOT_AMT       
+				   ,ACT_STAT      
+				   ,ACT_STAT_NM   
+				   ,END_DATE      
+				   ,END_GBN       
+				   ,END_GBN_NM    
+				   ,COLOR
+				FROM 
+					SF_BIZ_STAT_TAB1('7500','01','1','now()')
+				ORDER BY 
+					SYS_COD,
+					SYS_COD2,
+					PJT_CD
+	</select>
+
+	<!-- 01.03.05.사업성분석검토현황-진행/종료 현황
+		  @brief    수주구분별 리스트 SELECT쿼리문
+		  @return  ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain
+	-->
+	<select id="getSujuGubunInfo"
+			parameterType="ksmart30.team00.baseinfo.domain.TotalCode"
+			resultType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain">
+				SELECT 
+					DEPT_CD       
+				   ,DEPT_NM       
+				   ,SYS_COD       
+				   ,SYS_COD2      
+				   ,PRE_PJT_CD    
+				   ,PJT_CD        
+				   ,SVC          
+				   ,CUST_NM       
+				   ,BIZ_GBN_NM    
+				   ,END_EXP_DATE  
+				   ,EMP_NM        
+				   ,PM_EMP_NM     
+				   ,INGUN_AMT     
+				   ,COST_AMT      
+				   ,SCV_AMT       
+				   ,TOT_AMT       
+				   ,ACT_STAT      
+				   ,ACT_STAT_NM   
+				   ,END_DATE      
+				   ,END_GBN       
+				   ,END_GBN_NM    
+				   ,COLOR
+				FROM 
+					SF_BIZ_STAT_TAB1(#{SYS_COD},'','','now()')
+				WHERE 
+					BIZ_GBN_NM = #{LEVEL2_NM}	
+				ORDER BY 
+					SYS_COD,
+					SYS_COD2,
+					PJT_CD
+	</select>
+
+	<!-- 01.03.05.사업성분석검토현황-진행/종료 현황
+		  @brief    진행상태별 리스트 SELECT쿼리문
+		  @return  ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain
+	-->
+	<select id="getJinhaengSangtaeList" parameterType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain" resultType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain">
+		SELECT 
+			DEPT_CD       
+		   ,DEPT_NM       
+		   ,SYS_COD       
+		   ,SYS_COD2      
+		   ,PRE_PJT_CD    
+		   ,PJT_CD        
+		   ,SVC          
+		   ,CUST_NM       
+		   ,BIZ_GBN_NM    
+		   ,END_EXP_DATE  
+		   ,EMP_NM        
+		   ,PM_EMP_NM     
+		   ,INGUN_AMT     
+		   ,COST_AMT      
+		   ,SCV_AMT       
+		   ,TOT_AMT       
+		   ,ACT_STAT      
+		   ,ACT_STAT_NM   
+		   ,END_DATE      
+		   ,END_GBN       
+		   ,END_GBN_NM    
+		   ,COLOR
+		FROM 
+			SF_BIZ_STAT_TAB1(#{DEPT_CD},'',#{ACT_STAT},'now()')					
+		ORDER BY 
+			SYS_COD,
+			SYS_COD2,
+			PJT_CD
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-현재 진행 사업성검토
+		  @brief    수주구분별 리스트 SELECT쿼리문
+		  @return  ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain
+	-->
+	<select id="getHyunjaeJinhaengInfo" resultType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain">
+		SELECT 
+			BIZ_GBN,
+			SUM(BIZ_CNT) BIZ_CNT,
+			(SELECT LEVEL2_NM FROM T_SC9100 WHERE BUSI_GB = 'J' AND LEVEL1_CD = '270' AND LEVEL2_CD = X.BIZ_GBN) BIZ_NM
+		FROM 
+			(SELECT 
+				A.BIZ_GBN,
+				COUNT(*)  BIZ_CNT
+			FROM 
+				T_PS1000 A
+			WHERE 
+			<![CDATA[	
+				A.CRT_DATE >= ''
+			AND 
+				A.CRT_DATE <= 'now()'
+			]]>
+			AND 
+				A.ACT_STAT  IN ('1', '2')
+			GROUP BY 
+				A.BIZ_GBN) X
+		GROUP 
+			BY BIZ_GBN
+		ORDER BY 
+			SUM(BIZ_CNT) 
+		DESC
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-진행상태별 사업성 검토 조회
+		  @brief    수주구분별 리스트 SELECT쿼리문
+		  @return  ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain
+	-->
+	<select id="getJinhaengSangtaeInfo" resultType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain">
+		SELECT 
+			#{DEPT_CD}      SYS_COD,
+			(SELECT DEPT_NM FROM T_SC1010 WHERE DEPT_CD=#{DEPT_CD})      DEPT_NM,
+			A.ACT_STAT,
+			MAX(A.BIZ_NAME)     BIZ_NM,
+			SUM(A.CNT)          BIZ_CNT
+		FROM
+			(SELECT 
+				#{DEPT_CD}          SYS_COD,
+				A.ACT_STAT,
+			CASE 
+				A.ACT_STAT
+			WHEN 
+				'1' 
+			THEN 
+				'미승인'
+			WHEN 
+				'2' 
+			THEN 
+				'진행'
+			ELSE 
+				''
+			END
+			    BIZ_NAME,
+				COUNT(A.ACT_STAT)   CNT
+			FROM 
+				T_PS1000  A,
+				SF_SC1010 ('03','',#{DEPT_CD},'') B
+			WHERE 
+				(A.ACT_STAT IN('1','2') 
+			AND 
+			<![CDATA[
+				A.CRT_DATE <='now()')
+			]]>	
+			AND 
+				(A.DEPT_CD    =  B.DEPT_CD)
+			GROUP BY 
+				A.ACT_STAT) A
+  		GROUP BY A.ACT_STAT					
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-종료현황-본부별 사업성검토 리스트 조회
+		  @brief    본부별 사업성검토 리스트 조회 SELECT쿼리문
+		  @return  ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain
+	-->
+	<select id="getbonbuBusinessEndList" resultType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain">
+		SELECT 
+			(SELECT DEPT_NM FROM T_SC1010 WHERE DEPT_CD=#{DEPT_CD})       DEPT_NM,
+        	#{DEPT_CD}	DEPT_CD,
+        	A.LEVEL2_CD BIZ_GBN,
+        	A.LEVEL2_NM BIZ_NM,
+        	ISNULL(B.BIZ1,0)+ISNULL(C.BIZ1,0)      BIZ1,
+	        ISNULL(B.BIZ2,0)+ISNULL(C.BIZ2,0)      BIZ2,
+	        ISNULL(B.TOTL,0)+ISNULL(C.TOTL,0)      TOTL,
+	        ISNULL(B.BIZ1,0)+ISNULL(C.BIZ1,0)      BIZ1_T,
+	        ISNULL(B.BIZ2,0)+ISNULL(C.BIZ2,0)      BIZ2_T,
+	        ISNULL(B.TOTL,0)+ISNULL(C.TOTL,0)      TOTL_T
+		FROM 
+			T_SC9100 A LEFT OUTER JOIN 
+			(SELECT 
+				A.BIZ_GBN,
+	        	SUM(CASE A.ACT_STAT WHEN '5' THEN 1 ELSE 0   END)    BIZ1,
+	        	SUM(CASE A.ACT_STAT WHEN '4' THEN 1 ELSE 0   END)    BIZ2,
+	            COUNT(A.ACT_STAT) TOTL
+	  	 	FROM 
+	  	 		T_PS1000  A 
+	      	INNER JOIN 
+	      		SF_SC1010 ('03','',#{DEPT_CD},'') B 
+	      	ON 
+	      		A.DEPT_CD  =  B.DEPT_CD
+	      	INNER JOIN 
+	      		T_PS3000 C 
+	      	ON 
+	      		A.PJT_CD = C.PJT_CD 
+	      	AND 
+	      		C.END_GBN != '22'
+	        WHERE 
+	        	A.ACT_STAT ='4' 
+	       	AND  
+	       		SUBSTRING(A.END_DATE,1,4) = #{END_DATE}         
+	   		GROUP  BY 
+	   			A.BIZ_GBN ) B
+		ON 
+			A.LEVEL2_CD = B.BIZ_GBN
+	    LEFT OUTER JOIN 
+	    	(SELECT 
+	    		A.BIZ_GBN,
+	        SUM(CASE A.ACT_STAT WHEN '5' THEN 1 ELSE 0   END)    BIZ1,
+	        SUM(CASE A.ACT_STAT WHEN '4' THEN 1 ELSE 0   END)    BIZ2,
+	        COUNT(A.ACT_STAT) TOTL
+	   		FROM 
+	   			T_PS1000  A 
+	      	INNER JOIN 
+	      		SF_SC1010 ('03','',#{DEPT_CD},'') B 
+	      	ON 
+	      		A.DEPT_CD  =  B.DEPT_CD
+	      	INNER JOIN 
+	      		T_PS3000 C 
+	      	ON 
+	      		A.PJT_CD = C.PJT_CD 
+	      	AND 
+	      		C.END_GBN != '22'
+	      	INNER JOIN 
+	      		T_P11000 D 
+	      	ON 
+	      		A.PJT_CD = D.PJT_CD
+	        WHERE 
+	        	A.ACT_STAT ='5' 
+	        AND  
+	        	SUBSTRING(D.CONTRACT_DATE,1,4) = #{END_DATE}        
+	   		GROUP  BY A.BIZ_GBN ) C
+		ON 
+			A.LEVEL2_CD = C.BIZ_GBN
+		WHERE 
+			A.BUSI_GB ='J' 
+		AND 
+			A.LEVEL1_CD = '270'
+				
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-종료현황-진행상태별 수주구분별 리스트 조회
+		  @brief    본부별 사업성검토 리스트 조회 SELECT쿼리문
+		  @return  ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain
+	-->
+	<select id="getJinhaengSangtaeEndList" resultType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain">
+		SELECT 
+			 DEPT_CD       
+			,DEPT_NM       
+			,SYS_COD       
+			,SYS_COD2      
+			,PRE_PJT_CD    
+			,PJT_CD        
+			,SVC           
+			,CUST_NM       
+			,BIZ_GBN_NM    
+			,END_EXP_DATE  
+			,EMP_NM        
+			,PM_EMP_NM     
+			,INGUN_AMT     
+			,COST_AMT      
+			,SCV_AMT       
+			,TOT_AMT       
+			,ACT_STAT      
+			,ACT_STAT_NM   
+			,END_DATE      
+			,END_GBN       
+			,END_GBN_NM    
+			,COLOR         
+  		FROM 
+  			SF_BIZ_STAT_TAB2(#{DEPT_CD},'',#{ACT_STAT},#{END_DATE},'')
+ 		ORDER BY 
+ 			SYS_COD,
+          	SYS_COD2,
+         	PJT_CD
+	</select>
+	
+	<!-- 01.03.05.사업성분석검토현황-종료현황-년도별 개요
+		  @brief    년도별 개요 리스트 조회 SELECT쿼리문
+		  @return  ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain
+	-->
+	<!-- <select id="getYearlyBusinessList" resultType="ksmart30.team01.business.domain.BusinessStateJinhaengHyunhwangDomain">
+		SELECT BIZ_GBN,
+			SUM(BIZ_CNT) BIZ_CNT,
+			(SELECT 
+				LEVEL2_NM 
+			FROM 
+				T_SC9100 
+			WHERE 
+				BUSI_GB = 'J' 
+			AND 
+				LEVEL1_CD = '270' 
+			AND 
+				LEVEL2_CD = X.BIZ_GBN) BIZ_NM
+		FROM 
+			(SELECT 
+				A.BIZ_GBN,
+				COUNT(*)  BIZ_CNT
+			FROM 
+				T_PS1000 A
+			<![CDATA[
+			WHERE 
+				A.CRT_DATE >= #{END_DATE}
+			AND 
+				A.CRT_DATE <= #{}
+			]]>
+			AND 
+				A.ACT_STAT  IN ('4', '5')
+			GROUP BY 
+				A.BIZ_GBN) X
+		GROUP BY 
+			BIZ_GBN
+		ORDER BY 
+			SUM(BIZ_CNT) DESC				
+	</select> -->
+</mapper>

@@ -8,13 +8,170 @@
 	<th:block th:include="layout/customHead"></th:block>
 </th:block>
 <th:block layout:fragment="customBody">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script>
+
+// 리스트화면에  사업자등록코드로 조회해서 해당 리스트가 화면에 보여지는 ajax
+function somicall2(){	
+	 
+	console.log("하이");
+	let selectedPJT = $('#selectedPJT option:selected').val();
+	let pjtValue = $('#pjtValue').val();
+	let YY = $('#YY').val();
+
+	$.ajax({
+        url:'/project/projectSonikSearch',
+        type:'POST',
+        data:{selectedPJT:selectedPJT,pjtValue:pjtValue,YY:YY},
+        success:(list)=>{
+        	console.log(list);
+        	let tr='';
+        	$(list).each((index,item)=>{
+        		$('#pjtList').empty();
+        		tr += '<tr>';
+				tr += '<td>'+item.PJT_CD+'</td>';
+				tr += '<td>'+item.PJT_NM+'</td>';
+				tr += '</tr>';
+        	});
+        	$('#pjtList').append(tr);
+        }
+    });
+}
+
+
+
+// 리스트화면에 보여주는 ajax 검색버튼 클릭하지 않아도 리스트화면이 보이도록 
+function somicall(){
+	console.log("sonikList ajax실행");
+	 let PJT_CD = $('#PJT_CD').val();
+	 let DEPT_CD_1 = $('#DEPT_CD_1').val();
+	 let CRT_DATE = $('#CRT_DATE').val();
+	 $.ajax({
+		 url:'/project/projectSonikList', //호출할 메소드 호출 
+           type:'POST',//송신 POST 방식
+           data:{PJT_CD:PJT_CD,DEPT_CD:DEPT_CD_1,CRT_DATE:CRT_DATE},
+           success:function(data){
+           	console.log(data);
+           	$('#outputList').empty(); //삭제
+           	$(data).each((index,item)=>{//반복문
+           		let no = index + 1;
+           		$('#outputList').append(
+           			'<tr><td rowspan="3">'+no+'</td> <td rowspan="3">'
+           			+item.DEPT_NM+'</td> <td rowspan="3">'
+           			+"["+item.PJT_CD +"] "+ item.PJT_NM+'</td><td rowspan="3" >' //프로젝트코드, 프로젝트 명
+           			+item.TOT_CONTRACT_AMT.toLocaleString()+'</td><td>'//총계약금액 
+           			+'<a href="/project/projectSonikContrastSangseView?PJT_CD='+item.PJT_CD+'">'+'<button>상세</button></a></td><td>'
+           			+item.Y_GBN+'</td><td>'//프로젝트 구분    			          			
+           			+item.HAP.toLocaleString()+'</td><td>'//합계
+           			+item.COST_AMT1.toLocaleString()+'</td><td>' //인건비
+           			+'<a href="/project/projectSonikContrastJejo1View?PJT_CD='+item.PJT_CD+'">'+item.COST_AMT2.toLocaleString()+'</a></td><td>' //제조경비1
+           			+'<a href="/project/projectSonikContrastJejo2View?PJT_CD='+item.PJT_CD+'">'+item.COST_AMT3.toLocaleString()+'</td>' //제조경비2
+           			+""+'</td><td>'
+           			+item.BEBU.toLocaleString()+'</td><td>' //배부비용
+           			+item.YUNGUPEIK.toLocaleString()+'</td><td>'//영업이익
+           			+item.SG_HAP.toLocaleString()+'</td><td>'//사업성검토
+            		+item.Y_JYEIK.toLocaleString()+'</td><td>'
+           			+item.Y_RATE+'</td></tr>'        			
+           			
+           			+'<tr style="background-color: #f9dfff"><td>'
+           			+""+'</td><td>'
+           			+item.S_GBN+'</td><td>'//프로젝트 구분    			          			
+           			+item.S_HAP.toLocaleString()+'</td><td>'
+           			+item.S_COST_AMT1.toLocaleString()+'</td><td>' //인건비
+           			+item.S_COST_AMT2.toLocaleString()+'</td><td>' //제조경비1
+           			+item.S_COST_AMT3.toLocaleString()+'</td><td>' //제조경비2
+           			+item.S_BEBU.toLocaleString()+'</td><td>'  //배부비용
+           			+item.S_YUNGUPEIK.toLocaleString()+'</td><td>'//영업이익
+           			+item.SG_HAP.toLocaleString()+'</td><td>'//사업성검토
+          			+item.S_JYEIK.toLocaleString()+'</td><td>'
+           			+item.S_RATE+'</td></tr> ' 
+           			
+           			+'<tr style="background-color: #a2daaa"><td>'
+           			+""+'</td><td>' 
+           			+"차이"+'</td><td>'//프로젝트 구분    			          			
+           			+(item.HAP-item.S_HAP).toLocaleString()+'</td><td>' //합계
+           			+(item.COST_AMT1-item.S_COST_AMT1).toLocaleString()+'</td><td>' //인건비
+           			+(item.COST_AMT2-item.S_COST_AMT2).toLocaleString()+'</td><td>' //제조경비1
+           			+(item.COST_AMT3-item.S_COST_AMT3).toLocaleString()+'</td><td>' //제조경비2
+           			+(item.BEBU-item.S_BEBU).toLocaleString()+'</td><td>' //배부비용
+           			+(item.YUNGUPEIK-item.S_YUNGUPEIK).toLocaleString()+'</td><td>' //영업이익      
+           			+(item.SG_HAP-item.SG_HAP).toLocaleString()+'</td><td>' //사업성검토   
+           			+(item.Y_JYEIK-item.S_JYEIK).toLocaleString()+'</td><td>'
+           			+'</td></tr>'
+           		);            			            				           	
+           	});
+           }			 
+	 });	 
+}
+
+$(document).ready(function() {
+	console.log("레디 실행");
+	somicall();
+	somicall2();
+	
+	// 날짜 적용 (초기화)
+	let today = new Date();
+	let dd = today.getDate();// 날
+	let mm = today.getMonth()+1; //0 +1 월
+	let yyyy = today.getFullYear();//연
+	if(dd.length>2) {//2자리수만들기 방법 1
+	    dd='0'+dd
+	} 
+	if(mm<10) {//2자리수만들기 방법 2
+	    mm='0'+mm
+	} 
+	//today = yyyy+'-' + mm+'-'+dd; // 2019-04-29
+	console.log('1'+today);
+	today = yyyy+'-'+ mm; 
+	console.log('2'+today);
+	//startYear = yyyy+'-01-01';//올해 첫월 첫일
+	//$('#STRAT_DATE').val(startYear);
+	$('#CRT_DATE').val(today); 
+	
+	 $('#sonikList').on('click',function(){
+		 console.log("클릭 실행");
+		 somicall(); 		 
+	 });
+	 
+		$('#btnPjtSearch').click(()=>{
+			console.log("somicall2호출");
+			somicall2();
+			
+		});
+		$('#pjtList').delegate('tr', 'dblclick', function(){
+			let tr = $(this);
+			let td = tr.children();
+			$('#PJT_CD').val(td.eq(0).text());
+			$('#PJT_NM').val(td.eq(1).text());
+			$('#custModal').click();
+			$('#sonikList').trigger('click');
+		});
+
+});
+
+</script>
+
+		
 	<!-- page content -->
+<div class="col-md-9 col-xs-12" style="color: black;">
+		<div class="page-title">
+			<div class="title_left">
+				<h2>
+					<b>프로젝트예산, 실적 대비표</b>
+				</h2>
+				<h5>
+					<font color="gray"> <b>2계약프로젝트관리&nbsp;>&nbsp;&nbsp;2.3프로젝트손익관리&nbsp;>&nbsp;&nbsp;2.3.4예산/실적대비표</b>
+					</font>
+				</h5>
+			</div>
+		</div>
+	</div>
 <font color="black">
 	<!-- 검색 폼 -->
-	<h3>검색 조건</h3>
-	<form id="demo-form" action="/project/cooperation/dragon_hyunhwang" method="post">
+	
 		<div class="x_content" style="text-align: right">
 			<div class="btn-group">
+				<button class="btn btn-default" type="reset" id="sonikList">조회</button>
 				<button class="btn btn-default" type="reset">입력</button>
 				<button class="btn btn-default" type="button">수정</button>
 				<button class="btn btn-default" type="button">삭제</button>
@@ -31,13 +188,13 @@
 					<td width="150"><label>⊙ 부서 : </label></td>
 					<td>
 						<div class="col-md-5 col-sm-5 col-xs-5 ">
-							<select class="form-control">
+							<select class="form-control" id="DEPT_CD_1">
 								<option value="">전 사</option>
-								<option value="2">설계1본부</option>
-								<option value="2">설계2본부</option>
-								<option value="3">설계3본부</option>
-								<option value="4">설계4본부</option>
-								<option value="5">설계5본부</option>
+								<option value="7500">설계1본부</option>
+								<option value="7600">설계2본부</option>
+								<option value="7700">설계3본부</option>
+								<option value="7800">설계4본부</option>
+								<option value="7900">설계5본부</option>
 							</select>
 						</div>
 					</td>
@@ -70,44 +227,115 @@
 
 					<td>
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
-							<input type="date" name="date2" class="form-control">
+							<input type="month" name="date2" class="form-control" id="CRT_DATE">
 						</div>
 					</td>
 					<td><label>까지</label></td>
 				</tr>
 				<tr>
 					<td width="100"><label>⊙ 코드명 : </label></td>
-					<td>
+					<td colspan="1">
 						<div class="col-md-5 col-sm-5 col-xs-5 ">
-							<input type="text" name="test" class="form-control">
+							<input type="text" name="test" class="form-control" id="PJT_CD">
+							
 						</div>
-
-					</td>
-					<td>
-						<div class="x_content" style="text-align: right">
-							<button class="btn" style="color: black">검색</button>
-
+						<div><button class="btn" type="button" data-toggle="modal" data-target=".bs-example-modal-lg3"><i class="fa fa-search"></i></button> 
+							
+											
+						
+							<div class="col-md-5 col-sm-5 col-xs-5 "><input type="text" name="PJT_NM"  id="PJT_NM" class="form-control"></div>
+						
+						
+							
+								
+<!------------------------------------------ 프로젝트 코드 조회 modal--------------------------------------------------- -->
+	<div class="modal fade bs-example-modal-lg3" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<form class="form-horizontal ">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" id="custModal"><span aria-hidden="true">×</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel"><b>거래처코드조회</b></h4><br>
+						<div class="table-responsive">
+							<table class="table table-bordered">
+								<tbody>
+								<tr>
+									<td><label class="control-label">검색년도</label></td>
+										<td><input type="number" id="YY"></td>
+								</tr>
+									<tr>
+									
+										<td><label class="control-label">검색항목</label></td>
+										<td>
+											<select class="form-control" style="width: 40%" id="selectedPJT">
+												<option value="PJT_CD">프로젝트 코드</option>
+												<option selected="selected" value="PJT_NM">프로젝트 명</option>
+												<option value="DEPT_CD">부서 코드</option>
+												<option value="DEPT_NM">부서 명</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><label class="control-label">검색조건</label></td>
+										<td>
+											<input type="text" id="pjtValue">
+											<button type="button" id="btnPjtSearch" class="btn"><i class="fa fa-search"></i></button>																	
+										</td>
+									</tr>
+								</tbody>																	
+							</table>
 						</div>
-
-					</td>
-					<td>
-						<div class="col-md-15 col-sm-15 col-xs-15 ">
-							<input type="text" name="test" class="form-control">
+					</div>
+					<div class="modal-body">
+						<div class="table-responsive" style="overflow: auto; height: 400px;">
+							<table class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>프로젝트 코드</th>
+										<th>프로젝트 명</th>
+									</tr>
+								</thead>
+								<tbody id="pjtList">
+									<tr>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td></td>
+									</tr>
+								</tbody>																	
+							</table>
 						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!------------------------------------------ 프로젝트 코드 조회 modal end--------------------------------------------------- --> 
+		
+</td>
+					<td colspan="2">
 					</td>
-					<td>
-
-						<p>계약일자가 2012년 이전 자료는 조회하실수 없습니다.</p>
-
+					<td colspan="3">
+						<div><span>⊙ 계약일자가 2012년 이전 자료는 조회하실수 없습니다.</span></div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-	</form>
-	<!-- 검색폼 끝 -->
+<!-- 검색폼 끝 -->
 
-
-	<!-- 출력 리스트 검색 시작 -->
+<!-- 출력 리스트 검색 시작 -->
 
 	<div class="x_panel">
 		<div class="x_title">
@@ -131,165 +359,33 @@
 
 		<div class="x_content">
 
-
-
 			<div class="table-responsive">
 				<table class="table table-striped jambo_table bulk_action">
 					<thead>
 						<tr class="headings">
 							<th>
-								<!-- <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; visibility: hidden;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> -->
+								no<!-- <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; visibility: hidden;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> -->
 							</th>
 							<th class="column-title">부서명</th>
 							<th class="column-title">프로젝트명</th>
 							<th class="column-title">총계약액</th>
+							<th class="column-title">상세보기</th>
 							<th class="column-title">구분</th>
 							<th class="column-title">합계</th>
 							<th class="column-title">인건비</th>
 							<th class="column-title">제조경비1</th>
 							<th class="column-title">제조경비2</th>
 							<th class="column-title">배부비용</th>
+							<th class="column-title">영업이익</th>
 							<th class="column-title">사업성검토</th>
 							<th class="column-title">조정영업이익</th>
 							<th class="column-title">%</th>
-							<!-- <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i> -->
-
-
 						</tr>
 					</thead>
-
-					<tbody>
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-						</tr>
-
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-						</tr>
-
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-						</tr>
-
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-						</tr>
-
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-						</tr>
-
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-						</tr>
-
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-						</tr>
-
-						<tr class="even pointer">
-							<td class="a-center "></td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-							<td class=" ">1</td>
-							<td class=" ">설계1본부 1소</td>
-							<td class=" ">19001F</td>
-							<td class=" ">효창동 근린생활시설 신축공사</td>
-						</tr>
-
-					</tbody>
+					
+					<tbody id="outputList"></tbody>
 				</table>
-				<!-- 출력 리스트 검색 끝 -->
+<!-- 출력 리스트 검색 끝 -->
 			</div>
 		</div>
 	</div>

@@ -33,6 +33,6 @@ ControlItemCodeService controlItemCodeService;
 		List<ControlItemCodeDomain> controlItemCode = controlItemCodeService.ControlItemCodeList();
 		System.out.println("controlItemCode : " + controlItemCode);
 		model.addAttribute("controlItemCode", controlItemCode);
-		return "baseinfo/controlItemCodeView";
+		return "baseInfo/controlItemCodeView";
 	}
 }

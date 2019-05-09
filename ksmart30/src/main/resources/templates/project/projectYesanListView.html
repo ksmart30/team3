@@ -2,23 +2,160 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
 	<th:block layout:fragment="customHead">
 		<meta charset="UTF-8">
+
+		
 	<title>프로젝트예산 List</title>
-	<th:block th:include="layout/customHead"></th:block>	
+ 	<th:block th:include="layout/customHead"></th:block>	 
+	<!-- jquery 추가 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Datatables -->
+    <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">			
+		<script>
+				
+			function startYearCall() {
+				//날짜 초기화(적용하기)
+				let today = new Date();
+				let dd = today.getDate();
+				let mm = today.getMonth()+1; //January is 0!
+				let yyyy = today.getFullYear();
+				if(dd<10) {//2자리수만들기
+				    dd='0'+dd
+				} 
+				if(mm<10) {
+				    mm='0'+mm
+				} 
+				today = yyyy+'-' + mm+'-'+dd;
+				startYear = yyyy+'-01-01';//올해 첫월 첫일
+				$('#START_DATE').val(startYear);
+				$('#END_DATE').val(today);
+			}
+
+			function listCall(){
+ 				// 필드로 입력받은 값들을 변수에 저장
+ 				let START_DATE = $('#START_DATE').val();
+ 				let END_DATE = $('#END_DATE').val();
+				let G_AREA_P_LOW = $('#G_AREA_P_LOW').val();
+				let G_AREA_P_HIGH = $('#G_AREA_P_HIGH').val();
+				let B_UP_SU = $('#B_UP_SU').val();
+				let B_DOWN_SU = $('#B_DOWN_SU').val();
+				console.log(START_DATE);
+				console.log(END_DATE);
+				console.log(G_AREA_P_LOW);
+				console.log(G_AREA_P_HIGH);
+				console.log(B_UP_SU);
+				console.log(B_DOWN_SU);
+				
+				//데이터테이블생성(for문을 쓰지 않아도 자동으로 생성됨)
+				$.ajax({
+					url : '/project/projectYesanDataTableView',
+					type : 'GET',
+					data : {START_DATE:START_DATE, END_DATE:END_DATE, G_AREA_P_LOW:G_AREA_P_LOW, G_AREA_P_HIGH:G_AREA_P_HIGH, B_UP_SU:B_UP_SU, B_DOWN_SU:B_DOWN_SU},
+					success : (list)=>{
+						console.log(JSON.stringify(list));
+						$('#myTable').DataTable({
+							dom: 'Blfrtip',
+							buttons: [
+								{
+								  extend: "copy",
+								  className: "btn-sm"
+								},
+								{
+								  extend: "csv",
+								  className: "btn-sm"
+								},
+								{
+								  extend: "excel",
+								  className: "btn-sm"
+								},
+								{
+								  extend: "pdfHtml5",
+								  className: "btn-sm"
+								},
+								{
+								  extend: "print",
+								  className: "btn-sm"
+								},
+							  ],
+							searching:false,
+							lengthChange:false,
+							responsive: true,
+		    				destroy: true,
+		    				data:list,
+		    				columns: [
+		    			        {data: 'PJT_CD'},
+		    			        {data: 'PJT_NM'},
+		    			        {data: 'CUST_NM'},
+		    			        {data: 'G_AREA_P'},
+		    			        {data: 'G_YAREA_P'},
+		    			        {data: 'B_UP_SU'},
+		    			        {data: 'B_DOWN_SU'}       
+		    			    ]
+						});
+			            //리스트의 길이
+			            $('#listLength').empty();
+			            $('#listLength').append(list.length);
+					}
+				});				
+				
+				
+			}
+			
+				//문서가 준비되면
+				$(document).ready(()=>{
+
+					startYearCall();	//날짜를 초기화하는 함수를 호출
+					listCall();	//리스트를 조회하는 함수 호출
+					
+					$('#list_btn').click(()=>{ //list_btn조회버튼을 클릭하면
+						listCall();	//리스트를 조회하는 함수 호출
+					});
+					$('#aaaaaaa').click(()=>{
+						$('.buttons-csv').click();
+						
+					});
+
+				});
+				 	
+					
+			</script>		
 	</th:block>
 
 	<th:block layout:fragment="customBody">
-	<!-- 검색화면 start -->
-	<div class="x_panel" style="color: black;">
+	
+	<font color="black">	
 
-		<div class="x_title">
-			<h3>프로젝트예산 검색</h3>
-			<div class="clearfix"></div>
+	<!-- 목차 상단에 추가 -->
+	<div class="col-md-12 col-xs-12">
+		<div class="page-title">
+			<div class="title_left">
+			 <h2><b>계약프로젝트List</b></h2>
+			<h5><font color="gray"><b>2. 계약프로젝트 관리&nbsp;&gt; 2.2. 프로젝트예산 관리&nbsp;&gt; 2.2.5. 계약프로젝트 List&nbsp;&nbsp;</b></font></h5>				
+			</div>
 		</div>
+		<div class="x_content" style="text-align: right">
+			<div class="btn-group">
+			<button class="btn btn-default" type="reset" id="list_btn">조회</button>
+			<button class="btn btn-default" type="button" disabled="disabled">입력</button>
+			<button class="btn btn-default" type="button" disabled="disabled">수정</button>
+			<button class="btn btn-default" type="button" disabled="disabled">삭제</button>
+			<button class="btn btn-default" type="button" disabled="disabled">저장</button>
+			<button class="btn btn-default" type="button" id="aaaaaaa">출력</button>
+			</div>
+		</div>
+	</div>
+	<!-- 목차 상단에 추가 end -->
+
+	<!-- 검색화면 start -->	
+	<div class="x_panel">
 
 		<div class="x_content">
 			<br>
 			<form class="form-horizontal form-label-left input_mask">
-				<table id="datatable-responsive"
+				<table 
 					class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
 					role="grid" aria-describedby="datatable-responsive_info"
 					style="width: 100%;">
@@ -37,20 +174,20 @@
 								<label class="control-label">기간</label>
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 30%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-								<input type="date" style="width: 40%"> ~ <input type="date" style="width: 40%">
+								<input type="date" id="START_DATE" style="width: 40%"> ~ <input type="date" id="END_DATE" style="width: 40%" value="">
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 8%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
 								<label class="control-label">연면적(평)</label>
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 30%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-								<input type="text" style="width: 40%"> ~ <input type="text" style="width: 40%">
+								<input type="number" min="0" max="9999999" style="width: 40%" id="G_AREA_P_LOW"> ~ <input type="number" min="0" max="9999999" style="width: 40%" id="G_AREA_P_HIGH">
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 8%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
 								<label class="control-label">지상층</label>
 							</td>
 							<td class="sorting_asc" tabindex="0" aria-controls="datatable-responsive" rowspan="1" colspan="1" style="width: 16%;" aria-sort="ascending" aria-label="First name: activate to sort column descending">
-								<input type="text" style="width: 40%"> ~ <input	type="text" style="width: 40%">
-							</td>											
+								<input type="number" max="999" min="0" style="width: 40%" id="B_DOWN_SU"> ~ <input type="number" max="999" min="0" style="width: 40%" id="B_UP_SU">
+							</td>																		
 						</tr>
 
 					</tbody>
@@ -61,69 +198,63 @@
 	<!-- 검색화면 end -->
 	
 	
-	<div class="x_panel">
-			<div class="x_title">
-				<h2>
-					프로젝트예산 검색 <small>Custom design</small>
-				</h2>
-				<ul class="nav navbar-right panel_toolbox">
-					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-					</li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Settings 1</a></li>
-							<li><a href="#">Settings 2</a></li>
-						</ul></li>
-					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-				</ul>
-				<div class="clearfix"></div>
-			</div>
-	
-			<div class="x_content">
-	
-				<p>
-					Add class
-					<code>bulk_action</code>
-					to table for bulk actions options on row select
-				</p>
-	
-				<div class="table-responsive">
-					<table class="table table-striped jambo_table bulk_action">
-						<thead>
-							<tr class="headings">
-								<!-- <th>
-									<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; visibility: hidden;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-								</th> -->
-							
-								<th class="column-title">코드명</th>
-								<th class="column-title">프로젝트명</th>
-								<th class="column-title">발주자</th>
-								<th class="column-title">연면적(평)</th>								
-								<th class="column-title">대지면적(평)</th>
-								<th class="column-title">지상층</th>
-								<th class="column-title">지하층</th>																					
-							</tr>
-						</thead>
-							<tr>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-							</tr>
-						<tbody>
-						</tbody>
-					</table>
-					<!-- 출력 리스트 검색 끝 -->
-				</div>
-			</div>
-		</div>	
+	<!-- 테이블 -->
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>계약프로젝트List<small></small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table id="myTable" class="table table-striped jambo_table bulk_action">
+             <thead>
+              <tr>
+                <th>코드명</th>
+                <th>프로젝트명</th>
+                <th>발주자</th>
+                <th>연면적(평)</th>
+                <th>대지면적(평)</th>
+                <th>지상층</th>
+                <th>지하층</th>
+              </tr>
+            </thead>
+
+            <tbody id="list">
+            </tbody> 
+            <tr> 
+				<td colspan="7" style="text-align: right" id="listLength"></td>
+			<tr>
+          </table>
+        </div>
+      </div>
+    </div>
+	<!-- 테이블 -->
+		
+	</font>
 	</th:block>
 	
-	<th:block layout:fragment="customJquery">
-		<th:block th:include="layout/customJquery"></th:block>
+	<th:block layout:fragment="customJquery"> 
+	<th:block th:include="layout/customJquery"></th:block>
+ 	<!-- Datatables -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
     </th:block>
     
 </html>	
